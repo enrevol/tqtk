@@ -1,0 +1,139 @@
+﻿{
+  "generaldto": {
+    "bookName": "",
+    "bookPic": "",
+    "canUpgradeSoilder": false,
+    "canUseGold": false,
+    "coppercost": 7000,
+    "cost": 0,
+    "costType": 0,
+    "currentSoilderLeveDesc": "",
+    "extraForces": 0,
+    "extraIntelligence": 0,
+    "extraLeader": 0,
+    "extraValiant": 0,
+    "forces": 70,
+    "generalexp": 15965,
+    "generalid": 1494,
+    "generallevel": 51,
+    "generalname": "Thôi Huy ",
+    "gmId": 1325,
+    "goldTong": 0,
+    "goldYong": 0,
+    "goldZhi": 0,
+    "intelligence": 58,
+    "intro": "",
+    "leader": 88,
+    "maxsolidernum": 1950,
+    "modelTong": 60,
+    "modelYong": 65,
+    "modelZhi": 55,
+    "nextSoilderLevelDesc": "",
+    "nextlevelexp": 75600,
+    "pic": "lili",
+    "playerBookNum": 0,
+    "shiftlv": 51,
+    "skillintro": "",
+    "skillname": "",
+    "soliderLevel": 31,
+    "solidernum": 1950,
+    "star": 0,
+    "starSoulDtoList": [],
+    "troopintro": "Gây sát thương quân địch theo chiều dọc",
+    "trooplevel": 1,
+    "troopname": "Nỗ Pháo Xa",
+    "troopstagename": "Lv4",
+    "trooptypename": "",
+    "upgradeBookNum": 0,
+    "upgradeGold": 0
+  },
+  "tufeiTokenCount": 0,
+  "trainmodel": [
+    {
+      "times": 1.2,
+      "name": "Cao Cấp",
+      "cost": ""
+    }
+  ],
+  "goldguide": 45,
+  "msg": " nhận được 4336 kinh nghiệm,  nhận đư���c 19 Võ Hồn,",
+  "cost": -1,
+  "general": [
+    {
+      "generalid": 1494,
+      "trainmodel": 1,
+      "generalexp": 15965,
+      "generallevel": 51,
+      "onformation": 1,
+      "nextlevelexp": 75600,
+      "pic": "lili",
+      "exppermin": 76,
+      "jyungongexp": 3804,
+      "gmId": 1325,
+      "generalname": "Thôi Huy ",
+      "jyungong": 262,
+      "trainflag": 1,
+      "remainingtime": 1128598
+    },
+    {
+      "gmId": 1121,
+      "generalname": "Trương Lương ",
+      "generalid": 1508,
+      "generalexp": 10757,
+      "generallevel": 15,
+      "pic": "zhangliang",
+      "nextlevelexp": 10800,
+      "onformation": 1,
+      "trainflag": 0
+    },
+    {
+      "gmId": 1183,
+      "generalname": "Từ Vinh ",
+      "generalid": 1782,
+      "generalexp": 6056,
+      "generallevel": 32,
+      "pic": "chaijin",
+      "nextlevelexp": 41400,
+      "onformation": 1,
+      "trainflag": 0
+    },
+    {
+      "gmId": 1149,
+      "generalname": "Hoa Hùng",
+      "generalid": 2281,
+      "generalexp": 38539,
+      "generallevel": 36,
+      "pic": "huaxiong",
+      "nextlevelexp": 48600,
+      "onformation": 1,
+      "trainflag": 0
+    }
+  ],
+  "playerupdateinfo": {
+    "jyungong": 58819
+  },
+  "maxnum": 3,
+  "currentnum": 1,
+  "timemodel": [
+    {
+      "id": 1,
+      "time": 20,
+      "timeunit": " Phút",
+      "cost": "Cao Cấp"
+    },
+    {
+      "id": 2,
+      "time": 2,
+      "timeunit": " Giờ",
+      "cost": "115 Bạc"
+    },
+    {
+      "id": 3,
+      "time": 8,
+      "timeunit": " Giờ",
+      "cost": "1200 Bạc"
+    }
+  ],
+  "cd": 479996,
+  "guidecdusable": 1
+}

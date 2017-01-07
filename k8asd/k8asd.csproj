@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{831A75D7-1F9A-4109-BE22-83C06364B6B3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>k8asd</RootNamespace>
+    <AssemblyName>k8asd</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ComponentFactory.Krypton.Docking, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Navigator, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Navigator.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Toolkit, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Workspace, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Workspace.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\k8asd\k8asd\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Deployment">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Design">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountInfo.cs" />
+    <Compile Include="AccountView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccountView.Designer.cs">
+      <DependentUpon>AccountView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InfoView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CharacterInfoView.Designer.cs">
+      <DependentUpon>InfoView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Class.cs" />
+    <Compile Include="CooldownView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CooldownView.Designer.cs">
+      <DependentUpon>CooldownView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F.cs" />
+    <Compile Include="HeroImproveView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HeroImproveView.Designer.cs">
+      <DependentUpon>HeroImproveView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HeroTrainingView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HeroTrainingView.Designer.cs">
+      <DependentUpon>HeroTrainingView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImposeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImposeView.Designer.cs">
+      <DependentUpon>ImposeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IPacketWriter.cs" />
+    <Compile Include="LoginHelper.cs" />
+    <Compile Include="MCUView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MCUView.Designer.cs">
+      <DependentUpon>MCUView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClientView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ClientView.Designer.cs">
+      <DependentUpon>ClientView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Funtions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Packet.cs" />
+    <Compile Include="PacketHandler.cs" />
+    <Compile Include="IPacketReader.cs" />
+    <Compile Include="Permutation.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AccountView.resx">
+      <DependentUpon>AccountView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CharacterInfoView.resx">
+      <DependentUpon>InfoView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CooldownView.resx">
+      <DependentUpon>CooldownView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HeroImproveView.resx">
+      <DependentUpon>HeroImproveView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HeroTrainingView.resx">
+      <DependentUpon>HeroTrainingView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImposeView.resx">
+      <DependentUpon>ImposeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MCUView.resx">
+      <DependentUpon>MCUView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainView.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Command\11102.json" />
+    <None Include="Command\41100.json" />
+    <None Include="Command\41101_0.json" />
+    <None Include="Command\41101_1.json" />
+    <None Include="Command\41102_0.json" />
+    <None Include="Command\41102_1.json" />
+    <None Include="Command\41107.json" />
+    <None Include="Command\41300.json" />
+    <None Include="Command\41301.json" />
+    <None Include="Command\41302.json" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="MainView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Session.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="V.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

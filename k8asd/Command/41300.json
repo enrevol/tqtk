@@ -1,0 +1,113 @@
+{
+  "generaldto": {
+    "bookName": "",
+    "bookPic": "",
+    "canUpgradeSoilder": false,
+    "canUseGold": false,
+    "coppercost": 7000,
+    "cost": 0,
+    "costType": 0,
+    "currentSoilderLeveDesc": "",
+    "extraForces": 0,
+    "extraIntelligence": 0,
+    "extraLeader": 0,
+    "extraValiant": 0,
+    "forces": 84,
+    "generalexp": 4134,
+    "generalid": 53,
+    "generallevel": 28,
+    "generalname": "Hồng Oánh ",
+    "gmId": 1322,
+    "goldTong": 0,
+    "goldYong": 0,
+    "goldZhi": 0,
+    "intelligence": 75,
+    "intro": "",
+    "leader": 68,
+    "maxsolidernum": 1256,
+    "modelTong": 67,
+    "modelYong": 48,
+    "modelZhi": 65,
+    "nextSoilderLevelDesc": "",
+    "nextlevelexp": 34200,
+    "pic": "zhouyue",
+    "playerBookNum": 0,
+    "shiftlv": 51,
+    "skillintro": "Tấn công toàn bộ",
+    "skillname": "Toàn diện xuất kích",
+    "soliderLevel": 17,
+    "solidernum": 1256,
+    "star": 0,
+    "starSoulDtoList": [],
+    "troopintro": "Sở trường bình thường",
+    "trooplevel": 7,
+    "troopname": "Phiêu Tuyết Trường Cung",
+    "troopstagename": "Lv2",
+    "trooptypename": "",
+    "upgradeBookNum": 0,
+    "upgradeGold": 0
+  },
+  "refreshmodel": [
+    {
+      "name": "Phổ thông",
+      "cost": "160Chiến Tích"
+    },
+    {
+      "name": "Cao Cấp",
+      "cost": "6Xu"
+    }
+  ],
+  "godshiftable": 0,
+  "goldShift": 150,
+  "refreshable": 1,
+  "general": [
+    {
+      "generalname": "Hồng Oánh ",
+      "shiftable": false,
+      "generalid": 53,
+      "troopname": "",
+      "generallevel": 28,
+      "pic": "zhouyue"
+    },
+    {
+      "generalname": "Từ Vinh ",
+      "shiftable": false,
+      "generalid": 1670,
+      "troopname": "",
+      "generallevel": 9,
+      "pic": "chaijin"
+    },
+    {
+      "generalname": "Hoa Hùng",
+      "shiftable": false,
+      "generalid": 1848,
+      "troopname": "",
+      "generallevel": 15,
+      "pic": "huaxiong"
+    },
+    {
+      "generalname": "Thái Diễm ",
+      "shiftable": false,
+      "generalid": 3953,
+      "troopname": "Vũ Cơ",
+      "generallevel": 13,
+      "pic": "caiyan"
+    },
+    {
+      "baseforces": 48,
+      "newattr": {
+        "plusleader": 0,
+        "plusforces": 0,
+        "plusintelligence": 0
+      },
+      "generalid": 53,
+      "baseleader": 67,
+      "originalattr": {
+        "plusleader": 1,
+        "plusforces": 36,
+        "plusintelligence": 10
+      },
+      "baseintelligence": 65
+    }
+  ]
+}
