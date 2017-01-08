@@ -127,9 +127,6 @@
     <Compile Include="InfoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CharacterInfoView.Designer.cs">
-      <DependentUpon>InfoView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Class.cs" />
     <Compile Include="CooldownView.cs">
       <SubType>UserControl</SubType>
@@ -171,6 +168,12 @@
       <DependentUpon>ClientView.cs</DependentUpon>
     </Compile>
     <Compile Include="Funtions.cs" />
+    <Compile Include="MessageLogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MessageLogView.Designer.cs">
+      <DependentUpon>MessageLogView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Packet.cs" />
     <Compile Include="PacketHandler.cs" />
     <Compile Include="IPacketReader.cs" />
@@ -198,9 +201,6 @@
     <EmbeddedResource Include="AccountView.resx">
       <DependentUpon>AccountView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CharacterInfoView.resx">
-      <DependentUpon>InfoView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="CooldownView.resx">
       <DependentUpon>CooldownView.cs</DependentUpon>
     </EmbeddedResource>
@@ -217,8 +217,14 @@
     <EmbeddedResource Include="ImposeView.resx">
       <DependentUpon>ImposeView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InfoView.resx">
+      <DependentUpon>InfoView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MCUView.resx">
       <DependentUpon>MCUView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageLogView.resx">
+      <DependentUpon>MessageLogView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

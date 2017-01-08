@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class CharacterInfoView : UserControl {
-        public CharacterInfoView() {
+    public partial class InfoView : UserControl {
+        public InfoView() {
             InitializeComponent();
         }
 

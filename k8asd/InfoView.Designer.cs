@@ -1,5 +1,5 @@
 ﻿namespace k8asd {
-    partial class CharacterInfoView {
+    partial class InfoView {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
