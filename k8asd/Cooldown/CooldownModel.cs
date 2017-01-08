@@ -81,6 +81,12 @@ namespace k8asd {
                 GuideCooldown = (int) player["guidecd"];
                 TechCooldown = (int) player["techcd"];
             }
+            if (packet.CommandId == "41100" ||
+                packet.CommandId == "41101" ||
+                packet.CommandId == "41102") {
+                var cd = (int) token["cd"];
+                GuideCooldown = cd;
+            }
         }
     }
 }

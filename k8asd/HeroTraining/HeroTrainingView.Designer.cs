@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.heroList = new System.Windows.Forms.ListBox();
             this.autoTrainCheck = new System.Windows.Forms.CheckBox();
             this.addButton = new System.Windows.Forms.Button();
@@ -38,22 +39,24 @@
             this.info2Label = new System.Windows.Forms.TextBox();
             this.info1Label = new System.Windows.Forms.TextBox();
             this.info0Label = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this._ignore6 = new System.Windows.Forms.Label();
+            this._ignore2 = new System.Windows.Forms.Label();
+            this._ignore5 = new System.Windows.Forms.Label();
+            this._ignore4 = new System.Windows.Forms.Label();
+            this._ignore3 = new System.Windows.Forms.Label();
+            this._ignore1 = new System.Windows.Forms.Label();
             this._ignore0 = new System.Windows.Forms.Label();
             this.trainBox = new System.Windows.Forms.GroupBox();
             this.trainButton = new System.Windows.Forms.Button();
             this.timeModelList = new System.Windows.Forms.ComboBox();
             this.guideBox = new System.Windows.Forms.GroupBox();
             this.guideButton = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.honorExpLabel = new System.Windows.Forms.Label();
+            this.expPerMinLabel = new System.Windows.Forms.Label();
+            this.remainingTimeLabel = new System.Windows.Forms.Label();
             this.stopButton = new System.Windows.Forms.Button();
+            this.refreshButton = new System.Windows.Forms.Button();
+            this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this.infoBox.SuspendLayout();
             this.trainBox.SuspendLayout();
             this.guideBox.SuspendLayout();
@@ -71,16 +74,16 @@
             "6",
             "7",
             "8"});
-            this.heroList.Location = new System.Drawing.Point(5, 30);
+            this.heroList.Location = new System.Drawing.Point(5, 70);
             this.heroList.Name = "heroList";
-            this.heroList.Size = new System.Drawing.Size(160, 108);
+            this.heroList.Size = new System.Drawing.Size(160, 134);
             this.heroList.TabIndex = 0;
             this.heroList.SelectedIndexChanged += new System.EventHandler(this.heroList_SelectedIndexChanged);
             // 
             // autoTrainCheck
             // 
             this.autoTrainCheck.AutoSize = true;
-            this.autoTrainCheck.Location = new System.Drawing.Point(5, 5);
+            this.autoTrainCheck.Location = new System.Drawing.Point(100, 12);
             this.autoTrainCheck.Name = "autoTrainCheck";
             this.autoTrainCheck.Size = new System.Drawing.Size(95, 17);
             this.autoTrainCheck.TabIndex = 1;
@@ -89,9 +92,9 @@
             // 
             // addButton
             // 
-            this.addButton.Location = new System.Drawing.Point(4, 144);
+            this.addButton.Location = new System.Drawing.Point(6, 215);
             this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(60, 25);
+            this.addButton.Size = new System.Drawing.Size(75, 30);
             this.addButton.TabIndex = 2;
             this.addButton.Text = "Thêm";
             this.addButton.UseVisualStyleBackColor = true;
@@ -99,9 +102,9 @@
             // 
             // removeButton
             // 
-            this.removeButton.Location = new System.Drawing.Point(68, 144);
+            this.removeButton.Location = new System.Drawing.Point(88, 215);
             this.removeButton.Name = "removeButton";
-            this.removeButton.Size = new System.Drawing.Size(60, 25);
+            this.removeButton.Size = new System.Drawing.Size(75, 30);
             this.removeButton.TabIndex = 3;
             this.removeButton.Text = "Xoá";
             this.removeButton.UseVisualStyleBackColor = true;
@@ -119,15 +122,15 @@
             "6",
             "7",
             "8"});
-            this.selectedHeroList.Location = new System.Drawing.Point(5, 175);
+            this.selectedHeroList.Location = new System.Drawing.Point(5, 255);
             this.selectedHeroList.Name = "selectedHeroList";
-            this.selectedHeroList.Size = new System.Drawing.Size(160, 108);
+            this.selectedHeroList.Size = new System.Drawing.Size(160, 134);
             this.selectedHeroList.TabIndex = 4;
             // 
             // slotLabel
             // 
             this.slotLabel.AutoSize = true;
-            this.slotLabel.Location = new System.Drawing.Point(120, 7);
+            this.slotLabel.Location = new System.Drawing.Point(5, 45);
             this.slotLabel.Name = "slotLabel";
             this.slotLabel.Size = new System.Drawing.Size(107, 13);
             this.slotLabel.TabIndex = 5;
@@ -136,7 +139,7 @@
             // tokenLabel
             // 
             this.tokenLabel.AutoSize = true;
-            this.tokenLabel.Location = new System.Drawing.Point(270, 7);
+            this.tokenLabel.Location = new System.Drawing.Point(135, 45);
             this.tokenLabel.Name = "tokenLabel";
             this.tokenLabel.Size = new System.Drawing.Size(107, 13);
             this.tokenLabel.TabIndex = 6;
@@ -151,141 +154,148 @@
             this.infoBox.Controls.Add(this.info2Label);
             this.infoBox.Controls.Add(this.info1Label);
             this.infoBox.Controls.Add(this.info0Label);
-            this.infoBox.Controls.Add(this.label6);
-            this.infoBox.Controls.Add(this.label5);
-            this.infoBox.Controls.Add(this.label4);
-            this.infoBox.Controls.Add(this.label3);
-            this.infoBox.Controls.Add(this.label2);
-            this.infoBox.Controls.Add(this.label1);
+            this.infoBox.Controls.Add(this._ignore6);
+            this.infoBox.Controls.Add(this._ignore2);
+            this.infoBox.Controls.Add(this._ignore5);
+            this.infoBox.Controls.Add(this._ignore4);
+            this.infoBox.Controls.Add(this._ignore3);
+            this.infoBox.Controls.Add(this._ignore1);
             this.infoBox.Controls.Add(this._ignore0);
-            this.infoBox.Location = new System.Drawing.Point(175, 30);
+            this.infoBox.Location = new System.Drawing.Point(175, 70);
             this.infoBox.Name = "infoBox";
-            this.infoBox.Size = new System.Drawing.Size(240, 200);
+            this.infoBox.Size = new System.Drawing.Size(250, 200);
             this.infoBox.TabIndex = 7;
             this.infoBox.TabStop = false;
             this.infoBox.Text = "Tư Mã Sư Lv. 199";
             // 
             // info6Label
             // 
-            this.info6Label.Location = new System.Drawing.Point(80, 167);
+            this.info6Label.Location = new System.Drawing.Point(80, 170);
             this.info6Label.Name = "info6Label";
-            this.info6Label.Size = new System.Drawing.Size(150, 20);
+            this.info6Label.ReadOnly = true;
+            this.info6Label.Size = new System.Drawing.Size(160, 20);
             this.info6Label.TabIndex = 13;
             this.info6Label.Text = "999999/999999";
             this.info6Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // info5Label
             // 
-            this.info5Label.Location = new System.Drawing.Point(80, 142);
+            this.info5Label.Location = new System.Drawing.Point(80, 145);
             this.info5Label.Name = "info5Label";
-            this.info5Label.Size = new System.Drawing.Size(150, 20);
+            this.info5Label.ReadOnly = true;
+            this.info5Label.Size = new System.Drawing.Size(160, 20);
             this.info5Label.TabIndex = 12;
             this.info5Label.Text = "Cấp 200 trở lên";
             this.info5Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // info4Label
             // 
-            this.info4Label.Location = new System.Drawing.Point(80, 117);
+            this.info4Label.Location = new System.Drawing.Point(80, 120);
             this.info4Label.Name = "info4Label";
-            this.info4Label.Size = new System.Drawing.Size(150, 20);
+            this.info4Label.ReadOnly = true;
+            this.info4Label.Size = new System.Drawing.Size(160, 20);
             this.info4Label.TabIndex = 11;
             this.info4Label.Text = "Phích Lịch Cửu Tiêu";
             this.info4Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // info3Label
             // 
-            this.info3Label.Location = new System.Drawing.Point(80, 92);
+            this.info3Label.Location = new System.Drawing.Point(80, 95);
             this.info3Label.Name = "info3Label";
-            this.info3Label.Size = new System.Drawing.Size(150, 20);
+            this.info3Label.ReadOnly = true;
+            this.info3Label.Size = new System.Drawing.Size(160, 20);
             this.info3Label.TabIndex = 10;
             this.info3Label.Text = "Lv20 - 10";
             this.info3Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // info2Label
             // 
-            this.info2Label.Location = new System.Drawing.Point(80, 67);
+            this.info2Label.Location = new System.Drawing.Point(80, 70);
             this.info2Label.Name = "info2Label";
-            this.info2Label.Size = new System.Drawing.Size(150, 20);
+            this.info2Label.ReadOnly = true;
+            this.info2Label.Size = new System.Drawing.Size(160, 20);
             this.info2Label.TabIndex = 9;
             this.info2Label.Text = "Phích Lịch Hoả Kỵ";
             this.info2Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // info1Label
             // 
-            this.info1Label.Location = new System.Drawing.Point(80, 42);
+            this.info1Label.Location = new System.Drawing.Point(80, 45);
             this.info1Label.Name = "info1Label";
-            this.info1Label.Size = new System.Drawing.Size(150, 20);
+            this.info1Label.ReadOnly = true;
+            this.info1Label.Size = new System.Drawing.Size(160, 20);
             this.info1Label.TabIndex = 8;
             this.info1Label.Text = "D199 K199 T199";
             this.info1Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // info0Label
             // 
-            this.info0Label.Location = new System.Drawing.Point(80, 17);
+            this.info0Label.Location = new System.Drawing.Point(80, 20);
             this.info0Label.Name = "info0Label";
-            this.info0Label.Size = new System.Drawing.Size(150, 20);
+            this.info0Label.ReadOnly = true;
+            this.info0Label.Size = new System.Drawing.Size(160, 20);
             this.info0Label.TabIndex = 7;
             this.info0Label.Text = "19999/19999";
             this.info0Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label6
+            // _ignore6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(5, 170);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "Kinh nghiệm";
+            this._ignore6.AutoSize = true;
+            this._ignore6.Location = new System.Drawing.Point(5, 173);
+            this._ignore6.Name = "_ignore6";
+            this._ignore6.Size = new System.Drawing.Size(65, 13);
+            this._ignore6.TabIndex = 6;
+            this._ignore6.Text = "Kinh nghiệm";
             // 
-            // label5
+            // _ignore2
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 70);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Binh chủng";
+            this._ignore2.AutoSize = true;
+            this._ignore2.Location = new System.Drawing.Point(5, 73);
+            this._ignore2.Name = "_ignore2";
+            this._ignore2.Size = new System.Drawing.Size(61, 13);
+            this._ignore2.TabIndex = 5;
+            this._ignore2.Text = "Binh chủng";
             // 
-            // label4
+            // _ignore5
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 145);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Chuyển sinh";
+            this._ignore5.AutoSize = true;
+            this._ignore5.Location = new System.Drawing.Point(5, 148);
+            this._ignore5.Name = "_ignore5";
+            this._ignore5.Size = new System.Drawing.Size(65, 13);
+            this._ignore5.TabIndex = 4;
+            this._ignore5.Text = "Chuyển sinh";
             // 
-            // label3
+            // _ignore4
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 120);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Kỹ năng";
+            this._ignore4.AutoSize = true;
+            this._ignore4.Location = new System.Drawing.Point(5, 123);
+            this._ignore4.Name = "_ignore4";
+            this._ignore4.Size = new System.Drawing.Size(46, 13);
+            this._ignore4.TabIndex = 3;
+            this._ignore4.Text = "Kỹ năng";
             // 
-            // label2
+            // _ignore3
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 95);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Quân đội";
+            this._ignore3.AutoSize = true;
+            this._ignore3.Location = new System.Drawing.Point(5, 98);
+            this._ignore3.Name = "_ignore3";
+            this._ignore3.Size = new System.Drawing.Size(51, 13);
+            this._ignore3.TabIndex = 2;
+            this._ignore3.Text = "Quân đội";
             // 
-            // label1
+            // _ignore1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 45);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Thuộc tính";
+            this._ignore1.AutoSize = true;
+            this._ignore1.Location = new System.Drawing.Point(5, 48);
+            this._ignore1.Name = "_ignore1";
+            this._ignore1.Size = new System.Drawing.Size(60, 13);
+            this._ignore1.TabIndex = 1;
+            this._ignore1.Text = "Thuộc tính";
             // 
             // _ignore0
             // 
             this._ignore0.AutoSize = true;
-            this._ignore0.Location = new System.Drawing.Point(5, 20);
+            this._ignore0.Location = new System.Drawing.Point(5, 23);
             this._ignore0.Name = "_ignore0";
             this._ignore0.Size = new System.Drawing.Size(45, 13);
             this._ignore0.TabIndex = 0;
@@ -295,16 +305,16 @@
             // 
             this.trainBox.Controls.Add(this.trainButton);
             this.trainBox.Controls.Add(this.timeModelList);
-            this.trainBox.Location = new System.Drawing.Point(175, 235);
+            this.trainBox.Location = new System.Drawing.Point(175, 280);
             this.trainBox.Name = "trainBox";
-            this.trainBox.Size = new System.Drawing.Size(240, 50);
+            this.trainBox.Size = new System.Drawing.Size(250, 50);
             this.trainBox.TabIndex = 8;
             this.trainBox.TabStop = false;
             this.trainBox.Text = "Luyện";
             // 
             // trainButton
             // 
-            this.trainButton.Location = new System.Drawing.Point(156, 14);
+            this.trainButton.Location = new System.Drawing.Point(165, 13);
             this.trainButton.Name = "trainButton";
             this.trainButton.Size = new System.Drawing.Size(75, 30);
             this.trainButton.TabIndex = 1;
@@ -314,76 +324,95 @@
             // 
             // timeModelList
             // 
+            this.timeModelList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.timeModelList.FormattingEnabled = true;
             this.timeModelList.Location = new System.Drawing.Point(8, 20);
             this.timeModelList.Name = "timeModelList";
-            this.timeModelList.Size = new System.Drawing.Size(140, 21);
+            this.timeModelList.Size = new System.Drawing.Size(150, 21);
             this.timeModelList.TabIndex = 0;
             // 
             // guideBox
             // 
             this.guideBox.Controls.Add(this.guideButton);
-            this.guideBox.Controls.Add(this.label9);
-            this.guideBox.Controls.Add(this.label8);
-            this.guideBox.Controls.Add(this.label7);
+            this.guideBox.Controls.Add(this.honorExpLabel);
+            this.guideBox.Controls.Add(this.expPerMinLabel);
+            this.guideBox.Controls.Add(this.remainingTimeLabel);
             this.guideBox.Controls.Add(this.stopButton);
-            this.guideBox.Location = new System.Drawing.Point(175, 290);
+            this.guideBox.Location = new System.Drawing.Point(175, 345);
             this.guideBox.Name = "guideBox";
-            this.guideBox.Size = new System.Drawing.Size(240, 90);
+            this.guideBox.Size = new System.Drawing.Size(250, 90);
             this.guideBox.TabIndex = 9;
             this.guideBox.TabStop = false;
             this.guideBox.Text = "Mãnh tiến";
             // 
             // guideButton
             // 
-            this.guideButton.Location = new System.Drawing.Point(156, 50);
+            this.guideButton.Location = new System.Drawing.Point(165, 50);
             this.guideButton.Name = "guideButton";
             this.guideButton.Size = new System.Drawing.Size(75, 30);
             this.guideButton.TabIndex = 5;
             this.guideButton.Text = "Mãnh tiến";
             this.guideButton.UseVisualStyleBackColor = true;
+            this.guideButton.Click += new System.EventHandler(this.guideButton_Click);
             // 
-            // label9
+            // honorExpLabel
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(5, 64);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(105, 13);
-            this.label9.TabIndex = 4;
-            this.label9.Text = "600 CT - 24588 EXP";
+            this.honorExpLabel.AutoSize = true;
+            this.honorExpLabel.Location = new System.Drawing.Point(5, 64);
+            this.honorExpLabel.Name = "honorExpLabel";
+            this.honorExpLabel.Size = new System.Drawing.Size(121, 13);
+            this.honorExpLabel.TabIndex = 4;
+            this.honorExpLabel.Text = "600 C.Tích - 24588 Exp";
             // 
-            // label8
+            // expPerMinLabel
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(5, 42);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(132, 13);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "Kinh nghiệm mỗi phút: 999";
+            this.expPerMinLabel.AutoSize = true;
+            this.expPerMinLabel.Location = new System.Drawing.Point(5, 42);
+            this.expPerMinLabel.Name = "expPerMinLabel";
+            this.expPerMinLabel.Size = new System.Drawing.Size(132, 13);
+            this.expPerMinLabel.TabIndex = 3;
+            this.expPerMinLabel.Text = "Kinh nghiệm mỗi phút: 999";
             // 
-            // label7
+            // remainingTimeLabel
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 20);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(133, 13);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Thời gian còn lại: 23:59:59";
+            this.remainingTimeLabel.AutoSize = true;
+            this.remainingTimeLabel.Location = new System.Drawing.Point(5, 20);
+            this.remainingTimeLabel.Name = "remainingTimeLabel";
+            this.remainingTimeLabel.Size = new System.Drawing.Size(133, 13);
+            this.remainingTimeLabel.TabIndex = 2;
+            this.remainingTimeLabel.Text = "Thời gian còn lại: 23:59:59";
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(156, 14);
+            this.stopButton.Location = new System.Drawing.Point(165, 13);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(75, 30);
             this.stopButton.TabIndex = 1;
             this.stopButton.Text = "Kết thúc";
             this.stopButton.UseVisualStyleBackColor = true;
             // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(5, 5);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(75, 30);
+            this.refreshButton.TabIndex = 10;
+            this.refreshButton.Text = "Làm mới";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
+            // oneSecondTimer
+            // 
+            this.oneSecondTimer.Enabled = true;
+            this.oneSecondTimer.Interval = 1000;
+            this.oneSecondTimer.Tick += new System.EventHandler(this.oneSecondTimer_Tick);
+            // 
             // HeroTrainingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.guideBox);
             this.Controls.Add(this.trainBox);
             this.Controls.Add(this.infoBox);
@@ -395,7 +424,7 @@
             this.Controls.Add(this.autoTrainCheck);
             this.Controls.Add(this.heroList);
             this.Name = "HeroTrainingView";
-            this.Size = new System.Drawing.Size(420, 385);
+            this.Size = new System.Drawing.Size(455, 469);
             this.infoBox.ResumeLayout(false);
             this.infoBox.PerformLayout();
             this.trainBox.ResumeLayout(false);
@@ -417,12 +446,12 @@
         private System.Windows.Forms.Label tokenLabel;
         private System.Windows.Forms.GroupBox infoBox;
         private System.Windows.Forms.Label _ignore0;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label _ignore6;
+        private System.Windows.Forms.Label _ignore2;
+        private System.Windows.Forms.Label _ignore5;
+        private System.Windows.Forms.Label _ignore4;
+        private System.Windows.Forms.Label _ignore3;
+        private System.Windows.Forms.Label _ignore1;
         private System.Windows.Forms.TextBox info5Label;
         private System.Windows.Forms.TextBox info4Label;
         private System.Windows.Forms.TextBox info3Label;
@@ -435,9 +464,11 @@
         private System.Windows.Forms.Button trainButton;
         private System.Windows.Forms.GroupBox guideBox;
         private System.Windows.Forms.Button stopButton;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label remainingTimeLabel;
         private System.Windows.Forms.Button guideButton;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label honorExpLabel;
+        private System.Windows.Forms.Label expPerMinLabel;
+        private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.Timer oneSecondTimer;
     }
 }

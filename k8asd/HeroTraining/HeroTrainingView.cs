@@ -19,17 +19,33 @@ namespace k8asd {
             private int nextExp;
             private int trainFlag;
             private int trainModel;
-            private int remainingTime;
+            private DateTime trainEndTime;
             private int expPerMin;
-            private int honorPointsCost;
-            private int honorPointsExp;
+            private int honorCost;
+            private int honorExp;
 
             public int Id { get { return id; } }
             public string Name { get { return name; } }
             public int Level { get { return level; } }
             public int Exp { get { return exp; } }
             public int NextExp { get { return nextExp; } }
-            public int TrainFlag { get { return trainFlag; } }
+
+            public bool IsTraining {
+                get { return RemainingTime > 0; }
+            }
+
+            public int RemainingTime {
+                get {
+                    if (trainFlag == 0) {
+                        return 0;
+                    }
+                    return (int) (trainEndTime - DateTime.Now).TotalSeconds;
+                }
+            }
+
+            public int ExpPerMin { get { return expPerMin; } }
+            public int HonorCost { get { return honorCost; } }
+            public int HonorExp { get { return honorExp; } }
 
             public Hero(int id, string name, int level, int exp, int nextExp) {
                 this.id = id;
@@ -37,12 +53,13 @@ namespace k8asd {
                 this.level = level;
                 this.exp = exp;
                 this.nextExp = nextExp;
-                trainFlag = trainModel = remainingTime = 0;
-                expPerMin = honorPointsCost = honorPointsExp = 0;
+                trainFlag = trainModel = 0;
+                trainEndTime = DateTime.Now;
+                expPerMin = honorCost = honorExp = 0;
             }
 
             public Hero(int id, string name, int level, int exp, int nextExp,
-                int trainModel, int remainingTime, int expPerMin, int honorPointsCost, int honorPointsExp) {
+                int trainModel, int remainingTime, int expPerMin, int honorCost, int honorExp) {
                 this.id = id;
                 this.name = name;
                 this.level = level;
@@ -50,10 +67,10 @@ namespace k8asd {
                 this.nextExp = nextExp;
                 trainFlag = 1;
                 this.trainModel = trainModel;
-                this.remainingTime = remainingTime;
+                trainEndTime = DateTime.Now.AddMilliseconds(remainingTime);
                 this.expPerMin = expPerMin;
-                this.honorPointsCost = honorPointsCost;
-                this.honorPointsExp = honorPointsExp;
+                this.honorCost = honorCost;
+                this.honorExp = honorExp;
             }
 
             public static Hero Parse(JToken token) {
@@ -76,10 +93,10 @@ namespace k8asd {
             }
 
             public override string ToString() {
-                if (trainFlag == 1) {
-                    return String.Format("{0} - LV {1} ({2}/{3})", name, level, exp, nextExp);
+                if (trainFlag == 0) {
+                    return String.Format("{0} Lv. {1}", name, level);
                 }
-                return String.Format("{0} - LV {1} ({2}/{3}) (T)", name, level, exp, nextExp);
+                return String.Format("{0} Lv. {1} (T)", name, level);
             }
         }
 
@@ -113,19 +130,17 @@ namespace k8asd {
 
         private int maxTrainingSlots;
 
-        private List<Hero> heroes;
-        private List<TimeModel> timeModels;
+        private BindingList<Hero> heroes;
+        private BindingList<TimeModel> timeModels;
         private IPacketWriter packetWriter;
 
         public HeroTrainingView() {
             InitializeComponent();
 
-            heroes = new List<Hero>();
-            heroList.Items.Clear();
+            heroes = new BindingList<Hero>();
             heroList.DataSource = heroes;
 
-            timeModels = new List<TimeModel>();
-            timeModelList.Items.Clear();
+            timeModels = new BindingList<TimeModel>();
             timeModelList.DataSource = timeModels;
         }
 
@@ -212,6 +227,7 @@ namespace k8asd {
             }
             if (packet.CommandId == "41102") {
                 EnableDetailPanels();
+                Parse41102(packet);
             }
             if (packet.CommandId == "41107") {
                 EnableDetailPanels();
@@ -251,16 +267,24 @@ namespace k8asd {
                 // model.LogDebug(message);
                 return;
             }
+            Parse41100(packet);
+        }
 
-            // Parse41100(packet);
+        private void Parse41102(Packet packet) {
+            var token = JToken.Parse(packet.Message);
+            var message = (string) token["message"];
+            if (message != null) {
+                // model.LogDebug(message);
+                return;
+            }
+            Parse41100(packet);
         }
 
         private void Parse41107(Packet packet) {
             var token = JToken.Parse(packet.Message);
             var generaldto = token["generaldto"];
-            if (generaldto != null) {
-                ParseSelectedHero(generaldto);
-            }
+            ParseSelectedHero(generaldto);
+            UpdateGuidePanel();
         }
 
         private void ParseSelectedHero(JToken token) {
@@ -274,7 +298,7 @@ namespace k8asd {
             var nextlevelexp = (int) token["nextlevelexp"];
             var shiftlv = (int) token["shiftlv"];
             var skillname = (string) token["skillname"];
-            var soliderlevel = (int) token["soliderlevel"];
+            var soliderlevel = (int) token["soliderLevel"];
             var solidernum = (int) token["solidernum"];
             var trooplevel = (int) token["trooplevel"];
             var troopstagename = (string) token["troopstagename"];
@@ -283,10 +307,11 @@ namespace k8asd {
             infoBox.Text = String.Format("{0} Lv. {1}", generalname, generallevel);
             info0Label.Text = String.Format("{0}/{1}", solidernum, maxsolidernum);
             info1Label.Text = String.Format("D{0} K{1} T{2}", forces, leader, intelligence);
-            info2Label.Text = String.Format("{0} - {1}", troopstagename, troopname);
-            info3Label.Text = skillname;
-            info4Label.Text = String.Format("Tướng Lv.{0} trở lên", shiftlv);
-            info5Label.Text = String.Format("{0}/{1}", generalexp, nextlevelexp);
+            info2Label.Text = troopname;
+            info3Label.Text = String.Format("{0} - {1}", troopstagename, trooplevel);
+            info4Label.Text = skillname;
+            info5Label.Text = String.Format("Tướng Lv.{0} trở lên", shiftlv);
+            info6Label.Text = String.Format("{0}/{1}", generalexp, nextlevelexp);
         }
 
         private void UpdateTrainingSlots(int currentSlots, int maxSlots) {
@@ -296,6 +321,22 @@ namespace k8asd {
 
         private void UpdateGuideTokens(int tokens) {
             tokenLabel.Text = String.Format("Mãnh tiến lệnh: {0}", tokens);
+        }
+
+        private void UpdateGuidePanel() {
+            var item = heroList.SelectedItem;
+            if (item == null) {
+                return;
+            }
+            var hero = (Hero) item;
+            if (hero.IsTraining) {
+                guideBox.Visible = true;
+                remainingTimeLabel.Text = String.Format("Thời gian còn lại: {0}", Utils.FormatDuration(hero.RemainingTime));
+                expPerMinLabel.Text = String.Format("Kinh nghiệm mỗi phút: {0}", hero.ExpPerMin);
+                honorExpLabel.Text = String.Format("{0} C.Tích - {1} Exp", hero.HonorCost, hero.HonorExp);
+            } else {
+                guideBox.Visible = false;
+            }
         }
 
         private void trainButton_Click(object sender, EventArgs e) {
@@ -326,6 +367,18 @@ namespace k8asd {
                 return;
             }
             selectedHeroList.Items.Remove(item);
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e) {
+            RefreshHeroes();
+        }
+
+        private void guideButton_Click(object sender, EventArgs e) {
+            Guide();
+        }
+
+        private void oneSecondTimer_Tick(object sender, EventArgs e) {
+            UpdateGuidePanel();
         }
     }
 }

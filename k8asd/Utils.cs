@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace k8asd {
-    public class Utils {
+    public static class Utils {
         /// <summary>
         /// Compute the hash of the specified input string with the specified hasher.
         /// </summary>
@@ -63,6 +63,11 @@ namespace k8asd {
         public static string FormatDuration(int seconds) {
             var span = TimeSpan.FromSeconds(seconds);
             return String.Format("{0:00}:{1:00}:{2:00}", span.Hours, span.Minutes, span.Seconds);
+        }
+
+        public static int ToUnixSeconds(this DateTime date) {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return (int) ((date.ToUniversalTime() - epoch).TotalSeconds);
         }
     }
 }

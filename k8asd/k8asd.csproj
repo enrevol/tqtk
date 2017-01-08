@@ -146,10 +146,10 @@
     <Compile Include="HeroImproveView.Designer.cs">
       <DependentUpon>HeroImproveView.cs</DependentUpon>
     </Compile>
-    <Compile Include="HeroTrainingView.cs">
+    <Compile Include="HeroTraining\HeroTrainingView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="HeroTrainingView.Designer.cs">
+    <Compile Include="HeroTraining\HeroTrainingView.Designer.cs">
       <DependentUpon>HeroTrainingView.cs</DependentUpon>
     </Compile>
     <Compile Include="ImposeView.cs">
@@ -220,7 +220,7 @@
     <EmbeddedResource Include="HeroImproveView.resx">
       <DependentUpon>HeroImproveView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HeroTrainingView.resx">
+    <EmbeddedResource Include="HeroTraining\HeroTrainingView.resx">
       <DependentUpon>HeroTrainingView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImposeView.resx">
