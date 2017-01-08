@@ -175,8 +175,26 @@
     <Compile Include="PacketHandler.cs" />
     <Compile Include="IPacketReader.cs" />
     <Compile Include="Permutation.cs" />
+    <Compile Include="PowerView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PowerView.Designer.cs">
+      <DependentUpon>PowerView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShopView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ShopView.Designer.cs">
+      <DependentUpon>ShopView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WeaveView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WeaveView.Designer.cs">
+      <DependentUpon>WeaveView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AccountView.resx">
       <DependentUpon>AccountView.cs</DependentUpon>
     </EmbeddedResource>
@@ -217,6 +235,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ShopView.resx">
+      <DependentUpon>ShopView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WeaveView.resx">
+      <DependentUpon>WeaveView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Command\11102.json" />
     <None Include="Command\41100.json" />
