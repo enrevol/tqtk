@@ -260,5 +260,95 @@ r45300 = null;
                 break;
             #endregion
 
+
+    private void chkWeave_CheckedChanged(object sender, EventArgs e) {
+            //weaveok = chkWeave.Checked;
+        }
+
+        private void btnWeaveTeam_Click(object sender, EventArgs e) {
+            /*
+            KryptonContextMenuItem item = (KryptonContextMenuItem) sender;
+            if (r45300 == null
+                || (r45300.type == "3"
+                && item.Text.Contains(r11102.playername)))
+                SendMsg("45209", item.Tag.ToString());
+}
+
+private void btnWeaveCreate_Click(object sender, EventArgs e) {
+    //   grpWeaveParty.Enabled = false;
+    SendMsg("45201");
+}
+
+private void btnWeaveMake_Click(object sender, EventArgs e) {
+    SendMsg("45208", r45300.teamid);
+}
+
+private void btnWeaveDisband_Click(object sender, EventArgs e) {
+    SendMsg("45207", r45300.teamid);
+}
+
+private void btnWeaveInvite_Click(object sender, EventArgs e) {
+    int cnum = Convert.ToInt32(r45300.num);
+    int mnum = Convert.ToInt32(r45300.maxnum);
+    /*
+    if (cnum <= mnum)
+        SendMsg("10103", r11102.playername,
+            "Tổ đội dệt vải cấp " + r45300.level
+            + " đã được lập "
+            + "<a href='event:textile|" + r45300.teamid
+            + "'>[Gia nhập]</a>",
+            (cbbChat.SelectedIndex + 1).ToString(), " ");
+}
+
+private void btnWeaveCreate1_Click(object sender, EventArgs e) {
+    // grpWeaveCreate.Visible = false;
+    //  SendMsg("45202", (cbbWeaveProduct.Items.Count - cbbWeaveProduct.SelectedIndex).ToString(), "0", "2");
+}
+
+private void btnWeaveCreate2_Click(object sender, EventArgs e) {
+    // grpWeaveCreate.Visible = false;
+    //  grpWeaveParty.Enabled = true;
+}
+
+/*
+private void lstWeaveMember_SelectedValueChanged(object sender, EventArgs e) {
+    int index = lstWeaveMember.SelectedIndex;
+    if (lstWeaveMember.Items.Count >= 1
+        && r45300.leaderid == loginHelper.Session.UserId)
+        SendMsg("45206", r45300.teamid, r45300.listmember[index].playerid);
+}
+
+private void cbbWeaveProduct_SelectedIndexChanged(object sender, EventArgs e) {
+    int index = cbbWeaveProduct.SelectedIndex;
+    if (index >= 0) {
+        R45201.Product pr = r45201.listproduct[index];
+        txtWeaveInfo8.Text = pr.succrate + " - " + pr.baojirate;
+        txtWeaveInfo9.Text = pr.cost + " - " + pr.price;
+    }
+}
+
+private void cbbWeaveWorker_SelectedIndexChanged(object sender, EventArgs e) {
+    int index = cbbWeaveWorker.SelectedIndex;
+    if (index >= 0) {
+        R45201.Worker wk = r45201.listworker[index];
+        txtWeaveExp.Text = wk.exp + "%";
+        lblWeaveSkill1.Text = "";
+        lblWeaveSkill2.Text = "";
+        KryptonLabel[] lblskill =
+        {
+            lblWeaveSkill1,
+            lblWeaveSkill2
+        };
+        int i = 0;
+        string[] skill = wk.skill.Split('|');
+        foreach (string s in skill)
+            if (s != "")
+                lblskill[i++].Text = s;
+    }
+}
+
+private void btnWeaveQuit_Click(object sender, EventArgs e) {
+    SendMsg("45210", r45300.teamid);
+}
     */
 }

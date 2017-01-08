@@ -73,6 +73,11 @@ namespace k8asd {
             WriteFileContent(filePath, configuration.Dump());
         }
 
+        public void DeleteConfiguration(int serverId, string username) {
+            var filePath = GetFilePath(serverId, username);
+            File.Delete(filePath);
+        }
+
         /// <summary>
         /// Attempts to read the content of the specified file.
         /// </summary>
