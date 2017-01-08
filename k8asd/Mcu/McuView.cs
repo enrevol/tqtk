@@ -40,8 +40,8 @@ namespace k8asd {
             mcuLabel.Text = String.Format("Lượt: {0}/{1}", model.Mcu, maxMcu);
         }
 
-        private void OnMcuCooldownChanged(object sender, int seconds) {
-            mcuCooldownLabel.Text = Utils.FormatDuration(seconds);
+        private void OnMcuCooldownChanged(object sender, int milliseconds) {
+            mcuCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
 
         private void OnExtraZhengzhanChanged(object sender, bool available) {

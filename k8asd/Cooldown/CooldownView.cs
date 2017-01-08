@@ -26,28 +26,28 @@ namespace k8asd {
             model.WeaveCooldownChanged += OnWeaveCooldownChanged;
         }
 
-        private void OnImposeCooldownChange(object sender, int seconds) {
-            imposeCooldownLabel.Text = Utils.FormatDuration(seconds);
+        private void OnImposeCooldownChange(object sender, int milliseconds) {
+            imposeCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
 
-        private void OnGuideCooldownChange(object sender, int seconds) {
-            guideCooldownLabel.Text = Utils.FormatDuration(seconds);
+        private void OnGuideCooldownChange(object sender, int milliseconds) {
+            guideCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
 
-        private void OnUpgradeCooldownChanged(object sender, int seconds) {
-            upgradeCooldownLabel.Text = Utils.FormatDuration(seconds);
+        private void OnUpgradeCooldownChanged(object sender, int milliseconds) {
+            upgradeCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
 
-        private void OnAppointCooldownChanged(object sender, int seconds) {
-            appointCooldownLabel.Text = Utils.FormatDuration(seconds);
+        private void OnAppointCooldownChanged(object sender, int milliseconds) {
+            appointCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
 
-        private void OnTechCooldownChanged(object sender, int seconds) {
-            techCooldownLabel.Text = Utils.FormatDuration(seconds);
+        private void OnTechCooldownChanged(object sender, int milliseconds) {
+            techCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
 
-        private void OnWeaveCooldownChanged(object sender, int seconds) {
-            weaveCooldownLabel.Text = Utils.FormatDuration(seconds);
+        private void OnWeaveCooldownChanged(object sender, int milliseconds) {
+            weaveCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
     }
 }

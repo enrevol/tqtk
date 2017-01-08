@@ -60,14 +60,9 @@ namespace k8asd {
             return htmlCode;
         }
 
-        public static string FormatDuration(int seconds) {
-            var span = TimeSpan.FromSeconds(seconds);
+        public static string FormatDuration(int milliseconds) {
+            var span = TimeSpan.FromMilliseconds(milliseconds);
             return String.Format("{0:00}:{1:00}:{2:00}", span.Hours, span.Minutes, span.Seconds);
-        }
-
-        public static int ToUnixSeconds(this DateTime date) {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return (int) ((date.ToUniversalTime() - epoch).TotalSeconds);
         }
     }
 }

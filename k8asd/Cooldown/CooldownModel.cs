@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace k8asd {
     class CooldownModel : ICooldownModel, IPacketReader {
-        private int imposeCooldown;
-        private int guideCooldown;
-        private int upgradeCooldown;
-        private int appointCooldown;
-        private int techCooldown;
-        private int weaveCooldown;
+        private DateTime imposeCooldownEndTime;
+        private DateTime guideCooldownEndTime;
+        private DateTime upgradeCooldownEndTime;
+        private DateTime appointCooldownEndTime;
+        private DateTime techCooldownEndTime;
+        private DateTime weaveCooldownEndTime;
+        private Timer oneSecondTimer;
 
         public event EventHandler<int> ImposeCooldownChanged;
         public event EventHandler<int> GuideCooldownChanged;
@@ -21,51 +23,84 @@ namespace k8asd {
         public event EventHandler<int> TechCooldownChanged;
         public event EventHandler<int> WeaveCooldownChanged;
 
+        public CooldownModel() {
+            oneSecondTimer = new Timer();
+            oneSecondTimer.Interval = 1000;
+            oneSecondTimer.Tick += OneSecondTimer_Tick;
+            oneSecondTimer.Start();            
+        }
+
+        private void OneSecondTimer_Tick(object sender, EventArgs e) {
+            UpdateCooldowns();
+        }
+
+        private void UpdateCooldowns() {
+            ImposeCooldownChanged(this, ImposeCooldown);
+            GuideCooldownChanged(this, GuideCooldown);
+            UpgradeCooldownChanged(this, UpgradeCooldown);
+            AppointCooldownChanged(this, AppointCooldown);
+            TechCooldownChanged(this, TechCooldown);
+            WeaveCooldownChanged(this, WeaveCooldown);
+        }
+
         public int ImposeCooldown {
-            get { return imposeCooldown; }
+            get {
+                return Math.Max(0, (int) (imposeCooldownEndTime - DateTime.Now).TotalMilliseconds);
+            }
             set {
-                imposeCooldown = value;
-                ImposeCooldownChanged(this, value);
+                imposeCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                UpdateCooldowns();
             }
         }
 
         public int GuideCooldown {
-            get { return guideCooldown; }
+            get {
+                return Math.Max(0, (int) (guideCooldownEndTime - DateTime.Now).TotalMilliseconds);
+            }
             set {
-                guideCooldown = value;
-                GuideCooldownChanged(this, value);
+                guideCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                UpdateCooldowns();
+
             }
         }
 
         public int UpgradeCooldown {
-            get { return upgradeCooldown; }
+            get {
+                return Math.Max(0, (int) (upgradeCooldownEndTime - DateTime.Now).TotalMilliseconds);
+            }
             set {
-                upgradeCooldown = value;
-                UpgradeCooldownChanged(this, value);
+                upgradeCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                UpdateCooldowns();
             }
         }
 
         public int AppointCooldown {
-            get { return appointCooldown; }
+            get {
+                return Math.Max(0, (int) (appointCooldownEndTime - DateTime.Now).TotalMilliseconds);
+            }
             set {
-                appointCooldown = value;
-                AppointCooldownChanged(this, value);
+                appointCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                UpdateCooldowns();
             }
         }
 
         public int TechCooldown {
-            get { return techCooldown; }
+            get {
+                return Math.Max(0, (int) (techCooldownEndTime - DateTime.Now).TotalMilliseconds);
+            }
             set {
-                techCooldown = value;
-                TechCooldownChanged(this, value);
+                techCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                UpdateCooldowns();
             }
         }
 
         public int WeaveCooldown {
-            get { return weaveCooldown; }
+            get {
+                return Math.Max(0, (int) (weaveCooldownEndTime - DateTime.Now).TotalMilliseconds);
+            }
             set {
-                weaveCooldown = value;
-                WeaveCooldownChanged(this, value);
+                weaveCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                UpdateCooldowns();
             }
         }
 
@@ -84,8 +119,10 @@ namespace k8asd {
             if (packet.CommandId == "41100" ||
                 packet.CommandId == "41101" ||
                 packet.CommandId == "41102") {
-                var cd = (int) token["cd"];
-                GuideCooldown = cd;
+                if (token["message"] == null) {
+                    var cd = (int) token["cd"];
+                    GuideCooldown = cd;
+                }
             }
         }
     }

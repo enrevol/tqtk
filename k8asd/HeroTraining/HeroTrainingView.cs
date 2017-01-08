@@ -39,7 +39,7 @@ namespace k8asd {
                     if (trainFlag == 0) {
                         return 0;
                     }
-                    return (int) (trainEndTime - DateTime.Now).TotalSeconds;
+                    return (int) (trainEndTime - DateTime.Now).TotalMilliseconds;
                 }
             }
 
