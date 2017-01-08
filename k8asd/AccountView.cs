@@ -27,7 +27,7 @@ namespace k8asd {
         }
 
         private void okButton_Click(object sender, EventArgs e) {
-            save();
+            Save();
         }
 
         private void serverInput_KeyPress(object sender, KeyPressEventArgs e) {
@@ -39,11 +39,11 @@ namespace k8asd {
 
         private void AccountView_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter) {
-                save();
+                Save();
             }
         }
 
-        private void save() {
+        private void Save() {
             if (serverInput.Text.Length > 0 &&
                             usernameInput.Text.Length > 0 &&
                             passwordInput.Text.Length > 0) {

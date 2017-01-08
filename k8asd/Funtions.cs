@@ -13,27 +13,10 @@ using ComponentFactory.Krypton.Toolkit;
 
 namespace k8asd
 {
+    /*
     public partial class ClientView : UserControl
     {
-        private void SendMsg(string cmd, params string[] para)
-        {
-            bool succeeded = false;
-            try
-            {
-                succeeded = packetHandler.SendCommand(cmd, para);
-            }
-            catch
-            {
-                
-            }
-
-            if (!succeeded) {
-                LogText("[Kết nối] Mất kết nối đến máy chủ");
-                tmrCd.Stop();
-                tmrData.Stop();
-                tmrReq.Stop();
-            }
-        }
+        
         
         private void CheckFoodTrade(string trade)
         {
@@ -98,14 +81,12 @@ namespace k8asd
                 LogText("[Chiến dịch] Còn tàng bảo đồ chưa mở. Mở tàng bảo đồ...");
                 SendMsg("47100", "1");
             }
-            */
 
             tmrReq.Start();
         }
 
         private void SaveConfig()
         {
-            /*
             string svname = txtServer.Text;
             string filename = svname + "_" + txtUsername.Text;
             StreamWriter writer = new StreamWriter(Environment.CurrentDirectory + "\\" + filename + ".txt");
@@ -162,12 +143,9 @@ namespace k8asd
             writer.Write(save.ToString());
             writer.Flush();
             writer.Close();
-            */
         }
 
-        private void LogText(string s)
-        {
-            txtLogs.AppendText("\n" + F.GetTime(sys) + " " + s);
-        }
+        
     }   
+*/
 }

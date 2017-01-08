@@ -116,13 +116,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountInfo.cs" />
+    <Compile Include="AccountManager.cs" />
     <Compile Include="AccountView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AccountView.Designer.cs">
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs" />
     <Compile Include="InfoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -169,9 +170,7 @@
     <Compile Include="ClientView.Designer.cs">
       <DependentUpon>ClientView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Funtions.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Funtions.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketHandler.cs" />
     <Compile Include="IPacketReader.cs" />
