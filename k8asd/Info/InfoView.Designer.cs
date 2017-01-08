@@ -1,5 +1,5 @@
 ﻿namespace k8asd {
-    partial class InfoView {
+    public partial class InfoView {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -23,7 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.characterBox = new System.Windows.Forms.GroupBox();
+            this.infoBox = new System.Windows.Forms.GroupBox();
             this.silverLabel = new System.Windows.Forms.TextBox();
             this.forcesLabel = new System.Windows.Forms.TextBox();
             this.foodLabel = new System.Windows.Forms.TextBox();
@@ -36,35 +36,36 @@
             this._ignore2 = new System.Windows.Forms.Label();
             this._ignore1 = new System.Windows.Forms.Label();
             this._ignore0 = new System.Windows.Forms.Label();
-            this.characterBox.SuspendLayout();
+            this.infoBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // characterBox
+            // infoBox
             // 
-            this.characterBox.BackColor = System.Drawing.Color.Transparent;
-            this.characterBox.Controls.Add(this.silverLabel);
-            this.characterBox.Controls.Add(this.forcesLabel);
-            this.characterBox.Controls.Add(this.foodLabel);
-            this.characterBox.Controls.Add(this.honorLabel);
-            this.characterBox.Controls.Add(this.reputationLabel);
-            this.characterBox.Controls.Add(this.goldLabel);
-            this.characterBox.Controls.Add(this._ignore5);
-            this.characterBox.Controls.Add(this._ignore4);
-            this.characterBox.Controls.Add(this._ignore3);
-            this.characterBox.Controls.Add(this._ignore2);
-            this.characterBox.Controls.Add(this._ignore1);
-            this.characterBox.Controls.Add(this._ignore0);
-            this.characterBox.Location = new System.Drawing.Point(0, 0);
-            this.characterBox.Name = "characterBox";
-            this.characterBox.Size = new System.Drawing.Size(310, 100);
-            this.characterBox.TabIndex = 29;
-            this.characterBox.TabStop = false;
-            this.characterBox.Text = "Zinge Lv. 100";
+            this.infoBox.BackColor = System.Drawing.Color.Transparent;
+            this.infoBox.Controls.Add(this.silverLabel);
+            this.infoBox.Controls.Add(this.forcesLabel);
+            this.infoBox.Controls.Add(this.foodLabel);
+            this.infoBox.Controls.Add(this.honorLabel);
+            this.infoBox.Controls.Add(this.reputationLabel);
+            this.infoBox.Controls.Add(this.goldLabel);
+            this.infoBox.Controls.Add(this._ignore5);
+            this.infoBox.Controls.Add(this._ignore4);
+            this.infoBox.Controls.Add(this._ignore3);
+            this.infoBox.Controls.Add(this._ignore2);
+            this.infoBox.Controls.Add(this._ignore1);
+            this.infoBox.Controls.Add(this._ignore0);
+            this.infoBox.Location = new System.Drawing.Point(0, 0);
+            this.infoBox.Name = "infoBox";
+            this.infoBox.Size = new System.Drawing.Size(310, 100);
+            this.infoBox.TabIndex = 29;
+            this.infoBox.TabStop = false;
+            this.infoBox.Text = "Zinge Lv. 100";
             // 
             // silverLabel
             // 
             this.silverLabel.Location = new System.Drawing.Point(180, 67);
             this.silverLabel.Name = "silverLabel";
+            this.silverLabel.ReadOnly = true;
             this.silverLabel.Size = new System.Drawing.Size(120, 20);
             this.silverLabel.TabIndex = 11;
             this.silverLabel.Text = "99999999/9999999";
@@ -74,6 +75,7 @@
             // 
             this.forcesLabel.Location = new System.Drawing.Point(180, 42);
             this.forcesLabel.Name = "forcesLabel";
+            this.forcesLabel.ReadOnly = true;
             this.forcesLabel.Size = new System.Drawing.Size(120, 20);
             this.forcesLabel.TabIndex = 10;
             this.forcesLabel.Text = "999999/999999";
@@ -83,6 +85,7 @@
             // 
             this.foodLabel.Location = new System.Drawing.Point(180, 17);
             this.foodLabel.Name = "foodLabel";
+            this.foodLabel.ReadOnly = true;
             this.foodLabel.Size = new System.Drawing.Size(120, 20);
             this.foodLabel.TabIndex = 9;
             this.foodLabel.Text = "999999/999999";
@@ -92,6 +95,7 @@
             // 
             this.honorLabel.Location = new System.Drawing.Point(70, 67);
             this.honorLabel.Name = "honorLabel";
+            this.honorLabel.ReadOnly = true;
             this.honorLabel.Size = new System.Drawing.Size(70, 20);
             this.honorLabel.TabIndex = 8;
             this.honorLabel.Text = "99999999";
@@ -101,6 +105,7 @@
             // 
             this.reputationLabel.Location = new System.Drawing.Point(70, 42);
             this.reputationLabel.Name = "reputationLabel";
+            this.reputationLabel.ReadOnly = true;
             this.reputationLabel.Size = new System.Drawing.Size(70, 20);
             this.reputationLabel.TabIndex = 7;
             this.reputationLabel.Text = "9999999";
@@ -110,6 +115,7 @@
             // 
             this.goldLabel.Location = new System.Drawing.Point(70, 17);
             this.goldLabel.Name = "goldLabel";
+            this.goldLabel.ReadOnly = true;
             this.goldLabel.Size = new System.Drawing.Size(70, 20);
             this.goldLabel.TabIndex = 6;
             this.goldLabel.Text = "99999";
@@ -169,22 +175,22 @@
             this._ignore0.TabIndex = 0;
             this._ignore0.Text = "Xu";
             // 
-            // CharacterInfo
+            // InfoView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.characterBox);
-            this.Name = "CharacterInfo";
+            this.Controls.Add(this.infoBox);
+            this.Name = "InfoView";
             this.Size = new System.Drawing.Size(310, 100);
-            this.characterBox.ResumeLayout(false);
-            this.characterBox.PerformLayout();
+            this.infoBox.ResumeLayout(false);
+            this.infoBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox characterBox;
+        private System.Windows.Forms.GroupBox infoBox;
         private System.Windows.Forms.TextBox silverLabel;
         private System.Windows.Forms.TextBox forcesLabel;
         private System.Windows.Forms.TextBox foodLabel;

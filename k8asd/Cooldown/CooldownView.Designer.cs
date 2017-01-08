@@ -59,12 +59,12 @@
             this.infoBox.Size = new System.Drawing.Size(270, 100);
             this.infoBox.TabIndex = 30;
             this.infoBox.TabStop = false;
-            this.infoBox.Text = "125 Hạ - 19:55:22";
             // 
             // weaveCooldownLabel
             // 
             this.weaveCooldownLabel.Location = new System.Drawing.Point(200, 67);
             this.weaveCooldownLabel.Name = "weaveCooldownLabel";
+            this.weaveCooldownLabel.ReadOnly = true;
             this.weaveCooldownLabel.Size = new System.Drawing.Size(60, 20);
             this.weaveCooldownLabel.TabIndex = 11;
             this.weaveCooldownLabel.Text = "23:59:59";
@@ -74,6 +74,7 @@
             // 
             this.techCooldownLabel.Location = new System.Drawing.Point(200, 42);
             this.techCooldownLabel.Name = "techCooldownLabel";
+            this.techCooldownLabel.ReadOnly = true;
             this.techCooldownLabel.Size = new System.Drawing.Size(60, 20);
             this.techCooldownLabel.TabIndex = 10;
             this.techCooldownLabel.Text = "23:59:59";
@@ -83,6 +84,7 @@
             // 
             this.appointCooldownLabel.Location = new System.Drawing.Point(200, 17);
             this.appointCooldownLabel.Name = "appointCooldownLabel";
+            this.appointCooldownLabel.ReadOnly = true;
             this.appointCooldownLabel.Size = new System.Drawing.Size(60, 20);
             this.appointCooldownLabel.TabIndex = 9;
             this.appointCooldownLabel.Text = "23:59:59";
@@ -92,6 +94,7 @@
             // 
             this.upgradeCooldownLabel.Location = new System.Drawing.Point(80, 67);
             this.upgradeCooldownLabel.Name = "upgradeCooldownLabel";
+            this.upgradeCooldownLabel.ReadOnly = true;
             this.upgradeCooldownLabel.Size = new System.Drawing.Size(60, 20);
             this.upgradeCooldownLabel.TabIndex = 8;
             this.upgradeCooldownLabel.Text = "23:59:59";
@@ -101,6 +104,7 @@
             // 
             this.guideCooldownLabel.Location = new System.Drawing.Point(80, 42);
             this.guideCooldownLabel.Name = "guideCooldownLabel";
+            this.guideCooldownLabel.ReadOnly = true;
             this.guideCooldownLabel.Size = new System.Drawing.Size(60, 20);
             this.guideCooldownLabel.TabIndex = 7;
             this.guideCooldownLabel.Text = "23:59:59";
@@ -110,6 +114,7 @@
             // 
             this.imposeCooldownLabel.Location = new System.Drawing.Point(80, 17);
             this.imposeCooldownLabel.Name = "imposeCooldownLabel";
+            this.imposeCooldownLabel.ReadOnly = true;
             this.imposeCooldownLabel.Size = new System.Drawing.Size(60, 20);
             this.imposeCooldownLabel.TabIndex = 6;
             this.imposeCooldownLabel.Text = "23:59:59";
