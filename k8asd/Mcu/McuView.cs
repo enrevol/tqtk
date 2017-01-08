@@ -41,9 +41,7 @@ namespace k8asd {
         }
 
         private void OnMcuCooldownChanged(object sender, int seconds) {
-            var span = TimeSpan.FromSeconds(seconds);
-            mcuCooldownLabel.Text = String.Format("{0:00}:{1:00}:{2:00}",
-                span.Hours, span.Minutes, span.Seconds);
+            mcuCooldownLabel.Text = Utils.FormatDuration(seconds);
         }
 
         private void OnExtraZhengzhanChanged(object sender, bool available) {

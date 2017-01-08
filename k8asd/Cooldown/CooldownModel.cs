@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,7 +70,17 @@ namespace k8asd {
         }
 
         public void OnPacketReceived(Packet packet) {
-            // FIXME.
+            var token = JToken.Parse(packet.Message);
+            if (packet.CommandId == "11102") {
+                // techcdusable = (string) player["techcdusable"];
+                // tokencdusable = (string) player["tokencdusable"];
+                // imposecdusable = (string) player["imposecdusable"];
+                // guidecdusable = (string) player["guidecdusable"];
+                var player = token["player"];
+                ImposeCooldown = (int) player["imposecd"];
+                GuideCooldown = (int) player["guidecd"];
+                TechCooldown = (int) player["techcd"];
+            }
         }
     }
 }

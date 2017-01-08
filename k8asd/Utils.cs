@@ -59,5 +59,10 @@ namespace k8asd {
             }
             return htmlCode;
         }
+
+        public static string FormatDuration(int seconds) {
+            var span = TimeSpan.FromSeconds(seconds);
+            return String.Format("{0:00}:{1:00}:{2:00}", span.Hours, span.Minutes, span.Seconds);
+        }
     }
 }
