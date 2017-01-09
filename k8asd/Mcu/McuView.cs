@@ -10,9 +10,6 @@ using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
 namespace k8asd {
-    /// <summary>
-    /// MCU = Millitary call-up points.
-    /// </summary>
     public partial class McuView : UserControl {
         private IMcuModel model;
 
@@ -24,7 +21,7 @@ namespace k8asd {
             this.model = model;
             model.McuChanged += OnMcuChanged;
             model.MaxMcuChanged += OnMaxMcuChanged;
-            model.MCUCooldownChanged += OnMcuCooldownChanged;
+            model.McuCooldownChanged += OnMcuCooldownChanged;
             model.ExtraZhengzhanChanged += OnExtraZhengzhanChanged;
             model.ExtraGongjiChanged += OnExtraGongjiChanged;
             model.ExtraZhengfuChanged += OnExtraZhengfuChanged;

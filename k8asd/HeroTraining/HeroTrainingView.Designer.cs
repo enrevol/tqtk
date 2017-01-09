@@ -24,6 +24,13 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Label _ignore6;
+            System.Windows.Forms.Label _ignore2;
+            System.Windows.Forms.Label _ignore5;
+            System.Windows.Forms.Label _ignore4;
+            System.Windows.Forms.Label _ignore3;
+            System.Windows.Forms.Label _ignore1;
+            System.Windows.Forms.Label _ignore0;
             this.heroList = new System.Windows.Forms.ListBox();
             this.autoTrainCheck = new System.Windows.Forms.CheckBox();
             this.addButton = new System.Windows.Forms.Button();
@@ -39,13 +46,6 @@
             this.info2Label = new System.Windows.Forms.TextBox();
             this.info1Label = new System.Windows.Forms.TextBox();
             this.info0Label = new System.Windows.Forms.TextBox();
-            this._ignore6 = new System.Windows.Forms.Label();
-            this._ignore2 = new System.Windows.Forms.Label();
-            this._ignore5 = new System.Windows.Forms.Label();
-            this._ignore4 = new System.Windows.Forms.Label();
-            this._ignore3 = new System.Windows.Forms.Label();
-            this._ignore1 = new System.Windows.Forms.Label();
-            this._ignore0 = new System.Windows.Forms.Label();
             this.trainBox = new System.Windows.Forms.GroupBox();
             this.trainButton = new System.Windows.Forms.Button();
             this.timeModelList = new System.Windows.Forms.ComboBox();
@@ -57,6 +57,13 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
+            _ignore6 = new System.Windows.Forms.Label();
+            _ignore2 = new System.Windows.Forms.Label();
+            _ignore5 = new System.Windows.Forms.Label();
+            _ignore4 = new System.Windows.Forms.Label();
+            _ignore3 = new System.Windows.Forms.Label();
+            _ignore1 = new System.Windows.Forms.Label();
+            _ignore0 = new System.Windows.Forms.Label();
             this.infoBox.SuspendLayout();
             this.trainBox.SuspendLayout();
             this.guideBox.SuspendLayout();
@@ -154,13 +161,13 @@
             this.infoBox.Controls.Add(this.info2Label);
             this.infoBox.Controls.Add(this.info1Label);
             this.infoBox.Controls.Add(this.info0Label);
-            this.infoBox.Controls.Add(this._ignore6);
-            this.infoBox.Controls.Add(this._ignore2);
-            this.infoBox.Controls.Add(this._ignore5);
-            this.infoBox.Controls.Add(this._ignore4);
-            this.infoBox.Controls.Add(this._ignore3);
-            this.infoBox.Controls.Add(this._ignore1);
-            this.infoBox.Controls.Add(this._ignore0);
+            this.infoBox.Controls.Add(_ignore6);
+            this.infoBox.Controls.Add(_ignore2);
+            this.infoBox.Controls.Add(_ignore5);
+            this.infoBox.Controls.Add(_ignore4);
+            this.infoBox.Controls.Add(_ignore3);
+            this.infoBox.Controls.Add(_ignore1);
+            this.infoBox.Controls.Add(_ignore0);
             this.infoBox.Location = new System.Drawing.Point(175, 70);
             this.infoBox.Name = "infoBox";
             this.infoBox.Size = new System.Drawing.Size(250, 200);
@@ -240,66 +247,66 @@
             // 
             // _ignore6
             // 
-            this._ignore6.AutoSize = true;
-            this._ignore6.Location = new System.Drawing.Point(5, 173);
-            this._ignore6.Name = "_ignore6";
-            this._ignore6.Size = new System.Drawing.Size(65, 13);
-            this._ignore6.TabIndex = 6;
-            this._ignore6.Text = "Kinh nghiệm";
+            _ignore6.AutoSize = true;
+            _ignore6.Location = new System.Drawing.Point(5, 173);
+            _ignore6.Name = "_ignore6";
+            _ignore6.Size = new System.Drawing.Size(65, 13);
+            _ignore6.TabIndex = 6;
+            _ignore6.Text = "Kinh nghiệm";
             // 
             // _ignore2
             // 
-            this._ignore2.AutoSize = true;
-            this._ignore2.Location = new System.Drawing.Point(5, 73);
-            this._ignore2.Name = "_ignore2";
-            this._ignore2.Size = new System.Drawing.Size(61, 13);
-            this._ignore2.TabIndex = 5;
-            this._ignore2.Text = "Binh chủng";
+            _ignore2.AutoSize = true;
+            _ignore2.Location = new System.Drawing.Point(5, 73);
+            _ignore2.Name = "_ignore2";
+            _ignore2.Size = new System.Drawing.Size(61, 13);
+            _ignore2.TabIndex = 5;
+            _ignore2.Text = "Binh chủng";
             // 
             // _ignore5
             // 
-            this._ignore5.AutoSize = true;
-            this._ignore5.Location = new System.Drawing.Point(5, 148);
-            this._ignore5.Name = "_ignore5";
-            this._ignore5.Size = new System.Drawing.Size(65, 13);
-            this._ignore5.TabIndex = 4;
-            this._ignore5.Text = "Chuyển sinh";
+            _ignore5.AutoSize = true;
+            _ignore5.Location = new System.Drawing.Point(5, 148);
+            _ignore5.Name = "_ignore5";
+            _ignore5.Size = new System.Drawing.Size(65, 13);
+            _ignore5.TabIndex = 4;
+            _ignore5.Text = "Chuyển sinh";
             // 
             // _ignore4
             // 
-            this._ignore4.AutoSize = true;
-            this._ignore4.Location = new System.Drawing.Point(5, 123);
-            this._ignore4.Name = "_ignore4";
-            this._ignore4.Size = new System.Drawing.Size(46, 13);
-            this._ignore4.TabIndex = 3;
-            this._ignore4.Text = "Kỹ năng";
+            _ignore4.AutoSize = true;
+            _ignore4.Location = new System.Drawing.Point(5, 123);
+            _ignore4.Name = "_ignore4";
+            _ignore4.Size = new System.Drawing.Size(46, 13);
+            _ignore4.TabIndex = 3;
+            _ignore4.Text = "Kỹ năng";
             // 
             // _ignore3
             // 
-            this._ignore3.AutoSize = true;
-            this._ignore3.Location = new System.Drawing.Point(5, 98);
-            this._ignore3.Name = "_ignore3";
-            this._ignore3.Size = new System.Drawing.Size(51, 13);
-            this._ignore3.TabIndex = 2;
-            this._ignore3.Text = "Quân đội";
+            _ignore3.AutoSize = true;
+            _ignore3.Location = new System.Drawing.Point(5, 98);
+            _ignore3.Name = "_ignore3";
+            _ignore3.Size = new System.Drawing.Size(51, 13);
+            _ignore3.TabIndex = 2;
+            _ignore3.Text = "Quân đội";
             // 
             // _ignore1
             // 
-            this._ignore1.AutoSize = true;
-            this._ignore1.Location = new System.Drawing.Point(5, 48);
-            this._ignore1.Name = "_ignore1";
-            this._ignore1.Size = new System.Drawing.Size(60, 13);
-            this._ignore1.TabIndex = 1;
-            this._ignore1.Text = "Thuộc tính";
+            _ignore1.AutoSize = true;
+            _ignore1.Location = new System.Drawing.Point(5, 48);
+            _ignore1.Name = "_ignore1";
+            _ignore1.Size = new System.Drawing.Size(60, 13);
+            _ignore1.TabIndex = 1;
+            _ignore1.Text = "Thuộc tính";
             // 
             // _ignore0
             // 
-            this._ignore0.AutoSize = true;
-            this._ignore0.Location = new System.Drawing.Point(5, 23);
-            this._ignore0.Name = "_ignore0";
-            this._ignore0.Size = new System.Drawing.Size(45, 13);
-            this._ignore0.TabIndex = 0;
-            this._ignore0.Text = "Binh lực";
+            _ignore0.AutoSize = true;
+            _ignore0.Location = new System.Drawing.Point(5, 23);
+            _ignore0.Name = "_ignore0";
+            _ignore0.Size = new System.Drawing.Size(45, 13);
+            _ignore0.TabIndex = 0;
+            _ignore0.Text = "Binh lực";
             // 
             // trainBox
             // 
@@ -338,7 +345,7 @@
             this.guideBox.Controls.Add(this.expPerMinLabel);
             this.guideBox.Controls.Add(this.remainingTimeLabel);
             this.guideBox.Controls.Add(this.stopButton);
-            this.guideBox.Location = new System.Drawing.Point(175, 345);
+            this.guideBox.Location = new System.Drawing.Point(175, 340);
             this.guideBox.Name = "guideBox";
             this.guideBox.Size = new System.Drawing.Size(250, 90);
             this.guideBox.TabIndex = 9;
@@ -424,7 +431,7 @@
             this.Controls.Add(this.autoTrainCheck);
             this.Controls.Add(this.heroList);
             this.Name = "HeroTrainingView";
-            this.Size = new System.Drawing.Size(455, 469);
+            this.Size = new System.Drawing.Size(430, 435);
             this.infoBox.ResumeLayout(false);
             this.infoBox.PerformLayout();
             this.trainBox.ResumeLayout(false);
@@ -445,13 +452,6 @@
         private System.Windows.Forms.Label slotLabel;
         private System.Windows.Forms.Label tokenLabel;
         private System.Windows.Forms.GroupBox infoBox;
-        private System.Windows.Forms.Label _ignore0;
-        private System.Windows.Forms.Label _ignore6;
-        private System.Windows.Forms.Label _ignore2;
-        private System.Windows.Forms.Label _ignore5;
-        private System.Windows.Forms.Label _ignore4;
-        private System.Windows.Forms.Label _ignore3;
-        private System.Windows.Forms.Label _ignore1;
         private System.Windows.Forms.TextBox info5Label;
         private System.Windows.Forms.TextBox info4Label;
         private System.Windows.Forms.TextBox info3Label;

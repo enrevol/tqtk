@@ -23,6 +23,12 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.Windows.Forms.Label _ignore5;
+            System.Windows.Forms.Label _ignore4;
+            System.Windows.Forms.Label _ignore3;
+            System.Windows.Forms.Label _ignore2;
+            System.Windows.Forms.Label _ignore1;
+            System.Windows.Forms.Label _ignore0;
             this.infoBox = new System.Windows.Forms.GroupBox();
             this.silverLabel = new System.Windows.Forms.TextBox();
             this.forcesLabel = new System.Windows.Forms.TextBox();
@@ -30,12 +36,12 @@
             this.honorLabel = new System.Windows.Forms.TextBox();
             this.reputationLabel = new System.Windows.Forms.TextBox();
             this.goldLabel = new System.Windows.Forms.TextBox();
-            this._ignore5 = new System.Windows.Forms.Label();
-            this._ignore4 = new System.Windows.Forms.Label();
-            this._ignore3 = new System.Windows.Forms.Label();
-            this._ignore2 = new System.Windows.Forms.Label();
-            this._ignore1 = new System.Windows.Forms.Label();
-            this._ignore0 = new System.Windows.Forms.Label();
+            _ignore5 = new System.Windows.Forms.Label();
+            _ignore4 = new System.Windows.Forms.Label();
+            _ignore3 = new System.Windows.Forms.Label();
+            _ignore2 = new System.Windows.Forms.Label();
+            _ignore1 = new System.Windows.Forms.Label();
+            _ignore0 = new System.Windows.Forms.Label();
             this.infoBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,12 +54,12 @@
             this.infoBox.Controls.Add(this.honorLabel);
             this.infoBox.Controls.Add(this.reputationLabel);
             this.infoBox.Controls.Add(this.goldLabel);
-            this.infoBox.Controls.Add(this._ignore5);
-            this.infoBox.Controls.Add(this._ignore4);
-            this.infoBox.Controls.Add(this._ignore3);
-            this.infoBox.Controls.Add(this._ignore2);
-            this.infoBox.Controls.Add(this._ignore1);
-            this.infoBox.Controls.Add(this._ignore0);
+            this.infoBox.Controls.Add(_ignore5);
+            this.infoBox.Controls.Add(_ignore4);
+            this.infoBox.Controls.Add(_ignore3);
+            this.infoBox.Controls.Add(_ignore2);
+            this.infoBox.Controls.Add(_ignore1);
+            this.infoBox.Controls.Add(_ignore0);
             this.infoBox.Location = new System.Drawing.Point(0, 0);
             this.infoBox.Name = "infoBox";
             this.infoBox.Size = new System.Drawing.Size(310, 100);
@@ -123,57 +129,57 @@
             // 
             // _ignore5
             // 
-            this._ignore5.AutoSize = true;
-            this._ignore5.Location = new System.Drawing.Point(150, 70);
-            this._ignore5.Name = "_ignore5";
-            this._ignore5.Size = new System.Drawing.Size(26, 13);
-            this._ignore5.TabIndex = 5;
-            this._ignore5.Text = "Bạc";
+            _ignore5.AutoSize = true;
+            _ignore5.Location = new System.Drawing.Point(150, 70);
+            _ignore5.Name = "_ignore5";
+            _ignore5.Size = new System.Drawing.Size(26, 13);
+            _ignore5.TabIndex = 5;
+            _ignore5.Text = "Bạc";
             // 
             // _ignore4
             // 
-            this._ignore4.AutoSize = true;
-            this._ignore4.Location = new System.Drawing.Point(150, 45);
-            this._ignore4.Name = "_ignore4";
-            this._ignore4.Size = new System.Drawing.Size(29, 13);
-            this._ignore4.TabIndex = 4;
-            this._ignore4.Text = "Lính";
+            _ignore4.AutoSize = true;
+            _ignore4.Location = new System.Drawing.Point(150, 45);
+            _ignore4.Name = "_ignore4";
+            _ignore4.Size = new System.Drawing.Size(29, 13);
+            _ignore4.TabIndex = 4;
+            _ignore4.Text = "Lính";
             // 
             // _ignore3
             // 
-            this._ignore3.AutoSize = true;
-            this._ignore3.Location = new System.Drawing.Point(150, 20);
-            this._ignore3.Name = "_ignore3";
-            this._ignore3.Size = new System.Drawing.Size(25, 13);
-            this._ignore3.TabIndex = 3;
-            this._ignore3.Text = "Lúa";
+            _ignore3.AutoSize = true;
+            _ignore3.Location = new System.Drawing.Point(150, 20);
+            _ignore3.Name = "_ignore3";
+            _ignore3.Size = new System.Drawing.Size(25, 13);
+            _ignore3.TabIndex = 3;
+            _ignore3.Text = "Lúa";
             // 
             // _ignore2
             // 
-            this._ignore2.AutoSize = true;
-            this._ignore2.Location = new System.Drawing.Point(10, 70);
-            this._ignore2.Name = "_ignore2";
-            this._ignore2.Size = new System.Drawing.Size(56, 13);
-            this._ignore2.TabIndex = 2;
-            this._ignore2.Text = "Chiến tích";
+            _ignore2.AutoSize = true;
+            _ignore2.Location = new System.Drawing.Point(10, 70);
+            _ignore2.Name = "_ignore2";
+            _ignore2.Size = new System.Drawing.Size(56, 13);
+            _ignore2.TabIndex = 2;
+            _ignore2.Text = "Chiến tích";
             // 
             // _ignore1
             // 
-            this._ignore1.AutoSize = true;
-            this._ignore1.Location = new System.Drawing.Point(10, 45);
-            this._ignore1.Name = "_ignore1";
-            this._ignore1.Size = new System.Drawing.Size(47, 13);
-            this._ignore1.TabIndex = 1;
-            this._ignore1.Text = "Uy danh";
+            _ignore1.AutoSize = true;
+            _ignore1.Location = new System.Drawing.Point(10, 45);
+            _ignore1.Name = "_ignore1";
+            _ignore1.Size = new System.Drawing.Size(47, 13);
+            _ignore1.TabIndex = 1;
+            _ignore1.Text = "Uy danh";
             // 
             // _ignore0
             // 
-            this._ignore0.AutoSize = true;
-            this._ignore0.Location = new System.Drawing.Point(10, 20);
-            this._ignore0.Name = "_ignore0";
-            this._ignore0.Size = new System.Drawing.Size(20, 13);
-            this._ignore0.TabIndex = 0;
-            this._ignore0.Text = "Xu";
+            _ignore0.AutoSize = true;
+            _ignore0.Location = new System.Drawing.Point(10, 20);
+            _ignore0.Name = "_ignore0";
+            _ignore0.Size = new System.Drawing.Size(20, 13);
+            _ignore0.TabIndex = 0;
+            _ignore0.Text = "Xu";
             // 
             // InfoView
             // 
@@ -197,11 +203,5 @@
         private System.Windows.Forms.TextBox honorLabel;
         private System.Windows.Forms.TextBox reputationLabel;
         private System.Windows.Forms.TextBox goldLabel;
-        private System.Windows.Forms.Label _ignore5;
-        private System.Windows.Forms.Label _ignore4;
-        private System.Windows.Forms.Label _ignore3;
-        private System.Windows.Forms.Label _ignore2;
-        private System.Windows.Forms.Label _ignore1;
-        private System.Windows.Forms.Label _ignore0;
     }
 }

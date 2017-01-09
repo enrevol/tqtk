@@ -138,48 +138,16 @@ namespace k8asd {
                 var player = token["player"];
                 PlayerName = (string) player["playername"];
                 PlayerLevel = (int) player["playerlevel"];
-                SystemGold = (int) player["sys_gold"];
-                UserGold = (int) player["user_gold"];
-                Reputation = (int) player["prestige"];
-                Honor = (int) player["jyungong"];
-                Food = (int) player["food"];
-                Force = (int) player["forces"];
-                Silver = (int) player["copper"];
+                ParseInfo0(player);
 
                 var limitvalue = token["limitvalue"];
-                MaxFood = (int) limitvalue["maxfood"];
-                MaxForce = (int) limitvalue["maxforce"];
-                MaxSilver = (int) limitvalue["maxcoin"];
+                ParseInfo1(limitvalue);
             }
             if (packet.CommandId == "11103") {
                 var playerupdateinfo = token["playerupdateinfo"];
                 if (playerupdateinfo != null) {
-                    SystemGold = (int?) playerupdateinfo["sys_gold"] ?? SystemGold;
-                    UserGold = (int?) playerupdateinfo["user_gold"] ?? UserGold;
-                    if (playerupdateinfo["prestige"] != null) {
-                        Reputation = (int) playerupdateinfo["prestige"];
-                    }
-                    if (playerupdateinfo["jyungong"] != null) {
-                        Honor = (int) playerupdateinfo["jyungong"];
-                    }
-                    if (playerupdateinfo["food"] != null) {
-                        Food = (int) playerupdateinfo["food"];
-                    }
-                    if (playerupdateinfo["maxfood"] != null) {
-                        MaxFood = (int) playerupdateinfo["maxfood"];
-                    }
-                    if (playerupdateinfo["forces"] != null) {
-                        Force = (int) playerupdateinfo["forces"];
-                    }
-                    if (playerupdateinfo["maxforce"] != null) {
-                        MaxForce = (int) playerupdateinfo["maxforces"];
-                    }
-                    if (playerupdateinfo["copper"] != null) {
-                        Silver = (int) playerupdateinfo["copper"];
-                    }
-                    if (playerupdateinfo["maxcoin"] != null) {
-                        MaxSilver = (int) playerupdateinfo["maxcoin"];
-                    }
+                    ParseInfo0(playerupdateinfo);
+                    ParseInfo1(playerupdateinfo);
                 } else {
                     //
                 }
@@ -205,6 +173,22 @@ namespace k8asd {
             if (c41100s)
                 goto case "41100s";
                 */
+        }
+
+        private void ParseInfo0(JToken token) {
+            SystemGold = (int?) token["sys_gold"] ?? SystemGold;
+            UserGold = (int?) token["user_gold"] ?? UserGold;
+            Reputation = (int?) token["prestige"] ?? Reputation;
+            Honor = (int?) token["jyungong"] ?? Honor;
+            Food = (int?) token["food"] ?? Food;
+            Force = (int?) token["forces"] ?? Force;
+            Silver = (int?) token["copper"] ?? Silver;
+        }
+
+        private void ParseInfo1(JToken token) {
+            MaxFood = (int?) token["maxfood"] ?? MaxFood;
+            MaxForce = (int?) token["maxforce"] ?? MaxForce;
+            MaxSilver = (int?) token["maxcoin"] ?? MaxSilver;
         }
     }
 }

@@ -64,5 +64,9 @@ namespace k8asd {
             var span = TimeSpan.FromMilliseconds(milliseconds);
             return String.Format("{0:00}:{1:00}:{2:00}", span.Hours, span.Minutes, span.Seconds);
         }
+
+        public static int RemainingMilliseconds(this DateTime dateTime) {
+            return Math.Max(0, (int) (dateTime - DateTime.Now).TotalMilliseconds);
+        }
     }
 }

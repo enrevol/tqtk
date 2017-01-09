@@ -102,7 +102,7 @@
             this.mcuCooldownLabel.TabIndex = 11;
             this.mcuCooldownLabel.Text = "23:59:59";
             // 
-            // MCUView
+            // McuView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -113,7 +113,7 @@
             this.Controls.Add(this.extraGongjiLabel);
             this.Controls.Add(this.extraZhengzhanLabel);
             this.Controls.Add(this.mcuLabel);
-            this.Name = "MCUView";
+            this.Name = "McuView";
             this.Size = new System.Drawing.Size(272, 22);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -126,7 +126,7 @@
         private System.Windows.Forms.Label extraGongjiLabel;
         private System.Windows.Forms.Label extraZhengfuLabel;
         private System.Windows.Forms.Label extraNongtianLabel;
-        private System.Windows.Forms.Label extraYinkuangLabel;
         private System.Windows.Forms.Label mcuCooldownLabel;
+        private System.Windows.Forms.Label extraYinkuangLabel;
     }
 }

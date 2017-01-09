@@ -18,13 +18,12 @@ namespace k8asd {
 
         public event EventHandler<int> MaxMcuChanged;
         public event EventHandler<int> McuChanged;
-        public event EventHandler<int> MCUCooldownChanged;
+        public event EventHandler<int> McuCooldownChanged;
         public event EventHandler<bool> ExtraGongjiChanged;
         public event EventHandler<bool> ExtraNongtianChanged;
         public event EventHandler<bool> ExtraYinkuangChanged;
         public event EventHandler<bool> ExtraZhengfuChanged;
         public event EventHandler<bool> ExtraZhengzhanChanged;
-
 
         public int Mcu {
             get { return mcu; }
@@ -46,7 +45,7 @@ namespace k8asd {
             get { return mcuCooldown; }
             set {
                 mcuCooldown = value;
-                MCUCooldownChanged(this, value);
+                McuCooldownChanged(this, value);
             }
         }
 
@@ -102,8 +101,6 @@ namespace k8asd {
                 var playerupdateinfo = token["playerupdateinfo"];
                 if (playerupdateinfo != null) {
                     ParseMcu(playerupdateinfo);
-                } else {
-                    //
                 }
             }
         }

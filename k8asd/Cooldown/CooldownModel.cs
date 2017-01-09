@@ -27,7 +27,7 @@ namespace k8asd {
             oneSecondTimer = new Timer();
             oneSecondTimer.Interval = 1000;
             oneSecondTimer.Tick += OneSecondTimer_Tick;
-            oneSecondTimer.Start();            
+            oneSecondTimer.Start();
         }
 
         private void OneSecondTimer_Tick(object sender, EventArgs e) {
@@ -44,9 +44,7 @@ namespace k8asd {
         }
 
         public int ImposeCooldown {
-            get {
-                return Math.Max(0, (int) (imposeCooldownEndTime - DateTime.Now).TotalMilliseconds);
-            }
+            get { return imposeCooldownEndTime.RemainingMilliseconds(); }
             set {
                 imposeCooldownEndTime = DateTime.Now.AddMilliseconds(value);
                 UpdateCooldowns();
@@ -54,9 +52,7 @@ namespace k8asd {
         }
 
         public int GuideCooldown {
-            get {
-                return Math.Max(0, (int) (guideCooldownEndTime - DateTime.Now).TotalMilliseconds);
-            }
+            get { return guideCooldownEndTime.RemainingMilliseconds(); }
             set {
                 guideCooldownEndTime = DateTime.Now.AddMilliseconds(value);
                 UpdateCooldowns();
@@ -65,9 +61,7 @@ namespace k8asd {
         }
 
         public int UpgradeCooldown {
-            get {
-                return Math.Max(0, (int) (upgradeCooldownEndTime - DateTime.Now).TotalMilliseconds);
-            }
+            get { return upgradeCooldownEndTime.RemainingMilliseconds(); }
             set {
                 upgradeCooldownEndTime = DateTime.Now.AddMilliseconds(value);
                 UpdateCooldowns();
@@ -75,9 +69,7 @@ namespace k8asd {
         }
 
         public int AppointCooldown {
-            get {
-                return Math.Max(0, (int) (appointCooldownEndTime - DateTime.Now).TotalMilliseconds);
-            }
+            get { return appointCooldownEndTime.RemainingMilliseconds(); }
             set {
                 appointCooldownEndTime = DateTime.Now.AddMilliseconds(value);
                 UpdateCooldowns();
@@ -85,9 +77,7 @@ namespace k8asd {
         }
 
         public int TechCooldown {
-            get {
-                return Math.Max(0, (int) (techCooldownEndTime - DateTime.Now).TotalMilliseconds);
-            }
+            get { return techCooldownEndTime.RemainingMilliseconds(); }
             set {
                 techCooldownEndTime = DateTime.Now.AddMilliseconds(value);
                 UpdateCooldowns();
@@ -95,9 +85,7 @@ namespace k8asd {
         }
 
         public int WeaveCooldown {
-            get {
-                return Math.Max(0, (int) (weaveCooldownEndTime - DateTime.Now).TotalMilliseconds);
-            }
+            get { return weaveCooldownEndTime.RemainingMilliseconds(); }
             set {
                 weaveCooldownEndTime = DateTime.Now.AddMilliseconds(value);
                 UpdateCooldowns();
