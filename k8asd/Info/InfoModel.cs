@@ -143,7 +143,8 @@ namespace k8asd {
                 var limitvalue = token["limitvalue"];
                 ParseInfo1(limitvalue);
             }
-            if (packet.CommandId == "11103") {
+            if (packet.CommandId == "11103" ||
+                packet.CommandId == "41102") {
                 var playerupdateinfo = token["playerupdateinfo"];
                 if (playerupdateinfo != null) {
                     ParseInfo0(playerupdateinfo);

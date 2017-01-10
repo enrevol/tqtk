@@ -277,6 +277,7 @@ namespace k8asd {
                 return;
             }
             Parse41100(packet);
+            UpdateGuidePanel();
         }
 
         private void Parse41102(Packet packet) {
@@ -287,6 +288,7 @@ namespace k8asd {
                 return;
             }
             Parse41100(packet);
+            UpdateGuidePanel();
         }
 
         private void Parse41107(Packet packet) {

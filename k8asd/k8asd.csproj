@@ -123,6 +123,12 @@
     <Compile Include="AccountView.Designer.cs">
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Campaign\CampaignView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Campaign\CampaignView.Designer.cs">
+      <DependentUpon>CampaignView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
