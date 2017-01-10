@@ -33,46 +33,7 @@ namespace k8asd {
                     break;
                 }
         }
-
-        public static void DecTime(ref int cd) {
-            cd = Math.Max(cd - 1013, 0);
-        }
-
-        public static void ShowTime(Control ct, int cd) {
-            TimeSpan span = new TimeSpan(0, 0, 0, 0, cd);
-            ct.Text = F.GetTime(span);
-        }
-
-        public static void ShowTimemH(Control ct, int cd) {
-            TimeSpan span = new TimeSpan(0, 0, 0, 0, cd);
-            ct.Text = F.GetTimemH(span);
-        }
-
-        public static void ShowDecTime(Control ct, ref int cd) {
-            ShowTime(ct, cd);
-            DecTime(ref cd);
-        }
-
-        public static void CoolDown(Control tb, ref int cd, ref string cdusable) {
-            /*
-            ShowTime(tb, cd);
-            if (cdusable == "0")
-                if (tb.Name.Contains("txt"))
-                    ((KryptonTextBox) tb).StateActive.Back.Color1 = Color.FromArgb(255, 50, 50);
-                else if (tb.Name.Contains("lbl"))
-                    ((KryptonLabel) tb).StateNormal.ShortText.Color1 = Color.FromArgb(255, 50, 50);
-            cd -= 1000;
-            if (cd < 0) {
-                cdusable = "1";
-                cd = 0;
-                if (tb.Name.Contains("txt"))
-                    ((KryptonTextBox) tb).StateActive.Back.Color1 = color;
-                else if (tb.Name.Contains("lbl"))
-                    ((KryptonLabel) tb).StateNormal.ShortText.Color1 = color;
-            }
-            */
-        }
-
+        
         public static int AttPlus(int att1, int att2) {
             switch (att1) {
             case 0:
@@ -83,23 +44,6 @@ namespace k8asd {
                 return att2;
             }
             return -1;
-        }
-
-        public static string GetTime(TimeSpan span) {
-            return smooth(span.Hours) + ":"
-                + smooth(span.Minutes) + ":"
-                + smooth(span.Seconds);
-        }
-
-        public static string GetTimemH(TimeSpan span) {
-            return smooth((int) Math.Floor((double) span.Days) * 24 + span.Hours) + ":"
-                + smooth(span.Minutes) + ":"
-                + smooth(span.Seconds);
-        }
-
-        public static string GetTimewH(TimeSpan span) {
-            return smooth(span.Minutes) + ":"
-                + smooth(span.Seconds);
         }
 
         public static string EncryptPass(string pass) {
@@ -133,14 +77,6 @@ namespace k8asd {
                 if (s == encode[i])
                     return i;
             return -1;
-        }
-
-        public static void CampBt(ref KryptonButton bt, Color color) {
-            bt.OverrideDefault.Back.Color1
-                = bt.OverrideDefault.Back.Color2
-                = bt.StateNormal.Back.Color1
-                = bt.StateNormal.Back.Color2
-                = color;
         }
 
         public static void TotalCost(List<int> listmapint, List<PointW> listmap,

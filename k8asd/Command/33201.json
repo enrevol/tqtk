@@ -1,0 +1,53 @@
+﻿{
+  "isBeatHero": false,
+  "powerList": [
+    {
+      "powerId": 1,
+      "powerName": "Giặc Khăn Vàng",
+      "powerState": 1,
+      "prestige": 0
+    },
+    {
+      "powerId": 2,
+      "powerName": "Đổng Trác",
+      "powerState": 1,
+      "prestige": 0
+    },
+    {
+      "powerId": 3,
+      "powerName": "Công Tôn Toản",
+      "powerState": 1,
+      "prestige": 0
+    },
+    {
+      "powerId": 4,
+      "powerName": "Tiểu Thế Lực",
+      "powerState": 1,
+      "prestige": 0
+    },
+    {
+      "powerId": 5,
+      "powerName": "Trương Lỗ",
+      "powerState": 1,
+      "prestige": 0
+    },
+    {
+      "powerId": 6,
+      "powerName": "Viên Thuật",
+      "powerState": 1,
+      "prestige": 0
+    },
+    {
+      "powerId": 7,
+      "powerName": "Nghiêm Bạch Hổ",
+      "powerState": 2,
+      "prestige": 0
+    },
+    {
+      "powerId": 8,
+      "powerName": "Lưu Biểu",
+      "powerState": 2,
+      "prestige": 0
+    }
+  ]
+}

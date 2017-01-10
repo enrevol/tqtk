@@ -69,6 +69,69 @@
             this.guideBox.SuspendLayout();
             this.SuspendLayout();
             // 
+            // _ignore6
+            // 
+            _ignore6.AutoSize = true;
+            _ignore6.Location = new System.Drawing.Point(5, 173);
+            _ignore6.Name = "_ignore6";
+            _ignore6.Size = new System.Drawing.Size(65, 13);
+            _ignore6.TabIndex = 6;
+            _ignore6.Text = "Kinh nghiệm";
+            // 
+            // _ignore2
+            // 
+            _ignore2.AutoSize = true;
+            _ignore2.Location = new System.Drawing.Point(5, 73);
+            _ignore2.Name = "_ignore2";
+            _ignore2.Size = new System.Drawing.Size(61, 13);
+            _ignore2.TabIndex = 5;
+            _ignore2.Text = "Binh chủng";
+            // 
+            // _ignore5
+            // 
+            _ignore5.AutoSize = true;
+            _ignore5.Location = new System.Drawing.Point(5, 148);
+            _ignore5.Name = "_ignore5";
+            _ignore5.Size = new System.Drawing.Size(65, 13);
+            _ignore5.TabIndex = 4;
+            _ignore5.Text = "Chuyển sinh";
+            // 
+            // _ignore4
+            // 
+            _ignore4.AutoSize = true;
+            _ignore4.Location = new System.Drawing.Point(5, 123);
+            _ignore4.Name = "_ignore4";
+            _ignore4.Size = new System.Drawing.Size(46, 13);
+            _ignore4.TabIndex = 3;
+            _ignore4.Text = "Kỹ năng";
+            // 
+            // _ignore3
+            // 
+            _ignore3.AutoSize = true;
+            _ignore3.Location = new System.Drawing.Point(5, 98);
+            _ignore3.Name = "_ignore3";
+            _ignore3.Size = new System.Drawing.Size(51, 13);
+            _ignore3.TabIndex = 2;
+            _ignore3.Text = "Quân đội";
+            // 
+            // _ignore1
+            // 
+            _ignore1.AutoSize = true;
+            _ignore1.Location = new System.Drawing.Point(5, 48);
+            _ignore1.Name = "_ignore1";
+            _ignore1.Size = new System.Drawing.Size(60, 13);
+            _ignore1.TabIndex = 1;
+            _ignore1.Text = "Thuộc tính";
+            // 
+            // _ignore0
+            // 
+            _ignore0.AutoSize = true;
+            _ignore0.Location = new System.Drawing.Point(5, 23);
+            _ignore0.Name = "_ignore0";
+            _ignore0.Size = new System.Drawing.Size(45, 13);
+            _ignore0.TabIndex = 0;
+            _ignore0.Text = "Binh lực";
+            // 
             // heroList
             // 
             this.heroList.FormattingEnabled = true;
@@ -245,69 +308,6 @@
             this.info0Label.Text = "19999/19999";
             this.info0Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // _ignore6
-            // 
-            _ignore6.AutoSize = true;
-            _ignore6.Location = new System.Drawing.Point(5, 173);
-            _ignore6.Name = "_ignore6";
-            _ignore6.Size = new System.Drawing.Size(65, 13);
-            _ignore6.TabIndex = 6;
-            _ignore6.Text = "Kinh nghiệm";
-            // 
-            // _ignore2
-            // 
-            _ignore2.AutoSize = true;
-            _ignore2.Location = new System.Drawing.Point(5, 73);
-            _ignore2.Name = "_ignore2";
-            _ignore2.Size = new System.Drawing.Size(61, 13);
-            _ignore2.TabIndex = 5;
-            _ignore2.Text = "Binh chủng";
-            // 
-            // _ignore5
-            // 
-            _ignore5.AutoSize = true;
-            _ignore5.Location = new System.Drawing.Point(5, 148);
-            _ignore5.Name = "_ignore5";
-            _ignore5.Size = new System.Drawing.Size(65, 13);
-            _ignore5.TabIndex = 4;
-            _ignore5.Text = "Chuyển sinh";
-            // 
-            // _ignore4
-            // 
-            _ignore4.AutoSize = true;
-            _ignore4.Location = new System.Drawing.Point(5, 123);
-            _ignore4.Name = "_ignore4";
-            _ignore4.Size = new System.Drawing.Size(46, 13);
-            _ignore4.TabIndex = 3;
-            _ignore4.Text = "Kỹ năng";
-            // 
-            // _ignore3
-            // 
-            _ignore3.AutoSize = true;
-            _ignore3.Location = new System.Drawing.Point(5, 98);
-            _ignore3.Name = "_ignore3";
-            _ignore3.Size = new System.Drawing.Size(51, 13);
-            _ignore3.TabIndex = 2;
-            _ignore3.Text = "Quân đội";
-            // 
-            // _ignore1
-            // 
-            _ignore1.AutoSize = true;
-            _ignore1.Location = new System.Drawing.Point(5, 48);
-            _ignore1.Name = "_ignore1";
-            _ignore1.Size = new System.Drawing.Size(60, 13);
-            _ignore1.TabIndex = 1;
-            _ignore1.Text = "Thuộc tính";
-            // 
-            // _ignore0
-            // 
-            _ignore0.AutoSize = true;
-            _ignore0.Location = new System.Drawing.Point(5, 23);
-            _ignore0.Name = "_ignore0";
-            _ignore0.Size = new System.Drawing.Size(45, 13);
-            _ignore0.TabIndex = 0;
-            _ignore0.Text = "Binh lực";
-            // 
             // trainBox
             // 
             this.trainBox.Controls.Add(this.trainButton);
@@ -432,6 +432,7 @@
             this.Controls.Add(this.heroList);
             this.Name = "HeroTrainingView";
             this.Size = new System.Drawing.Size(430, 435);
+            this.Load += new System.EventHandler(this.HeroTrainingView_Load);
             this.infoBox.ResumeLayout(false);
             this.infoBox.PerformLayout();
             this.trainBox.ResumeLayout(false);

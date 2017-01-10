@@ -140,10 +140,10 @@
       <DependentUpon>CooldownView.cs</DependentUpon>
     </Compile>
     <Compile Include="F.cs" />
-    <Compile Include="HeroImproveView.cs">
+    <Compile Include="HeroImprove\HeroImproveView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="HeroImproveView.Designer.cs">
+    <Compile Include="HeroImprove\HeroImproveView.Designer.cs">
       <DependentUpon>HeroImproveView.cs</DependentUpon>
     </Compile>
     <Compile Include="HeroTraining\HeroTrainingView.cs">
@@ -152,10 +152,10 @@
     <Compile Include="HeroTraining\HeroTrainingView.Designer.cs">
       <DependentUpon>HeroTrainingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImposeView.cs">
+    <Compile Include="Impose\ImposeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ImposeView.Designer.cs">
+    <Compile Include="Impose\ImposeView.Designer.cs">
       <DependentUpon>ImposeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Info\InfoView.Designer.cs">
@@ -187,11 +187,11 @@
     <Compile Include="PacketHandler.cs" />
     <Compile Include="IPacketReader.cs" />
     <Compile Include="Permutation.cs" />
-    <Compile Include="PowerView.cs">
+    <Compile Include="Army\ArmyView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PowerView.Designer.cs">
-      <DependentUpon>PowerView.cs</DependentUpon>
+    <Compile Include="Army\ArmyView.Designer.cs">
+      <DependentUpon>ArmyView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -217,13 +217,13 @@
       <SubType>Designer</SubType>
       <DependentUpon>ClientView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HeroImproveView.resx">
+    <EmbeddedResource Include="HeroImprove\HeroImproveView.resx">
       <DependentUpon>HeroImproveView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HeroTraining\HeroTrainingView.resx">
       <DependentUpon>HeroTrainingView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImposeView.resx">
+    <EmbeddedResource Include="Impose\ImposeView.resx">
       <DependentUpon>ImposeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Info\InfoView.resx">
@@ -234,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageLogView.resx">
       <DependentUpon>MessageLogView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Army\ArmyView.resx">
+      <DependentUpon>ArmyView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -257,6 +260,15 @@
       <DependentUpon>WeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Command\33100_1.json" />
+    <None Include="Command\33100_2.json" />
+    <None Include="Command\33100_3.json" />
+    <None Include="Command\33100_4.json" />
+    <None Include="Command\33100_5.json" />
+    <None Include="Command\33100_6.json" />
+    <None Include="Command\33100_7.json" />
+    <None Include="Command\33100_8.json" />
+    <None Include="Command\33201.json" />
     <None Include="Command\11102.json" />
     <None Include="Command\41100.json" />
     <None Include="Command\41101_0.json" />

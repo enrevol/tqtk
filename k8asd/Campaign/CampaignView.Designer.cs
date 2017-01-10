@@ -1,5 +1,5 @@
-﻿namespace k8asd {
-    partial class PowerView {
+﻿namespace k8asd.Campaign {
+    partial class CampaignView {
         /// <summary> 
         /// Required designer variable.
         /// </summary>

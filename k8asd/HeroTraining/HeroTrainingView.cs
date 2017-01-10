@@ -238,7 +238,7 @@ namespace k8asd {
         private void Parse41100(Packet packet) {
             var token = JToken.Parse(packet.Message);
             var generaldto = token["generaldto"];
-            ParseSelectedHero(generaldto);
+            var selectedHeroId = ParseSelectedHero(generaldto);
 
             heroes.Clear();
             var general = token["general"];
@@ -258,6 +258,15 @@ namespace k8asd {
 
             var tufeiTokenCount = (int) token["tufeiTokenCount"];
             UpdateGuideTokens(tufeiTokenCount);
+
+            heroList.SelectedIndexChanged -= heroList_SelectedIndexChanged;
+            for (var i = 0; i < heroes.Count; ++i) {
+                if (selectedHeroId == heroes[i].Id) {
+                    heroList.SelectedIndex = i;
+                    break;
+                }
+            }
+            heroList.SelectedIndexChanged += heroList_SelectedIndexChanged;
         }
 
         private void Parse41101(Packet packet) {
@@ -287,7 +296,7 @@ namespace k8asd {
             UpdateGuidePanel();
         }
 
-        private void ParseSelectedHero(JToken token) {
+        private int ParseSelectedHero(JToken token) {
             var forces = (int) token["forces"];
             var generalexp = (int) token["generalexp"];
             var generallevel = (int) token["generallevel"];
@@ -312,6 +321,8 @@ namespace k8asd {
             info4Label.Text = skillname;
             info5Label.Text = String.Format("Tướng Lv.{0} trở lên", shiftlv);
             info6Label.Text = String.Format("{0}/{1}", generalexp, nextlevelexp);
+
+            return (int) token["generalid"];
         }
 
         private void UpdateTrainingSlots(int currentSlots, int maxSlots) {
@@ -379,6 +390,10 @@ namespace k8asd {
 
         private void oneSecondTimer_Tick(object sender, EventArgs e) {
             UpdateGuidePanel();
+        }
+
+        private void HeroTrainingView_Load(object sender, EventArgs e) {
+            selectedHeroList.Items.Clear();
         }
     }
 }

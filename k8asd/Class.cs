@@ -676,89 +676,6 @@ namespace k8asd {
         }
     }
 
-    public class R33100 {
-        public class Army {
-            public string armyid;
-            public string armylevel;
-            public string armymaxnum;
-            public string armyname;
-            public string armynum;
-            public string attackable;
-            public string complete;
-            public string intro;
-            public string itemname;
-            public string jyungong;
-            public string position;
-            public string qgcost;
-            public string type;
-            public Army(string armyid, string armylevel,
-                string armymaxnum, string armyname,
-                string armynum, string attackable,
-                string complete, string intro,
-                string itemname, string jyungong,
-                string position, string type,
-                string qgcost) {
-                this.armyid = armyid;
-                this.armylevel = armylevel;
-                this.armymaxnum = armymaxnum;
-                this.armyname = armyname;
-                this.armynum = armynum;
-                this.attackable = attackable;
-                this.complete = complete;
-                this.intro = intro;
-                this.itemname = itemname;
-                this.jyungong = jyungong;
-                this.position = position;
-                this.qgcost = qgcost;
-                this.type = type;
-            }
-        }
-
-        public string m;
-        public string powerid;
-        public string powername;
-        public string nextattackble;
-        public string nextpowerid;
-        public string nextpowername;
-        public List<Army> listarmy;
-
-        public R33100(string json) {
-            JToken token = JObject.Parse(json)["m"];
-            if (token["message"] == null) {
-                listarmy = new List<Army>();
-                JObject obj = (JObject) token["power"];
-                powerid = obj["powerid"].ToString();
-                powername = obj["powername"].ToString().Replace("\"", "");
-                JArray array = (JArray) obj["nextpower"];
-                if (array.Count >= 1) {
-                    nextattackble = array[0]["attackable"].ToString();
-                    nextpowerid = array[0]["powerid"].ToString();
-                    nextpowername = array[0]["powername"].ToString().Replace("\"", "");
-                }
-                array = (JArray) token["army"];
-                for (int i = 0; i < array.Count; i++) {
-                    obj = (JObject) array[i];
-                    listarmy.Add(
-                        new Army(
-                            obj["armyid"].ToString(),
-                            obj["armylevel"].ToString(),
-                            obj["armymaxnum"].ToString(),
-                            obj["armyname"].ToString().Replace("\"", ""),
-                            obj["armynum"].ToString(),
-                            obj["attackable"].ToString(),
-                            obj["complete"].ToString(),
-                            obj["intro"].ToString().Replace("\"", ""),
-                            obj["itemname"].ToString().Replace("\"", ""),
-                            obj["jyungong"].ToString(),
-                            obj["position"].ToString(),
-                            obj["type"].ToString(),
-                            obj["qgcost"].ToString()));
-                }
-            } else
-                m = token["message"].ToString().Replace("\"", "");
-        }
-    }
-
     public class R33101 : SReport {
         public string items;
 
@@ -770,37 +687,6 @@ namespace k8asd {
                 JArray array = (JArray) token["items"];
                 for (int i = 0; i < array.Count; i += 2)
                     items += " " + array[i].ToString().Replace("\"", "");
-            }
-        }
-    }
-
-    public class R33201 {
-        public class Power {
-            public string powerId;
-            public string powerName;
-            public string powerState;
-            public Power(string powerId, string powerName, string powerState) {
-                this.powerId = powerId;
-                this.powerName = powerName;
-                this.powerState = powerState;
-            }
-        }
-
-        public List<Power> listpower;
-        public string isBeatHero;
-
-        public R33201(string json) {
-            JToken token = JObject.Parse(json)["m"];
-            listpower = new List<Power>();
-            isBeatHero = token["isBeatHero"].ToString();
-            JArray array = (JArray) token["powerList"];
-            for (int i = 0; i < array.Count; i++) {
-                JObject obj = (JObject) array[i];
-                listpower.Add(
-                    new Power(
-                        obj["powerId"].ToString(),
-                        obj["powerName"].ToString().Replace("\"", ""),
-                        obj["powerState"].ToString()));
             }
         }
     }
