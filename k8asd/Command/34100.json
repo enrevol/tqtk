@@ -1,0 +1,36 @@
+﻿{
+  "member": [],
+  "armies": {
+    "armynum": 6,
+    "battlenum": 1,
+    "filter": 1,
+    "honor": 200,
+    "id": 900001,
+    "itemname": "A Tu La （Tỷ lệ lớn）|2|",
+    "level": 22,
+    "maxplayer": 6,
+    "maxwinnum": 3,
+    "minplayer": 3,
+    "name": "Đổng Trác"
+  },
+  "maxnum": 0,
+  "currentnum": 0,
+  "team": [
+    {
+      "condition": "Lilac, cấp 0 trở lên",
+      "currentnum": 1,
+      "endtime": 1484071081220,
+      "maxnum": 6,
+      "teamid": 5557310,
+      "teamname": "Mi Lilac"
+    },
+    {
+      "condition": " cấp 0 trở lên",
+      "currentnum": 1,
+      "endtime": 1484071099321,
+      "maxnum": 6,
+      "teamid": 5542014,
+      "teamname": "Idol"
+    }
+  ]
+}
