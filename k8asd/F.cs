@@ -13,39 +13,6 @@ namespace k8asd {
     public static class F {
         private static string encode = "~!@#$%^&*()_+`1234567890-=QWERTYUIOP{}|qwertyuiop[]ASDFGHJKL:asdfghjkl;ZXCVBNM<>?zxcvbnm,./";
 
-        private static string smooth(int x) {
-            if (x < 10)
-                return "0" + x.ToString();
-            return x.ToString();
-        }
-
-        public static void Cycle(ref int cycle, int limit) {
-            cycle += 1;
-            if (cycle > limit)
-                cycle = 0;
-        }
-
-        public static void Cycle2(ref int cycle, int[] contain) {
-            for (int i = 0; i < contain.Length; i++)
-                if (cycle == contain[i]) {
-                    Cycle(ref i, contain.Length - 1);
-                    cycle = contain[i];
-                    break;
-                }
-        }
-        
-        public static int AttPlus(int att1, int att2) {
-            switch (att1) {
-            case 0:
-                return att2 + 1;
-            case 1:
-                return att2 == 0 ? 0 : 2;
-            case 2:
-                return att2;
-            }
-            return -1;
-        }
-
         public static string EncryptPass(string pass) {
             int len = pass.Length;
             int len2 = encode.Length;
