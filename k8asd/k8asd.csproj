@@ -266,6 +266,7 @@
       <DependentUpon>WeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Command\34100.json" />
     <None Include="Command\33100_1.json" />
     <None Include="Command\33100_2.json" />
     <None Include="Command\33100_3.json" />

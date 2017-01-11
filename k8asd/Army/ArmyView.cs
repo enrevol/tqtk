@@ -89,8 +89,44 @@ namespace k8asd {
             }
         }
 
+        private class Team {
+            private int teamId;
+            private string teamName;
+            private string condition;
+            private int playerCount;
+            private int maxPlayerCount;
+            private DateTime endTime;
+
+            public int Id { get { return teamId; } }
+            public string Name { get { return teamName; } }
+            public string Condition { get { return condition; } }
+            public int PlayerCount { get { return playerCount; } }
+            public int MaxPlayerCount { get { return maxPlayerCount; } }
+            public int RemainingTime { get { return endTime.RemainingMilliseconds(); } }
+
+            public static Team Parse(JToken token) {
+                var result = new Team();
+                result.teamId = (int) token["teamid"];
+                result.teamName = (string) token["teamname"];
+                result.condition = (string) token["condition"];
+                result.playerCount = (int) token["currentnum"];
+                result.maxPlayerCount = (int) token["maxnum"];
+                var endtime = (long) token["endtime"];
+                result.endTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                    .ToLocalTime().AddMilliseconds(endtime).AddMinutes(-1);
+                return result;
+            }
+
+            public override string ToString() {
+                return String.Format("{0} {1} ({2}/{3}) [{4}]",
+                    Name, Condition, PlayerCount, MaxPlayerCount,
+                    Utils.FormatDuration(endTime.RemainingMilliseconds()));
+            }
+        }
+
         private Queue<int> pendingPowerIds;
         private BindingList<Army> armies;
+        private BindingList<Team> teams;
         private IPacketWriter packetWriter;
 
         public ArmyView() {
@@ -98,6 +134,9 @@ namespace k8asd {
 
             armies = new BindingList<Army>();
             armyList.DataSource = armies;
+
+            teams = new BindingList<Team>();
+            teamList.DataSource = teams;
 
             pendingPowerIds = new Queue<int>();
         }
@@ -112,7 +151,19 @@ namespace k8asd {
             }
         }
 
-        private void refreshButton_Click(object sender, EventArgs e) {
+        private void RefreshSelectedArmy() {
+            var item = armyList.SelectedItem;
+            if (item != null) {
+                var army = (Army) item;
+                RefreshArmy(army.Id);
+            }
+        }
+
+        private void RefreshArmy(int armyId) {
+            packetWriter.SendCommand("34100", armyId.ToString());
+        }
+
+        private void refreshArmyButton_Click(object sender, EventArgs e) {
             RefreshArmies();
         }
 
@@ -130,7 +181,9 @@ namespace k8asd {
                 Parse33100(packet);
                 processPendingPower();
             }
-
+            if (packet.CommandId == "34100") {
+                Parse34100(packet);
+            }
             if (packet.CommandId == "34101" ||
                 packet.CommandId == "34102" ||
                 packet.CommandId == "34104" ||
@@ -164,6 +217,30 @@ namespace k8asd {
                     armies.Add(army);
                 }
             }
+        }
+
+        private void Parse34100(Packet packet) {
+            var token = JToken.Parse(packet.Message);
+
+            var armies = token["armies"];
+            UpdateArmyPanel(armies);
+
+            teams.Clear();
+            var teamsToken = token["team"];
+            foreach (var teamToken in teamsToken) {
+                var team = Team.Parse(teamToken);
+                teams.Add(team);
+            }
+        }
+
+        private void UpdateArmyPanel(JToken token) {
+            var armynum = (int) token["armynum"];
+            var honor = (int) token["honor"];
+            var minplayer = (int) token["minplayer"];
+            var maxplayer = (int) token["maxplayer"];
+            armyNumLabel.Text = String.Format("Đội quân: {0}", armynum);
+            playerNumLabel.Text = String.Format("Người tham gia: {0} - {1}", minplayer, maxplayer);
+            baseHonorLabel.Text = String.Format("Chiến tích cơ bản: {0}", honor);
         }
 
         private void processPendingPower() {
@@ -237,7 +314,23 @@ namespace k8asd {
         */
 
         private void armyList_SelectedIndexChanged(object sender, EventArgs e) {
+            var item = armyList.SelectedItem;
+            if (item == null) {
+                return;
+            }
 
+            var army = (Army) item;
+            itemLabel.Text = army.ItemName;
+            limitLabel.Text = String.Format("Giới hạn: {0}/{1}", army.Limit, army.MaxLimit);
+            honorLabel.Text = String.Format("Chiến tích: {0}", army.Honor);
+        }
+
+        private void refreshTimer_Tick(object sender, EventArgs e) {
+            RefreshSelectedArmy();
+        }
+
+        private void refreshTeamButton_Click(object sender, EventArgs e) {
+            RefreshSelectedArmy();
         }
     }
 
