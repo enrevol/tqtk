@@ -154,6 +154,13 @@ namespace k8asd {
                     //
                 }
             }
+            if (packet.CommandId == "34108") {
+                var token = JToken.Parse(packet.Message);
+                var playerbattleinfo = token["playerbattleinfo"];
+                if (playerbattleinfo != null) {
+                    ParseInfo0(playerbattleinfo);
+                }
+            }
             // FIXME.
             /*
             R11103 r11103 = new R11103(cdata);
