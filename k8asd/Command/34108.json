@@ -1,0 +1,57 @@
+﻿{
+  "battlereport": {
+    "init": "Gong|1|Idol|M|zhouyue|0|0|0|0|0|4|1620|1620|0|0|0|3|2260|2260|4|1740|1740|0|0|0|0|0|0|4|1888|1888|0|0|0;Gong|2| MrSir| |lili|0|0|0|0|0|1|1322|1322|0|0|0|1|888|888|5|1296|1296|0|0|0|0|0|0|5|1950|1950|0|0|0;Gong|3|Mi Lilac|M|zhouyue|0|0|0|0|0|3|1650|1650|0|0|0|0|0|0|1|850|850|0|0|0|0|0|0|4|810|810|0|0|0;Gong|4|Mj Lilac|M|zhouyue|0|0|3|1614|1614|0|0|0|0|0|0|0|0|0|4|818|818|0|0|0|0|0|0|0|0|0|0|0|0;Fang|1|Đan Kinh|單|jiafan|0|0|0|0|0|0|0|0|0|0|0|1|620|620|0|0|0|2|744|744|0|0|0|0|0|0|5|620|620;Fang|2|Quan Tĩnh|關|lunzhi|0|0|0|0|0|0|0|0|2|660|660|0|0|0|2|792|792|0|0|0|5|660|660|0|0|0|0|0|0;Fang|3|Nghiêm Cương|嚴|yangang1|0|0|0|0|0|1|700|700|0|0|0|0|0|0|0|0|0|1|840|840|4|700|700|0|0|0|0|0|0;Fang|4|Điền Giai|田|yangzuo|0|0|1|740|740|0|0|0|0|0|0|0|0|0|3|888|888|0|0|0|5|740|740|1|740|740|0|0|0;Fang|5|Công Tôn Việt|公|gongsunyue|0|0|1|780|780|0|0|0|0|0|0|1|780|780|5|936|936|0|0|0|0|0|0|0|0|0|4|780|780;Fang|6|Công Tôn Phạm|公|gongsungong|0|0|0|0|0|2|920|920|0|0|0|2|920|920|0|0|0|5|1104|1104|3|920|920|0|0|0|0|0|0;Fang|7|Công Tôn Tục|公|gongsunyuan|0|0|2|680|680|0|0|0|0|0|0|2|680|680|2|884|884|0|0|0|0|0|0|3|680|680|0|0|0;Fang|8|Công Tôn Toản|公|gongsunzan|0|0|0|0|0|1|780|780|0|0|0|0|0|0|0|0|0|1|1014|1014|4|780|780|0|0|0|4|780|780;",
+    "report": {
+      "describe": "1",
+      "fieldreport": [
+        {
+          "abstractreport": "GS_SZ|Gong|1|100;GS_SZ|Fang|1|100;FI_GJ|14|FI_SH|31|99;FI_GJ|24|FI_SH|620|124;FI_GJ|26|FI_SH|744|149;FI_GJ|29|FI_SH|620|174;MI_SL|Gong|1;GS_SZ|Fang|4|174;FI_GJ|14|FI_SH|45|173;FI_GJ|21|FI_SH|740|198;FI_GJ|25|FI_SH|888|200;FI_GJ|27|FI_SH|740|200;FI_GJ|28|FI_SH|740|200;MI_SL|Gong|2;GS_SZ|Fang|5|200;FI_GJ|14|FI_SH|57|199;FI_GJ|21|FI_SH|780|200;FI_GJ|24|FI_SH|780|200;FI_GJ|25|FI_SH|936|200;FI_GJ|29|FI_SH|780|200;MI_SL|Gong|3;MI_LS|Gong;GS_SZ|Gong|4|100;GS_SZ|Fang|8|100;FI_GJ|27|FI_SH|491|115;FI_GJ|15|FI_SH|198|109;FI_GJ|15|FI_SH|367|98;FI_GJ|22|FI_TJSB|0|98;FI_GJ|26|FI_TJSB|0|98;FI_GJ|27|FI_TJSB|147|94;FI_GJ|29|FI_TJSB|0|94;FI_GJ|22|FI_SH|565|112;FI_GJ|26|FI_SH|469|123;FI_GJ|27|FI_SH|436|136;FI_GJ|29|FI_SH|625|156;FI_GJ|15|FI_SH|133|152;FI_GJ|15|FI_SH|120|149;FI_GJ|26|FI_TJSB|147|146;FI_GJ|29|FI_TJSB|147|142;FI_GJ|22|FI_SH|215|148;FI_GJ|26|FI_SH|567|161;FI_GJ|29|FI_SH|302|170;FI_GJ|11|FI_SH|76|169;FI_GJ|26|FI_SH|125|172;MI_SL|Gong|1;",
+          "detailreport": [
+            "Idol  tấn công  Đan Kinh  và đã thắng!",
+            "Điền Giai  tấn công  Idol  và đã thua!",
+            "Công Tôn Việt  tấn công  Idol  và đã thua!",
+            "Mj Lilac  tấn công  Công Tôn Toản  và đã thắng!"
+          ]
+        },
+        {
+          "abstractreport": "GS_SZ|Gong|2|100;GS_SZ|Fang|2|100;FI_GJ|25|FI_SH|615|119;FI_GJ|12|FI_SH|22|118;FI_GJ|27|FI_SH|542|138;FI_GJ|12|FI_SH|9|137;FI_GJ|25|FI_SH|177|142;FI_GJ|14|FI_SH|31|141;FI_GJ|27|FI_SH|118|145;FI_GJ|23|FI_SH|654|169;FI_GJ|12|FI_SH|7|168;FI_GJ|23|FI_SH|6|169;MI_SL|Gong|1;GS_SZ|Fang|6|169;FI_GJ|22|FI_SH|416|180;FI_GJ|12|FI_SH|31|179;FI_GJ|24|FI_SH|296|187;FI_GJ|14|FI_SH|45|186;FI_GJ|22|FI_SH|504|199;FI_GJ|12|FI_SH|23|198;FI_GJ|15|FI_SH|45|197;FI_GJ|18|FI_SH|16|196;FI_GJ|24|FI_SH|624|200;FI_GJ|27|FI_SH|737|200;FI_GJ|14|FI_SH|34|199;FI_GJ|12|FI_SH|23|198;FI_GJ|15|FI_SH|45|197;FI_GJ|18|FI_SH|16|196;FI_GJ|27|FI_SH|183|200;FI_GJ|26|FI_SH|1104|200;MI_SL|Gong|2;",
+          "detailreport": [
+            " MrSir  tấn công  Quan Tĩnh  và đã thắng!<a href='event:fight|148424396354229810'>[Chiến báo]</a>",
+            "Công Tôn Phạm  tấn công   MrSir  và đã thua!<a href='event:fight|148424396354238425'>[Chiến báo]</a>"
+          ]
+        },
+        {
+          "abstractreport": "GS_SZ|Gong|3|100;GS_SZ|Fang|3|100;FI_GJ|22|FI_SH|561|120;FI_GJ|12|FI_SH|28|119;FI_GJ|22|FI_SH|139|123;FI_GJ|12|FI_SH|72|122;FI_GJ|12|FI_SH|153|120;FI_GJ|26|FI_SH|840|145;FI_GJ|27|FI_SH|700|170;MI_SL|Gong|1;GS_SZ|Fang|7|170;FI_GJ|25|FI_SH|322|179;FI_GJ|12|FI_SH|50|178;FI_GJ|25|FI_SH|350|187;FI_GJ|12|FI_SH|50|186;FI_GJ|12|FI_SH|56|185;FI_GJ|12|FI_SH|50|184;FI_GJ|21|FI_SH|680|200;FI_GJ|24|FI_SH|680|200;FI_GJ|25|FI_SH|212|200;FI_GJ|28|FI_SH|680|200;MI_SL|Gong|2;",
+          "detailreport": [
+            "Mi Lilac  tấn công  Nghiêm Cương  và đã thắng!",
+            "Công Tôn Tục  tấn công  Mi Lilac  và đã thua!"
+          ]
+        },
+        {
+          "abstractreport": "",
+          "detailreport": []
+        },
+        {
+          "abstractreport": "",
+          "detailreport": []
+        }
+      ],
+      "gains": "60|0null|Thất Tinh Kiếm*1|2nullnull"
+    }
+  },
+  "playerbattleinfo": {
+    "sys_gold": 130,
+    "extrayinkuang": 1,
+    "forces": 50003,
+    "extragongji": 1,
+    "extrazhengzhan": 0,
+    "extrazhengfu": 1,
+    "tokencdusable": 1,
+    "prestige": 2031,
+    "user_gold": 0,
+    "token": 36,
+    "extranongtian": 1,
+    "jyungong": 56319,
+    "tokencd": 119990
+  }
+}
