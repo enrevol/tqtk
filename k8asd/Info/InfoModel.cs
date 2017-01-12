@@ -133,8 +133,8 @@ namespace k8asd {
         }
 
         public void OnPacketReceived(Packet packet) {
-            var token = JToken.Parse(packet.Message);
             if (packet.CommandId == "11102") {
+                var token = JToken.Parse(packet.Message);
                 var player = token["player"];
                 PlayerName = (string) player["playername"];
                 PlayerLevel = (int) player["playerlevel"];
@@ -145,6 +145,7 @@ namespace k8asd {
             }
             if (packet.CommandId == "11103" ||
                 packet.CommandId == "41102") {
+                var token = JToken.Parse(packet.Message);
                 var playerupdateinfo = token["playerupdateinfo"];
                 if (playerupdateinfo != null) {
                     ParseInfo0(playerupdateinfo);

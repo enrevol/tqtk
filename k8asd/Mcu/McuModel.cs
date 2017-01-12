@@ -89,15 +89,16 @@ namespace k8asd {
             }
         }
 
-        public void OnPacketReceived(Packet packet) {
-            var token = JToken.Parse(packet.Message);
+        public void OnPacketReceived(Packet packet) {            
             if (packet.CommandId == "11102") {
+                var token = JToken.Parse(packet.Message);
                 var player = token["player"];
                 if (player != null) {
                     ParseMcu(player);
                 }
             }
             if (packet.CommandId == "11103") {
+                var token = JToken.Parse(packet.Message);
                 var playerupdateinfo = token["playerupdateinfo"];
                 if (playerupdateinfo != null) {
                     ParseMcu(playerupdateinfo);

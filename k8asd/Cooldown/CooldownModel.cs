@@ -93,8 +93,8 @@ namespace k8asd {
         }
 
         public void OnPacketReceived(Packet packet) {
-            var token = JToken.Parse(packet.Message);
             if (packet.CommandId == "11102") {
+                var token = JToken.Parse(packet.Message);
                 // techcdusable = (string) player["techcdusable"];
                 // tokencdusable = (string) player["tokencdusable"];
                 // imposecdusable = (string) player["imposecdusable"];
@@ -107,6 +107,7 @@ namespace k8asd {
             if (packet.CommandId == "41100" ||
                 packet.CommandId == "41101" ||
                 packet.CommandId == "41102") {
+                var token = JToken.Parse(packet.Message);
                 if (token["message"] == null) {
                     var cd = (int) token["cd"];
                     GuideCooldown = cd;
