@@ -37,6 +37,8 @@
             this.baseHonorLabel = new System.Windows.Forms.Label();
             this.refreshTeamButton = new System.Windows.Forms.Button();
             this.teamBox = new System.Windows.Forms.GroupBox();
+            this.createLegionButton = new System.Windows.Forms.Button();
+            this.createButton = new System.Windows.Forms.Button();
             this.inviteButton = new System.Windows.Forms.Button();
             this.quitButton = new System.Windows.Forms.Button();
             this.disbandButton = new System.Windows.Forms.Button();
@@ -49,18 +51,17 @@
             this.memberList = new BrightIdeasSoftware.ObjectListView();
             this.memberColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.kickColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.memberBox = new System.Windows.Forms.GroupBox();
             this.armyInfoBox.SuspendLayout();
             this.teamBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).BeginInit();
+            this.memberBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // armyList
             // 
             this.armyList.FormattingEnabled = true;
-            this.armyList.Items.AddRange(new object[] {
-            "TEST1",
-            "TEST2"});
             this.armyList.Location = new System.Drawing.Point(5, 120);
             this.armyList.Name = "armyList";
             this.armyList.Size = new System.Drawing.Size(250, 329);
@@ -137,7 +138,7 @@
             // playerNumLabel
             // 
             this.playerNumLabel.AutoSize = true;
-            this.playerNumLabel.Location = new System.Drawing.Point(75, 15);
+            this.playerNumLabel.Location = new System.Drawing.Point(75, 20);
             this.playerNumLabel.Name = "playerNumLabel";
             this.playerNumLabel.Size = new System.Drawing.Size(105, 13);
             this.playerNumLabel.TabIndex = 13;
@@ -146,7 +147,7 @@
             // armyNumLabel
             // 
             this.armyNumLabel.AutoSize = true;
-            this.armyNumLabel.Location = new System.Drawing.Point(5, 15);
+            this.armyNumLabel.Location = new System.Drawing.Point(5, 20);
             this.armyNumLabel.Name = "armyNumLabel";
             this.armyNumLabel.Size = new System.Drawing.Size(62, 13);
             this.armyNumLabel.TabIndex = 14;
@@ -155,7 +156,7 @@
             // baseHonorLabel
             // 
             this.baseHonorLabel.AutoSize = true;
-            this.baseHonorLabel.Location = new System.Drawing.Point(190, 15);
+            this.baseHonorLabel.Location = new System.Drawing.Point(190, 20);
             this.baseHonorLabel.Name = "baseHonorLabel";
             this.baseHonorLabel.Size = new System.Drawing.Size(122, 13);
             this.baseHonorLabel.TabIndex = 15;
@@ -173,6 +174,8 @@
             // 
             // teamBox
             // 
+            this.teamBox.Controls.Add(this.createLegionButton);
+            this.teamBox.Controls.Add(this.createButton);
             this.teamBox.Controls.Add(this.inviteButton);
             this.teamBox.Controls.Add(this.quitButton);
             this.teamBox.Controls.Add(this.disbandButton);
@@ -185,14 +188,35 @@
             this.teamBox.Controls.Add(this.baseHonorLabel);
             this.teamBox.Location = new System.Drawing.Point(265, 40);
             this.teamBox.Name = "teamBox";
-            this.teamBox.Size = new System.Drawing.Size(360, 280);
+            this.teamBox.Size = new System.Drawing.Size(360, 285);
             this.teamBox.TabIndex = 21;
             this.teamBox.TabStop = false;
+            this.teamBox.Text = "Danh sách tổ đội";
+            // 
+            // createLegionButton
+            // 
+            this.createLegionButton.Location = new System.Drawing.Point(270, 210);
+            this.createLegionButton.Name = "createLegionButton";
+            this.createLegionButton.Size = new System.Drawing.Size(80, 30);
+            this.createLegionButton.TabIndex = 30;
+            this.createLegionButton.Text = "Lập bang";
+            this.createLegionButton.UseVisualStyleBackColor = true;
+            this.createLegionButton.Click += new System.EventHandler(this.createLegionButton_Click);
+            // 
+            // createButton
+            // 
+            this.createButton.Location = new System.Drawing.Point(185, 210);
+            this.createButton.Name = "createButton";
+            this.createButton.Size = new System.Drawing.Size(80, 30);
+            this.createButton.TabIndex = 29;
+            this.createButton.Text = "Lập tổ đội";
+            this.createButton.UseVisualStyleBackColor = true;
+            this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
             // inviteButton
             // 
             this.inviteButton.Enabled = false;
-            this.inviteButton.Location = new System.Drawing.Point(10, 240);
+            this.inviteButton.Location = new System.Drawing.Point(10, 245);
             this.inviteButton.Name = "inviteButton";
             this.inviteButton.Size = new System.Drawing.Size(80, 30);
             this.inviteButton.TabIndex = 28;
@@ -201,7 +225,7 @@
             // 
             // quitButton
             // 
-            this.quitButton.Location = new System.Drawing.Point(95, 240);
+            this.quitButton.Location = new System.Drawing.Point(95, 245);
             this.quitButton.Name = "quitButton";
             this.quitButton.Size = new System.Drawing.Size(80, 30);
             this.quitButton.TabIndex = 27;
@@ -211,7 +235,7 @@
             // 
             // disbandButton
             // 
-            this.disbandButton.Location = new System.Drawing.Point(95, 205);
+            this.disbandButton.Location = new System.Drawing.Point(95, 210);
             this.disbandButton.Name = "disbandButton";
             this.disbandButton.Size = new System.Drawing.Size(80, 30);
             this.disbandButton.TabIndex = 26;
@@ -221,7 +245,7 @@
             // 
             // forceAttackButton
             // 
-            this.forceAttackButton.Location = new System.Drawing.Point(185, 205);
+            this.forceAttackButton.Location = new System.Drawing.Point(185, 245);
             this.forceAttackButton.Name = "forceAttackButton";
             this.forceAttackButton.Size = new System.Drawing.Size(80, 30);
             this.forceAttackButton.TabIndex = 25;
@@ -231,7 +255,7 @@
             // 
             // attackButton
             // 
-            this.attackButton.Location = new System.Drawing.Point(10, 205);
+            this.attackButton.Location = new System.Drawing.Point(10, 210);
             this.attackButton.Name = "attackButton";
             this.attackButton.Size = new System.Drawing.Size(80, 30);
             this.attackButton.TabIndex = 24;
@@ -241,7 +265,7 @@
             // 
             // joinX10Button
             // 
-            this.joinX10Button.Location = new System.Drawing.Point(270, 205);
+            this.joinX10Button.Location = new System.Drawing.Point(270, 245);
             this.joinX10Button.Name = "joinX10Button";
             this.joinX10Button.Size = new System.Drawing.Size(80, 30);
             this.joinX10Button.TabIndex = 23;
@@ -259,7 +283,7 @@
             this.joinColumn});
             this.teamList.Cursor = System.Windows.Forms.Cursors.Default;
             this.teamList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.teamList.Location = new System.Drawing.Point(10, 35);
+            this.teamList.Location = new System.Drawing.Point(10, 40);
             this.teamList.MultiSelect = false;
             this.teamList.Name = "teamList";
             this.teamList.ShowGroups = false;
@@ -293,11 +317,11 @@
             this.kickColumn});
             this.memberList.Cursor = System.Windows.Forms.Cursors.Default;
             this.memberList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.memberList.Location = new System.Drawing.Point(265, 330);
+            this.memberList.Location = new System.Drawing.Point(10, 20);
             this.memberList.MultiSelect = false;
             this.memberList.Name = "memberList";
             this.memberList.ShowGroups = false;
-            this.memberList.Size = new System.Drawing.Size(360, 120);
+            this.memberList.Size = new System.Drawing.Size(340, 140);
             this.memberList.TabIndex = 22;
             this.memberList.UseCompatibleStateImageBehavior = false;
             this.memberList.View = System.Windows.Forms.View.Details;
@@ -316,24 +340,35 @@
             this.kickColumn.IsButton = true;
             this.kickColumn.Width = 55;
             // 
+            // memberBox
+            // 
+            this.memberBox.Controls.Add(this.memberList);
+            this.memberBox.Location = new System.Drawing.Point(265, 335);
+            this.memberBox.Name = "memberBox";
+            this.memberBox.Size = new System.Drawing.Size(360, 170);
+            this.memberBox.TabIndex = 23;
+            this.memberBox.TabStop = false;
+            this.memberBox.Text = "Danh sách thành viên tổ đội";
+            // 
             // ArmyView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.memberList);
+            this.Controls.Add(this.memberBox);
             this.Controls.Add(this.teamBox);
             this.Controls.Add(this.refreshTeamButton);
             this.Controls.Add(this.armyInfoBox);
             this.Controls.Add(this.refreshArmyButton);
             this.Controls.Add(this.armyList);
             this.Name = "ArmyView";
-            this.Size = new System.Drawing.Size(667, 468);
+            this.Size = new System.Drawing.Size(673, 538);
             this.armyInfoBox.ResumeLayout(false);
             this.armyInfoBox.PerformLayout();
             this.teamBox.ResumeLayout(false);
             this.teamBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).EndInit();
+            this.memberBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -365,5 +400,8 @@
         private BrightIdeasSoftware.ObjectListView memberList;
         private BrightIdeasSoftware.OLVColumn memberColumn;
         private BrightIdeasSoftware.OLVColumn kickColumn;
+        private System.Windows.Forms.Button createLegionButton;
+        private System.Windows.Forms.Button createButton;
+        private System.Windows.Forms.GroupBox memberBox;
     }
 }

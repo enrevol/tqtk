@@ -13,7 +13,24 @@ using BrightIdeasSoftware;
 
 namespace k8asd {
     public partial class ArmyView : UserControl, IPacketReader {
-        enum ArmyType {
+        private enum PartyLimit {
+            /// <summary>
+            /// Không giới hạn.
+            /// </summary>
+            None = 1,
+
+            /// <summary>
+            /// Giới hạn quốc gia.
+            /// </summary>
+            Nation = 2,
+
+            /// <summary>
+            /// Giới hạn bang hội.
+            /// </summary>
+            Legion = 3,
+        }
+
+        private enum ArmyType {
             /// <summary>
             /// NPC thường.
             /// </summary>
@@ -224,9 +241,16 @@ namespace k8asd {
                     var token = JToken.Parse(packet.Message);
                     var message = token["message"];
                     if (message != null) {
-                        // FIXME.
+                        Console.WriteLine((string) message);
+                    }
+                    var errmessage = token["errmessage"];
+                    if (errmessage != null) {
+                        Console.WriteLine((string) errmessage);
                     }
                 }
+            }
+            if (packet.CommandId == "34108") {
+                var token = JToken.Parse(packet.Message);
             }
         }
 
@@ -313,8 +337,9 @@ namespace k8asd {
             // radArmy2.Checked = !radArmy1.Checked;
         }
 
-        private void CreateArmy(int armyId, int minimumLevel, int regionLimit) {
-            packetWriter.SendCommand("34101", armyId.ToString(), String.Format("4:{0};{1}", minimumLevel, regionLimit), "0");
+        private void CreateArmy(int armyId, int minimumLevel, PartyLimit limit) {
+            packetWriter.SendCommand("34101", armyId.ToString(),
+                String.Format("4:{0};{1}", minimumLevel, (int) limit), "0");
         }
 
         private void JoinArmy(int hostId) {
@@ -334,12 +359,12 @@ namespace k8asd {
         }
 
         private void Attack() {
-            packetWriter.SendCommand("34107");
+            packetWriter.SendCommand("34107", "0");
         }
 
         private void ForceAttack() {
             // Tạo quân đoàn đổng trác.
-            CreateArmy(900001, 0, 0);
+            CreateArmy(900001, 0, PartyLimit.None);
 
             // Tấn công.
             Attack();
@@ -427,6 +452,22 @@ namespace k8asd {
             var member = (Member) item.RowObject;
             if (e.ColumnIndex == 1) {
                 KickPlayer(member.Id);
+            }
+        }
+
+        private void createButton_Click(object sender, EventArgs e) {
+            var item = armyList.SelectedItem;
+            if (item != null) {
+                var army = (Army) item;
+                CreateArmy(army.Id, 0, PartyLimit.None);
+            }
+        }
+
+        private void createLegionButton_Click(object sender, EventArgs e) {
+            var item = armyList.SelectedItem;
+            if (item != null) {
+                var army = (Army) item;
+                CreateArmy(army.Id, 0, PartyLimit.Legion);
             }
         }
     }
