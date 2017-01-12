@@ -26,7 +26,6 @@
             this.components = new System.ComponentModel.Container();
             this.armyList = new System.Windows.Forms.ListBox();
             this.refreshArmyButton = new System.Windows.Forms.Button();
-            this.teamList = new System.Windows.Forms.ListBox();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.armyInfoBox = new System.Windows.Forms.GroupBox();
             this.itemLabel = new System.Windows.Forms.TextBox();
@@ -37,17 +36,34 @@
             this.armyNumLabel = new System.Windows.Forms.Label();
             this.baseHonorLabel = new System.Windows.Forms.Label();
             this.refreshTeamButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.teamBox = new System.Windows.Forms.GroupBox();
+            this.inviteButton = new System.Windows.Forms.Button();
+            this.quitButton = new System.Windows.Forms.Button();
+            this.disbandButton = new System.Windows.Forms.Button();
+            this.forceAttackButton = new System.Windows.Forms.Button();
+            this.attackButton = new System.Windows.Forms.Button();
+            this.joinX10Button = new System.Windows.Forms.Button();
+            this.teamList = new BrightIdeasSoftware.ObjectListView();
+            this.teamColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.joinColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.memberList = new BrightIdeasSoftware.ObjectListView();
+            this.memberColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.kickColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.armyInfoBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.teamBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.teamList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memberList)).BeginInit();
             this.SuspendLayout();
             // 
             // armyList
             // 
             this.armyList.FormattingEnabled = true;
-            this.armyList.Location = new System.Drawing.Point(5, 40);
+            this.armyList.Items.AddRange(new object[] {
+            "TEST1",
+            "TEST2"});
+            this.armyList.Location = new System.Drawing.Point(5, 120);
             this.armyList.Name = "armyList";
-            this.armyList.Size = new System.Drawing.Size(200, 225);
+            this.armyList.Size = new System.Drawing.Size(250, 329);
             this.armyList.TabIndex = 0;
             this.armyList.SelectedIndexChanged += new System.EventHandler(this.armyList_SelectedIndexChanged);
             // 
@@ -55,20 +71,11 @@
             // 
             this.refreshArmyButton.Location = new System.Drawing.Point(5, 5);
             this.refreshArmyButton.Name = "refreshArmyButton";
-            this.refreshArmyButton.Size = new System.Drawing.Size(75, 30);
+            this.refreshArmyButton.Size = new System.Drawing.Size(120, 30);
             this.refreshArmyButton.TabIndex = 11;
-            this.refreshArmyButton.Text = "Làm mới";
+            this.refreshArmyButton.Text = "Làm mới quân đoàn";
             this.refreshArmyButton.UseVisualStyleBackColor = true;
             this.refreshArmyButton.Click += new System.EventHandler(this.refreshArmyButton_Click);
-            // 
-            // teamList
-            // 
-            this.teamList.FormattingEnabled = true;
-            this.teamList.Location = new System.Drawing.Point(10, 60);
-            this.teamList.Name = "teamList";
-            this.teamList.ScrollAlwaysVisible = true;
-            this.teamList.Size = new System.Drawing.Size(230, 225);
-            this.teamList.TabIndex = 12;
             // 
             // refreshTimer
             // 
@@ -82,7 +89,7 @@
             this.armyInfoBox.Controls.Add(this.limitLabel);
             this.armyInfoBox.Controls.Add(this._ignore0);
             this.armyInfoBox.Controls.Add(this.honorLabel);
-            this.armyInfoBox.Location = new System.Drawing.Point(215, 40);
+            this.armyInfoBox.Location = new System.Drawing.Point(5, 41);
             this.armyInfoBox.Name = "armyInfoBox";
             this.armyInfoBox.Size = new System.Drawing.Size(250, 70);
             this.armyInfoBox.TabIndex = 13;
@@ -96,6 +103,7 @@
             this.itemLabel.ReadOnly = true;
             this.itemLabel.Size = new System.Drawing.Size(180, 20);
             this.itemLabel.TabIndex = 19;
+            this.itemLabel.TabStop = false;
             this.itemLabel.Text = "Thất Tinh Kiếm";
             this.itemLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -129,7 +137,7 @@
             // playerNumLabel
             // 
             this.playerNumLabel.AutoSize = true;
-            this.playerNumLabel.Location = new System.Drawing.Point(120, 15);
+            this.playerNumLabel.Location = new System.Drawing.Point(75, 15);
             this.playerNumLabel.Name = "playerNumLabel";
             this.playerNumLabel.Size = new System.Drawing.Size(105, 13);
             this.playerNumLabel.TabIndex = 13;
@@ -147,7 +155,7 @@
             // baseHonorLabel
             // 
             this.baseHonorLabel.AutoSize = true;
-            this.baseHonorLabel.Location = new System.Drawing.Point(5, 35);
+            this.baseHonorLabel.Location = new System.Drawing.Point(190, 15);
             this.baseHonorLabel.Name = "baseHonorLabel";
             this.baseHonorLabel.Size = new System.Drawing.Size(122, 13);
             this.baseHonorLabel.TabIndex = 15;
@@ -155,7 +163,7 @@
             // 
             // refreshTeamButton
             // 
-            this.refreshTeamButton.Location = new System.Drawing.Point(216, 119);
+            this.refreshTeamButton.Location = new System.Drawing.Point(265, 5);
             this.refreshTeamButton.Name = "refreshTeamButton";
             this.refreshTeamButton.Size = new System.Drawing.Size(100, 30);
             this.refreshTeamButton.TabIndex = 20;
@@ -163,33 +171,169 @@
             this.refreshTeamButton.UseVisualStyleBackColor = true;
             this.refreshTeamButton.Click += new System.EventHandler(this.refreshTeamButton_Click);
             // 
-            // groupBox1
+            // teamBox
             // 
-            this.groupBox1.Controls.Add(this.teamList);
-            this.groupBox1.Controls.Add(this.armyNumLabel);
-            this.groupBox1.Controls.Add(this.playerNumLabel);
-            this.groupBox1.Controls.Add(this.baseHonorLabel);
-            this.groupBox1.Location = new System.Drawing.Point(215, 155);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(250, 300);
-            this.groupBox1.TabIndex = 21;
-            this.groupBox1.TabStop = false;
+            this.teamBox.Controls.Add(this.inviteButton);
+            this.teamBox.Controls.Add(this.quitButton);
+            this.teamBox.Controls.Add(this.disbandButton);
+            this.teamBox.Controls.Add(this.forceAttackButton);
+            this.teamBox.Controls.Add(this.attackButton);
+            this.teamBox.Controls.Add(this.joinX10Button);
+            this.teamBox.Controls.Add(this.teamList);
+            this.teamBox.Controls.Add(this.armyNumLabel);
+            this.teamBox.Controls.Add(this.playerNumLabel);
+            this.teamBox.Controls.Add(this.baseHonorLabel);
+            this.teamBox.Location = new System.Drawing.Point(265, 40);
+            this.teamBox.Name = "teamBox";
+            this.teamBox.Size = new System.Drawing.Size(360, 280);
+            this.teamBox.TabIndex = 21;
+            this.teamBox.TabStop = false;
+            // 
+            // inviteButton
+            // 
+            this.inviteButton.Enabled = false;
+            this.inviteButton.Location = new System.Drawing.Point(10, 240);
+            this.inviteButton.Name = "inviteButton";
+            this.inviteButton.Size = new System.Drawing.Size(80, 30);
+            this.inviteButton.TabIndex = 28;
+            this.inviteButton.Text = "Mời";
+            this.inviteButton.UseVisualStyleBackColor = true;
+            // 
+            // quitButton
+            // 
+            this.quitButton.Location = new System.Drawing.Point(95, 240);
+            this.quitButton.Name = "quitButton";
+            this.quitButton.Size = new System.Drawing.Size(80, 30);
+            this.quitButton.TabIndex = 27;
+            this.quitButton.Text = "Thoát";
+            this.quitButton.UseVisualStyleBackColor = true;
+            this.quitButton.Click += new System.EventHandler(this.quitButton_Click);
+            // 
+            // disbandButton
+            // 
+            this.disbandButton.Location = new System.Drawing.Point(95, 205);
+            this.disbandButton.Name = "disbandButton";
+            this.disbandButton.Size = new System.Drawing.Size(80, 30);
+            this.disbandButton.TabIndex = 26;
+            this.disbandButton.Text = "Giải tán";
+            this.disbandButton.UseVisualStyleBackColor = true;
+            this.disbandButton.Click += new System.EventHandler(this.disbandButton_Click);
+            // 
+            // forceAttackButton
+            // 
+            this.forceAttackButton.Location = new System.Drawing.Point(185, 205);
+            this.forceAttackButton.Name = "forceAttackButton";
+            this.forceAttackButton.Size = new System.Drawing.Size(80, 30);
+            this.forceAttackButton.TabIndex = 25;
+            this.forceAttackButton.Text = "Ép tấn công";
+            this.forceAttackButton.UseVisualStyleBackColor = true;
+            this.forceAttackButton.Click += new System.EventHandler(this.forceAttackButton_Click);
+            // 
+            // attackButton
+            // 
+            this.attackButton.Location = new System.Drawing.Point(10, 205);
+            this.attackButton.Name = "attackButton";
+            this.attackButton.Size = new System.Drawing.Size(80, 30);
+            this.attackButton.TabIndex = 24;
+            this.attackButton.Text = "Tấn công";
+            this.attackButton.UseVisualStyleBackColor = true;
+            this.attackButton.Click += new System.EventHandler(this.attackButton_Click);
+            // 
+            // joinX10Button
+            // 
+            this.joinX10Button.Location = new System.Drawing.Point(270, 205);
+            this.joinX10Button.Name = "joinX10Button";
+            this.joinX10Button.Size = new System.Drawing.Size(80, 30);
+            this.joinX10Button.TabIndex = 23;
+            this.joinX10Button.Text = "Gia nhập x10";
+            this.joinX10Button.UseVisualStyleBackColor = true;
+            this.joinX10Button.Click += new System.EventHandler(this.joinX10Button_Click);
+            // 
+            // teamList
+            // 
+            this.teamList.AllColumns.Add(this.teamColumn);
+            this.teamList.AllColumns.Add(this.joinColumn);
+            this.teamList.CellEditUseWholeCell = false;
+            this.teamList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.teamColumn,
+            this.joinColumn});
+            this.teamList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.teamList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.teamList.Location = new System.Drawing.Point(10, 35);
+            this.teamList.MultiSelect = false;
+            this.teamList.Name = "teamList";
+            this.teamList.ShowGroups = false;
+            this.teamList.Size = new System.Drawing.Size(340, 160);
+            this.teamList.TabIndex = 22;
+            this.teamList.UseCompatibleStateImageBehavior = false;
+            this.teamList.View = System.Windows.Forms.View.Details;
+            this.teamList.ButtonClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.teamList_ButtonClick);
+            this.teamList.SelectedIndexChanged += new System.EventHandler(this.teamList_SelectedIndexChanged);
+            // 
+            // teamColumn
+            // 
+            this.teamColumn.AspectName = "Description";
+            this.teamColumn.Width = 260;
+            // 
+            // joinColumn
+            // 
+            this.joinColumn.AspectName = "Name";
+            this.joinColumn.AspectToStringFormat = "Gia nhập";
+            this.joinColumn.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.joinColumn.IsButton = true;
+            this.joinColumn.Width = 55;
+            // 
+            // memberList
+            // 
+            this.memberList.AllColumns.Add(this.memberColumn);
+            this.memberList.AllColumns.Add(this.kickColumn);
+            this.memberList.CellEditUseWholeCell = false;
+            this.memberList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.memberColumn,
+            this.kickColumn});
+            this.memberList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.memberList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.memberList.Location = new System.Drawing.Point(265, 330);
+            this.memberList.MultiSelect = false;
+            this.memberList.Name = "memberList";
+            this.memberList.ShowGroups = false;
+            this.memberList.Size = new System.Drawing.Size(360, 120);
+            this.memberList.TabIndex = 22;
+            this.memberList.UseCompatibleStateImageBehavior = false;
+            this.memberList.View = System.Windows.Forms.View.Details;
+            this.memberList.ButtonClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.memberList_ButtonClick);
+            // 
+            // memberColumn
+            // 
+            this.memberColumn.AspectName = "Description";
+            this.memberColumn.Width = 200;
+            // 
+            // kickColumn
+            // 
+            this.kickColumn.AspectName = "Name";
+            this.kickColumn.AspectToStringFormat = "KICK";
+            this.kickColumn.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.kickColumn.IsButton = true;
+            this.kickColumn.Width = 55;
             // 
             // ArmyView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.memberList);
+            this.Controls.Add(this.teamBox);
             this.Controls.Add(this.refreshTeamButton);
             this.Controls.Add(this.armyInfoBox);
             this.Controls.Add(this.refreshArmyButton);
             this.Controls.Add(this.armyList);
             this.Name = "ArmyView";
-            this.Size = new System.Drawing.Size(635, 521);
+            this.Size = new System.Drawing.Size(667, 468);
             this.armyInfoBox.ResumeLayout(false);
             this.armyInfoBox.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.teamBox.ResumeLayout(false);
+            this.teamBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.teamList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memberList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -198,7 +342,6 @@
 
         private System.Windows.Forms.ListBox armyList;
         private System.Windows.Forms.Button refreshArmyButton;
-        private System.Windows.Forms.ListBox teamList;
         private System.Windows.Forms.Timer refreshTimer;
         private System.Windows.Forms.GroupBox armyInfoBox;
         private System.Windows.Forms.Label playerNumLabel;
@@ -209,6 +352,18 @@
         private System.Windows.Forms.Label _ignore0;
         private System.Windows.Forms.TextBox itemLabel;
         private System.Windows.Forms.Button refreshTeamButton;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox teamBox;
+        private BrightIdeasSoftware.ObjectListView teamList;
+        private BrightIdeasSoftware.OLVColumn teamColumn;
+        private BrightIdeasSoftware.OLVColumn joinColumn;
+        private System.Windows.Forms.Button joinX10Button;
+        private System.Windows.Forms.Button forceAttackButton;
+        private System.Windows.Forms.Button attackButton;
+        private System.Windows.Forms.Button disbandButton;
+        private System.Windows.Forms.Button quitButton;
+        private System.Windows.Forms.Button inviteButton;
+        private BrightIdeasSoftware.ObjectListView memberList;
+        private BrightIdeasSoftware.OLVColumn memberColumn;
+        private BrightIdeasSoftware.OLVColumn kickColumn;
     }
 }

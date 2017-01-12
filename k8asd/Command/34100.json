@@ -1,34 +1,42 @@
 ﻿{
-  "member": [],
-  "armies": {
-    "armynum": 6,
-    "battlenum": 1,
-    "filter": 1,
-    "honor": 200,
-    "id": 900001,
-    "itemname": "A Tu La （Tỷ lệ lớn）|2|",
-    "level": 22,
-    "maxplayer": 6,
-    "maxwinnum": 3,
-    "minplayer": 3,
-    "name": "Đổng Trác"
-  },
-  "maxnum": 0,
-  "currentnum": 0,
-  "team": [
+  "member": [
     {
-      "condition": "Lilac, cấp 0 trở lên",
-      "currentnum": 1,
-      "endtime": 1484071081220,
-      "maxnum": 6,
-      "teamid": 5557310,
-      "teamname": "Mi Lilac"
+      "playerid": 5542014,
+      "playerlevel": 60,
+      "playername": "Idol"
     },
     {
+      "playerid": 5557307,
+      "playerlevel": 40,
+      "playername": "Mh Lilac"
+    },
+    {
+      "playerid": 5542856,
+      "playerlevel": 55,
+      "playername": " MrSir"
+    }
+  ],
+  "armies": {
+    "armynum": 8,
+    "battlenum": 1,
+    "filter": 1,
+    "honor": 300,
+    "id": 900002,
+    "itemname": "Thất Tinh Kiếm （Tỷ lệ lớn）|2|",
+    "level": 32,
+    "maxplayer": 8,
+    "maxwinnum": 3,
+    "minplayer": 4,
+    "name": "Công Tôn Toản"
+  },
+  "maxnum": 8,
+  "currentnum": 3,
+  "team": [
+    {
       "condition": " cấp 0 trở lên",
-      "currentnum": 1,
-      "endtime": 1484071099321,
-      "maxnum": 6,
+      "currentnum": 3,
+      "endtime": 1484243539677,
+      "maxnum": 8,
       "teamid": 5542014,
       "teamname": "Idol"
     }

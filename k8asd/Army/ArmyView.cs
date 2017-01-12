@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using BrightIdeasSoftware;
 
 namespace k8asd {
     public partial class ArmyView : UserControl, IPacketReader {
@@ -117,16 +118,39 @@ namespace k8asd {
                 return result;
             }
 
-            public override string ToString() {
+            public string Description() {
                 return String.Format("{0} {1} ({2}/{3}) [{4}]",
                     Name, Condition, PlayerCount, MaxPlayerCount,
                     Utils.FormatDuration(endTime.RemainingMilliseconds()));
             }
         }
 
+        private class Member {
+            private int playerId;
+            private int playerLevel;
+            private string playerName;
+
+            public int Id { get { return playerId; } }
+            public int Level { get { return playerLevel; } }
+            public string Name { get { return playerName; } }
+
+            public static Member Parse(JToken token) {
+                var result = new Member();
+                result.playerId = (int) token["playerid"];
+                result.playerLevel = (int) token["playerlevel"];
+                result.playerName = (string) token["playername"];
+                return result;
+            }
+
+            public string Description() {
+                return String.Format("{0} Lv. {1}", Name, Level);
+            }
+        }
+
         private Queue<int> pendingPowerIds;
         private BindingList<Army> armies;
         private BindingList<Team> teams;
+        private BindingList<Member> members;
         private IPacketWriter packetWriter;
 
         public ArmyView() {
@@ -136,7 +160,13 @@ namespace k8asd {
             armyList.DataSource = armies;
 
             teams = new BindingList<Team>();
-            teamList.DataSource = teams;
+            /*
+            for (int i = 0; i < 20; ++i) {
+                teams.Add(Team.Parse(JToken.Parse("{\"condition\": \"Lilac, cấp 0 trở lên\",\"currentnum\": 1,\"endtime\": 1484071081220,\"maxnum\": 6,\"teamid\": 5557310,\"teamname\": \"Mi Lilac\" }")));
+            }
+            */
+
+            members = new BindingList<Member>();
 
             pendingPowerIds = new Queue<int>();
         }
@@ -190,10 +220,12 @@ namespace k8asd {
                 packet.CommandId == "34105" ||
                 packet.CommandId == "34106" ||
                 packet.CommandId == "34107") {
-                var token = JToken.Parse(packet.Message);
-                var message = token["message"];
-                if (message != null) {
-                    // FIXME.
+                if (packet.Message.Length > 0) {
+                    var token = JToken.Parse(packet.Message);
+                    var message = token["message"];
+                    if (message != null) {
+                        // FIXME.
+                    }
                 }
             }
         }
@@ -225,12 +257,33 @@ namespace k8asd {
             var armies = token["armies"];
             UpdateArmyPanel(armies);
 
+            var team = token["team"];
+            ParseTeams(team);
+
+            var member = token["member"];
+            ParseMembers(member);
+        }
+
+        private void ParseTeams(JToken token) {
             teams.Clear();
-            var teamsToken = token["team"];
-            foreach (var teamToken in teamsToken) {
+            foreach (var teamToken in token) {
                 var team = Team.Parse(teamToken);
                 teams.Add(team);
             }
+            var oldSelectedIndex = teamList.SelectedIndex;
+            teamList.SetObjects(teams, true);
+            teamList.SelectedIndex = oldSelectedIndex;
+        }
+
+        private void ParseMembers(JToken token) {
+            members.Clear();
+            foreach (var memberToken in token) {
+                var member = Member.Parse(memberToken);
+                members.Add(member);
+            }
+            var oldSelectedIndex = memberList.SelectedIndex;
+            memberList.SetObjects(members, true);
+            memberList.SelectedIndex = oldSelectedIndex;
         }
 
         private void UpdateArmyPanel(JToken token) {
@@ -331,6 +384,50 @@ namespace k8asd {
 
         private void refreshTeamButton_Click(object sender, EventArgs e) {
             RefreshSelectedArmy();
+        }
+
+        private void teamList_SelectedIndexChanged(object sender, EventArgs e) {
+
+        }
+
+        private void teamList_ButtonClick(object sender, CellClickEventArgs e) {
+            var item = e.Item;
+            var team = (Team) item.RowObject;
+            JoinArmy(team.Id);
+        }
+
+        private void joinX10Button_Click(object sender, EventArgs e) {
+            var item = teamList.SelectedItem;
+            if (item != null) {
+                var team = (Team) item.RowObject;
+                for (int i = 0; i < 10; ++i) {
+                    JoinArmy(team.Id);
+                }
+            }
+        }
+
+        private void attackButton_Click(object sender, EventArgs e) {
+            Attack();
+        }
+
+        private void disbandButton_Click(object sender, EventArgs e) {
+            Disband();
+        }
+
+        private void quitButton_Click(object sender, EventArgs e) {
+            Quit();
+        }
+
+        private void forceAttackButton_Click(object sender, EventArgs e) {
+            ForceAttack();
+        }
+
+        private void memberList_ButtonClick(object sender, CellClickEventArgs e) {
+            var item = e.Item;
+            var member = (Member) item.RowObject;
+            if (e.ColumnIndex == 1) {
+                KickPlayer(member.Id);
+            }
         }
     }
 
