@@ -61,6 +61,7 @@
             this.logBox.Location = new System.Drawing.Point(0, 22);
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
+            this.logBox.ReadOnly = true;
             this.logBox.Size = new System.Drawing.Size(350, 155);
             this.logBox.TabIndex = 1;
             // 
