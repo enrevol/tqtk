@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace k8asd {
     public static class F {
@@ -59,6 +58,7 @@ namespace k8asd {
                 }
         }
 
+        /*
         public static void CampMap(string moveInfo, Point p,
             ref KryptonButton[,] bt, R47107 r47107) {
             int w = Convert.ToInt32(r47107.width);
@@ -76,6 +76,7 @@ namespace k8asd {
                     }
                 }
         }
+        */
 
         public static void SearchPath(string moveInfo, Point cur, List<Point> curPath,
             int curCost, List<Point> limit, R47107 r47107,
