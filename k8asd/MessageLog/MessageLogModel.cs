@@ -15,7 +15,15 @@ namespace k8asd {
             get { return message; }
         }
 
+        public MessageLogModel() {
+            message = String.Empty;
+        }
+
         public void OnPacketReceived(Packet packet) {
+            if (packet.CommandId == "10103") {
+                // Ignore chat messages.
+                return;
+            }
             if (packet.Message.Length > 0) {
                 var token = JToken.Parse(packet.Message);
                 if (token.HasValues) {

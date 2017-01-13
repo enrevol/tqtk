@@ -133,6 +133,12 @@
     <Compile Include="Campaign\CampaignView.Designer.cs">
       <DependentUpon>CampaignView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChatLog\ChatLogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChatLog\ChatLogView.Designer.cs">
+      <DependentUpon>ChatLogView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
@@ -222,6 +228,9 @@
     <EmbeddedResource Include="AccountView.resx">
       <DependentUpon>AccountView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChatLog\ChatLogView.resx">
+      <DependentUpon>ChatLogView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cooldown\CooldownView.resx">
       <DependentUpon>CooldownView.cs</DependentUpon>
     </EmbeddedResource>
@@ -272,6 +281,7 @@
       <DependentUpon>WeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Command\11103_0.json" />
     <None Include="Command\34108.json" />
     <None Include="Command\34100.json" />
     <None Include="Command\33100_1.json" />
