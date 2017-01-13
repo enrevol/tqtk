@@ -65,6 +65,10 @@ namespace k8asd {
             return String.Format("{0:00}:{1:00}:{2:00}", span.Hours, span.Minutes, span.Seconds);
         }
 
+        public static string FormatDuration(DateTime dateTime) {
+            return String.Format("{0:00}:{1:00}:{2:00}", dateTime.Hour, dateTime.Minute, dateTime.Second);
+        }
+
         public static int RemainingMilliseconds(this DateTime dateTime) {
             return Math.Max(0, (int) (dateTime - DateTime.Now).TotalMilliseconds);
         }
