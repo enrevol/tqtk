@@ -230,25 +230,7 @@ namespace k8asd {
             }
             if (packet.CommandId == "34100") {
                 Parse34100(packet);
-            }
-            if (packet.CommandId == "34101" ||
-                packet.CommandId == "34102" ||
-                packet.CommandId == "34104" ||
-                packet.CommandId == "34105" ||
-                packet.CommandId == "34106" ||
-                packet.CommandId == "34107") {
-                if (packet.Message.Length > 0) {
-                    var token = JToken.Parse(packet.Message);
-                    var message = token["message"];
-                    if (message != null) {
-                        Console.WriteLine((string) message);
-                    }
-                    var errmessage = token["errmessage"];
-                    if (errmessage != null) {
-                        Console.WriteLine((string) errmessage);
-                    }
-                }
-            }
+            }            
             if (packet.CommandId == "34108") {
                 var token = JToken.Parse(packet.Message);
             }

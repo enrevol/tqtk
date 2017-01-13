@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace k8asd
 {

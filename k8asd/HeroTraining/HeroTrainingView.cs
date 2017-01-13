@@ -273,7 +273,6 @@ namespace k8asd {
             var token = JToken.Parse(packet.Message);
             var message = (string) token["message"];
             if (message != null) {
-                // model.LogDebug(message);
                 return;
             }
             Parse41100(packet);
@@ -284,7 +283,6 @@ namespace k8asd {
             var token = JToken.Parse(packet.Message);
             var message = (string) token["message"];
             if (message != null) {
-                // model.LogDebug(message);
                 return;
             }
             Parse41100(packet);

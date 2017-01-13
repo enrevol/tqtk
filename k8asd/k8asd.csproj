@@ -72,22 +72,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ComponentFactory.Krypton.Docking, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Docking.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Navigator, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Navigator.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Toolkit, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Workspace, Version=4.1.1.0, Culture=neutral, PublicKeyToken=5fd520d36328f741, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\k8asd\k8asd\bin\x86\Debug\ComponentFactory.Krypton.Workspace.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\k8asd\k8asd\lib\Newtonsoft.Json.dll</HintPath>
@@ -132,6 +116,12 @@
     </Compile>
     <Compile Include="Campaign\CampaignView.Designer.cs">
       <DependentUpon>CampaignView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChatLog\ChatLogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChatLog\ChatLogView.Designer.cs">
+      <DependentUpon>ChatLogView.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
@@ -187,10 +177,12 @@
       <DependentUpon>ClientView.cs</DependentUpon>
     </Compile>
     <Compile Include="Funtions.cs" />
-    <Compile Include="MessageLogView.cs">
+    <Compile Include="MessageLog\IMessageLogModel.cs" />
+    <Compile Include="MessageLog\MessageLogModel.cs" />
+    <Compile Include="MessageLog\MessageLogView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MessageLogView.Designer.cs">
+    <Compile Include="MessageLog\MessageLogView.Designer.cs">
       <DependentUpon>MessageLogView.cs</DependentUpon>
     </Compile>
     <Compile Include="Packet.cs" />
@@ -220,6 +212,9 @@
     <EmbeddedResource Include="AccountView.resx">
       <DependentUpon>AccountView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChatLog\ChatLogView.resx">
+      <DependentUpon>ChatLogView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cooldown\CooldownView.resx">
       <DependentUpon>CooldownView.cs</DependentUpon>
     </EmbeddedResource>
@@ -242,7 +237,7 @@
     <EmbeddedResource Include="Mcu\McuView.resx">
       <DependentUpon>McuView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MessageLogView.resx">
+    <EmbeddedResource Include="MessageLog\MessageLogView.resx">
       <DependentUpon>MessageLogView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Army\ArmyView.resx">
@@ -270,6 +265,7 @@
       <DependentUpon>WeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Command\11103_0.json" />
     <None Include="Command\34108.json" />
     <None Include="Command\34100.json" />
     <None Include="Command\33100_1.json" />
