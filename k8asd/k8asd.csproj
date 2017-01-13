@@ -104,11 +104,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountManager.cs" />
-    <Compile Include="AccountView.cs">
+    <Compile Include="Account\AccountManager.cs" />
+    <Compile Include="Account\AccountView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AccountView.Designer.cs">
+    <Compile Include="Account\AccountView.Designer.cs">
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
     <Compile Include="Campaign\CampaignView.cs">
@@ -123,7 +123,7 @@
     <Compile Include="ChatLog\ChatLogView.Designer.cs">
       <DependentUpon>ChatLogView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Account\Configuration.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
     <Compile Include="Info\IInfoModel.cs" />
@@ -161,8 +161,8 @@
     <Compile Include="Info\InfoView.Designer.cs">
       <DependentUpon>InfoView.cs</DependentUpon>
     </Compile>
-    <Compile Include="IPacketWriter.cs" />
-    <Compile Include="LoginHelper.cs" />
+    <Compile Include="Connection\IPacketWriter.cs" />
+    <Compile Include="Connection\LoginHelper.cs" />
     <Compile Include="Mcu\McuModel.cs" />
     <Compile Include="Mcu\McuView.cs">
       <SubType>UserControl</SubType>
@@ -185,9 +185,9 @@
     <Compile Include="MessageLog\MessageLogView.Designer.cs">
       <DependentUpon>MessageLogView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Packet.cs" />
-    <Compile Include="PacketHandler.cs" />
-    <Compile Include="IPacketReader.cs" />
+    <Compile Include="Connection\Packet.cs" />
+    <Compile Include="Connection\PacketHandler.cs" />
+    <Compile Include="Connection\IPacketReader.cs" />
     <Compile Include="Permutation.cs" />
     <Compile Include="Army\ArmyView.cs">
       <SubType>UserControl</SubType>
@@ -197,19 +197,19 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShopView.cs">
+    <Compile Include="Shop\ShopView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ShopView.Designer.cs">
+    <Compile Include="Shop\ShopView.Designer.cs">
       <DependentUpon>ShopView.cs</DependentUpon>
     </Compile>
-    <Compile Include="WeaveView.cs">
+    <Compile Include="Weave\WeaveView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WeaveView.Designer.cs">
+    <Compile Include="Weave\WeaveView.Designer.cs">
       <DependentUpon>WeaveView.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AccountView.resx">
+    <EmbeddedResource Include="Account\AccountView.resx">
       <DependentUpon>AccountView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChatLog\ChatLogView.resx">
@@ -257,10 +257,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="ShopView.resx">
+    <EmbeddedResource Include="Shop\ShopView.resx">
       <DependentUpon>ShopView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WeaveView.resx">
+    <EmbeddedResource Include="Weave\WeaveView.resx">
       <DependentUpon>WeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
@@ -302,7 +302,7 @@
     <Compile Include="MainView.Designer.cs">
       <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Session.cs" />
+    <Compile Include="Connection\Session.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="V.cs" />
   </ItemGroup>
