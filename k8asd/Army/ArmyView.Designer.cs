@@ -51,6 +51,8 @@
             this.memberList = new BrightIdeasSoftware.ObjectListView();
             this.memberColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.kickColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.moveUpColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.moveDownColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.memberBox = new System.Windows.Forms.GroupBox();
             this.armyInfoBox.SuspendLayout();
             this.teamBox.SuspendLayout();
@@ -311,10 +313,14 @@
             // 
             this.memberList.AllColumns.Add(this.memberColumn);
             this.memberList.AllColumns.Add(this.kickColumn);
+            this.memberList.AllColumns.Add(this.moveUpColumn);
+            this.memberList.AllColumns.Add(this.moveDownColumn);
             this.memberList.CellEditUseWholeCell = false;
             this.memberList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.memberColumn,
-            this.kickColumn});
+            this.kickColumn,
+            this.moveUpColumn,
+            this.moveDownColumn});
             this.memberList.Cursor = System.Windows.Forms.Cursors.Default;
             this.memberList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.memberList.Location = new System.Drawing.Point(10, 20);
@@ -339,6 +345,22 @@
             this.kickColumn.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
             this.kickColumn.IsButton = true;
             this.kickColumn.Width = 55;
+            // 
+            // moveUpColumn
+            // 
+            this.moveUpColumn.AspectName = "Name";
+            this.moveUpColumn.AspectToStringFormat = "▲";
+            this.moveUpColumn.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.moveUpColumn.IsButton = true;
+            this.moveUpColumn.Width = 30;
+            // 
+            // moveDownColumn
+            // 
+            this.moveDownColumn.AspectName = "Name";
+            this.moveDownColumn.AspectToStringFormat = "▼";
+            this.moveDownColumn.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.moveDownColumn.IsButton = true;
+            this.moveDownColumn.Width = 30;
             // 
             // memberBox
             // 
@@ -403,5 +425,7 @@
         private System.Windows.Forms.Button createLegionButton;
         private System.Windows.Forms.Button createButton;
         private System.Windows.Forms.GroupBox memberBox;
+        private BrightIdeasSoftware.OLVColumn moveUpColumn;
+        private BrightIdeasSoftware.OLVColumn moveDownColumn;
     }
 }

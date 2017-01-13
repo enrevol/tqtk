@@ -230,7 +230,7 @@ namespace k8asd {
             }
             if (packet.CommandId == "34100") {
                 Parse34100(packet);
-            }            
+            }
             if (packet.CommandId == "34108") {
                 var token = JToken.Parse(packet.Message);
             }
@@ -326,6 +326,14 @@ namespace k8asd {
 
         private void JoinArmy(int hostId) {
             packetWriter.SendCommand("34102", hostId.ToString());
+        }
+
+        private void MovePlayerUp(int playerId) {
+            packetWriter.SendCommand("34103", playerId.ToString(), "0");
+        }
+
+        private void MovePlayerDown(int playerId) {
+            packetWriter.SendCommand("34103", playerId.ToString(), "1");
         }
 
         private void KickPlayer(int playerId) {
@@ -434,6 +442,10 @@ namespace k8asd {
             var member = (Member) item.RowObject;
             if (e.ColumnIndex == 1) {
                 KickPlayer(member.Id);
+            } else if (e.ColumnIndex == 2) {
+                MovePlayerUp(member.Id);
+            } else if (e.ColumnIndex == 3) {
+                MovePlayerDown(member.Id);
             }
         }
 
