@@ -117,6 +117,7 @@
     <Compile Include="Campaign\CampaignView.Designer.cs">
       <DependentUpon>CampaignView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChatLog\ChatLogModel.cs" />
     <Compile Include="ChatLog\ChatLogView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -124,6 +125,7 @@
       <DependentUpon>ChatLogView.cs</DependentUpon>
     </Compile>
     <Compile Include="Account\Configuration.cs" />
+    <Compile Include="ChatLog\IChatLogModel.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
     <Compile Include="Info\IInfoModel.cs" />

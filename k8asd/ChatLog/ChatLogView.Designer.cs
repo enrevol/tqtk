@@ -28,12 +28,12 @@
             this.chatInput = new System.Windows.Forms.TextBox();
             this.modeButton = new System.Windows.Forms.Button();
             this.logTabList = new System.Windows.Forms.TabControl();
+            this.logTab0 = new System.Windows.Forms.TabPage();
             this.logTab1 = new System.Windows.Forms.TabPage();
             this.logTab2 = new System.Windows.Forms.TabPage();
             this.logTab3 = new System.Windows.Forms.TabPage();
             this.logTab4 = new System.Windows.Forms.TabPage();
             this.logTab5 = new System.Windows.Forms.TabPage();
-            this.logTab0 = new System.Windows.Forms.TabPage();
             this.logTabList.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -101,6 +101,17 @@
             this.logTabList.SelectedIndex = 0;
             this.logTabList.Size = new System.Drawing.Size(350, 20);
             this.logTabList.TabIndex = 4;
+            this.logTabList.SelectedIndexChanged += new System.EventHandler(this.logTabList_SelectedIndexChanged);
+            // 
+            // logTab0
+            // 
+            this.logTab0.Location = new System.Drawing.Point(4, 22);
+            this.logTab0.Name = "logTab0";
+            this.logTab0.Padding = new System.Windows.Forms.Padding(3);
+            this.logTab0.Size = new System.Drawing.Size(342, 0);
+            this.logTab0.TabIndex = 0;
+            this.logTab0.Text = "Thế giới";
+            this.logTab0.UseVisualStyleBackColor = true;
             // 
             // logTab1
             // 
@@ -147,16 +158,6 @@
             this.logTab5.TabIndex = 5;
             this.logTab5.Text = "Tất cả";
             this.logTab5.UseVisualStyleBackColor = true;
-            // 
-            // logTab0
-            // 
-            this.logTab0.Location = new System.Drawing.Point(4, 22);
-            this.logTab0.Name = "logTab0";
-            this.logTab0.Padding = new System.Windows.Forms.Padding(3);
-            this.logTab0.Size = new System.Drawing.Size(342, 0);
-            this.logTab0.TabIndex = 0;
-            this.logTab0.Text = "Thế giới";
-            this.logTab0.UseVisualStyleBackColor = true;
             // 
             // ChatLogView
             // 

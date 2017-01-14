@@ -10,65 +10,94 @@ using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
 namespace k8asd {
-    public partial class ChatLogView : UserControl, IPacketReader {
-        private class Channel {
-            private int id;
-            private string name;
+    public partial class ChatLogView : UserControl {
+        /// <summary>
+        /// Text color for messages in private channel.
+        /// </summary>
+        private static readonly Color PrivateChannelColor = Color.OrangeRed;
 
-            public int Id { get { return id; } }
-            public string Name { get { return name; } }
+        /// <summary>
+        /// Text color for messages in world channel.
+        /// </summary>
+        private static readonly Color WorldChannelColor = Color.Gold;
 
-            public Channel(int id, string name) {
-                this.id = id;
-                this.name = name;
-            }
+        /// <summary>
+        /// Text color for messages in nation channel.
+        /// </summary>
+        private static readonly Color NationChannelColor = Color.FromArgb(90, 200, 90);
 
-            public override string ToString() {
-                return Name;
-            }
-        }
+        /// <summary>
+        /// Text color for messages in local channel.
+        /// </summary>
+        private static readonly Color LocalChannelColor = Color.FromArgb(113, 222, 227);
 
-        private IPacketWriter packetWriter;
-        private IInfoModel infoModel;
+        /// <summary>
+        /// Text color for messages in legion channel.
+        /// </summary>
+        private static readonly Color LegionChannelColor = Color.FromArgb(90, 90, 200);
+
+        private IChatLogModel model;
+        private Dictionary<ChatChannel, string> channelMessages;
+        private string allMessages;
 
         public ChatLogView() {
             InitializeComponent();
 
             channelList.Items.Clear();
-            channelList.Items.Add(new Channel(2, "Thế giới"));
-            channelList.Items.Add(new Channel(3, "Quốc gia"));
-            channelList.Items.Add(new Channel(4, "Khu vực"));
-            channelList.Items.Add(new Channel(5, "Bang"));
-            channelList.Items.Add(new Channel(6, "Chiến"));
+            channelList.Items.Add(ChatChannel.World);
+            channelList.Items.Add(ChatChannel.Nation);
+            channelList.Items.Add(ChatChannel.Local);
+            channelList.Items.Add(ChatChannel.Legion);
+            channelList.Items.Add(ChatChannel.Campaign);
             channelList.SelectedIndex = 2;
+
+            channelMessages = new Dictionary<ChatChannel, string>();
+            channelMessages.Add(ChatChannel.World, String.Empty);
+            channelMessages.Add(ChatChannel.Nation, String.Empty);
+            channelMessages.Add(ChatChannel.Local, String.Empty);
+            channelMessages.Add(ChatChannel.Legion, String.Empty);
+            channelMessages.Add(ChatChannel.Campaign, String.Empty);
+
+            allMessages = String.Empty;
         }
 
-        public void SetPacketWriter(IPacketWriter writer) {
-            packetWriter = writer;
+        public void SetModel(IChatLogModel model) {
+            this.model = model;
+            model.OnChatMessageAdded += OnChatMessageAdded;
         }
 
-        public void SetInfoModel(IInfoModel model) {
-            infoModel = model;
+        private void OnChatMessageAdded(object sender, ChatMessage message) {
+            var line = String.Format("[{0}][{1}] {2}: {3}",
+                Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
+            var channelMessage = channelMessages[message.Channel];
+            AddMessage(ref channelMessage, line);
+            channelMessages[message.Channel] = channelMessage;
+            AddMessage(ref allMessages, line);
+            UpdateLogBox();
         }
 
-        public void OnPacketReceived(Packet packet) {
-            if (packet.CommandId == "10103") {
-                if (packet.Message.Length > 0) {
-                    var token = JToken.Parse(packet.Message);
-                    var message = (string) token["message"];
-                    var sender = (string) token["sender"];
-                    var category = (int) token["category"];
-                    var messageType = (int) token["messageType"];
-                    AddMessage(category, sender, message);
-                }
+        private void AddMessage(ref string lines, string line) {
+            if (lines.Length > 0) {
+                lines += Environment.NewLine;
             }
+            lines += line;
         }
 
-        private void AddMessage(int category, string sender, string message) {
-            if (logBox.Text.Length > 0) {
-                logBox.Text += Environment.NewLine;
+        private string GetChannelMessage(int tabIndex) {
+            switch (tabIndex) {
+            case 0: return channelMessages[ChatChannel.World];
+            case 1: return channelMessages[ChatChannel.Nation];
+            case 2: return channelMessages[ChatChannel.Local];
+            case 3: return channelMessages[ChatChannel.Legion];
+            case 4: return channelMessages[ChatChannel.Campaign];
+            case 5: return allMessages;
             }
-            logBox.Text += String.Format("[{0}] {1}: {2}", Utils.FormatDuration(DateTime.Now), sender, message);
+            return String.Empty;
+        }
+
+        private void UpdateLogBox() {
+            var selectedIndex = logTabList.SelectedIndex;
+            logBox.Text = GetChannelMessage(selectedIndex);
             logBox.SelectionStart = logBox.TextLength;
             logBox.ScrollToCaret();
         }
@@ -80,8 +109,8 @@ namespace k8asd {
         private void chatInput_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter && chatInput.Text.Trim().Length > 0) {
                 var item = channelList.SelectedItem;
-                var channel = (Channel) item;
-                packetWriter.SendCommand("10103", infoModel.PlayerName, chatInput.Text, channel.Id.ToString(), " ");
+                var channel = (ChatChannel) item;
+                model.SendMessage(channel, chatInput.Text);
                 chatInput.Text = String.Empty;
                 /*
                 int n = cbbChat.SelectedIndex - 1;
@@ -99,6 +128,10 @@ namespace k8asd {
                 }
                 */
             }
+        }
+
+        private void logTabList_SelectedIndexChanged(object sender, EventArgs e) {
+            UpdateLogBox();
         }
     }
 }
@@ -132,124 +165,4 @@ namespace k8asd {
                         txtChatBox[6].SelectionLength = 0;
                 }
                 break;
-*/
-
-/*
-private void btnChatExpand_Click(object sender, EventArgs e) {
-    if (btnChatExpand.Text == "+")
-        btnChatExpand.Text = "1";
-    navChat.BringToFront();
-    if (btnChatExpand.Text == "1") {
-        btnChatExpand.Text = "2";
-        navChat.Top -= 200;
-        navChat.Height += 200;
-    } else if (btnChatExpand.Text == "2") {
-        btnChatExpand.Text = "3";
-        navChat.Width += 500;
-    } else if (btnChatExpand.Text == "3") {
-        btnChatExpand.Text = "1";
-        navChat.Width -= 500;
-        navChat.Height -= 200;
-        navChat.Top += 200;
-    }
-}
-
-     public class R10103 {
-        public Color color;
-        public string category;
-        public string message;
-        public string messageType;
-        public string sender;
-        public string text;
-        public string disp;
-        public string href;
-
-        public R10103(string json) {
-            string str;
-            JToken token = JObject.Parse(json)["m"];
-            messageType = token["messageType"].ToString();
-            str = token["message"].ToString();
-            int start = str.IndexOf("<a href");
-            if (start > 0) {
-                int start2 = str.IndexOf("<font color");
-                if (start2 > 0) {
-                    int end = str.IndexOf("<", start2 + 1);
-                    int end2 = str.IndexOf(">", end + 1);
-                    str = str.Remove(end, end2 - end + 1).Remove(start2, 22);
-                }
-                int end3 = str.IndexOf("<", start + 1);
-                int end4 = str.IndexOf(">", end3 + 1);
-                string str2 = str.Substring(start, end3 - start);
-                disp = str2.Substring(str2.IndexOf("\'>") + 2);
-                href = str2.Substring(9, str2.IndexOf("\'", 10) - 9);
-                str = str.Remove(start, end4 - start + 1);
-            } else
-                href = "";
-            message = str.Replace("\"", "");
-            sender = token["sender"].ToString().Replace("\"", "");
-            category = token["category"].ToString();
-            switch (category) {
-            case "1":
-                text = "[Mật]";
-                color = Color.OrangeRed;
-                break;
-            case "2":
-                text = "[Thế giới]";
-                color = Color.Gold;
-                break;
-            case "3":
-                text = "[Quốc gia]";
-                color = Color.FromArgb(90, 200, 90);
-                break;
-            case "4":
-                text = "[Khu vực]";
-                color = Color.FromArgb(113, 222, 227);
-                break;
-            case "5":
-                text = "[Bang]";
-                color = Color.FromArgb(90, 90, 200);
-                break;
-            case "6":
-                category = "4";
-                text = "[Hệ thống]";
-                color = Color.FromArgb(113, 222, 227);
-                break;
-            case "7":
-                break;
-            case "8":
-                sender = "[Công cáo]";
-                color = Color.OrangeRed;
-                break;
-            case "9":
-                break;
-            case "10":
-                break;
-            case "11":
-                break;
-            case "12":
-                category = "2";
-                goto case "2";
-            case "13":
-                category = "3";
-                goto case "3";
-            case "14":
-                category = "4";
-                goto case "4";
-            case "15":
-                category = "4";
-                sender = "";
-                goto case "6";
-            case "16":
-                category = "5";
-                text = "";
-                color = Color.FromArgb(90, 90, 200);
-                break;
-            case "19":
-                category = "6";
-                color = Color.YellowGreen;
-                break;
-            }
-            text += sender + ": " + message;
-        }
-    }
 */
