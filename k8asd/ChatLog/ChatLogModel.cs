@@ -66,9 +66,15 @@ namespace k8asd {
                 return;
             }
             if (category == 12) {
-                // sender: Hệ thống.
+                // sender: Hệ thống
                 // message: Thánh_Nữ Chinh chiến nhận được {Bá Đạo Kiếm(mảnh)|6|272780}(Mảnh vỡ 1/20)
                 // message: Dân Chơi tại Võ Đài thắng liên tiếp 10 trận, đại sát đại nộ!
+                AddMessage(ChatChannel.World, sender, message);
+                return;
+            }
+            if (category == 13) {
+                // sender: Hệ thống
+                // message: Quân Sư Rồng Uy Danh tăng mạnh 530000 trở thành Đại Đô Đốc Tam Tinh, hiệu quả gia thành: Công Kích+10%, Phòng Thủ+5%! Chúc mừng mãnh tướng mới của Ngụy quốc!
                 AddMessage(ChatChannel.World, sender, message);
                 return;
             }
