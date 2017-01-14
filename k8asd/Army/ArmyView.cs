@@ -131,7 +131,7 @@ namespace k8asd {
                 result.maxPlayerCount = (int) token["maxnum"];
                 var endtime = (long) token["endtime"];
                 result.endTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-                    .ToLocalTime().AddMilliseconds(endtime).AddMinutes(-1);
+                    .ToLocalTime().AddMilliseconds(endtime).AddMinutes(2);
                 return result;
             }
 
@@ -393,8 +393,10 @@ namespace k8asd {
             honorLabel.Text = String.Format("Chiến tích: {0}", army.Honor);
         }
 
-        private void refreshTimer_Tick(object sender, EventArgs e) {
-            RefreshSelectedArmy();
+        private void refreshTeamTimer_Tick(object sender, EventArgs e) {
+            if (autoRefreshTeamBox.Checked) {
+                RefreshSelectedArmy();
+            }
         }
 
         private void refreshTeamButton_Click(object sender, EventArgs e) {
@@ -462,6 +464,16 @@ namespace k8asd {
             if (item != null) {
                 var army = (Army) item;
                 CreateArmy(army.Id, 0, PartyLimit.Legion);
+            }
+        }
+
+        private void refreshTeamInterval_ValueChanged(object sender, EventArgs e) {
+            refreshTeamTimer.Interval = (int) refreshTeamInterval.Value;
+        }
+
+        private void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
+            if (autoRefreshTeamBox.Checked) {
+                RefreshSelectedArmy();
             }
         }
     }

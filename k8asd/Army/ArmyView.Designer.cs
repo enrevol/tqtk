@@ -26,7 +26,7 @@
             this.components = new System.ComponentModel.Container();
             this.armyList = new System.Windows.Forms.ListBox();
             this.refreshArmyButton = new System.Windows.Forms.Button();
-            this.refreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.refreshTeamTimer = new System.Windows.Forms.Timer(this.components);
             this.armyInfoBox = new System.Windows.Forms.GroupBox();
             this.itemLabel = new System.Windows.Forms.TextBox();
             this.limitLabel = new System.Windows.Forms.Label();
@@ -54,11 +54,14 @@
             this.moveUpColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.moveDownColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.memberBox = new System.Windows.Forms.GroupBox();
+            this.autoRefreshTeamBox = new System.Windows.Forms.CheckBox();
+            this.refreshTeamInterval = new System.Windows.Forms.NumericUpDown();
             this.armyInfoBox.SuspendLayout();
             this.teamBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).BeginInit();
             this.memberBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).BeginInit();
             this.SuspendLayout();
             // 
             // armyList
@@ -80,11 +83,11 @@
             this.refreshArmyButton.UseVisualStyleBackColor = true;
             this.refreshArmyButton.Click += new System.EventHandler(this.refreshArmyButton_Click);
             // 
-            // refreshTimer
+            // refreshTeamTimer
             // 
-            this.refreshTimer.Enabled = true;
-            this.refreshTimer.Interval = 1000;
-            this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
+            this.refreshTeamTimer.Enabled = true;
+            this.refreshTeamTimer.Interval = 1000;
+            this.refreshTeamTimer.Tick += new System.EventHandler(this.refreshTeamTimer_Tick);
             // 
             // armyInfoBox
             // 
@@ -372,10 +375,47 @@
             this.memberBox.TabStop = false;
             this.memberBox.Text = "Danh sách thành viên tổ đội";
             // 
+            // autoRefreshTeamBox
+            // 
+            this.autoRefreshTeamBox.AutoSize = true;
+            this.autoRefreshTeamBox.Location = new System.Drawing.Point(380, 12);
+            this.autoRefreshTeamBox.Name = "autoRefreshTeamBox";
+            this.autoRefreshTeamBox.Size = new System.Drawing.Size(157, 17);
+            this.autoRefreshTeamBox.TabIndex = 24;
+            this.autoRefreshTeamBox.Text = "Tự động làm mới tổ đội (ms)";
+            this.autoRefreshTeamBox.UseVisualStyleBackColor = true;
+            this.autoRefreshTeamBox.CheckedChanged += new System.EventHandler(this.autoRefreshTeamBox_CheckedChanged);
+            // 
+            // refreshTeamInterval
+            // 
+            this.refreshTeamInterval.Location = new System.Drawing.Point(550, 11);
+            this.refreshTeamInterval.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.refreshTeamInterval.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.refreshTeamInterval.Name = "refreshTeamInterval";
+            this.refreshTeamInterval.Size = new System.Drawing.Size(60, 20);
+            this.refreshTeamInterval.TabIndex = 26;
+            this.refreshTeamInterval.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.refreshTeamInterval.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.refreshTeamInterval.ValueChanged += new System.EventHandler(this.refreshTeamInterval_ValueChanged);
+            // 
             // ArmyView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.refreshTeamInterval);
+            this.Controls.Add(this.autoRefreshTeamBox);
             this.Controls.Add(this.memberBox);
             this.Controls.Add(this.teamBox);
             this.Controls.Add(this.refreshTeamButton);
@@ -391,7 +431,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).EndInit();
             this.memberBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -399,7 +441,7 @@
 
         private System.Windows.Forms.ListBox armyList;
         private System.Windows.Forms.Button refreshArmyButton;
-        private System.Windows.Forms.Timer refreshTimer;
+        private System.Windows.Forms.Timer refreshTeamTimer;
         private System.Windows.Forms.GroupBox armyInfoBox;
         private System.Windows.Forms.Label playerNumLabel;
         private System.Windows.Forms.Label armyNumLabel;
@@ -427,5 +469,7 @@
         private System.Windows.Forms.GroupBox memberBox;
         private BrightIdeasSoftware.OLVColumn moveUpColumn;
         private BrightIdeasSoftware.OLVColumn moveDownColumn;
+        private System.Windows.Forms.CheckBox autoRefreshTeamBox;
+        private System.Windows.Forms.NumericUpDown refreshTeamInterval;
     }
 }
