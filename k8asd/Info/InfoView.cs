@@ -37,7 +37,7 @@ namespace k8asd {
         }
 
         private void OnPlayerLevelChanged(object sender, int playerLevel) {
-            infoBox.Text = String.Format("{0} Lv. {1} - {0}",
+            infoBox.Text = String.Format("{0} Lv. {1} - {2}",
                 model.PlayerName, playerLevel, Utils.FormatDuration(model.ServerTime));
         }
 
@@ -78,7 +78,7 @@ namespace k8asd {
         }
 
         private void serverTimer_Tick(object sender, EventArgs e) {
-            infoBox.Text = String.Format("{0} Lv. {1} - {0}",
+            infoBox.Text = String.Format("{0} Lv. {1} - {2}",
                 model.PlayerName, model.PlayerLevel, Utils.FormatDuration(model.ServerTime));
         }
     }

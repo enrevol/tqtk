@@ -72,5 +72,11 @@ namespace k8asd {
         public static int RemainingMilliseconds(this DateTime dateTime) {
             return Math.Max(0, (int) (dateTime - DateTime.Now).TotalMilliseconds);
         }
+
+        public static void Raise<T>(this EventHandler<T> handler, object sender, T arg) {
+            if (handler != null) {
+                handler(sender, arg);
+            }
+        }
     }
 }

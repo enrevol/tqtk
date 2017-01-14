@@ -16,6 +16,8 @@ namespace k8asd {
         /// </summary>
         int PlayerLevel { get; }
 
+        string LegionName { get; }
+
         /// <summary>
         /// Gets the server time.
         /// </summary>
@@ -68,6 +70,7 @@ namespace k8asd {
 
         event EventHandler<string> PlayerNameChanged;
         event EventHandler<int> PlayerLevelChanged;
+        event EventHandler<string> LegionNameChanged;
         event EventHandler<int> GoldChanged;
         event EventHandler<int> ReputationChanged;
         event EventHandler<int> HonorChanged;

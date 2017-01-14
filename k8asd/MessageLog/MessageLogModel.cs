@@ -45,7 +45,7 @@ namespace k8asd {
                 message += Environment.NewLine;
             }
             message += String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
-            MessageChanged(this, message);
+            MessageChanged.Raise(this, message);
         }
     }
 }

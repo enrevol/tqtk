@@ -35,12 +35,12 @@ namespace k8asd {
         }
 
         private void UpdateCooldowns() {
-            ImposeCooldownChanged(this, ImposeCooldown);
-            GuideCooldownChanged(this, GuideCooldown);
-            UpgradeCooldownChanged(this, UpgradeCooldown);
-            AppointCooldownChanged(this, AppointCooldown);
-            TechCooldownChanged(this, TechCooldown);
-            WeaveCooldownChanged(this, WeaveCooldown);
+            ImposeCooldownChanged.Raise(this, ImposeCooldown);
+            GuideCooldownChanged.Raise(this, GuideCooldown);
+            UpgradeCooldownChanged.Raise(this, UpgradeCooldown);
+            AppointCooldownChanged.Raise(this, AppointCooldown);
+            TechCooldownChanged.Raise(this, TechCooldown);
+            WeaveCooldownChanged.Raise(this, WeaveCooldown);
         }
 
         public int ImposeCooldown {

@@ -29,7 +29,7 @@ namespace k8asd {
             get { return mcu; }
             set {
                 mcu = value;
-                McuChanged(this, value);
+                McuChanged.Raise(this, value);
             }
         }
 
@@ -37,7 +37,7 @@ namespace k8asd {
             get { return maxMcu; }
             set {
                 maxMcu = value;
-                MaxMcuChanged(this, value);
+                MaxMcuChanged.Raise(this, value);
             }
         }
 
@@ -45,7 +45,7 @@ namespace k8asd {
             get { return mcuCooldown; }
             set {
                 mcuCooldown = value;
-                McuCooldownChanged(this, value);
+                McuCooldownChanged.Raise(this, value);
             }
         }
 
@@ -53,7 +53,7 @@ namespace k8asd {
             get { return extraZhengzhan; }
             set {
                 extraZhengzhan = value;
-                ExtraZhengzhanChanged(this, value);
+                ExtraZhengzhanChanged.Raise(this, value);
             }
         }
 
@@ -61,7 +61,7 @@ namespace k8asd {
             get { return extraGongji; }
             set {
                 extraGongji = value;
-                ExtraGongjiChanged(this, value);
+                ExtraGongjiChanged.Raise(this, value);
             }
         }
 
@@ -69,7 +69,7 @@ namespace k8asd {
             get { return extraNongtian; }
             set {
                 extraNongtian = value;
-                ExtraNongtianChanged(this, value);
+                ExtraNongtianChanged.Raise(this, value);
             }
         }
 
@@ -77,7 +77,7 @@ namespace k8asd {
             get { return extraYinkuang; }
             set {
                 extraYinkuang = value;
-                ExtraYinkuangChanged(this, value);
+                ExtraYinkuangChanged.Raise(this, value);
             }
         }
 
@@ -85,7 +85,7 @@ namespace k8asd {
             get { return extraZhengfu; }
             set {
                 extraZhengfu = value;
-                ExtraZhengfuChanged(this, value);
+                ExtraZhengfuChanged.Raise(this, value);
             }
         }
 

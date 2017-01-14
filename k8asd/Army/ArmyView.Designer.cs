@@ -326,7 +326,7 @@
             this.moveDownColumn});
             this.memberList.Cursor = System.Windows.Forms.Cursors.Default;
             this.memberList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.memberList.Location = new System.Drawing.Point(10, 20);
+            this.memberList.Location = new System.Drawing.Point(10, 50);
             this.memberList.MultiSelect = false;
             this.memberList.Name = "memberList";
             this.memberList.ShowGroups = false;
@@ -370,7 +370,7 @@
             this.memberBox.Controls.Add(this.memberList);
             this.memberBox.Location = new System.Drawing.Point(265, 335);
             this.memberBox.Name = "memberBox";
-            this.memberBox.Size = new System.Drawing.Size(360, 170);
+            this.memberBox.Size = new System.Drawing.Size(360, 200);
             this.memberBox.TabIndex = 23;
             this.memberBox.TabStop = false;
             this.memberBox.Text = "Danh sách thành viên tổ đội";
@@ -423,7 +423,7 @@
             this.Controls.Add(this.refreshArmyButton);
             this.Controls.Add(this.armyList);
             this.Name = "ArmyView";
-            this.Size = new System.Drawing.Size(673, 538);
+            this.Size = new System.Drawing.Size(674, 568);
             this.armyInfoBox.ResumeLayout(false);
             this.armyInfoBox.PerformLayout();
             this.teamBox.ResumeLayout(false);

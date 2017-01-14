@@ -9,6 +9,7 @@ namespace k8asd {
     public class InfoModel : IInfoModel, IPacketReader {
         private string playerName;
         private int playerLevel;
+        private string legionName;
         private TimeSpan serverTimeOffset;
         private int systemGold;
         private int userGold;
@@ -23,6 +24,7 @@ namespace k8asd {
 
         public event EventHandler<string> PlayerNameChanged;
         public event EventHandler<int> PlayerLevelChanged;
+        public event EventHandler<string> LegionNameChanged;
         public event EventHandler<int> GoldChanged;
         public event EventHandler<int> ReputationChanged;
         public event EventHandler<int> HonorChanged;
@@ -37,7 +39,7 @@ namespace k8asd {
             get { return playerName; }
             set {
                 playerName = value;
-                PlayerNameChanged(this, value);
+                PlayerNameChanged.Raise(this, value);
             }
         }
 
@@ -45,7 +47,15 @@ namespace k8asd {
             get { return playerLevel; }
             set {
                 playerLevel = value;
-                PlayerLevelChanged(this, value);
+                PlayerLevelChanged.Raise(this, value);
+            }
+        }
+
+        public string LegionName {
+            get { return legionName; }
+            set {
+                legionName = value;
+                LegionNameChanged.Raise(this, value);
             }
         }
 
@@ -57,7 +67,7 @@ namespace k8asd {
             get { return systemGold; }
             set {
                 systemGold = value;
-                GoldChanged(this, Gold);
+                GoldChanged.Raise(this, Gold);
             }
         }
 
@@ -65,7 +75,7 @@ namespace k8asd {
             get { return userGold; }
             set {
                 userGold = value;
-                GoldChanged(this, Gold);
+                GoldChanged.Raise(this, Gold);
             }
         }
 
@@ -77,7 +87,7 @@ namespace k8asd {
             get { return reputation; }
             set {
                 reputation = value;
-                ReputationChanged(this, value);
+                ReputationChanged.Raise(this, value);
             }
         }
 
@@ -85,7 +95,7 @@ namespace k8asd {
             get { return honor; }
             set {
                 honor = value;
-                HonorChanged(this, value);
+                HonorChanged.Raise(this, value);
             }
         }
 
@@ -93,7 +103,7 @@ namespace k8asd {
             get { return food; }
             set {
                 food = value;
-                FoodChanged(this, value);
+                FoodChanged.Raise(this, value);
             }
         }
 
@@ -101,7 +111,7 @@ namespace k8asd {
             get { return maxFood; }
             set {
                 maxFood = value;
-                MaxFoodChanged(this, value);
+                MaxFoodChanged.Raise(this, value);
             }
         }
 
@@ -109,7 +119,7 @@ namespace k8asd {
             get { return forces; }
             set {
                 forces = value;
-                ForceChanged(this, value);
+                ForceChanged.Raise(this, value);
             }
         }
 
@@ -117,7 +127,7 @@ namespace k8asd {
             get { return maxForces; }
             set {
                 maxForces = value;
-                MaxForceChanged(this, value);
+                MaxForceChanged.Raise(this, value);
             }
         }
 
@@ -125,7 +135,7 @@ namespace k8asd {
             get { return silver; }
             set {
                 silver = value;
-                SilverChanged(this, value);
+                SilverChanged.Raise(this, value);
             }
         }
 
@@ -133,7 +143,7 @@ namespace k8asd {
             get { return maxSilver; }
             set {
                 maxSilver = value;
-                MaxSilverChanged(this, value);
+                MaxSilverChanged.Raise(this, value);
             }
         }
 
@@ -148,6 +158,7 @@ namespace k8asd {
 
                 PlayerName = (string) player["playername"];
                 PlayerLevel = (int) player["playerlevel"];
+                LegionName = (string) player["legionname"];
                 ParseInfo0(player);
 
                 var limitvalue = token["limitvalue"];
