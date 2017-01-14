@@ -77,9 +77,12 @@ namespace k8asd {
             mcuView.SetModel(mcuModel);
             messageLogView.SetModel(messageLogModel);
             chatLogView.SetModel(chatLogModel);
-
+            
             armyView.SetInfoModel(infoModel);
             chatLogModel.SetInfoModel(infoModel);
+
+            heroTrainingView.SetCooldownModel(cooldownModel);
+            heroTrainingView.SetLogModel(messageLogModel);
 
             heroTrainingView.SetPacketWriter(this);
             armyView.SetPacketWriter(this);

@@ -129,9 +129,12 @@ namespace k8asd {
         }
 
         private int maxTrainingSlots;
+        private int guidingIndex;
 
         private BindingList<Hero> heroes;
         private BindingList<TimeModel> timeModels;
+        private IMessageLogModel logModel;
+        private ICooldownModel cooldownModel;
         private IPacketWriter packetWriter;
 
         public HeroTrainingView() {
@@ -142,10 +145,22 @@ namespace k8asd {
 
             timeModels = new BindingList<TimeModel>();
             timeModelList.DataSource = timeModels;
+
+            maxTrainingSlots = 0;
+            guidingIndex = 0;
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
             packetWriter = writer;
+        }
+
+        public void SetLogModel(IMessageLogModel model) {
+            logModel = model;
+        }
+
+        public void SetCooldownModel(ICooldownModel model) {
+            cooldownModel = model;
+            trainingTimer.Start();
         }
 
         private void DisableDetailPanels() {
@@ -185,7 +200,7 @@ namespace k8asd {
         /// <summary>
         /// Attempts to train (huấn luyện) the selected hero.
         /// </summary>
-        private void Train() {
+        private void TrainSelectedHero() {
             var item0 = heroList.SelectedItem;
             if (item0 == null) {
                 return;
@@ -196,9 +211,13 @@ namespace k8asd {
             }
             var heroItem = (Hero) item0;
             var timeModelItem = (TimeModel) item1;
-            if (packetWriter.SendCommand("41101", heroItem.Id.ToString(), timeModelItem.Id.ToString())) {
-                // model.LogDebug(String.Format("Bắt đầu huấn luyện tướng {0} - LV {1} - Exp {2}/{3}",
-                //    heroItem.Name, heroItem.Level, heroItem.Exp, heroItem.NextExp));
+            Train(heroItem, timeModelItem.Id);
+        }
+
+        private void Train(Hero hero, int timeModelId) {
+            if (packetWriter.SendCommand("41101", hero.Id.ToString(), timeModelId.ToString())) {
+                logModel.LogInfo(String.Format("Bắt đầu huấn luyện tướng {0} Lv. {1} Exp {2}/{3}",
+                    hero.Name, hero.Level, hero.Exp, hero.NextExp));
                 DisableDetailPanels();
             }
         }
@@ -206,12 +225,16 @@ namespace k8asd {
         /// <summary>
         /// Attempts to guide (mãnh tiến) the selected hero.
         /// </summary>
-        private void Guide() {
+        private void GuideSelectedHero() {
             var item = heroList.SelectedItem;
             var heroItem = (Hero) item;
-            if (packetWriter.SendCommand("41102", heroItem.Id.ToString(), "1", "1")) {
-                // model.LogDebug(String.Format("Mãnh tiến tướng {0} - LV {1} - Exp {2}/{3}",
-                //     heroItem.Name, heroItem.Level, heroItem.Exp, heroItem.NextExp));
+            Guide(heroItem);
+        }
+
+        private void Guide(Hero hero) {
+            if (packetWriter.SendCommand("41102", hero.Id.ToString(), "1", "1")) {
+                logModel.LogInfo(String.Format("Mãnh tiến tướng {0} Lv. {1} Exp {2}/{3}",
+                    hero.Name, hero.Level, hero.Exp, hero.NextExp));
                 DisableDetailPanels();
             }
         }
@@ -351,7 +374,7 @@ namespace k8asd {
         }
 
         private void trainButton_Click(object sender, EventArgs e) {
-            Train();
+            TrainSelectedHero();
         }
 
         private void heroList_SelectedIndexChanged(object sender, EventArgs e) {
@@ -385,7 +408,7 @@ namespace k8asd {
         }
 
         private void guideButton_Click(object sender, EventArgs e) {
-            Guide();
+            GuideSelectedHero();
         }
 
         private void oneSecondTimer_Tick(object sender, EventArgs e) {
@@ -394,6 +417,49 @@ namespace k8asd {
 
         private void HeroTrainingView_Load(object sender, EventArgs e) {
             selectedHeroList.Items.Clear();
+        }
+
+        private void trainingTimer_Tick(object sender, EventArgs e) {
+            if (autoTrainCheck.Checked) {
+                TrainUntrainedHero();
+                GuideNextHero();
+            }
+        }
+
+        private Hero FindHeroById(int id) {
+            foreach (var hero in heroes) {
+                if (hero.Id == id) {
+                    return hero;
+                }
+            }
+            return null;
+        }
+
+        private void TrainUntrainedHero() {
+            foreach (var item in selectedHeroList.Items) {
+                var selectedHero = (Hero) item;
+                var hero = FindHeroById(selectedHero.Id);
+                if (hero != null && !hero.IsTraining) {
+                    Train(hero, timeModels[0].Id);
+                    break;
+                }
+            }
+        }
+
+        private void GuideNextHero() {
+            if (cooldownModel.GuideCooldown == 0) {
+                if (selectedHeroList.Items.Count > 0) {
+                    if (guidingIndex >= selectedHeroList.Items.Count) {
+                        guidingIndex = 0;
+                    }
+                    var selectedHero = (Hero) selectedHeroList.Items[guidingIndex];
+                    var hero = FindHeroById(selectedHero.Id);
+                    if (hero != null && hero.IsTraining) {
+                        Guide(hero);
+                    }
+                    ++guidingIndex;
+                }
+            }
         }
     }
 }

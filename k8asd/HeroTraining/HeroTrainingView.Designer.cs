@@ -57,6 +57,7 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
+            this.trainingTimer = new System.Windows.Forms.Timer(this.components);
             _ignore6 = new System.Windows.Forms.Label();
             _ignore2 = new System.Windows.Forms.Label();
             _ignore5 = new System.Windows.Forms.Label();
@@ -414,6 +415,11 @@
             this.oneSecondTimer.Interval = 1000;
             this.oneSecondTimer.Tick += new System.EventHandler(this.oneSecondTimer_Tick);
             // 
+            // trainingTimer
+            // 
+            this.trainingTimer.Interval = 5000;
+            this.trainingTimer.Tick += new System.EventHandler(this.trainingTimer_Tick);
+            // 
             // HeroTrainingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -471,5 +477,6 @@
         private System.Windows.Forms.Label expPerMinLabel;
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Timer oneSecondTimer;
+        private System.Windows.Forms.Timer trainingTimer;
     }
 }

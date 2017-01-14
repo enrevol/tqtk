@@ -38,6 +38,13 @@ namespace k8asd {
                     }
                 }
             }
+            if (packet.CommandId == "41102") {
+                var token = JToken.Parse(packet.Message);
+                var msg = token["msg"];
+                if (msg != null) {
+                    LogInfo((string) msg);
+                }
+            }
         }
 
         public void LogInfo(string newMessage) {
