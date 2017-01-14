@@ -17,6 +17,11 @@ namespace k8asd {
         int PlayerLevel { get; }
 
         /// <summary>
+        /// Gets the server time.
+        /// </summary>
+        DateTime ServerTime { get; }
+
+        /// <summary>
         /// Gets the player's total gold.
         /// </summary>
         int Gold { get; }

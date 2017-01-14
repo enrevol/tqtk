@@ -122,7 +122,7 @@ namespace k8asd {
             public int MaxPlayerCount { get { return maxPlayerCount; } }
             public int RemainingTime { get { return endTime.RemainingMilliseconds(); } }
 
-            public static Team Parse(JToken token) {
+            public static Team Parse(JToken token, DateTime serverTime) {
                 var result = new Team();
                 result.teamId = (int) token["teamid"];
                 result.teamName = (string) token["teamname"];
@@ -130,8 +130,9 @@ namespace k8asd {
                 result.playerCount = (int) token["currentnum"];
                 result.maxPlayerCount = (int) token["maxnum"];
                 var endtime = (long) token["endtime"];
+                var serverTimeOffset = serverTime - DateTime.Now;
                 result.endTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-                    .ToLocalTime().AddMilliseconds(endtime).AddMinutes(2);
+                    .ToLocalTime().AddMilliseconds(endtime).Add(-serverTimeOffset);
                 return result;
             }
 
@@ -169,6 +170,7 @@ namespace k8asd {
         private BindingList<Team> teams;
         private BindingList<Member> members;
         private IPacketWriter packetWriter;
+        private IInfoModel infoModel;
 
         public ArmyView() {
             InitializeComponent();
@@ -190,6 +192,10 @@ namespace k8asd {
 
         public void SetPacketWriter(IPacketWriter writer) {
             packetWriter = writer;
+        }
+
+        public void SetInfoModel(IInfoModel model) {
+            infoModel = model;
         }
 
         private void RefreshArmies() {
@@ -273,7 +279,7 @@ namespace k8asd {
         private void ParseTeams(JToken token) {
             teams.Clear();
             foreach (var teamToken in token) {
-                var team = Team.Parse(teamToken);
+                var team = Team.Parse(teamToken, infoModel.ServerTime);
                 teams.Add(team);
             }
             var oldSelectedIndex = teamList.SelectedIndex;

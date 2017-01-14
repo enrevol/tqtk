@@ -18,6 +18,7 @@ namespace k8asd {
 
         public void SetModel(IInfoModel model) {
             this.model = model;
+            serverTimer.Start();
             model.PlayerNameChanged += OnPlayerNameChanged;
             model.PlayerLevelChanged += OnPlayerLevelChanged;
             model.GoldChanged += OnGoldChanged;
@@ -36,7 +37,8 @@ namespace k8asd {
         }
 
         private void OnPlayerLevelChanged(object sender, int playerLevel) {
-            infoBox.Text = String.Format("{0} Lv. {1}", model.PlayerName, playerLevel);
+            infoBox.Text = String.Format("{0} Lv. {1} - {0}",
+                model.PlayerName, playerLevel, Utils.FormatDuration(model.ServerTime));
         }
 
         private void OnGoldChanged(object sender, int gold) {
@@ -73,6 +75,11 @@ namespace k8asd {
 
         private void OnMaxSilverChanged(object sender, int maxSilver) {
             silverLabel.Text = String.Format("{0}/{1}", model.Silver, maxSilver);
+        }
+
+        private void serverTimer_Tick(object sender, EventArgs e) {
+            infoBox.Text = String.Format("{0} Lv. {1} - {0}",
+                model.PlayerName, model.PlayerLevel, Utils.FormatDuration(model.ServerTime));
         }
     }
 }

@@ -9,6 +9,7 @@ namespace k8asd {
     public class InfoModel : IInfoModel, IPacketReader {
         private string playerName;
         private int playerLevel;
+        private TimeSpan serverTimeOffset;
         private int systemGold;
         private int userGold;
         private int reputation;
@@ -46,6 +47,10 @@ namespace k8asd {
                 playerLevel = value;
                 PlayerLevelChanged(this, value);
             }
+        }
+
+        public DateTime ServerTime {
+            get { return DateTime.Now + serverTimeOffset; }
         }
 
         public int SystemGold {
@@ -136,6 +141,11 @@ namespace k8asd {
             if (packet.CommandId == "11102") {
                 var token = JToken.Parse(packet.Message);
                 var player = token["player"];
+
+                var systime = (string) player["systime"];
+                var serverTime = DateTime.Parse(systime);
+                serverTimeOffset = serverTime - DateTime.Now;
+
                 PlayerName = (string) player["playername"];
                 PlayerLevel = (int) player["playerlevel"];
                 ParseInfo0(player);
