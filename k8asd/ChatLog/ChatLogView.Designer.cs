@@ -34,7 +34,9 @@
             this.logTab3 = new System.Windows.Forms.TabPage();
             this.logTab4 = new System.Windows.Forms.TabPage();
             this.logTab5 = new System.Windows.Forms.TabPage();
+            this.chatPanel = new System.Windows.Forms.Panel();
             this.logTabList.SuspendLayout();
+            this.chatPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // channelList
@@ -55,14 +57,12 @@
             // 
             // logBox
             // 
-            this.logBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.logBox.Location = new System.Drawing.Point(0, 22);
+            this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logBox.Location = new System.Drawing.Point(0, 20);
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
-            this.logBox.Size = new System.Drawing.Size(350, 155);
+            this.logBox.Size = new System.Drawing.Size(350, 158);
             this.logBox.TabIndex = 1;
             // 
             // chatInput
@@ -83,19 +83,19 @@
             this.modeButton.Name = "modeButton";
             this.modeButton.Size = new System.Drawing.Size(40, 23);
             this.modeButton.TabIndex = 3;
-            this.modeButton.Text = "S";
+            this.modeButton.Text = "Nhỏ";
             this.modeButton.UseVisualStyleBackColor = true;
+            this.modeButton.Click += new System.EventHandler(this.modeButton_Click);
             // 
             // logTabList
             // 
-            this.logTabList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.logTabList.Controls.Add(this.logTab0);
             this.logTabList.Controls.Add(this.logTab1);
             this.logTabList.Controls.Add(this.logTab2);
             this.logTabList.Controls.Add(this.logTab3);
             this.logTabList.Controls.Add(this.logTab4);
             this.logTabList.Controls.Add(this.logTab5);
+            this.logTabList.Dock = System.Windows.Forms.DockStyle.Top;
             this.logTabList.Location = new System.Drawing.Point(0, 0);
             this.logTabList.Name = "logTabList";
             this.logTabList.SelectedIndex = 0;
@@ -159,18 +159,31 @@
             this.logTab5.Text = "Tất cả";
             this.logTab5.UseVisualStyleBackColor = true;
             // 
+            // chatPanel
+            // 
+            this.chatPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chatPanel.Controls.Add(this.logBox);
+            this.chatPanel.Controls.Add(this.logTabList);
+            this.chatPanel.Location = new System.Drawing.Point(0, 0);
+            this.chatPanel.Name = "chatPanel";
+            this.chatPanel.Size = new System.Drawing.Size(350, 178);
+            this.chatPanel.TabIndex = 5;
+            // 
             // ChatLogView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.logBox);
-            this.Controls.Add(this.logTabList);
+            this.Controls.Add(this.chatPanel);
             this.Controls.Add(this.modeButton);
             this.Controls.Add(this.chatInput);
             this.Controls.Add(this.channelList);
             this.Name = "ChatLogView";
             this.Size = new System.Drawing.Size(350, 200);
             this.logTabList.ResumeLayout(false);
+            this.chatPanel.ResumeLayout(false);
+            this.chatPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,5 +202,6 @@
         private System.Windows.Forms.TabPage logTab4;
         private System.Windows.Forms.TabPage logTab5;
         private System.Windows.Forms.TabPage logTab0;
+        private System.Windows.Forms.Panel chatPanel;
     }
 }

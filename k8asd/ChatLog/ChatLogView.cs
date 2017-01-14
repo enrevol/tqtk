@@ -40,6 +40,14 @@ namespace k8asd {
         private Dictionary<ChatChannel, string> channelMessages;
         private string allMessages;
 
+        private enum ChatBoxMode {
+            Small,
+            Medium,
+            Large,
+        }
+
+        private ChatBoxMode chatBoxMode;
+
         public ChatLogView() {
             InitializeComponent();
 
@@ -59,6 +67,8 @@ namespace k8asd {
             channelMessages.Add(ChatChannel.Campaign, String.Empty);
 
             allMessages = String.Empty;
+            chatBoxMode = ChatBoxMode.Small;
+            logTabList.SelectedIndex = 5;
         }
 
         public void SetModel(IChatLogModel model) {
@@ -67,7 +77,7 @@ namespace k8asd {
         }
 
         private void OnChatMessageAdded(object sender, ChatMessage message) {
-            var line = String.Format("[{0}][{1}] {2}: {3}",
+            var line = String.Format("[{0}] [{1}] {2}: {3}",
                 Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
             var channelMessage = channelMessages[message.Channel];
             AddMessage(ref channelMessage, line);
@@ -132,6 +142,32 @@ namespace k8asd {
 
         private void logTabList_SelectedIndexChanged(object sender, EventArgs e) {
             UpdateLogBox();
+        }
+
+        private void modeButton_Click(object sender, EventArgs e) {
+            const int AdditionalHeight = 150;
+            const int AdditionalWidth = 350;
+
+            int deltaWidth = 0;
+            int deltaHeight = 0;
+            if (chatBoxMode == ChatBoxMode.Small) {
+                chatBoxMode = ChatBoxMode.Medium;
+                deltaHeight = AdditionalHeight;
+                modeButton.Text = "Vừa";
+            } else if (chatBoxMode == ChatBoxMode.Medium) {
+                chatBoxMode = ChatBoxMode.Large;
+                deltaWidth = AdditionalWidth;
+                modeButton.Text = "Lớn";
+            } else {
+                chatBoxMode = ChatBoxMode.Small;
+                deltaHeight = -AdditionalHeight;
+                deltaWidth = -AdditionalWidth;
+                modeButton.Text = "Nhỏ";
+            }
+
+            Width += deltaWidth;
+            Height += deltaHeight;
+            Location = new Point(Location.X, Location.Y - deltaHeight);
         }
     }
 }
