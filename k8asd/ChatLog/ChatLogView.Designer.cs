@@ -50,7 +50,7 @@
             "Khu vực",
             "Bang",
             "Chiến"});
-            this.channelList.Location = new System.Drawing.Point(0, 179);
+            this.channelList.Location = new System.Drawing.Point(35, 179);
             this.channelList.Name = "channelList";
             this.channelList.Size = new System.Drawing.Size(65, 21);
             this.channelList.TabIndex = 0;
@@ -62,6 +62,7 @@
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
+            this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.logBox.Size = new System.Drawing.Size(350, 158);
             this.logBox.TabIndex = 1;
             // 
@@ -69,19 +70,19 @@
             // 
             this.chatInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.chatInput.Location = new System.Drawing.Point(66, 180);
+            this.chatInput.Location = new System.Drawing.Point(101, 180);
             this.chatInput.Name = "chatInput";
-            this.chatInput.Size = new System.Drawing.Size(245, 20);
+            this.chatInput.Size = new System.Drawing.Size(249, 20);
             this.chatInput.TabIndex = 2;
             this.chatInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chatInput_KeyDown);
             this.chatInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.chatInput_KeyPress);
             // 
             // modeButton
             // 
-            this.modeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.modeButton.Location = new System.Drawing.Point(311, 178);
+            this.modeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.modeButton.Location = new System.Drawing.Point(0, 178);
             this.modeButton.Name = "modeButton";
-            this.modeButton.Size = new System.Drawing.Size(40, 23);
+            this.modeButton.Size = new System.Drawing.Size(35, 23);
             this.modeButton.TabIndex = 3;
             this.modeButton.Text = "Nhỏ";
             this.modeButton.UseVisualStyleBackColor = true;

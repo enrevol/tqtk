@@ -146,7 +146,7 @@ namespace k8asd {
 
         private void modeButton_Click(object sender, EventArgs e) {
             const int AdditionalHeight = 150;
-            const int AdditionalWidth = 350;
+            const int AdditionalWidth = 500;
 
             int deltaWidth = 0;
             int deltaHeight = 0;
@@ -168,6 +168,8 @@ namespace k8asd {
             Width += deltaWidth;
             Height += deltaHeight;
             Location = new Point(Location.X, Location.Y - deltaHeight);
+            logBox.SelectionStart = logBox.TextLength;
+            logBox.ScrollToCaret();
         }
     }
 }
