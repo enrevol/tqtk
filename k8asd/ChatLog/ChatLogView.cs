@@ -145,8 +145,8 @@ namespace k8asd {
         }
 
         private void modeButton_Click(object sender, EventArgs e) {
-            const int AdditionalHeight = 150;
-            const int AdditionalWidth = 500;
+            const int AdditionalHeight = 200;
+            const int AdditionalWidth = 800;
 
             int deltaWidth = 0;
             int deltaHeight = 0;

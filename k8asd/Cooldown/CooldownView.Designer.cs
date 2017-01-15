@@ -54,38 +54,38 @@
             this.infoBox.Controls.Add(this._ignore2);
             this.infoBox.Controls.Add(this._ignore1);
             this.infoBox.Controls.Add(this._ignore0);
-            this.infoBox.Location = new System.Drawing.Point(0, 0);
+            this.infoBox.Location = new System.Drawing.Point(0, -5);
             this.infoBox.Name = "infoBox";
-            this.infoBox.Size = new System.Drawing.Size(270, 100);
+            this.infoBox.Size = new System.Drawing.Size(310, 100);
             this.infoBox.TabIndex = 30;
             this.infoBox.TabStop = false;
             // 
             // weaveCooldownLabel
             // 
-            this.weaveCooldownLabel.Location = new System.Drawing.Point(200, 67);
+            this.weaveCooldownLabel.Location = new System.Drawing.Point(230, 67);
             this.weaveCooldownLabel.Name = "weaveCooldownLabel";
             this.weaveCooldownLabel.ReadOnly = true;
-            this.weaveCooldownLabel.Size = new System.Drawing.Size(60, 20);
+            this.weaveCooldownLabel.Size = new System.Drawing.Size(70, 20);
             this.weaveCooldownLabel.TabIndex = 11;
             this.weaveCooldownLabel.Text = "23:59:59";
             this.weaveCooldownLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // techCooldownLabel
             // 
-            this.techCooldownLabel.Location = new System.Drawing.Point(200, 42);
+            this.techCooldownLabel.Location = new System.Drawing.Point(230, 42);
             this.techCooldownLabel.Name = "techCooldownLabel";
             this.techCooldownLabel.ReadOnly = true;
-            this.techCooldownLabel.Size = new System.Drawing.Size(60, 20);
+            this.techCooldownLabel.Size = new System.Drawing.Size(70, 20);
             this.techCooldownLabel.TabIndex = 10;
             this.techCooldownLabel.Text = "23:59:59";
             this.techCooldownLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // appointCooldownLabel
             // 
-            this.appointCooldownLabel.Location = new System.Drawing.Point(200, 17);
+            this.appointCooldownLabel.Location = new System.Drawing.Point(230, 17);
             this.appointCooldownLabel.Name = "appointCooldownLabel";
             this.appointCooldownLabel.ReadOnly = true;
-            this.appointCooldownLabel.Size = new System.Drawing.Size(60, 20);
+            this.appointCooldownLabel.Size = new System.Drawing.Size(70, 20);
             this.appointCooldownLabel.TabIndex = 9;
             this.appointCooldownLabel.Text = "23:59:59";
             this.appointCooldownLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -95,7 +95,7 @@
             this.upgradeCooldownLabel.Location = new System.Drawing.Point(80, 67);
             this.upgradeCooldownLabel.Name = "upgradeCooldownLabel";
             this.upgradeCooldownLabel.ReadOnly = true;
-            this.upgradeCooldownLabel.Size = new System.Drawing.Size(60, 20);
+            this.upgradeCooldownLabel.Size = new System.Drawing.Size(70, 20);
             this.upgradeCooldownLabel.TabIndex = 8;
             this.upgradeCooldownLabel.Text = "23:59:59";
             this.upgradeCooldownLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -105,7 +105,7 @@
             this.guideCooldownLabel.Location = new System.Drawing.Point(80, 42);
             this.guideCooldownLabel.Name = "guideCooldownLabel";
             this.guideCooldownLabel.ReadOnly = true;
-            this.guideCooldownLabel.Size = new System.Drawing.Size(60, 20);
+            this.guideCooldownLabel.Size = new System.Drawing.Size(70, 20);
             this.guideCooldownLabel.TabIndex = 7;
             this.guideCooldownLabel.Text = "23:59:59";
             this.guideCooldownLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -115,7 +115,7 @@
             this.imposeCooldownLabel.Location = new System.Drawing.Point(80, 17);
             this.imposeCooldownLabel.Name = "imposeCooldownLabel";
             this.imposeCooldownLabel.ReadOnly = true;
-            this.imposeCooldownLabel.Size = new System.Drawing.Size(60, 20);
+            this.imposeCooldownLabel.Size = new System.Drawing.Size(70, 20);
             this.imposeCooldownLabel.TabIndex = 6;
             this.imposeCooldownLabel.Text = "23:59:59";
             this.imposeCooldownLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -123,7 +123,7 @@
             // _ignore5
             // 
             this._ignore5.AutoSize = true;
-            this._ignore5.Location = new System.Drawing.Point(150, 70);
+            this._ignore5.Location = new System.Drawing.Point(170, 70);
             this._ignore5.Name = "_ignore5";
             this._ignore5.Size = new System.Drawing.Size(24, 13);
             this._ignore5.TabIndex = 5;
@@ -132,7 +132,7 @@
             // _ignore4
             // 
             this._ignore4.AutoSize = true;
-            this._ignore4.Location = new System.Drawing.Point(150, 45);
+            this._ignore4.Location = new System.Drawing.Point(170, 45);
             this._ignore4.Name = "_ignore4";
             this._ignore4.Size = new System.Drawing.Size(46, 13);
             this._ignore4.TabIndex = 4;
@@ -141,7 +141,7 @@
             // _ignore3
             // 
             this._ignore3.AutoSize = true;
-            this._ignore3.Location = new System.Drawing.Point(150, 20);
+            this._ignore3.Location = new System.Drawing.Point(170, 20);
             this._ignore3.Name = "_ignore3";
             this._ignore3.Size = new System.Drawing.Size(43, 13);
             this._ignore3.TabIndex = 3;
@@ -180,7 +180,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.infoBox);
             this.Name = "CooldownView";
-            this.Size = new System.Drawing.Size(270, 100);
+            this.Size = new System.Drawing.Size(310, 95);
             this.infoBox.ResumeLayout(false);
             this.infoBox.PerformLayout();
             this.ResumeLayout(false);
