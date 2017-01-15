@@ -19,26 +19,28 @@ namespace k8asd {
         /// <summary>
         /// Text color for messages in world channel.
         /// </summary>
-        private static readonly Color WorldChannelColor = Color.Gold;
+        private static readonly Color WorldChannelColor = Color.FromArgb(220, 213, 120);
 
         /// <summary>
         /// Text color for messages in nation channel.
         /// </summary>
-        private static readonly Color NationChannelColor = Color.FromArgb(90, 200, 90);
+        private static readonly Color NationChannelColor = Color.FromArgb(97, 231, 144);
 
         /// <summary>
         /// Text color for messages in local channel.
         /// </summary>
-        private static readonly Color LocalChannelColor = Color.FromArgb(113, 222, 227);
+        private static readonly Color LocalChannelColor = Color.FromArgb(103, 225, 233);
 
         /// <summary>
         /// Text color for messages in legion channel.
         /// </summary>
-        private static readonly Color LegionChannelColor = Color.FromArgb(90, 90, 200);
+        private static readonly Color LegionChannelColor = Color.FromArgb(78, 138, 229);
 
         private IChatLogModel model;
         private Dictionary<ChatChannel, string> channelMessages;
         private string allMessages;
+
+        private RichTextBox formatter;
 
         private enum ChatBoxMode {
             Small,
@@ -69,6 +71,8 @@ namespace k8asd {
             allMessages = String.Empty;
             chatBoxMode = ChatBoxMode.Small;
             logTabList.SelectedIndex = 5;
+
+            formatter = new RichTextBox();
         }
 
         public void SetModel(IChatLogModel model) {
@@ -79,18 +83,46 @@ namespace k8asd {
         private void OnChatMessageAdded(object sender, ChatMessage message) {
             var line = String.Format("[{0}] [{1}] {2}: {3}",
                 Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
+
             var channelMessage = channelMessages[message.Channel];
-            AddMessage(ref channelMessage, line);
+            AddMessage(ref channelMessage, line, GetChannelColor(message.Channel));
             channelMessages[message.Channel] = channelMessage;
-            AddMessage(ref allMessages, line);
+            AddMessage(ref allMessages, line, GetChannelColor(message.Channel));
             UpdateLogBox();
         }
 
-        private void AddMessage(ref string lines, string line) {
+        private void AddMessage(ref string lines, string line, Color color) {
+            formatter.Rtf = lines;
             if (lines.Length > 0) {
-                lines += Environment.NewLine;
+                formatter.Text += Environment.NewLine;
             }
-            lines += line;
+            var startIndex = formatter.Text.Length;
+            formatter.Text += line;
+            formatter.Select(startIndex, formatter.Text.Length - startIndex);
+            formatter.SelectionColor = color;
+            lines = formatter.Rtf;
+        }
+
+        private Color GetChannelColor(ChatChannel channel) {
+            if (channel.Id == ChatChannel.Private.Id) {
+                return PrivateChannelColor;
+            }
+            if (channel.Id == ChatChannel.World.Id) {
+                return WorldChannelColor;
+            }
+            if (channel.Id == ChatChannel.Nation.Id) {
+                return NationChannelColor;
+            }
+            if (channel.Id == ChatChannel.Local.Id) {
+                return LocalChannelColor;
+            }
+            if (channel.Id == ChatChannel.Legion.Id) {
+                return LegionChannelColor;
+            }
+            if (channel.Id == ChatChannel.Campaign.Id) {
+                return Color.Yellow;
+            }
+            return Color.White;
         }
 
         private string GetChannelMessage(int tabIndex) {
@@ -107,7 +139,7 @@ namespace k8asd {
 
         private void UpdateLogBox() {
             var selectedIndex = logTabList.SelectedIndex;
-            logBox.Text = GetChannelMessage(selectedIndex);
+            logBox.Rtf = GetChannelMessage(selectedIndex);
             logBox.SelectionStart = logBox.TextLength;
             logBox.ScrollToCaret();
         }
@@ -173,34 +205,3 @@ namespace k8asd {
         }
     }
 }
-
-/*
- * 
- * case "10103": {
-                    /*
-                    if (packet.Message.Length > 0) {
-                        R10103 r10103 = new R10103(cdata);
-                        int cat = Convert.ToInt32(r10103.category);
-                        string msg = r10103.text;
-                        int start = txtChatBox[6].TextLength;
-
-                        txtChatBox[6].AppendText("\n" + msg);
-                        if (cat != 8)
-                            txtChatBox[cat - 1].AppendText("\n" + msg);
-
-                        if (r10103.href != "") {
-                            txtChatBox[6].InsertLink(r10103.disp, r10103.href);
-                            if (cat != 8)
-                                txtChatBox[cat - 1].InsertLink(r10103.disp, r10103.href);
-                        }
-
-                        txtChatBox[6].ScrollToCaret();
-                        if (cat != 8)
-                            txtChatBox[cat - 1].ScrollToCaret();
-
-                        txtChatBox[6].Select(start, txtChatBox[6].TextLength - start);
-                        txtChatBox[6].SelectionColor = r10103.color;
-                        txtChatBox[6].SelectionLength = 0;
-                }
-                break;
-*/

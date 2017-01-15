@@ -18,6 +18,8 @@ namespace k8asd {
             return Name;
         }
 
+        public static readonly ChatChannel Private = new ChatChannel(1, "Mật");
+
         /// <summary>
         /// Kênh thế giới.
         /// </summary>

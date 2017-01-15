@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.channelList = new System.Windows.Forms.ComboBox();
-            this.logBox = new System.Windows.Forms.TextBox();
+            this.logBox = new System.Windows.Forms.RichTextBox();
             this.chatInput = new System.Windows.Forms.TextBox();
             this.modeButton = new System.Windows.Forms.Button();
             this.logTabList = new System.Windows.Forms.TabControl();
@@ -57,19 +57,24 @@
             // 
             // logBox
             // 
+            this.logBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(38)))));
             this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logBox.Location = new System.Drawing.Point(0, 20);
-            this.logBox.Multiline = true;
+            this.logBox.MaxLength = 10000;
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
-            this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.logBox.Size = new System.Drawing.Size(350, 158);
             this.logBox.TabIndex = 1;
+            this.logBox.TabStop = false;
+            this.logBox.Text = "";
             // 
             // chatInput
             // 
             this.chatInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.chatInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(32)))), ((int)(((byte)(44)))));
+            this.chatInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(204)))));
             this.chatInput.Location = new System.Drawing.Point(101, 180);
             this.chatInput.Name = "chatInput";
             this.chatInput.Size = new System.Drawing.Size(249, 20);
@@ -112,7 +117,6 @@
             this.logTab0.Size = new System.Drawing.Size(342, 0);
             this.logTab0.TabIndex = 0;
             this.logTab0.Text = "Thế giới";
-            this.logTab0.UseVisualStyleBackColor = true;
             // 
             // logTab1
             // 
@@ -184,7 +188,6 @@
             this.Size = new System.Drawing.Size(350, 200);
             this.logTabList.ResumeLayout(false);
             this.chatPanel.ResumeLayout(false);
-            this.chatPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,7 +196,7 @@
         #endregion
 
         private System.Windows.Forms.ComboBox channelList;
-        private System.Windows.Forms.TextBox logBox;
+        private System.Windows.Forms.RichTextBox logBox;
         private System.Windows.Forms.TextBox chatInput;
         private System.Windows.Forms.Button modeButton;
         private System.Windows.Forms.TabControl logTabList;
