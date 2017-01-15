@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms;
 
 namespace k8asd {
     public static class Utils {
@@ -77,6 +79,16 @@ namespace k8asd {
             if (handler != null) {
                 handler(sender, arg);
             }
+        }
+
+        // http://stackoverflow.com/questions/8535102/inconsistent-results-with-richtextbox-scrolltocaret
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
+        private const int WM_VSCROLL = 277;
+        private const int SB_PAGEBOTTOM = 7;
+
+        public static void ScrollToBottom(RichTextBox box) {
+            SendMessage(box.Handle, WM_VSCROLL, (IntPtr) SB_PAGEBOTTOM, IntPtr.Zero);
         }
     }
 }
