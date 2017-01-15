@@ -61,18 +61,20 @@ namespace k8asd {
             channelList.Items.Add(ChatChannel.Campaign);
             channelList.SelectedIndex = 2;
 
-            channelMessages = new Dictionary<ChatChannel, string>();
-            channelMessages.Add(ChatChannel.World, String.Empty);
-            channelMessages.Add(ChatChannel.Nation, String.Empty);
-            channelMessages.Add(ChatChannel.Local, String.Empty);
-            channelMessages.Add(ChatChannel.Legion, String.Empty);
-            channelMessages.Add(ChatChannel.Campaign, String.Empty);
+            formatter = new RichTextBox();
+            formatter.Text = String.Empty;
+            var emptyRtf = formatter.Rtf;
 
-            allMessages = String.Empty;
+            channelMessages = new Dictionary<ChatChannel, string>();
+            channelMessages.Add(ChatChannel.World, emptyRtf);
+            channelMessages.Add(ChatChannel.Nation, emptyRtf);
+            channelMessages.Add(ChatChannel.Local, emptyRtf);
+            channelMessages.Add(ChatChannel.Legion, emptyRtf);
+            channelMessages.Add(ChatChannel.Campaign, emptyRtf);
+
+            allMessages = emptyRtf;
             chatBoxMode = ChatBoxMode.Small;
             logTabList.SelectedIndex = 5;
-
-            formatter = new RichTextBox();
         }
 
         public void SetModel(IChatLogModel model) {
@@ -93,11 +95,11 @@ namespace k8asd {
 
         private void AddMessage(ref string lines, string line, Color color) {
             formatter.Rtf = lines;
-            if (lines.Length > 0) {
-                formatter.Text += Environment.NewLine;
+            if (formatter.Text.Length > 0) {
+                formatter.AppendText(Environment.NewLine);
             }
             var startIndex = formatter.Text.Length;
-            formatter.Text += line;
+            formatter.AppendText(line);
             formatter.Select(startIndex, formatter.Text.Length - startIndex);
             formatter.SelectionColor = color;
             lines = formatter.Rtf;
