@@ -69,6 +69,8 @@ namespace k8asd {
                 // sender: Hệ thống
                 // message: Thánh_Nữ Chinh chiến nhận được {Bá Đạo Kiếm(mảnh)|6|272780}(Mảnh vỡ 1/20)
                 // message: Dân Chơi tại Võ Đài thắng liên tiếp 10 trận, đại sát đại nộ!
+                // message: ĐộcCôCầuBại đã tóm gọn kẻ bị truy nã - Gaj Thaj từ Ngụy Quốc. Mọi ngời nhiệt liệt hoan nghênh!<a href='event:reportId|148446471411827152'>[<font color='#71DEE3'>Chiến báo</font>]</a>
+                // message: F.Lampard Ủy phái nhận được {Kỳ Lân(mảnh)|6|63965}(Mảnh vỡ 15/20)
                 AddMessage(ChatChannel.World, sender, message);
                 return;
             }

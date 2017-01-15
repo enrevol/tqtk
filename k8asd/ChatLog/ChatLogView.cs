@@ -14,27 +14,27 @@ namespace k8asd {
         /// <summary>
         /// Text color for messages in private channel.
         /// </summary>
-        private static readonly Color PrivateChannelColor = Color.OrangeRed;
+        private static readonly Color PrivateChannelColor = Color.FromArgb(230, 130, 50);
 
         /// <summary>
         /// Text color for messages in world channel.
         /// </summary>
-        private static readonly Color WorldChannelColor = Color.FromArgb(220, 213, 120);
+        private static readonly Color WorldChannelColor = Color.FromArgb(250, 240, 140);
 
         /// <summary>
         /// Text color for messages in nation channel.
         /// </summary>
-        private static readonly Color NationChannelColor = Color.FromArgb(97, 231, 144);
+        private static readonly Color NationChannelColor = Color.FromArgb(100, 230, 140);
 
         /// <summary>
         /// Text color for messages in local channel.
         /// </summary>
-        private static readonly Color LocalChannelColor = Color.FromArgb(103, 225, 233);
+        private static readonly Color LocalChannelColor = Color.FromArgb(100, 220, 220);
 
         /// <summary>
         /// Text color for messages in legion channel.
         /// </summary>
-        private static readonly Color LegionChannelColor = Color.FromArgb(78, 138, 229);
+        private static readonly Color LegionChannelColor = Color.FromArgb(80, 140, 230);
 
         private IChatLogModel model;
         private Dictionary<ChatChannel, string> channelMessages;
@@ -140,8 +140,7 @@ namespace k8asd {
         private void UpdateLogBox() {
             var selectedIndex = logTabList.SelectedIndex;
             logBox.Rtf = GetChannelMessage(selectedIndex);
-            logBox.SelectionStart = logBox.TextLength;
-            logBox.ScrollToCaret();
+            Utils.ScrollToBottom(logBox);
         }
 
         private void chatInput_KeyPress(object sender, KeyPressEventArgs e) {
@@ -200,8 +199,8 @@ namespace k8asd {
             Width += deltaWidth;
             Height += deltaHeight;
             Location = new Point(Location.X, Location.Y - deltaHeight);
-            logBox.SelectionStart = logBox.TextLength;
-            logBox.ScrollToCaret();
+
+            Utils.ScrollToBottom(logBox);
         }
     }
 }
