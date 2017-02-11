@@ -592,80 +592,6 @@ namespace k8asd {
         }
     }
 
-    public class RTeam {
-        public class Member {
-            public string playerid;
-            public string playerlevel;
-            public string playername;
-            public Member(string playerid, string playerlevel, string playername) {
-                this.playerid = playerid;
-                this.playerlevel = playerlevel;
-                this.playername = playername;
-            }
-        }
-
-        public class Team {
-            public string condition;
-            public string currentnum;
-            public string endtime;
-            public string maxnum;
-            public string teamid;
-            public string teamname;
-            public Team(string condition, string currentnum,
-                string endtime, string maxnum,
-                string teamid, string teamname) {
-                this.condition = condition;
-                this.currentnum = currentnum;
-                this.endtime = endtime;
-                this.maxnum = maxnum;
-                this.teamid = teamid;
-                this.teamname = teamname;
-            }
-        }
-
-        public string m;
-        public List<Team> listteam;
-        public List<Member> listmember;
-        public string condition;
-        public string currentnum;
-        public string maxnum;
-
-        public RTeam(string json) {
-            JToken token = JObject.Parse(json)["m"];
-            if (token["message"] == null) {
-                listteam = new List<Team>();
-                listmember = new List<Member>();
-                JArray array = (JArray) token["team"];
-                for (int i = 0; i < array.Count; i++) {
-                    JObject obj = (JObject) array[i];
-                    condition = obj["condition"].ToString().Replace("\"", "");
-                    if (condition.Contains("Ngụy"))
-                        condition = condition.Replace("Ngụy", "Nguỵ");
-                    listteam.Add(
-                        new Team(
-                            condition,
-                            obj["currentnum"].ToString(),
-                            obj["endtime"].ToString(),
-                            obj["maxnum"].ToString(),
-                            obj["teamid"].ToString(),
-                            obj["teamname"].ToString().Replace("\"", "")));
-                }
-                array = (JArray) token["member"];
-                for (int i = 0; i < array.Count; i++) {
-                    JObject obj = (JObject) array[i];
-                    listmember.Add(
-                        new Member(
-                            obj["playerid"].ToString(),
-                            obj["playerlevel"].ToString(),
-                            obj["playername"].ToString().Replace("\"", "")));
-                }
-                maxnum = token["maxnum"].ToString();
-                currentnum = token["currentnum"].ToString();
-            } else
-                m = token["message"].ToString().Replace("\"", "");
-        }
-    }
-
     public class Report {
         public string sys_gold;
         public string extrayinkuang;
@@ -721,40 +647,7 @@ namespace k8asd {
             }
         }
     }
-
-    public class R34100 : RTeam {
-        public string armynum;
-        public string battlenum;
-        public string filter;
-        public string honor;
-        public string id;
-        public string itemname;
-        public string level;
-        public string maxplayer;
-        public string maxwinnum;
-        public string minplayer;
-        public string name;
-
-        public R34100(string json)
-            : base(json) {
-            if (m == null) {
-                JToken token = JObject.Parse(json)["m"];
-                JObject obj = (JObject) token["armies"];
-                armynum = obj["armynum"].ToString();
-                battlenum = obj["battlenum"].ToString();
-                filter = obj["filter"].ToString();
-                honor = obj["honor"].ToString();
-                id = obj["id"].ToString();
-                itemname = obj["itemname"].ToString().Replace("\"", "");
-                level = obj["level"].ToString();
-                maxplayer = obj["maxplayer"].ToString();
-                maxwinnum = obj["maxwinnum"].ToString();
-                minplayer = obj["minplayer"].ToString();
-                name = obj["name"].ToString().Replace("\"", "");
-            }
-        }
-    }
-
+    
     public class R34108 : Report {
         public string gains;
 
@@ -1505,33 +1398,6 @@ namespace k8asd {
             } else if (type == "0") {
                 makecd = token["makecd"].ToString();
                 msg = token["msg"].ToString().Replace("\"", "");
-            }
-        }
-    }
-
-    public class R47008 : RTeam {
-        public string armynum;
-        public string filter;
-        public string id;
-        public string interval;
-        public string maxplayer;
-        public string minplayer;
-        public string name;
-        public string token;
-
-        public R47008(string json)
-            : base(json) {
-            if (m == null) {
-                JToken token = JObject.Parse(json)["m"];
-                JObject obj = (JObject) token["campaigndto"];
-                armynum = obj["armynum"].ToString();
-                filter = obj["filter"].ToString();
-                id = obj["id"].ToString();
-                interval = obj["interval"].ToString();
-                maxplayer = obj["maxplayer"].ToString();
-                minplayer = obj["minplayer"].ToString();
-                name = obj["name"].ToString().Replace("\"", "");
-                this.token = obj["token"].ToString();
             }
         }
     }
