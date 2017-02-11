@@ -287,6 +287,10 @@
     <None Include="Command\41107.json" />
     <None Include="Command\41300.json" />
     <None Include="Command\41301.json" />
+    <None Include="Command\45300_1.json" />
+    <None Include="Command\45300_0.json" />
+    <None Include="Command\45201.json" />
+    <None Include="Command\45200.json" />
     <None Include="Command\41302.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
