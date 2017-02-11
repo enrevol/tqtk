@@ -1,0 +1,75 @@
+{
+  "productlist": [
+    {
+      "baojirate": "20%",
+      "cost": 638,
+      "desc": "Bề mặt có nhiều lỗ nhỏ, khả năng tránh gió thấp.",
+      "level": 1,
+      "name": "Vải thô",
+      "price": 3190,
+      "prodid": 1,
+      "succrate": "90%"
+    },
+    {
+      "baojirate": "20%",
+      "cost": 696,
+      "desc": "Sản phẩm lỗi của những học viên thử việc.",
+      "level": 2,
+      "name": "Vải thô chất lượng thấp",
+      "price": 3480,
+      "prodid": 2,
+      "succrate": "90%"
+    },
+    {
+      "baojirate": "20%",
+      "cost": 754,
+      "desc": "Sản phẩm của những học viên thử việc.",
+      "level": 3,
+      "name": "Vải thô thường",
+      "price": 3770,
+      "prodid": 3,
+      "succrate": "90%"
+    },
+    {
+      "baojirate": "20%",
+      "cost": 812,
+      "desc": "Loại vải thô được dệt từ sợi cỏ.",
+      "level": 4,
+      "name": "Vải thô màu",
+      "price": 4060,
+      "prodid": 4,
+      "succrate": "90%"
+    },
+    {
+      "baojirate": "20%",
+      "cost": 870,
+      "desc": "Vải thô sợi nhỏ, kỹ thuật dệt tinh xảo hơn.",
+      "level": 5,
+      "name": "Vải thô nhẹ",
+      "price": 4350,
+      "prodid": 5,
+      "succrate": "90%"
+    },
+    {
+      "baojirate": "30%",
+      "cost": 928,
+      "desc": "Là sản phẩm lỗi của những học viên thử vi��c.",
+      "level": 6,
+      "name": "Tơ tằm thô",
+      "price": 6496,
+      "prodid": 6,
+      "succrate": "50%"
+    }
+  ],
+  "merchants": "1,2,3,4,5,6,7,8,9,11",
+  "workerlist": [
+    {
+      "exp": 0,
+      "level": 6,
+      "maxlevel": 10,
+      "name": "Học đồ dệt lụa",
+      "skill": "|Ti Ti Nhập Khấu: Thành công+5",
+      "workid": 927
+    }
+  ]
+}

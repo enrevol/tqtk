@@ -1,0 +1,35 @@
+{
+  "baseinfo": {
+    "num": 10,
+    "price": 107,
+    "maxnum": 10,
+    "succrate": 5,
+    "gold": 0,
+    "totallevel": 5,
+    "baojirate": 0,
+    "priceway": 1
+  },
+  "merchants": "1,2,3,4,5,6,7,8,9,11",
+  "makecd": 0,
+  "teamList": [
+    {
+      "baojirate": "10%",
+      "cost": 9951,
+      "desc": "Sản phẩm do người học nghề làm, hoa văn đơn giản ",
+      "legion": 40,
+      "level": 21,
+      "limit": 2,
+      "limitlv": 0,
+      "maxnum": 3,
+      "mnation": 0,
+      "nation": 1,
+      "num": 1,
+      "price": 16852,
+      "product": "Tơ tằm thô ",
+      "succrate": "90%",
+      "teamid": 17543,
+      "teamname": "Greed Zeng"
+    }
+  ],
+  "protectedcd": 0
+}
