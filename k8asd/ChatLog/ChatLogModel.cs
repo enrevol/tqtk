@@ -63,7 +63,7 @@ namespace k8asd {
                 sender = "[Công cáo]";
                 color = Color.OrangeRed;
                 */
-                return;
+                // return;
             }
             if (category == 12) {
                 // sender: Hệ thống
@@ -78,6 +78,18 @@ namespace k8asd {
                 // sender: Hệ thống
                 // message: Quân Sư Rồng Uy Danh tăng mạnh 530000 trở thành Đại Đô Đốc Tam Tinh, hiệu quả gia thành: Công Kích+10%, Phòng Thủ+5%! Chúc mừng mãnh tướng mới của Ngụy quốc!
                 AddMessage(ChatChannel.World, sender, message);
+                return;
+            }
+            if (category == 14) {
+                // sender: Hệ thống
+                // message: MNSĐ.014 đã ghép lại các mảnh vỡ và nhận được {Đồng Tước|4|1548879}
+                AddMessage(ChatChannel.Local, sender, message);
+                return;
+            }
+            if (category == 15) {
+                // sender: Hệ thống
+                // message: Hộ tống thành công 【Vận Thâu Xa】 đến đích, nhận 9180 bạc, 8160 lúa, 918 chiến tích.
+                AddMessage(ChatChannel.Local, sender, message);
                 return;
             }
             return;

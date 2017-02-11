@@ -13,7 +13,7 @@ using BrightIdeasSoftware;
 
 namespace k8asd {
     public partial class ArmyView : UserControl, IPacketReader {
-        private enum PartyLimit {
+        private enum TeamLimit {
             /// <summary>
             /// Không giới hạn.
             /// </summary>
@@ -325,13 +325,13 @@ namespace k8asd {
             // radArmy2.Checked = !radArmy1.Checked;
         }
 
-        private void CreateArmy(int armyId, int minimumLevel, PartyLimit limit) {
+        private void Create(int armyId, int minimumLevel, TeamLimit limit) {
             packetWriter.SendCommand("34101", armyId.ToString(),
                 String.Format("4:{0};{1}", minimumLevel, (int) limit), "0");
         }
 
-        private void JoinArmy(int hostId) {
-            packetWriter.SendCommand("34102", hostId.ToString());
+        private void Join(int teamId) {
+            packetWriter.SendCommand("34102", teamId.ToString());
         }
 
         private void MovePlayerUp(int playerId) {
@@ -360,7 +360,7 @@ namespace k8asd {
 
         private void ForceAttack() {
             // Tạo quân đoàn đổng trác.
-            CreateArmy(900001, 0, PartyLimit.None);
+            Create(900001, 0, TeamLimit.None);
 
             // Tấn công.
             Attack();
@@ -416,7 +416,7 @@ namespace k8asd {
         private void teamList_ButtonClick(object sender, CellClickEventArgs e) {
             var item = e.Item;
             var team = (Team) item.RowObject;
-            JoinArmy(team.Id);
+            Join(team.Id);
         }
 
         private void joinX10Button_Click(object sender, EventArgs e) {
@@ -424,7 +424,7 @@ namespace k8asd {
             if (item != null) {
                 var team = (Team) item.RowObject;
                 for (int i = 0; i < 10; ++i) {
-                    JoinArmy(team.Id);
+                    Join(team.Id);
                 }
             }
         }
@@ -461,7 +461,7 @@ namespace k8asd {
             var item = armyList.SelectedItem;
             if (item != null) {
                 var army = (Army) item;
-                CreateArmy(army.Id, 0, PartyLimit.None);
+                Create(army.Id, 0, TeamLimit.None);
             }
         }
 
@@ -469,7 +469,7 @@ namespace k8asd {
             var item = armyList.SelectedItem;
             if (item != null) {
                 var army = (Army) item;
-                CreateArmy(army.Id, 0, PartyLimit.Legion);
+                Create(army.Id, 0, TeamLimit.Legion);
             }
         }
 

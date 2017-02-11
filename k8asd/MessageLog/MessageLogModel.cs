@@ -36,13 +36,10 @@ namespace k8asd {
                     if (errmessage != null) {
                         LogInfo((string) errmessage);
                     }
-                }
-            }
-            if (packet.CommandId == "41102") {
-                var token = JToken.Parse(packet.Message);
-                var msg = token["msg"];
-                if (msg != null) {
-                    LogInfo((string) msg);
+                    var msg = token["msg"];
+                    if (msg != null) {
+                        LogInfo((string) msg);
+                    }
                 }
             }
         }

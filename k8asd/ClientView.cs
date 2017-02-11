@@ -71,6 +71,7 @@ namespace k8asd {
             packetReaders.Add(armyView);
             packetReaders.Add(messageLogModel);
             packetReaders.Add(chatLogModel);
+            packetReaders.Add(weaveView);
 
             infoView.SetModel(infoModel);
             cooldownView.SetModel(cooldownModel);
@@ -87,6 +88,7 @@ namespace k8asd {
             heroTrainingView.SetPacketWriter(this);
             armyView.SetPacketWriter(this);
             chatLogModel.SetPacketWriter(this);
+            weaveView.SetPacketWriter(this);
 
             /*
             for (int i = 0; i < 6; i++)

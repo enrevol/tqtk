@@ -33,10 +33,12 @@ namespace k8asd {
             this.barFoodSell = new System.Windows.Forms.TrackBar();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.heroTrainingTab = new System.Windows.Forms.TabPage();
-            this.armyTab = new System.Windows.Forms.TabPage();
-            this.chatLogView = new k8asd.ChatLogView();
             this.heroTrainingView = new k8asd.HeroTrainingView();
+            this.armyTab = new System.Windows.Forms.TabPage();
             this.armyView = new k8asd.ArmyView();
+            this.weaveTab = new System.Windows.Forms.TabPage();
+            this.weaveView = new k8asd.WeaveView();
+            this.chatLogView = new k8asd.ChatLogView();
             this.messageLogView = new k8asd.MessageLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
@@ -46,6 +48,7 @@ namespace k8asd {
             this.tabControl.SuspendLayout();
             this.heroTrainingTab.SuspendLayout();
             this.armyTab.SuspendLayout();
+            this.weaveTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrData
@@ -92,10 +95,11 @@ namespace k8asd {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.heroTrainingTab);
             this.tabControl.Controls.Add(this.armyTab);
+            this.tabControl.Controls.Add(this.weaveTab);
             this.tabControl.Location = new System.Drawing.Point(320, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(660, 555);
+            this.tabControl.Size = new System.Drawing.Size(645, 558);
             this.tabControl.TabIndex = 33;
             // 
             // heroTrainingTab
@@ -104,28 +108,10 @@ namespace k8asd {
             this.heroTrainingTab.Location = new System.Drawing.Point(4, 22);
             this.heroTrainingTab.Name = "heroTrainingTab";
             this.heroTrainingTab.Padding = new System.Windows.Forms.Padding(3);
-            this.heroTrainingTab.Size = new System.Drawing.Size(652, 529);
+            this.heroTrainingTab.Size = new System.Drawing.Size(637, 532);
             this.heroTrainingTab.TabIndex = 0;
             this.heroTrainingTab.Text = "Luyện";
             this.heroTrainingTab.UseVisualStyleBackColor = true;
-            // 
-            // armyTab
-            // 
-            this.armyTab.Controls.Add(this.armyView);
-            this.armyTab.Location = new System.Drawing.Point(4, 22);
-            this.armyTab.Name = "armyTab";
-            this.armyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.armyTab.Size = new System.Drawing.Size(652, 529);
-            this.armyTab.TabIndex = 1;
-            this.armyTab.Text = "Quân đoàn";
-            this.armyTab.UseVisualStyleBackColor = true;
-            // 
-            // chatLogView
-            // 
-            this.chatLogView.Location = new System.Drawing.Point(0, 375);
-            this.chatLogView.Name = "chatLogView";
-            this.chatLogView.Size = new System.Drawing.Size(315, 180);
-            this.chatLogView.TabIndex = 34;
             // 
             // heroTrainingView
             // 
@@ -133,16 +119,53 @@ namespace k8asd {
             this.heroTrainingView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.heroTrainingView.Location = new System.Drawing.Point(3, 3);
             this.heroTrainingView.Name = "heroTrainingView";
-            this.heroTrainingView.Size = new System.Drawing.Size(646, 523);
+            this.heroTrainingView.Size = new System.Drawing.Size(631, 526);
             this.heroTrainingView.TabIndex = 32;
+            // 
+            // armyTab
+            // 
+            this.armyTab.Controls.Add(this.armyView);
+            this.armyTab.Location = new System.Drawing.Point(4, 22);
+            this.armyTab.Name = "armyTab";
+            this.armyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.armyTab.Size = new System.Drawing.Size(637, 532);
+            this.armyTab.TabIndex = 1;
+            this.armyTab.Text = "Quân đoàn";
+            this.armyTab.UseVisualStyleBackColor = true;
             // 
             // armyView
             // 
             this.armyView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.armyView.Location = new System.Drawing.Point(3, 3);
             this.armyView.Name = "armyView";
-            this.armyView.Size = new System.Drawing.Size(646, 523);
+            this.armyView.Size = new System.Drawing.Size(631, 526);
             this.armyView.TabIndex = 0;
+            // 
+            // weaveTab
+            // 
+            this.weaveTab.Controls.Add(this.weaveView);
+            this.weaveTab.Location = new System.Drawing.Point(4, 22);
+            this.weaveTab.Name = "weaveTab";
+            this.weaveTab.Padding = new System.Windows.Forms.Padding(3);
+            this.weaveTab.Size = new System.Drawing.Size(637, 532);
+            this.weaveTab.TabIndex = 2;
+            this.weaveTab.Text = "Dệt";
+            this.weaveTab.UseVisualStyleBackColor = true;
+            // 
+            // weaveView
+            // 
+            this.weaveView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.weaveView.Location = new System.Drawing.Point(3, 3);
+            this.weaveView.Name = "weaveView";
+            this.weaveView.Size = new System.Drawing.Size(631, 526);
+            this.weaveView.TabIndex = 0;
+            // 
+            // chatLogView
+            // 
+            this.chatLogView.Location = new System.Drawing.Point(0, 375);
+            this.chatLogView.Name = "chatLogView";
+            this.chatLogView.Size = new System.Drawing.Size(315, 180);
+            this.chatLogView.TabIndex = 34;
             // 
             // messageLogView
             // 
@@ -183,13 +206,14 @@ namespace k8asd {
             this.Controls.Add(this.mcuView);
             this.Controls.Add(this.infoView);
             this.Name = "ClientView";
-            this.Size = new System.Drawing.Size(987, 685);
+            this.Size = new System.Drawing.Size(987, 565);
             this.Load += new System.EventHandler(this.ClientView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).EndInit();
             this.tabControl.ResumeLayout(false);
             this.heroTrainingTab.ResumeLayout(false);
             this.armyTab.ResumeLayout(false);
+            this.weaveTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -210,6 +234,8 @@ namespace k8asd {
         private TabPage armyTab;
         private ArmyView armyView;
         private ChatLogView chatLogView;
+        private TabPage weaveTab;
+        private WeaveView weaveView;
     }
 }
 

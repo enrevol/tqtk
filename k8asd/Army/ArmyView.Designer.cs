@@ -56,12 +56,17 @@
             this.memberBox = new System.Windows.Forms.GroupBox();
             this.autoRefreshTeamBox = new System.Windows.Forms.CheckBox();
             this.refreshTeamInterval = new System.Windows.Forms.NumericUpDown();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.autoCreateTeam0 = new System.Windows.Forms.RadioButton();
+            this.autoCreateTeam1 = new System.Windows.Forms.RadioButton();
+            this.autoCreateTeam2 = new System.Windows.Forms.RadioButton();
             this.armyInfoBox.SuspendLayout();
             this.teamBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).BeginInit();
             this.memberBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // armyList
@@ -69,7 +74,7 @@
             this.armyList.FormattingEnabled = true;
             this.armyList.Location = new System.Drawing.Point(5, 120);
             this.armyList.Name = "armyList";
-            this.armyList.Size = new System.Drawing.Size(250, 329);
+            this.armyList.Size = new System.Drawing.Size(210, 212);
             this.armyList.TabIndex = 0;
             this.armyList.SelectedIndexChanged += new System.EventHandler(this.armyList_SelectedIndexChanged);
             // 
@@ -95,19 +100,19 @@
             this.armyInfoBox.Controls.Add(this.limitLabel);
             this.armyInfoBox.Controls.Add(this._ignore0);
             this.armyInfoBox.Controls.Add(this.honorLabel);
-            this.armyInfoBox.Location = new System.Drawing.Point(5, 41);
+            this.armyInfoBox.Location = new System.Drawing.Point(5, 40);
             this.armyInfoBox.Name = "armyInfoBox";
-            this.armyInfoBox.Size = new System.Drawing.Size(250, 70);
+            this.armyInfoBox.Size = new System.Drawing.Size(210, 70);
             this.armyInfoBox.TabIndex = 13;
             this.armyInfoBox.TabStop = false;
             this.armyInfoBox.Text = "Công Tôn Toản Lv. 32";
             // 
             // itemLabel
             // 
-            this.itemLabel.Location = new System.Drawing.Point(60, 20);
+            this.itemLabel.Location = new System.Drawing.Point(50, 20);
             this.itemLabel.Name = "itemLabel";
             this.itemLabel.ReadOnly = true;
-            this.itemLabel.Size = new System.Drawing.Size(180, 20);
+            this.itemLabel.Size = new System.Drawing.Size(150, 20);
             this.itemLabel.TabIndex = 19;
             this.itemLabel.TabStop = false;
             this.itemLabel.Text = "Thất Tinh Kiếm";
@@ -134,7 +139,7 @@
             // honorLabel
             // 
             this.honorLabel.AutoSize = true;
-            this.honorLabel.Location = new System.Drawing.Point(120, 48);
+            this.honorLabel.Location = new System.Drawing.Point(100, 48);
             this.honorLabel.Name = "honorLabel";
             this.honorLabel.Size = new System.Drawing.Size(92, 13);
             this.honorLabel.TabIndex = 16;
@@ -169,7 +174,7 @@
             // 
             // refreshTeamButton
             // 
-            this.refreshTeamButton.Location = new System.Drawing.Point(265, 5);
+            this.refreshTeamButton.Location = new System.Drawing.Point(225, 5);
             this.refreshTeamButton.Name = "refreshTeamButton";
             this.refreshTeamButton.Size = new System.Drawing.Size(100, 30);
             this.refreshTeamButton.TabIndex = 20;
@@ -179,6 +184,7 @@
             // 
             // teamBox
             // 
+            this.teamBox.Controls.Add(this.groupBox1);
             this.teamBox.Controls.Add(this.createLegionButton);
             this.teamBox.Controls.Add(this.createButton);
             this.teamBox.Controls.Add(this.inviteButton);
@@ -191,9 +197,9 @@
             this.teamBox.Controls.Add(this.armyNumLabel);
             this.teamBox.Controls.Add(this.playerNumLabel);
             this.teamBox.Controls.Add(this.baseHonorLabel);
-            this.teamBox.Location = new System.Drawing.Point(265, 40);
+            this.teamBox.Location = new System.Drawing.Point(225, 40);
             this.teamBox.Name = "teamBox";
-            this.teamBox.Size = new System.Drawing.Size(360, 285);
+            this.teamBox.Size = new System.Drawing.Size(360, 286);
             this.teamBox.TabIndex = 21;
             this.teamBox.TabStop = false;
             this.teamBox.Text = "Danh sách tổ đội";
@@ -288,11 +294,11 @@
             this.joinColumn});
             this.teamList.Cursor = System.Windows.Forms.Cursors.Default;
             this.teamList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.teamList.Location = new System.Drawing.Point(10, 40);
+            this.teamList.Location = new System.Drawing.Point(10, 144);
             this.teamList.MultiSelect = false;
             this.teamList.Name = "teamList";
             this.teamList.ShowGroups = false;
-            this.teamList.Size = new System.Drawing.Size(340, 160);
+            this.teamList.Size = new System.Drawing.Size(340, 56);
             this.teamList.TabIndex = 22;
             this.teamList.UseCompatibleStateImageBehavior = false;
             this.teamList.View = System.Windows.Forms.View.Details;
@@ -368,7 +374,7 @@
             // memberBox
             // 
             this.memberBox.Controls.Add(this.memberList);
-            this.memberBox.Location = new System.Drawing.Point(265, 335);
+            this.memberBox.Location = new System.Drawing.Point(225, 335);
             this.memberBox.Name = "memberBox";
             this.memberBox.Size = new System.Drawing.Size(360, 200);
             this.memberBox.TabIndex = 23;
@@ -378,7 +384,7 @@
             // autoRefreshTeamBox
             // 
             this.autoRefreshTeamBox.AutoSize = true;
-            this.autoRefreshTeamBox.Location = new System.Drawing.Point(380, 12);
+            this.autoRefreshTeamBox.Location = new System.Drawing.Point(340, 12);
             this.autoRefreshTeamBox.Name = "autoRefreshTeamBox";
             this.autoRefreshTeamBox.Size = new System.Drawing.Size(157, 17);
             this.autoRefreshTeamBox.TabIndex = 24;
@@ -388,7 +394,7 @@
             // 
             // refreshTeamInterval
             // 
-            this.refreshTeamInterval.Location = new System.Drawing.Point(550, 11);
+            this.refreshTeamInterval.Location = new System.Drawing.Point(500, 11);
             this.refreshTeamInterval.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -410,6 +416,51 @@
             0});
             this.refreshTeamInterval.ValueChanged += new System.EventHandler(this.refreshTeamInterval_ValueChanged);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.autoCreateTeam2);
+            this.groupBox1.Controls.Add(this.autoCreateTeam1);
+            this.groupBox1.Controls.Add(this.autoCreateTeam0);
+            this.groupBox1.Location = new System.Drawing.Point(10, 40);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(145, 91);
+            this.groupBox1.TabIndex = 31;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Tự động lập tổ đội";
+            // 
+            // autoCreateTeam0
+            // 
+            this.autoCreateTeam0.AutoSize = true;
+            this.autoCreateTeam0.Location = new System.Drawing.Point(12, 21);
+            this.autoCreateTeam0.Name = "autoCreateTeam0";
+            this.autoCreateTeam0.Size = new System.Drawing.Size(96, 17);
+            this.autoCreateTeam0.TabIndex = 0;
+            this.autoCreateTeam0.TabStop = true;
+            this.autoCreateTeam0.Text = "Không giới hạn";
+            this.autoCreateTeam0.UseVisualStyleBackColor = true;
+            // 
+            // autoCreateTeam1
+            // 
+            this.autoCreateTeam1.AutoSize = true;
+            this.autoCreateTeam1.Location = new System.Drawing.Point(10, 43);
+            this.autoCreateTeam1.Name = "autoCreateTeam1";
+            this.autoCreateTeam1.Size = new System.Drawing.Size(68, 17);
+            this.autoCreateTeam1.TabIndex = 1;
+            this.autoCreateTeam1.TabStop = true;
+            this.autoCreateTeam1.Text = "Quốc gia";
+            this.autoCreateTeam1.UseVisualStyleBackColor = true;
+            // 
+            // autoCreateTeam2
+            // 
+            this.autoCreateTeam2.AutoSize = true;
+            this.autoCreateTeam2.Location = new System.Drawing.Point(11, 65);
+            this.autoCreateTeam2.Name = "autoCreateTeam2";
+            this.autoCreateTeam2.Size = new System.Drawing.Size(50, 17);
+            this.autoCreateTeam2.TabIndex = 2;
+            this.autoCreateTeam2.TabStop = true;
+            this.autoCreateTeam2.Text = "Bang";
+            this.autoCreateTeam2.UseVisualStyleBackColor = true;
+            // 
             // ArmyView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -423,7 +474,7 @@
             this.Controls.Add(this.refreshArmyButton);
             this.Controls.Add(this.armyList);
             this.Name = "ArmyView";
-            this.Size = new System.Drawing.Size(674, 568);
+            this.Size = new System.Drawing.Size(884, 590);
             this.armyInfoBox.ResumeLayout(false);
             this.armyInfoBox.PerformLayout();
             this.teamBox.ResumeLayout(false);
@@ -432,6 +483,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).EndInit();
             this.memberBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -471,5 +524,9 @@
         private BrightIdeasSoftware.OLVColumn moveDownColumn;
         private System.Windows.Forms.CheckBox autoRefreshTeamBox;
         private System.Windows.Forms.NumericUpDown refreshTeamInterval;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton autoCreateTeam2;
+        private System.Windows.Forms.RadioButton autoCreateTeam1;
+        private System.Windows.Forms.RadioButton autoCreateTeam0;
     }
 }
