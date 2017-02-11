@@ -99,9 +99,9 @@
             this.memberBox.Controls.Add(this.teamRateLabel);
             this.memberBox.Controls.Add(this.teamPriceLabel);
             this.memberBox.Controls.Add(this.memberList);
-            this.memberBox.Location = new System.Drawing.Point(5, 356);
+            this.memberBox.Location = new System.Drawing.Point(5, 340);
             this.memberBox.Name = "memberBox";
-            this.memberBox.Size = new System.Drawing.Size(360, 126);
+            this.memberBox.Size = new System.Drawing.Size(380, 126);
             this.memberBox.TabIndex = 29;
             this.memberBox.TabStop = false;
             this.memberBox.Text = "Danh sách thành viên tổ đội";
@@ -147,7 +147,7 @@
             this.memberList.MultiSelect = false;
             this.memberList.Name = "memberList";
             this.memberList.ShowGroups = false;
-            this.memberList.Size = new System.Drawing.Size(340, 64);
+            this.memberList.Size = new System.Drawing.Size(360, 64);
             this.memberList.TabIndex = 22;
             this.memberList.UseCompatibleStateImageBehavior = false;
             this.memberList.View = System.Windows.Forms.View.Details;
@@ -184,7 +184,7 @@
             // 
             // createLegionButton
             // 
-            this.createLegionButton.Location = new System.Drawing.Point(270, 171);
+            this.createLegionButton.Location = new System.Drawing.Point(270, 165);
             this.createLegionButton.Name = "createLegionButton";
             this.createLegionButton.Size = new System.Drawing.Size(80, 30);
             this.createLegionButton.TabIndex = 30;
@@ -194,7 +194,7 @@
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(185, 171);
+            this.createButton.Location = new System.Drawing.Point(185, 165);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(80, 30);
             this.createButton.TabIndex = 29;
@@ -205,7 +205,7 @@
             // inviteButton
             // 
             this.inviteButton.Enabled = false;
-            this.inviteButton.Location = new System.Drawing.Point(10, 206);
+            this.inviteButton.Location = new System.Drawing.Point(10, 200);
             this.inviteButton.Name = "inviteButton";
             this.inviteButton.Size = new System.Drawing.Size(80, 30);
             this.inviteButton.TabIndex = 28;
@@ -214,7 +214,7 @@
             // 
             // quitButton
             // 
-            this.quitButton.Location = new System.Drawing.Point(95, 206);
+            this.quitButton.Location = new System.Drawing.Point(95, 200);
             this.quitButton.Name = "quitButton";
             this.quitButton.Size = new System.Drawing.Size(80, 30);
             this.quitButton.TabIndex = 27;
@@ -224,7 +224,7 @@
             // 
             // disbandButton
             // 
-            this.disbandButton.Location = new System.Drawing.Point(95, 171);
+            this.disbandButton.Location = new System.Drawing.Point(95, 165);
             this.disbandButton.Name = "disbandButton";
             this.disbandButton.Size = new System.Drawing.Size(80, 30);
             this.disbandButton.TabIndex = 26;
@@ -234,7 +234,7 @@
             // 
             // makeButton
             // 
-            this.makeButton.Location = new System.Drawing.Point(10, 171);
+            this.makeButton.Location = new System.Drawing.Point(10, 165);
             this.makeButton.Name = "makeButton";
             this.makeButton.Size = new System.Drawing.Size(80, 30);
             this.makeButton.TabIndex = 24;
@@ -256,7 +256,7 @@
             this.teamList.MultiSelect = false;
             this.teamList.Name = "teamList";
             this.teamList.ShowGroups = false;
-            this.teamList.Size = new System.Drawing.Size(360, 145);
+            this.teamList.Size = new System.Drawing.Size(360, 140);
             this.teamList.TabIndex = 22;
             this.teamList.UseCompatibleStateImageBehavior = false;
             this.teamList.View = System.Windows.Forms.View.Details;
@@ -304,7 +304,7 @@
             // priceLabel
             // 
             this.priceLabel.AutoSize = true;
-            this.priceLabel.Location = new System.Drawing.Point(190, 20);
+            this.priceLabel.Location = new System.Drawing.Point(180, 20);
             this.priceLabel.Name = "priceLabel";
             this.priceLabel.Size = new System.Drawing.Size(107, 13);
             this.priceLabel.TabIndex = 13;
@@ -335,7 +335,7 @@
             // spinnerRateLabel
             // 
             this.spinnerRateLabel.AutoSize = true;
-            this.spinnerRateLabel.Location = new System.Drawing.Point(120, 20);
+            this.spinnerRateLabel.Location = new System.Drawing.Point(115, 20);
             this.spinnerRateLabel.Name = "spinnerRateLabel";
             this.spinnerRateLabel.Size = new System.Drawing.Size(54, 13);
             this.spinnerRateLabel.TabIndex = 16;
@@ -352,7 +352,7 @@
             this.Controls.Add(this.refreshTeamButton);
             this.Controls.Add(this.memberBox);
             this.Name = "WeaveView";
-            this.Size = new System.Drawing.Size(598, 596);
+            this.Size = new System.Drawing.Size(598, 477);
             ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).EndInit();
             this.memberBox.ResumeLayout(false);
             this.memberBox.PerformLayout();
