@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace k8asd {
     public interface IMcuModel {
         /// <summary>
-        /// Gets the current number of MCU (Milliray Call-up Points).
+        /// Gets the current number of MCU (Milliray Call-up Units).
         /// </summary>
         int Mcu { get; }
 

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace k8asd {
+﻿namespace k8asd {
     interface IPacketReader {
+        /// <summary>
+        /// Notified when there is an available packet to read.
+        /// </summary>
+        /// <param name="packet"></param>
         void OnPacketReceived(Packet packet);
     }
 }

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
+    /// <summary>
+    /// Represents the message log model.
+    /// </summary>
     public interface IMessageLogModel {
         void LogInfo(string message);
 

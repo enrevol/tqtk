@@ -76,9 +76,7 @@ namespace k8asd {
         }
 
         public static void Raise<T>(this EventHandler<T> handler, object sender, T arg) {
-            if (handler != null) {
-                handler(sender, arg);
-            }
+            handler?.Invoke(sender, arg);
         }
 
         // http://stackoverflow.com/questions/8535102/inconsistent-results-with-richtextbox-scrolltocaret

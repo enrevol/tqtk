@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
 
 namespace k8asd {
     public partial class McuView : UserControl {
@@ -19,6 +11,15 @@ namespace k8asd {
 
         public void SetModel(IMcuModel model) {
             this.model = model;
+
+            UpdateMcu(model.Mcu, model.MaxMcu);
+            UpdateMcuCooldown(model.McuCooldown);
+            UpdateExtraZhengzhan(model.ExtraZhengzhan);
+            UpdateExtraGongji(model.ExtraGongji);
+            UpdateExtraZhengfu(model.ExtraZhengfu);
+            UpdateExtraNongtian(model.ExtraNongtian);
+            UpdateExtraYinkuang(model.ExtraYinkuang);
+
             model.McuChanged += OnMcuChanged;
             model.MaxMcuChanged += OnMaxMcuChanged;
             model.McuCooldownChanged += OnMcuCooldownChanged;
@@ -30,34 +31,62 @@ namespace k8asd {
         }
 
         private void OnMcuChanged(object sender, int mcu) {
-            mcuLabel.Text = String.Format("Lượt: {0}/{1}", mcu, model.MaxMcu);
+            UpdateMcu(mcu, model.MaxMcu);
         }
 
         private void OnMaxMcuChanged(object sender, int maxMcu) {
-            mcuLabel.Text = String.Format("Lượt: {0}/{1}", model.Mcu, maxMcu);
+            UpdateMcu(model.Mcu, maxMcu);
         }
 
         private void OnMcuCooldownChanged(object sender, int milliseconds) {
-            mcuCooldownLabel.Text = Utils.FormatDuration(milliseconds);
+            UpdateMcuCooldown(milliseconds);
         }
 
         private void OnExtraZhengzhanChanged(object sender, bool available) {
-            extraZhengzhanLabel.Visible = available;
+            UpdateExtraZhengzhan(available);
         }
 
         private void OnExtraGongjiChanged(object sender, bool available) {
-            extraGongjiLabel.Visible = available;
+            UpdateExtraGongji(available);
         }
 
         private void OnExtraZhengfuChanged(object sender, bool available) {
-            extraZhengfuLabel.Visible = available;
+            UpdateExtraZhengfu(available);
         }
 
         private void OnExtraNongtianChanged(object sender, bool available) {
-            extraNongtianLabel.Visible = available;
+            UpdateExtraNongtian(available);
         }
 
         private void OnExtraYinkuangChanged(object sender, bool available) {
+            UpdateExtraYinkuang(available);
+        }
+
+        private void UpdateMcu(int mcu, int maxMcu) {
+            mcuLabel.Text = String.Format("Lượt: {0}/{1}", mcu, maxMcu);
+        }
+
+        private void UpdateMcuCooldown(int milliseconds) {
+            mcuCooldownLabel.Text = Utils.FormatDuration(milliseconds);
+        }
+
+        private void UpdateExtraZhengzhan(bool available) {
+            extraZhengzhanLabel.Visible = available;
+        }
+
+        private void UpdateExtraGongji(bool available) {
+            extraGongjiLabel.Visible = available;
+        }
+
+        private void UpdateExtraZhengfu(bool available) {
+            extraZhengfuLabel.Visible = available;
+        }
+
+        private void UpdateExtraNongtian(bool available) {
+            extraNongtianLabel.Visible = available;
+        }
+
+        private void UpdateExtraYinkuang(bool available) {
             extraYinkuangLabel.Visible = available;
         }
     }
