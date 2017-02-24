@@ -165,7 +165,6 @@ namespace k8asd {
             }
         }
 
-        private Queue<int> pendingPowerIds;
         private BindingList<Army> armies;
         private BindingList<Team> teams;
         private BindingList<Member> members;
@@ -179,15 +178,7 @@ namespace k8asd {
             armyList.DataSource = armies;
 
             teams = new BindingList<Team>();
-            /*
-            for (int i = 0; i < 20; ++i) {
-                teams.Add(Team.Parse(JToken.Parse("{\"condition\": \"Lilac, cấp 0 trở lên\",\"currentnum\": 1,\"endtime\": 1484071081220,\"maxnum\": 6,\"teamid\": 5557310,\"teamname\": \"Mi Lilac\" }")));
-            }
-            */
-
             members = new BindingList<Member>();
-
-            pendingPowerIds = new Queue<int>();
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -199,7 +190,36 @@ namespace k8asd {
         }
 
         private void RefreshArmies() {
-            if (packetWriter.SendCommand("33201", "1")) {
+            Action<Packet> callback = (Packet packet) => {
+                Debug.Assert(packet.CommandId == "33201");
+                var powerIds = new Queue<int>(Parse33201(packet));
+
+                Action updater;
+                Action<Packet> callback_ = null;
+
+                updater = () => {
+                    if (powerIds.Count > 0) {
+                        var powerId = powerIds.Dequeue();
+                        if (packetWriter.SendCommand(callback_, "33100", powerId.ToString())) {
+                            // OK.
+                        } else {
+                            Enabled = true;
+                        }
+                    } else {
+                        Enabled = true;
+                    }
+                };
+
+                callback_ = (Packet packet_) => {
+                    Debug.Assert(packet_.CommandId == "33100");
+                    Parse33100(packet_);
+                    updater();
+                };
+
+                updater();
+            };
+            if (packetWriter.SendCommand(callback, "33201", "1")) {
+                armies.Clear();
                 Enabled = false;
             }
         }
@@ -213,7 +233,10 @@ namespace k8asd {
         }
 
         private void RefreshArmy(int armyId) {
-            packetWriter.SendCommand("34100", armyId.ToString());
+            packetWriter.SendCommand((Packet packet) => {
+                Debug.Assert(packet.CommandId == "34100");
+                Parse34100(packet);
+            }, "34100", armyId.ToString());
         }
 
         private void refreshArmyButton_Click(object sender, EventArgs e) {
@@ -221,35 +244,20 @@ namespace k8asd {
         }
 
         public void OnPacketReceived(Packet packet) {
-            if (packet.CommandId == "33201") {
-                Parse33201(packet);
-                if (pendingPowerIds.Count > 0) {
-                    armies.Clear();
-                    processPendingPower();
-                } else {
-                    Enabled = true;
-                }
-            }
-            if (packet.CommandId == "33100") {
-                Parse33100(packet);
-                processPendingPower();
-            }
-            if (packet.CommandId == "34100") {
-                Parse34100(packet);
-            }
             if (packet.CommandId == "34108") {
-                var token = JToken.Parse(packet.Message);
+                Parse34108(packet);
             }
         }
 
-        private void Parse33201(Packet packet) {
+        private List<int> Parse33201(Packet packet) {
             var token = JToken.Parse(packet.Message);
-            pendingPowerIds.Clear();
+            var powerIds = new List<int>();
             var powerList = token["powerList"];
             foreach (var power in powerList) {
                 var powerId = (int) power["powerId"];
-                pendingPowerIds.Enqueue(powerId);
+                powerIds.Add(powerId);
             }
+            return powerIds;
         }
 
         private void Parse33100(Packet packet) {
@@ -274,6 +282,19 @@ namespace k8asd {
 
             var member = token["member"];
             ParseMembers(member);
+        }
+
+        private void Parse34108(Packet packet) {
+            var token = JToken.Parse(packet.Message);
+            var battlereport = token["battlereport"];
+            var report = battlereport["report"];
+            var fieldreport = report["fieldreport"];
+            var gains = (string) report["gains"];
+            if (gains.Length == 0) {
+                // Failed.
+            } else {
+                // Succeeded.
+            }
         }
 
         private void ParseTeams(JToken token) {
@@ -306,15 +327,6 @@ namespace k8asd {
             armyNumLabel.Text = String.Format("Đội quân: {0}", armynum);
             playerNumLabel.Text = String.Format("Người tham gia: {0} - {1}", minplayer, maxplayer);
             baseHonorLabel.Text = String.Format("Chiến tích cơ bản: {0}", honor);
-        }
-
-        private void processPendingPower() {
-            if (pendingPowerIds.Count > 0) {
-                var powerId = pendingPowerIds.Dequeue();
-                packetWriter.SendCommand("33100", powerId.ToString());
-            } else {
-                Enabled = true;
-            }
         }
 
         private void radArmy2_CheckedChanged(object sender, EventArgs e) {
@@ -618,37 +630,7 @@ item.Text = tm.teamname + " ["
     } else
         LogText("[Chiến] " + r34100.m);
     break;
-#endregion
-
-#region 34108
-case "34108":
-    R34108 r34108 = new R34108(cdata); {
-        lstArmyMember.Items.Clear();
-        lblExtraYinkuang.Visible = r34108.extrayinkuang.Equals("1");
-        lblExtraNongtian.Visible = r34108.extranongtian.Equals("1");
-        lblExtraZhengzhan.Visible = r34108.extrazhengzhan.Equals("1");
-        lblExtraZhengfu.Visible = r34108.extrazhengfu.Equals("1");
-        lblExtraGongji.Visible = r34108.extragongji.Equals("1");
-        sysgold = r34108.sys_gold;
-        usergold = r34108.user_gold;
-        txtGold.Text = (Convert.ToInt32(sysgold) + Convert.ToInt32(usergold)).ToString();
-        tokencd = Convert.ToInt32(r34108.tokencd);
-        tokencdusable = r34108.tokencdusable;
-        forces = r34108.forces;
-        txtForces.Text = forces + "/" + maxforces;
-        lblToken.Text = "Lượt: " + r34108.token + "/" + r11102.maxtoken;
-        txtJyungong.Text = r34108.jyungong;
-        if (r34108.gains == "")
-            LogText("[Chiến] Tấn công thất bại");
-        else
-            LogText("[Chiến] Nhận được " + r34108.gains + " chiến tích");
-    }
-    armynext = true;
-    armyok = true;
-    break;
-#endregion
-
-    
+#endregion    
 
 private void chkArmyAll_CheckedChanged(object sender, EventArgs e) {
 for (int i = 0; i < lstArmyList.Items.Count; i++)

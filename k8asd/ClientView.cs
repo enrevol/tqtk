@@ -33,8 +33,7 @@ namespace k8asd {
         private PacketHandler packetHandler;
 
         private RichTextBoxEx[] txtChatBox = new RichTextBoxEx[7];
-
-        private int curpower;
+        
         private int forcefreecd;
 
         private int[] traincd = new int[8];
@@ -78,7 +77,7 @@ namespace k8asd {
             mcuView.SetModel(mcuModel);
             messageLogView.SetModel(messageLogModel);
             chatLogView.SetModel(chatLogModel);
-            
+
             armyView.SetInfoModel(infoModel);
             chatLogModel.SetInfoModel(infoModel);
 
@@ -170,9 +169,13 @@ namespace k8asd {
         }
 
         public bool SendCommand(string cmd, params string[] parameters) {
+            return SendCommand(null, cmd, parameters);
+        }
+
+        public bool SendCommand(Action<Packet> callback, string cmd, params string[] parameters) {
             bool succeeded = false;
             try {
-                succeeded = packetHandler.SendCommand(cmd, parameters);
+                succeeded = packetHandler.SendCommand(callback, cmd, parameters);
             } catch {
 
             }
@@ -226,8 +229,8 @@ namespace k8asd {
                 // LogText("Kết nối với máy chủ thất bại.");
             }
 
-            tmrData.Start(); ;
-            packetHandler.SendCommand("10100");
+            tmrData.Start();
+            SendCommand("10100");
         }
 
         private void tmrData_Tick(object sender, EventArgs e) {
@@ -779,7 +782,7 @@ private void btnImposeAnswer2_Click(object sender, EventArgs e) {
         }
 
         #endregion
-        
+
 
         #region Forces
 

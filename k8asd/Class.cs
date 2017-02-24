@@ -648,19 +648,6 @@ namespace k8asd {
         }
     }
     
-    public class R34108 : Report {
-        public string gains;
-
-        public R34108(string json)
-            : base(json) {
-            if (m == null) {
-                JToken token = JObject.Parse(json)["m"];
-                JObject obj = (JObject) token["battlereport"]["report"];
-                gains = obj["gains"].ToString().Replace("\"", "");
-            }
-        }
-    }
-
     public class R39100 {
         public class Item {
             public string attribute;

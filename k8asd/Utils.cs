@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -87,6 +89,18 @@ namespace k8asd {
 
         public static void ScrollToBottom(RichTextBox box) {
             SendMessage(box.Handle, WM_VSCROLL, (IntPtr) SB_PAGEBOTTOM, IntPtr.Zero);
+        }
+
+        // http://stackoverflow.com/questions/5143599/detecting-whether-on-ui-thread-in-wpf-and-winforms
+        public static bool CurrentlyOnUiThread(Control control) {
+            return !control.InvokeRequired;
+        }
+
+        // http://stackoverflow.com/questions/2652460/how-to-get-the-name-of-the-current-method-from-code
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static string GetMyMethodName() {
+            var st = new StackTrace(new StackFrame(1));
+            return st.GetFrame(0).GetMethod().Name;
         }
     }
 }

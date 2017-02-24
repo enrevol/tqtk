@@ -2,9 +2,17 @@
 using System.Text;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace k8asd {
     public class PacketHandler : IDisposable {
+        public enum ConnectResult {
+            Connecting,
+            Failed,
+            Succeeded,
+        };
+
         private const int BufferSize = 1024;
 
         private Session session;
@@ -12,6 +20,7 @@ namespace k8asd {
         private string streamData;
         private byte[] buffer;
         private MD5 hasher;
+        private Dictionary<string, Queue<Action<Packet>>> callbacks;
 
         public string Data { get { return streamData; } }
 
@@ -20,6 +29,7 @@ namespace k8asd {
             tcpClient = new TcpClient();
             buffer = new byte[BufferSize];
             hasher = MD5.Create();
+            callbacks = new Dictionary<string, Queue<Action<Packet>>>();
             ClearData();
         }
 
@@ -31,6 +41,10 @@ namespace k8asd {
             // tcpClient_.
         }
 
+        /// <summary>
+        /// Attempts to connect to the server.
+        /// </summary>
+        /// <returns></returns>
         public bool Connect() {
             Disconnect();
             tcpClient.Connect(session.Ip, session.Ports);
@@ -56,17 +70,36 @@ namespace k8asd {
 
             if (packet.Parse(packetData)) {
                 streamData = streamData.Substring(index + 1); // Ignore the termination character.
+                PopCallback(packet);
                 return packet;
             }
             return null;
+        }
+
+        private void PushCallback(Action<Packet> callback, string commandId) {
+            if (callback != null) {
+                if (!callbacks.ContainsKey(commandId)) {
+                    callbacks.Add(commandId, new Queue<Action<Packet>>());
+                }
+                callbacks[commandId].Enqueue(callback);
+            }
+        }
+
+        private void PopCallback(Packet packet) {
+            var key = packet.CommandId;
+            if (callbacks.ContainsKey(key)) {
+                var queue = callbacks[key];
+                if (queue.Count > 0) {
+                    queue.Dequeue()(packet);
+                }
+            }
         }
 
         // public bool sendCommand(Command command) {
         //     return sendCommand(command.Id, command.Parameters);
         // }
 
-        public bool SendCommand(string commandId, params string[] parameters) {
-            var succeeded = false;
+        public bool SendCommand(Action<Packet> callback, string commandId, params string[] parameters) {
             const string what_is_this = "5dcd73d391c90e8769618d42a916ea1b";
 
             var input = commandId + session.UserId;
@@ -92,7 +125,11 @@ namespace k8asd {
             var bytes = Encoding.UTF8.GetBytes(msg);
             var stream = tcpClient.GetStream();
             stream.Write(bytes, 0, bytes.Length);
-            succeeded = true;
+
+            var succeeded = tcpClient.Connected;
+            if (succeeded) {
+                PushCallback(callback, commandId);
+            }
             return succeeded;
         }
 
