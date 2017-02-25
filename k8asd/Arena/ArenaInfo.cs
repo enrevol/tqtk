@@ -31,8 +31,8 @@ namespace k8asd {
             var playerInfo = token["playerInfo"];
             result.currentPlayer = ArenaPlayer.Parse(playerInfo);
 
-            var cd = (int) token["cd"];
-            result.cooldown = new Cooldown(cd);
+            var cd = (int) token["cd"]; // seconds.
+            result.cooldown = new Cooldown(cd * 1000);
 
             return result;
         }
