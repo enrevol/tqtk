@@ -389,7 +389,7 @@ namespace k8asd {
         }
 
         private void createButton_Click(object sender, EventArgs e) {
-            // Create(20, TeamLimit.Nation);
+            Create((int) textileLevelInput.Value, TeamLimit.Nation);
         }
 
         private void createLegionButton_Click(object sender, EventArgs e) {
