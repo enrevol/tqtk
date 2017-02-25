@@ -41,6 +41,7 @@ namespace k8asd {
         private string allMessages;
 
         private RichTextBox formatter;
+        private int chatLogLengthLimit;
 
         private enum ChatBoxMode {
             Small,
@@ -52,6 +53,8 @@ namespace k8asd {
 
         public ChatLogView() {
             InitializeComponent();
+
+            chatLogLengthLimit = 10000;
 
             channelList.Items.Clear();
             channelList.Items.Add(ChatChannel.World);
@@ -102,6 +105,9 @@ namespace k8asd {
             formatter.AppendText(line);
             formatter.Select(startIndex, formatter.Text.Length - startIndex);
             formatter.SelectionColor = color;
+            if (formatter.Text.Length > chatLogLengthLimit) {
+                formatter.Text = String.Empty;
+            }
             lines = formatter.Rtf;
         }
 
