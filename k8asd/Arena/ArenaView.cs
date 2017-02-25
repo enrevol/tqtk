@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 
 namespace k8asd {
     public partial class ArenaView : UserControl, IPacketReader {
-        private class Player {
+        public class Player {
             /// <summary>
             /// Cấp độ phần thưởng, ví dụ: 2k bạc là lv1, 15k bạc là lv4.
             /// </summary>
@@ -122,7 +122,7 @@ namespace k8asd {
         }
 
         private List<Player> players;
-        private DateTime cooldownEndTime;            
+        private DateTime cooldownEndTime;
 
         private IPacketWriter packetWriter;
         private IMessageLogModel messageLog;

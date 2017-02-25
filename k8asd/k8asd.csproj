@@ -118,6 +118,12 @@
     <Compile Include="Arena\ArenaView.Designer.cs">
       <DependentUpon>ArenaView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AutoArenaView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\AutoArenaView.Designer.cs">
+      <DependentUpon>AutoArenaView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Campaign\CampaignView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -273,11 +279,15 @@
     <EmbeddedResource Include="Shop\ShopView.resx">
       <DependentUpon>ShopView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\AutoArenaView.resx">
+      <DependentUpon>AutoArenaView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Weave\WeaveView.resx">
       <DependentUpon>WeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Command\11103_0.json" />
+    <None Include="Command\41203.json" />
     <None Include="Command\64007.json" />
     <None Include="Command\64005.json" />
     <None Include="Command\34108.json" />

@@ -30,6 +30,9 @@ namespace k8asd
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.MenuStrip menuStrip1;
+            System.Windows.Forms.ToolStripMenuItem menuItem0;
+            System.Windows.Forms.ToolStripMenuItem autoArenaButton;
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this.clientList = new System.Windows.Forms.ListBox();
             this._ignore0 = new System.Windows.Forms.Panel();
@@ -39,7 +42,11 @@ namespace k8asd
             this.addButton = new System.Windows.Forms.Button();
             this.logoutButton = new System.Windows.Forms.Button();
             this.loginButton = new System.Windows.Forms.Button();
+            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
+            autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
             this._ignore0.SuspendLayout();
+            menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // oneSecondTimer
@@ -53,10 +60,10 @@ namespace k8asd
             this.clientList.Dock = System.Windows.Forms.DockStyle.Left;
             this.clientList.FormattingEnabled = true;
             this.clientList.IntegralHeight = false;
-            this.clientList.Location = new System.Drawing.Point(0, 73);
+            this.clientList.Location = new System.Drawing.Point(0, 97);
             this.clientList.Name = "clientList";
             this.clientList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.clientList.Size = new System.Drawing.Size(150, 608);
+            this.clientList.Size = new System.Drawing.Size(150, 584);
             this.clientList.TabIndex = 0;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
@@ -69,7 +76,7 @@ namespace k8asd
             this._ignore0.Controls.Add(this.logoutButton);
             this._ignore0.Controls.Add(this.loginButton);
             this._ignore0.Dock = System.Windows.Forms.DockStyle.Top;
-            this._ignore0.Location = new System.Drawing.Point(0, 0);
+            this._ignore0.Location = new System.Drawing.Point(0, 24);
             this._ignore0.Name = "_ignore0";
             this._ignore0.Size = new System.Drawing.Size(1350, 73);
             this._ignore0.TabIndex = 1;
@@ -148,6 +155,31 @@ namespace k8asd
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            menuItem0});
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new System.Drawing.Size(1350, 24);
+            menuStrip1.TabIndex = 2;
+            menuStrip1.Text = "menuStrip";
+            // 
+            // menuItem0
+            // 
+            menuItem0.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            autoArenaButton});
+            menuItem0.Name = "menuItem0";
+            menuItem0.Size = new System.Drawing.Size(58, 20);
+            menuItem0.Text = "Phụ trợ";
+            // 
+            // autoArenaButton
+            // 
+            autoArenaButton.Name = "autoArenaButton";
+            autoArenaButton.Size = new System.Drawing.Size(184, 22);
+            autoArenaButton.Text = "Tự động đánh võ đài";
+            autoArenaButton.Click += new System.EventHandler(this.autoArenaButton_Click);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,13 +187,18 @@ namespace k8asd
             this.ClientSize = new System.Drawing.Size(1350, 681);
             this.Controls.Add(this.clientList);
             this.Controls.Add(this._ignore0);
+            this.Controls.Add(menuStrip1);
             this.Location = new System.Drawing.Point(640, 0);
+            this.MainMenuStrip = menuStrip1;
             this.Name = "MainView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "test";
             this.Load += new System.EventHandler(this.MainView_Load);
             this._ignore0.ResumeLayout(false);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

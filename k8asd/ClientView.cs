@@ -168,6 +168,14 @@ namespace k8asd {
             //
         }
 
+        public bool Connected {
+            get { return packetHandler != null && packetHandler.Connected; }
+        }
+
+        public int PlayerId {
+            get { return Int32.Parse(loginHelper.Session.UserId); }
+        }
+
         private void LogText(string s) {
             //  txtLogs.AppendText("\n" + F.GetTime(sys) + " " + s);
         }

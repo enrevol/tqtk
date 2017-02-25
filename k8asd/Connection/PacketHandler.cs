@@ -51,6 +51,10 @@ namespace k8asd {
             return true;
         }
 
+        public bool Connected {
+            get { return tcpClient.Connected; }
+        }
+
         public Packet ReadPacket() {
             if (tcpClient.Available > 0) {
                 var stream = tcpClient.GetStream();
