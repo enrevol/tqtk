@@ -51,6 +51,12 @@ namespace k8asd {
         }
 
         private void refreshButton_Click(object sender, EventArgs e) {
+            RefreshPlayers(() => {
+                // Nothing.
+            });
+        }
+
+        private void RefreshPlayers(Action callback) {
             if (isRefreshing) {
                 LogInfo("Đang làm mới, không thể làm mới!");
                 return;
@@ -76,9 +82,9 @@ namespace k8asd {
             var queue = new Queue<ClientView>(connectedClients);
 
             Action updater = null;
-            Action<Packet> callback = null;
+            Action<Packet> updateCallback = null;
 
-            callback = (Packet packet) => {
+            updateCallback = (packet) => {
                 Debug.Assert(packet.CommandId == "64005");
 
                 var token = JToken.Parse(packet.Message);
@@ -96,10 +102,11 @@ namespace k8asd {
             updater = () => {
                 if (queue.Count > 0) {
                     var client = queue.Peek();
-                    client.SendCommand(callback, "64005");
+                    client.SendCommand(updateCallback, "64005");
                 } else {
                     isRefreshing = false;
                     LogInfo("Làm mới hoàn thành!");
+                    callback();
                 }
             };
 
@@ -111,6 +118,20 @@ namespace k8asd {
         }
 
         private void duelButton_Click(object sender, EventArgs e) {
+            DuelAndRefresh(() => {
+                DuelAndRefresh(() => {
+                    // Nothing.
+                });
+            });
+        }
+
+        private void DuelAndRefresh(Action callback) {
+            Duel(() => {
+                RefreshPlayers(callback);
+            });
+        }
+
+        private void Duel(Action callback) {
             if (isRefreshing) {
                 LogInfo("Đang làm mới, không thể khiêu chiến!");
                 return;
@@ -127,19 +148,20 @@ namespace k8asd {
                 if (availablePlayers.Count > 0) {
                     var matchingPlayer = availablePlayers.FirstOrDefault(
                         availablePlayer => canDuel(availablePlayer, player));
-                    if (matchingPlayer != null && player.CurrentPlayer.RemainTimes > 0) {
+                    if (matchingPlayer != null && player.CurrentPlayer.RemainTimes > 0 && player.Cooldown == 0) {
                         matched = true;
                         availablePlayers.Remove(matchingPlayer);
                         LogInfo(String.Format("Tiến hành khiêu chiến: {0} vs. {1}",
                             player.CurrentPlayer.Name, matchingPlayer.CurrentPlayer.Name));
                         ++duelCounter;
-                        Action callback = () => {
+                        Action duelCallback = () => {
                             --duelCounter;
                             if (duelCounter == 0) {
                                 LogInfo("Khiêu chiến hoàn thành!");
+                                callback();
                             }
                         };
-                        Duel(callback, mappedClients[matchingPlayer], mappedClients[player],
+                        Duel(duelCallback, mappedClients[matchingPlayer], mappedClients[player],
                             matchingPlayer.CurrentPlayer.Id, matchingPlayer.CurrentPlayer.Rank);
                     }
                 }
@@ -155,40 +177,48 @@ namespace k8asd {
 
         private void Duel(Action callback, IPacketWriter lower, IPacketWriter upper,
             int lowerId, int lowerRank) {
-            // Chọn trận ngư lân (trống).
             Action<Packet> selectEmptyFormationCallback = null;
-
-            // Gỡ bỏ toàn bộ tướng.
             Action<Packet> removeAllHeroesCallback = null;
-
-            // Chọn trận truỳ hình (không trống).
             Action<Packet> selectNonEmptyFormationCallback = null;
-
-            // Khiêu chiến.
             Action<Packet> duelCallback = null;
+            Action<Packet> restoreFormationCallback = null;
 
-            selectEmptyFormationCallback = (Packet packet) => {
-                Debug.Assert(packet.CommandId == "42106");
+            selectEmptyFormationCallback = (packet) => {
+                Debug.Assert(packet.CommandId == "42104");
+
+                // Gỡ bỏ toàn bộ tướng.
                 lower.SendCommand(removeAllHeroesCallback, "42107", "9");
             };
 
-            removeAllHeroesCallback = (Packet packet) => {
+            removeAllHeroesCallback = (packet) => {
                 Debug.Assert(packet.CommandId == "42107");
-                upper.SendCommand(selectNonEmptyFormationCallback, "42106", "13");
+
+                // Chọn trận truỳ hình (không trống).
+                upper.SendCommand(selectNonEmptyFormationCallback, "42104", "13");
             };
 
-            selectNonEmptyFormationCallback = (Packet packet) => {
-                Debug.Assert(packet.CommandId == "42106");
+            selectNonEmptyFormationCallback = (packet) => {
+                Debug.Assert(packet.CommandId == "42104");
+
+                // Khiêu chiến.
                 upper.SendCommand(duelCallback,
                     "64007", lowerId.ToString(), lowerRank.ToString());
             };
 
-            duelCallback = (Packet packet) => {
+            duelCallback = (packet) => {
                 Debug.Assert(packet.CommandId == "64007");
+
+                // Chọn lại trận truỳ hình.
+                lower.SendCommand(restoreFormationCallback, "42104", "13");
+            };
+
+            restoreFormationCallback = (packet) => {
+                Debug.Assert(packet.CommandId == "42104");
                 callback();
             };
 
-            lower.SendCommand(selectEmptyFormationCallback, "42106", "9");
+            // Chọn trận ngư lân.
+            lower.SendCommand(selectEmptyFormationCallback, "42104", "9");
         }
     }
 }
