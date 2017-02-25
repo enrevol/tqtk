@@ -24,6 +24,8 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Label noteLabel;
+            System.Windows.Forms.TabPage interfaceTab;
             this.refreshTeamInterval = new System.Windows.Forms.NumericUpDown();
             this.autoRefreshTeamBox = new System.Windows.Forms.CheckBox();
             this.memberBox = new System.Windows.Forms.GroupBox();
@@ -43,6 +45,7 @@
             this.teamList = new BrightIdeasSoftware.ObjectListView();
             this.teamColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.joinColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.textileLevelInput = new System.Windows.Forms.NumericUpDown();
             this.refreshTeamButton = new System.Windows.Forms.Button();
             this.refreshTeamTimer = new System.Windows.Forms.Timer(this.components);
             this.spinnerLevelLabel = new System.Windows.Forms.Label();
@@ -50,17 +53,40 @@
             this.numLabel = new System.Windows.Forms.Label();
             this.baseInfoBox = new System.Windows.Forms.GroupBox();
             this.spinnerRateLabel = new System.Windows.Forms.Label();
+            this.autoQuitAndMake = new System.Windows.Forms.CheckBox();
+            this.autoCreate = new System.Windows.Forms.CheckBox();
+            this.autoMake = new System.Windows.Forms.CheckBox();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.configTab = new System.Windows.Forms.TabPage();
+            this.textilePriceInput = new System.Windows.Forms.NumericUpDown();
+            noteLabel = new System.Windows.Forms.Label();
+            interfaceTab = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).BeginInit();
             this.memberBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).BeginInit();
             this.teamBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textileLevelInput)).BeginInit();
             this.baseInfoBox.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            interfaceTab.SuspendLayout();
+            this.configTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textilePriceInput)).BeginInit();
             this.SuspendLayout();
+            // 
+            // noteLabel
+            // 
+            noteLabel.AutoSize = true;
+            noteLabel.Location = new System.Drawing.Point(15, 120);
+            noteLabel.Name = "noteLabel";
+            noteLabel.Size = new System.Drawing.Size(172, 39);
+            noteLabel.TabIndex = 35;
+            noteLabel.Text = "Chú ý: nếu tích cả 2 ô trên thì:\r\n- Dệt chung khi còn >1 lượt\r\n- Thoát và dệt khi" +
+    " còn đúng 1 lượt.";
             // 
             // refreshTeamInterval
             // 
-            this.refreshTeamInterval.Location = new System.Drawing.Point(280, 11);
+            this.refreshTeamInterval.Location = new System.Drawing.Point(285, 16);
             this.refreshTeamInterval.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -85,7 +111,7 @@
             // autoRefreshTeamBox
             // 
             this.autoRefreshTeamBox.AutoSize = true;
-            this.autoRefreshTeamBox.Location = new System.Drawing.Point(120, 12);
+            this.autoRefreshTeamBox.Location = new System.Drawing.Point(125, 17);
             this.autoRefreshTeamBox.Name = "autoRefreshTeamBox";
             this.autoRefreshTeamBox.Size = new System.Drawing.Size(157, 17);
             this.autoRefreshTeamBox.TabIndex = 30;
@@ -99,9 +125,9 @@
             this.memberBox.Controls.Add(this.teamRateLabel);
             this.memberBox.Controls.Add(this.teamPriceLabel);
             this.memberBox.Controls.Add(this.memberList);
-            this.memberBox.Location = new System.Drawing.Point(5, 340);
+            this.memberBox.Location = new System.Drawing.Point(10, 310);
             this.memberBox.Name = "memberBox";
-            this.memberBox.Size = new System.Drawing.Size(380, 126);
+            this.memberBox.Size = new System.Drawing.Size(380, 115);
             this.memberBox.TabIndex = 29;
             this.memberBox.TabStop = false;
             this.memberBox.Text = "Danh sách thành viên tổ đội";
@@ -143,7 +169,7 @@
             this.kickColumn});
             this.memberList.Cursor = System.Windows.Forms.Cursors.Default;
             this.memberList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.memberList.Location = new System.Drawing.Point(10, 50);
+            this.memberList.Location = new System.Drawing.Point(10, 40);
             this.memberList.MultiSelect = false;
             this.memberList.Name = "memberList";
             this.memberList.ShowGroups = false;
@@ -175,18 +201,18 @@
             this.teamBox.Controls.Add(this.disbandButton);
             this.teamBox.Controls.Add(this.makeButton);
             this.teamBox.Controls.Add(this.teamList);
-            this.teamBox.Location = new System.Drawing.Point(5, 90);
+            this.teamBox.Location = new System.Drawing.Point(10, 95);
             this.teamBox.Name = "teamBox";
-            this.teamBox.Size = new System.Drawing.Size(380, 240);
+            this.teamBox.Size = new System.Drawing.Size(380, 205);
             this.teamBox.TabIndex = 28;
             this.teamBox.TabStop = false;
             this.teamBox.Text = "Danh sách tổ đội";
             // 
             // createLegionButton
             // 
-            this.createLegionButton.Location = new System.Drawing.Point(270, 165);
+            this.createLegionButton.Location = new System.Drawing.Point(300, 165);
             this.createLegionButton.Name = "createLegionButton";
-            this.createLegionButton.Size = new System.Drawing.Size(80, 30);
+            this.createLegionButton.Size = new System.Drawing.Size(70, 30);
             this.createLegionButton.TabIndex = 30;
             this.createLegionButton.Text = "Lập bang";
             this.createLegionButton.UseVisualStyleBackColor = true;
@@ -194,11 +220,11 @@
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(185, 165);
+            this.createButton.Location = new System.Drawing.Point(225, 165);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(80, 30);
+            this.createButton.Size = new System.Drawing.Size(70, 30);
             this.createButton.TabIndex = 29;
-            this.createButton.Text = "Lập tổ đội";
+            this.createButton.Text = "Lập q. gia";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
@@ -207,16 +233,16 @@
             this.inviteButton.Enabled = false;
             this.inviteButton.Location = new System.Drawing.Point(10, 200);
             this.inviteButton.Name = "inviteButton";
-            this.inviteButton.Size = new System.Drawing.Size(80, 30);
+            this.inviteButton.Size = new System.Drawing.Size(0, 0);
             this.inviteButton.TabIndex = 28;
             this.inviteButton.Text = "Mời";
             this.inviteButton.UseVisualStyleBackColor = true;
             // 
             // quitButton
             // 
-            this.quitButton.Location = new System.Drawing.Point(95, 200);
+            this.quitButton.Location = new System.Drawing.Point(150, 165);
             this.quitButton.Name = "quitButton";
-            this.quitButton.Size = new System.Drawing.Size(80, 30);
+            this.quitButton.Size = new System.Drawing.Size(70, 30);
             this.quitButton.TabIndex = 27;
             this.quitButton.Text = "Thoát";
             this.quitButton.UseVisualStyleBackColor = true;
@@ -224,9 +250,9 @@
             // 
             // disbandButton
             // 
-            this.disbandButton.Location = new System.Drawing.Point(95, 165);
+            this.disbandButton.Location = new System.Drawing.Point(80, 165);
             this.disbandButton.Name = "disbandButton";
-            this.disbandButton.Size = new System.Drawing.Size(80, 30);
+            this.disbandButton.Size = new System.Drawing.Size(65, 30);
             this.disbandButton.TabIndex = 26;
             this.disbandButton.Text = "Giải tán";
             this.disbandButton.UseVisualStyleBackColor = true;
@@ -236,7 +262,7 @@
             // 
             this.makeButton.Location = new System.Drawing.Point(10, 165);
             this.makeButton.Name = "makeButton";
-            this.makeButton.Size = new System.Drawing.Size(80, 30);
+            this.makeButton.Size = new System.Drawing.Size(65, 30);
             this.makeButton.TabIndex = 24;
             this.makeButton.Text = "Chế tạo";
             this.makeButton.UseVisualStyleBackColor = true;
@@ -276,9 +302,21 @@
             this.joinColumn.IsButton = true;
             this.joinColumn.Width = 55;
             // 
+            // textileLevelInput
+            // 
+            this.textileLevelInput.Location = new System.Drawing.Point(210, 14);
+            this.textileLevelInput.Name = "textileLevelInput";
+            this.textileLevelInput.Size = new System.Drawing.Size(50, 20);
+            this.textileLevelInput.TabIndex = 31;
+            this.textileLevelInput.Value = new decimal(new int[] {
+            21,
+            0,
+            0,
+            0});
+            // 
             // refreshTeamButton
             // 
-            this.refreshTeamButton.Location = new System.Drawing.Point(5, 5);
+            this.refreshTeamButton.Location = new System.Drawing.Point(10, 10);
             this.refreshTeamButton.Name = "refreshTeamButton";
             this.refreshTeamButton.Size = new System.Drawing.Size(100, 30);
             this.refreshTeamButton.TabIndex = 27;
@@ -325,7 +363,7 @@
             this.baseInfoBox.Controls.Add(this.numLabel);
             this.baseInfoBox.Controls.Add(this.spinnerLevelLabel);
             this.baseInfoBox.Controls.Add(this.priceLabel);
-            this.baseInfoBox.Location = new System.Drawing.Point(5, 40);
+            this.baseInfoBox.Location = new System.Drawing.Point(10, 45);
             this.baseInfoBox.Name = "baseInfoBox";
             this.baseInfoBox.Size = new System.Drawing.Size(380, 45);
             this.baseInfoBox.TabIndex = 31;
@@ -341,28 +379,127 @@
             this.spinnerRateLabel.TabIndex = 16;
             this.spinnerRateLabel.Text = "Tỉ lệ: 5 - 5";
             // 
+            // autoQuitAndMake
+            // 
+            this.autoQuitAndMake.AutoSize = true;
+            this.autoQuitAndMake.Location = new System.Drawing.Point(15, 85);
+            this.autoQuitAndMake.Name = "autoQuitAndMake";
+            this.autoQuitAndMake.Size = new System.Drawing.Size(250, 17);
+            this.autoQuitAndMake.TabIndex = 32;
+            this.autoQuitAndMake.Text = "Tự thoát và dệt khi có 3 người (chế độ kéo vải)";
+            this.autoQuitAndMake.UseVisualStyleBackColor = true;
+            this.autoQuitAndMake.CheckedChanged += new System.EventHandler(this.autoQuitAndMake_CheckedChanged);
+            // 
+            // autoCreate
+            // 
+            this.autoCreate.AutoSize = true;
+            this.autoCreate.Location = new System.Drawing.Point(15, 15);
+            this.autoCreate.Name = "autoCreate";
+            this.autoCreate.Size = new System.Drawing.Size(192, 17);
+            this.autoCreate.TabIndex = 33;
+            this.autoCreate.Text = "Tự lập tổ đội bang sử dụng cấp vải";
+            this.autoCreate.UseVisualStyleBackColor = true;
+            this.autoCreate.CheckedChanged += new System.EventHandler(this.autoCreate_CheckedChanged);
+            // 
+            // autoMake
+            // 
+            this.autoMake.AutoSize = true;
+            this.autoMake.Location = new System.Drawing.Point(15, 50);
+            this.autoMake.Name = "autoMake";
+            this.autoMake.Size = new System.Drawing.Size(192, 17);
+            this.autoMake.TabIndex = 34;
+            this.autoMake.Text = "Tự dệt khi có 3 người và giá dệt >=";
+            this.autoMake.UseVisualStyleBackColor = true;
+            this.autoMake.CheckedChanged += new System.EventHandler(this.autoMake_CheckedChanged);
+            // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(interfaceTab);
+            this.tabControl.Controls.Add(this.configTab);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(410, 460);
+            this.tabControl.TabIndex = 35;
+            // 
+            // interfaceTab
+            // 
+            interfaceTab.Controls.Add(this.refreshTeamButton);
+            interfaceTab.Controls.Add(this.memberBox);
+            interfaceTab.Controls.Add(this.baseInfoBox);
+            interfaceTab.Controls.Add(this.teamBox);
+            interfaceTab.Controls.Add(this.refreshTeamInterval);
+            interfaceTab.Controls.Add(this.autoRefreshTeamBox);
+            interfaceTab.Location = new System.Drawing.Point(4, 22);
+            interfaceTab.Name = "interfaceTab";
+            interfaceTab.Padding = new System.Windows.Forms.Padding(3);
+            interfaceTab.Size = new System.Drawing.Size(402, 434);
+            interfaceTab.TabIndex = 0;
+            interfaceTab.Text = "Giao diện";
+            interfaceTab.UseVisualStyleBackColor = true;
+            // 
+            // configTab
+            // 
+            this.configTab.Controls.Add(this.textilePriceInput);
+            this.configTab.Controls.Add(noteLabel);
+            this.configTab.Controls.Add(this.textileLevelInput);
+            this.configTab.Controls.Add(this.autoQuitAndMake);
+            this.configTab.Controls.Add(this.autoMake);
+            this.configTab.Controls.Add(this.autoCreate);
+            this.configTab.Location = new System.Drawing.Point(4, 22);
+            this.configTab.Name = "configTab";
+            this.configTab.Padding = new System.Windows.Forms.Padding(3);
+            this.configTab.Size = new System.Drawing.Size(402, 434);
+            this.configTab.TabIndex = 1;
+            this.configTab.Text = "Cấu hình";
+            this.configTab.UseVisualStyleBackColor = true;
+            // 
+            // textilePriceInput
+            // 
+            this.textilePriceInput.Location = new System.Drawing.Point(210, 49);
+            this.textilePriceInput.Maximum = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            this.textilePriceInput.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.textilePriceInput.Name = "textilePriceInput";
+            this.textilePriceInput.Size = new System.Drawing.Size(50, 20);
+            this.textilePriceInput.TabIndex = 36;
+            this.textilePriceInput.Value = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            // 
             // WeaveView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.baseInfoBox);
-            this.Controls.Add(this.refreshTeamInterval);
-            this.Controls.Add(this.autoRefreshTeamBox);
-            this.Controls.Add(this.teamBox);
-            this.Controls.Add(this.refreshTeamButton);
-            this.Controls.Add(this.memberBox);
+            this.Controls.Add(this.tabControl);
             this.Name = "WeaveView";
-            this.Size = new System.Drawing.Size(598, 477);
+            this.Size = new System.Drawing.Size(410, 460);
             ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).EndInit();
             this.memberBox.ResumeLayout(false);
             this.memberBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).EndInit();
             this.teamBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textileLevelInput)).EndInit();
             this.baseInfoBox.ResumeLayout(false);
             this.baseInfoBox.PerformLayout();
+            this.tabControl.ResumeLayout(false);
+            interfaceTab.ResumeLayout(false);
+            interfaceTab.PerformLayout();
+            this.configTab.ResumeLayout(false);
+            this.configTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textilePriceInput)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -394,5 +531,12 @@
         private System.Windows.Forms.Label teamPriceLabel;
         private System.Windows.Forms.Label teamRateLabel;
         private System.Windows.Forms.Label teamLevelLabel;
+        private System.Windows.Forms.NumericUpDown textileLevelInput;
+        private System.Windows.Forms.CheckBox autoQuitAndMake;
+        private System.Windows.Forms.CheckBox autoCreate;
+        private System.Windows.Forms.CheckBox autoMake;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage configTab;
+        private System.Windows.Forms.NumericUpDown textilePriceInput;
     }
 }

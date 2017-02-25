@@ -68,7 +68,7 @@ namespace k8asd {
             }
 
             public string Description() {
-                return String.Format("{0} - Lv. {1} ({2}/{3}) [{4} - {5}] [{6} - {7}]",
+                return String.Format("{0} Lv. {1} ({2}/{3}) [{4} - {5}] [{6} - {7}]",
                     Name, Level, PlayerCount, MaxPlayerCount, Cost, Price, SuccessRate, CriticalRate);
             }
         }
@@ -100,10 +100,51 @@ namespace k8asd {
             }
         }
 
+        private class Product {
+            private string baojirate;
+            private int cost;
+            private string desc;
+            private int level;
+            private string name;
+            private int price;
+            private int prodid;
+            private string succrate;
+
+            public int Id { get { return prodid; } }
+            public int Level { get { return level; } }
+            public int Cost { get { return cost; } }
+            public int Price { get { return price; } }
+            public string SuccessRate { get { return succrate; } }
+            public string CriticalRate { get { return baojirate; } }
+
+            public static Product Parse(JToken token) {
+                var result = new Product();
+                result.baojirate = (string) token["baojirate"];
+                result.cost = (int) token["cost"];
+                result.desc = (string) token["desc"];
+                result.level = (int) token["level"];
+                result.name = (string) token["name"];
+                result.price = (int) token["price"];
+                result.prodid = (int) token["prodid"];
+                result.succrate = (string) token["succrate"];
+                return result;
+            }
+
+            public string Description() {
+                return String.Format("Lv. {0} [{1} - {2}] [{3} - {4}]",
+                    Level, Cost, Price, SuccessRate, CriticalRate);
+            }
+        }
+
+        private int currentTeamId;
+        private int currentTextilePrice;
+        private int currentTurnCount;
+
         private BindingList<Team> teams;
         private BindingList<Member> members;
+
+        private ICooldownModel cooldown;
         private IPacketWriter packetWriter;
-        private int teamId;
 
         public WeaveView() {
             InitializeComponent();
@@ -111,7 +152,10 @@ namespace k8asd {
             teams = new BindingList<Team>();
             members = new BindingList<Member>();
 
-            teamId = NoTeam;
+            currentTeamId = NoTeam;
+            currentTextilePrice = 999;
+            currentTurnCount = 0;
+
             memberBox.Enabled = false;
         }
 
@@ -119,23 +163,43 @@ namespace k8asd {
             packetWriter = writer;
         }
 
-        private void RefreshTeams() {
-            if (packetWriter.SendCommand("45200")) {
+        public void SetCooldownModel(ICooldownModel cooldown) {
+            this.cooldown = cooldown;
+        }
 
+        private void RefreshTeams() {
+            Action<Packet> callback = (Packet packet) => {
+                Parse45200(packet);
+                CheckAutoCreate();
+                CheckAutoMake();
+                CheckAutoQuitAndMake();
+            };
+
+            if (packetWriter.SendCommand(callback, "45200")) {
+                //
             }
         }
 
         public void OnPacketReceived(Packet packet) {
-            if (packet.CommandId == "45200") {
-                Parse45200(packet);
-            }
             if (packet.CommandId == "45300") {
                 Parse45300(packet);
+            }
+            if (packet.CommandId == "60603") {
+                // int x = 1;
             }
         }
 
         private void Parse45200(Packet packet) {
             var token = JToken.Parse(packet.Message);
+            var message = token["message"];
+            if (message != null) {
+                // Chưa đủ lv 82.
+                baseInfoBox.Enabled = false;
+                teamBox.Enabled = false;
+                return;
+            }
+            baseInfoBox.Enabled = true;
+            teamBox.Enabled = true;
 
             var baseinfo = token["baseinfo"];
             ParseBaseInfo(baseinfo);
@@ -186,6 +250,8 @@ namespace k8asd {
             if (teamObject != null) {
                 ParseTeamInfo(teamObject);
                 memberBox.Enabled = true;
+                CheckAutoMake();
+                CheckAutoQuitAndMake();
             } else {
                 // teamId = 0;
                 memberBox.Enabled = false;
@@ -208,6 +274,8 @@ namespace k8asd {
                 priceway == 1 ? "▲" : "▼",
                 priceway == 1 ? "(Lên)" : "(Xuống)");
             numLabel.Text = String.Format("Lượt: {0}/{1}", num, maxnum);
+
+            currentTurnCount = num;
         }
 
         private void ParseTeams(JToken token) {
@@ -241,7 +309,7 @@ namespace k8asd {
             var level = (int) token["level"];
             var price = (int) token["price"];
             var succrate = (string) token["succrate"];
-            teamId = (int) token["teamid"];
+            currentTeamId = (int) token["teamid"];
             teamLevelLabel.Text = String.Format("Cấp: {0}", level);
             teamPriceLabel.Text = String.Format("Giá: {0} - {1}", cost, price);
             teamRateLabel.Text = String.Format("Tỉ lệ: {0} - {1}", succrate, baojirate);
@@ -252,9 +320,7 @@ namespace k8asd {
         }
 
         private void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
-            if (autoRefreshTeamBox.Checked) {
-                RefreshTeams();
-            }
+            CheckAutoRefresh();
         }
 
         private void refreshTeamInterval_ValueChanged(object sender, EventArgs e) {
@@ -262,9 +328,7 @@ namespace k8asd {
         }
 
         private void refreshTeamTimer_Tick(object sender, EventArgs e) {
-            if (autoRefreshTeamBox.Checked) {
-                RefreshTeams();
-            }
+            UpdateAuto();
         }
 
         private void teamList_SelectedIndexChanged(object sender, EventArgs e) {
@@ -309,14 +373,14 @@ namespace k8asd {
         }
 
         private void disbandButton_Click(object sender, EventArgs e) {
-            if (teamId != NoTeam) {
-                Disband(teamId);
+            if (currentTeamId != NoTeam) {
+                Disband(currentTeamId);
             }
         }
 
         private void makeButton_Click(object sender, EventArgs e) {
-            if (teamId != NoTeam) {
-                Make(teamId);
+            if (currentTeamId != NoTeam) {
+                Make(currentTeamId);
             }
         }
 
@@ -325,179 +389,119 @@ namespace k8asd {
         }
 
         private void createButton_Click(object sender, EventArgs e) {
-
+            // Create(20, TeamLimit.Nation);
         }
 
         private void createLegionButton_Click(object sender, EventArgs e) {
-            Create(21, TeamLimit.Legion);
+            Create((int) textileLevelInput.Value, TeamLimit.Legion);
         }
 
         private void memberList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
-            if (teamId != NoTeam) {
+            if (currentTeamId != NoTeam) {
                 var item = e.Item;
                 var member = (Member) item.RowObject;
-                Kick(teamId, member.Id);
+                Kick(currentTeamId, member.Id);
             }
         }
 
         private void quitButton_Click(object sender, EventArgs e) {
-            if (teamId != NoTeam) {
-                Quit(teamId);
+            if (currentTeamId != NoTeam) {
+                Quit(currentTeamId);
+            } else {
+                // packetWriter.SendCommand("60603", "12", "0", "200200", "200");
             }
+        }
+
+        private void autoCreate_CheckedChanged(object sender, EventArgs e) {
+            CheckAutoCreate();
+        }
+
+        /// <summary>
+        /// Checks whether the current player is hosting any weaving party.
+        /// </summary>
+        /// <returns>True if the the current player is hosting a weaving party, false otherwise</returns>
+        private bool IsHosting() {
+            foreach (var team in teams) {
+                if (team.Id == currentTeamId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void UpdateAuto() {
+            CheckAutoRefresh();
+        }
+
+        private void CheckAutoRefresh() {
+            if (!autoRefreshTeamBox.Checked) {
+                return;
+            }
+            RefreshTeams();
+        }
+
+        private void CheckAutoCreate() {
+            if (!autoCreate.Checked) {
+                return;
+            }
+            if (cooldown.WeaveCooldown > 0) {
+                return;
+            }
+            if (IsHosting()) {
+                return;
+            }
+            var textileLevel = (int) textileLevelInput.Value;
+            Create(textileLevel, TeamLimit.Legion);
+        }
+
+        private void CheckAutoMake() {
+            if (!autoMake.Checked) {
+                return;
+            }
+            var textilePrice = (int) textilePriceInput.Value;
+            if (currentTextilePrice < textilePrice) {
+                return;
+            }
+            if (!IsHosting()) {
+                return;
+            }
+            if (members.Count < 3) {
+                return;
+            }
+            if (autoQuitAndMake.Checked && currentTurnCount <= 1) {
+                return;
+            }
+            Make(currentTeamId);
+        }
+
+        private void CheckAutoQuitAndMake() {
+            if (!autoQuitAndMake.Checked) {
+                return;
+            }
+            if (!IsHosting()) {
+                return;
+            }
+            if (members.Count < 3) {
+                return;
+            }
+            if (autoMake.Checked && currentTurnCount > 1) {
+                return;
+            }
+            Quit(currentTeamId);
+            Make(currentTeamId);
+        }
+
+        private void autoMake_CheckedChanged(object sender, EventArgs e) {
+
+        }
+
+        private void autoQuitAndMake_CheckedChanged(object sender, EventArgs e) {
+
         }
     }
 
 
     /*
-
-
-
-            #region 45201
-            case "45201":
-                r45201 = new R45201(cdata);
-                if (r45201.m == null) {
-                    cbbWeaveProduct.Items.Clear();
-                    foreach (R45201.Product pr in r45201.listproduct)
-                        cbbWeaveProduct.Items.Add("(" + pr.level + ") " + pr.name);
-                    cbbWeaveProduct.SelectedIndex = 0;
-
-                    cbbWeaveWorker.Items.Clear();
-                    foreach (R45201.Worker wk in r45201.listworker)
-                        cbbWeaveWorker.Items.Add("(" + wk.level + ") " + wk.name);
-                    cbbWeaveWorker.SelectedIndex = 0;
-
-                    grpWeaveCreate.Visible = true;
-                    if (weavecreate) {
-                        int a = r45201.listproduct.Count;
-    int b = Convert.ToInt32(numWeaveProduct.Value);
-    int n = Math.Max(a - b, 0);
-    cbbWeaveProduct.SelectedIndex = n;
-                        LogText("[Dệt] Lập tổ đội dệt vải cấp " + Math.Min(a, b));
-                        btnWeaveCreate1_Click(null, null);
-                    }
-                } else
-                    LogText("[Dệt] " + r45201.m);
-                break;
-            #endregion
-
-            #region 45202
-            case "45202": {
-                    JToken token = JObject.Parse(cdata)["m"];
-                    if (token["message"] != null)
-                        LogText("[Dệt] " + token["message"].ToString().Replace("\"", ""));
-                    grpWeaveParty.Enabled = true;
-                    if (weavecreate) {
-                        weavecreate = false;
-                        weaveok = true;
-                    }
-                }
-                break;
-            #endregion
-
-            #region 45206
-            case "45206": {
-                    JToken token = JObject.Parse(cdata)["m"];
-                    if (token["message"] != null)
-                        LogText("[Dệt] " + token["message"].ToString().Replace("\"", ""));
-                }
-                break;
-            #endregion
-
-            #region 45207
-            case "45207": {
-                    JToken token = JObject.Parse(cdata)["m"];
-                    if (token["message"] != null)
-                        LogText("[Dệt] " + token["message"].ToString().Replace("\"", ""));
-                }
-                break;
-            #endregion
-
-            #region 45208
-            case "45208": {
-                    JToken token = JObject.Parse(cdata)["m"];
-                    if (token["message"] != null)
-                        LogText("[Dệt] " + token["message"].ToString().Replace("\"", ""));
-                }
-                break;
-            #endregion
-            #region 45210
-            case "45210":
-                break;
-            #endregion
-
-            #region 45300
-            case "45300":
-                r45300 = new R45300(cdata);
-
-    lstWeaveMember.Items.Clear();
-
-                if (r45300.type == "0") {
-                    makecd = Convert.ToInt32(r45300.makecd) * 1000;
-                    LogText("[Dệt] " + r45300.msg);
-    r45300 = null;
-                } else if (r45300.type == "1")
-                    r45300 = null;
-                else if (r45300.type == "2") {
-                    txtWeaveInfo5.Text = r45300.level;
-                    txtWeaveInfo6.Text = r45300.succrate + " - " + r45300.baojirate;
-                    txtWeaveInfo7.Text = r45300.cost + " - " + r45300.price;
-
-                    grpWeaveInfo2.Enabled = true;
-                    lstWeaveMember.Enabled = true;
-                    btnWeaveCreate.Enabled = false;
-
-                    foreach (R45300.Member mem in r45300.listmember)
-                        lstWeaveMember.Items.Add("(" + mem.spinnerTotalLevel + ") "
-                            + mem.name + " (" + mem.level + ") ["
-                            + mem.price + "]");
-
-                    if (r45300.leaderid == loginHelper.Session.UserId) {
-                        btnWeaveQuit.Enabled = false;
-                        btnWeaveMake.Enabled = true;
-                        btnWeaveDisband.Enabled = true;
-                    } else {
-                        btnWeaveQuit.Enabled = true;
-                        btnWeaveMake.Enabled = false;
-                        btnWeaveDisband.Enabled = false;
-                    }
-
-                    btnWeaveInvite.Enabled = r45300.listmember.Count< 3;
-                    if (chkWeave.Checked)
-                        switch (cbbWeaveMode.SelectedIndex) {
-                        case 0:
-                            if (r45300.listmember.Count >= numWeaveLimit.Value
-                                && chkWeaveMake.Checked)
-                                btnWeaveMake_Click(null, null);
-                            break;
-                        case 2:
-                            SendMsg("45206", r45300.teamid, loginHelper.Session.UserId);
-                            break;
-                        }
-                } else if (r45300.type == "3") {
-                    bool playerishost = false;
-                    /*
-                    foreach (R45200.Team tm in r45200.listteam)
-                        if (tm.teamname == r11102.playername) {
-                            playerishost = true;
-                            break;
-                        }
-
-                    if (playerishost) {
-                        btnWeaveDisband.Enabled = true;
-                        btnWeaveMake.Enabled = true;
-                        btnWeaveInvite.Enabled = true;
-                    } else
-                        r45300 = null;
-                }
-                break;
-            #endregion
-
-
-    private void chkWeave_CheckedChanged(object sender, EventArgs e) {
-            //weaveok = chkWeave.Checked;
-        }
-
-
     private void btnWeaveInvite_Click(object sender, EventArgs e) {
     int cnum = Convert.ToInt32(r45300.num);
     int mnum = Convert.ToInt32(r45300.maxnum);
@@ -509,57 +513,6 @@ namespace k8asd {
             + "<a href='event:textile|" + r45300.teamid
             + "'>[Gia nhập]</a>",
             (cbbChat.SelectedIndex + 1).ToString(), " ");
-    }
-
-    private void btnWeaveCreate1_Click(object sender, EventArgs e) {
-    // grpWeaveCreate.Visible = false;
-    //  SendMsg("45202", (cbbWeaveProduct.Items.Count - cbbWeaveProduct.SelectedIndex).ToString(), "0", "2");
-    }
-
-    private void btnWeaveCreate2_Click(object sender, EventArgs e) {
-    // grpWeaveCreate.Visible = false;
-    //  grpWeaveParty.Enabled = true;
-    }
-
-    /*
-    private void lstWeaveMember_SelectedValueChanged(object sender, EventArgs e) {
-    int index = lstWeaveMember.SelectedIndex;
-    if (lstWeaveMember.Items.Count >= 1
-        && r45300.leaderid == loginHelper.Session.UserId)
-        SendMsg("45206", r45300.teamid, r45300.listmember[index].playerid);
-    }
-
-    private void cbbWeaveProduct_SelectedIndexChanged(object sender, EventArgs e) {
-    int index = cbbWeaveProduct.SelectedIndex;
-    if (index >= 0) {
-        R45201.Product pr = r45201.listproduct[index];
-        txtWeaveInfo8.Text = pr.succrate + " - " + pr.baojirate;
-        txtWeaveInfo9.Text = pr.cost + " - " + pr.price;
-    }
-    }
-
-    private void cbbWeaveWorker_SelectedIndexChanged(object sender, EventArgs e) {
-    int index = cbbWeaveWorker.SelectedIndex;
-    if (index >= 0) {
-        R45201.Worker wk = r45201.listworker[index];
-        txtWeaveExp.Text = wk.exp + "%";
-        lblWeaveSkill1.Text = "";
-        lblWeaveSkill2.Text = "";
-        KryptonLabel[] lblskill =
-        {
-            lblWeaveSkill1,
-            lblWeaveSkill2
-        };
-        int i = 0;
-        string[] skill = wk.skill.Split('|');
-        foreach (string s in skill)
-            if (s != "")
-                lblskill[i++].Text = s;
-    }
-    }
-
-    private void btnWeaveQuit_Click(object sender, EventArgs e) {
-    SendMsg("45210", r45300.teamid);
-    }
+    }    
     */
 }
