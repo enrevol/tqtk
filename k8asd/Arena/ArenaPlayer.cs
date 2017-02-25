@@ -23,7 +23,7 @@ namespace k8asd {
         private int awardnum;
 
         /// <summary>
-        /// Liên thắng hiện tại.
+        /// Liên thắng hiện tại (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
         /// </summary>
         private int cascade;
 
@@ -63,7 +63,7 @@ namespace k8asd {
         private int rank;
 
         /// <summary>
-        /// ??? Có thể là lượt đánh còn lại.
+        /// Có thể là lượt đánh còn lại (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
         /// </summary>
         private int remainTimes;
 
@@ -73,7 +73,7 @@ namespace k8asd {
         private int topestCascade;
 
         /// <summary>
-        /// ??? Hạng cao nhất.
+        /// Hạng cao nhất (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
         /// </summary>
         private int topestRank;
 
@@ -104,14 +104,6 @@ namespace k8asd {
             result.topestCascade = (int) token["topestCascade"];
             result.topestRank = (int) token["topestRank"];
             return result;
-        }
-
-        public string RankDescription {
-            get { return String.Format("{0}/{1}", Rank, TopRank); }
-        }
-
-        public string CascadeDescription {
-            get { return String.Format("{0}/{1}", Cascade, TopCascade); }
         }
     }
 }

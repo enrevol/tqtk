@@ -31,6 +31,9 @@
             BrightIdeasSoftware.OLVColumn cascadeColumn;
             this.refreshButton = new System.Windows.Forms.Button();
             this.playerList = new BrightIdeasSoftware.ObjectListView();
+            this.timesLabel = new System.Windows.Forms.Label();
+            this.cascadeLabel = new System.Windows.Forms.Label();
+            this.topRankLabel = new System.Windows.Forms.Label();
             rankColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             duelColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             nationColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -42,12 +45,13 @@
             // 
             // rankColumn
             // 
-            rankColumn.AspectName = "RankDescription";
+            rankColumn.AspectName = "Rank";
             rankColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            rankColumn.MaximumWidth = 60;
-            rankColumn.MinimumWidth = 60;
+            rankColumn.MaximumWidth = 50;
+            rankColumn.MinimumWidth = 50;
             rankColumn.Text = "Hạng";
             rankColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            rankColumn.Width = 50;
             // 
             // duelColumn
             // 
@@ -94,12 +98,13 @@
             // 
             // cascadeColumn
             // 
-            cascadeColumn.AspectName = "CascadeDescription";
+            cascadeColumn.AspectName = "TopCascade";
             cascadeColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            cascadeColumn.MaximumWidth = 60;
-            cascadeColumn.MinimumWidth = 60;
-            cascadeColumn.Text = "L. thắng";
+            cascadeColumn.MaximumWidth = 50;
+            cascadeColumn.MinimumWidth = 50;
+            cascadeColumn.Text = "LT max";
             cascadeColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            cascadeColumn.Width = 50;
             // 
             // refreshButton
             // 
@@ -142,16 +147,47 @@
             this.playerList.View = System.Windows.Forms.View.Details;
             this.playerList.ButtonClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.playerList_ButtonClick);
             // 
+            // timesLabel
+            // 
+            this.timesLabel.AutoSize = true;
+            this.timesLabel.Location = new System.Drawing.Point(120, 15);
+            this.timesLabel.Name = "timesLabel";
+            this.timesLabel.Size = new System.Drawing.Size(60, 13);
+            this.timesLabel.TabIndex = 30;
+            this.timesLabel.Text = "Số lần: 5/5";
+            // 
+            // cascadeLabel
+            // 
+            this.cascadeLabel.AutoSize = true;
+            this.cascadeLabel.Location = new System.Drawing.Point(195, 15);
+            this.cascadeLabel.Name = "cascadeLabel";
+            this.cascadeLabel.Size = new System.Drawing.Size(118, 13);
+            this.cascadeLabel.TabIndex = 31;
+            this.cascadeLabel.Text = "Liên thắng hiện tại: 150";
+            // 
+            // topRankLabel
+            // 
+            this.topRankLabel.AutoSize = true;
+            this.topRankLabel.Location = new System.Drawing.Point(330, 15);
+            this.topRankLabel.Name = "topRankLabel";
+            this.topRankLabel.Size = new System.Drawing.Size(108, 13);
+            this.topRankLabel.TabIndex = 33;
+            this.topRankLabel.Text = "Hạng cao nhất: 1000";
+            // 
             // ArenaView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.topRankLabel);
+            this.Controls.Add(this.cascadeLabel);
+            this.Controls.Add(this.timesLabel);
             this.Controls.Add(this.playerList);
             this.Controls.Add(this.refreshButton);
             this.Name = "ArenaView";
-            this.Size = new System.Drawing.Size(452, 245);
+            this.Size = new System.Drawing.Size(450, 245);
             ((System.ComponentModel.ISupportInitialize)(this.playerList)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -159,5 +195,8 @@
 
         private System.Windows.Forms.Button refreshButton;
         private BrightIdeasSoftware.ObjectListView playerList;
+        private System.Windows.Forms.Label timesLabel;
+        private System.Windows.Forms.Label cascadeLabel;
+        private System.Windows.Forms.Label topRankLabel;
     }
 }

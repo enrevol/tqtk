@@ -49,6 +49,10 @@ namespace k8asd {
             var token = JToken.Parse(packet.Message);
             arenaInfo = ArenaInfo.Parse(token);
 
+            timesLabel.Text = String.Format("Số lần: {0}/5", arenaInfo.CurrentPlayer.RemainTimes);
+            cascadeLabel.Text = String.Format("Liên thắng hiện tại: {0}", arenaInfo.CurrentPlayer.Cascade);
+            topRankLabel.Text = String.Format("Hạng cao nhất: {0}", arenaInfo.CurrentPlayer.TopRank);
+
             var oldSelectedIndex = playerList.SelectedIndex;
             playerList.SetObjects(arenaInfo.Players, true);
             playerList.SelectedIndex = oldSelectedIndex;

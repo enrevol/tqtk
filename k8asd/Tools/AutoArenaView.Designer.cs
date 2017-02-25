@@ -23,34 +23,32 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            BrightIdeasSoftware.OLVColumn cascadeColumn;
             BrightIdeasSoftware.OLVColumn nationColumn;
             BrightIdeasSoftware.OLVColumn nameColumn;
             BrightIdeasSoftware.OLVColumn levelColumn;
-            BrightIdeasSoftware.OLVColumn rankColumn;
             BrightIdeasSoftware.OLVColumn timesColumn;
+            this.cascadeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.rankColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerList = new BrightIdeasSoftware.ObjectListView();
             this.cooldownColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.refreshButton = new System.Windows.Forms.Button();
             this.duelButton = new System.Windows.Forms.Button();
             this.logBox = new System.Windows.Forms.TextBox();
-            cascadeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             nationColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             nameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             levelColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            rankColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             timesColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.playerList)).BeginInit();
             this.SuspendLayout();
             // 
             // cascadeColumn
             // 
-            cascadeColumn.AspectName = "CurrentPlayer.CascadeDescription";
-            cascadeColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            cascadeColumn.MaximumWidth = 60;
-            cascadeColumn.MinimumWidth = 60;
-            cascadeColumn.Text = "L. thắng";
-            cascadeColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cascadeColumn.AspectName = "";
+            this.cascadeColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cascadeColumn.MaximumWidth = 60;
+            this.cascadeColumn.MinimumWidth = 60;
+            this.cascadeColumn.Text = "L. thắng";
+            this.cascadeColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // nationColumn
             // 
@@ -84,17 +82,27 @@
             // 
             // rankColumn
             // 
-            rankColumn.AspectName = "CurrentPlayer.RankDescription";
-            rankColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            rankColumn.MaximumWidth = 60;
-            rankColumn.MinimumWidth = 60;
-            rankColumn.Text = "Hạng";
-            rankColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.rankColumn.AspectName = "";
+            this.rankColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.rankColumn.MaximumWidth = 60;
+            this.rankColumn.MinimumWidth = 60;
+            this.rankColumn.Text = "Hạng";
+            this.rankColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // timesColumn
+            // 
+            timesColumn.AspectName = "CurrentPlayer.RemainTimes";
+            timesColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            timesColumn.MaximumWidth = 40;
+            timesColumn.MinimumWidth = 40;
+            timesColumn.Text = "Lượt";
+            timesColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            timesColumn.Width = 40;
             // 
             // playerList
             // 
-            this.playerList.AllColumns.Add(rankColumn);
-            this.playerList.AllColumns.Add(cascadeColumn);
+            this.playerList.AllColumns.Add(this.rankColumn);
+            this.playerList.AllColumns.Add(this.cascadeColumn);
             this.playerList.AllColumns.Add(timesColumn);
             this.playerList.AllColumns.Add(nationColumn);
             this.playerList.AllColumns.Add(nameColumn);
@@ -105,8 +113,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.playerList.CellEditUseWholeCell = false;
             this.playerList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            rankColumn,
-            cascadeColumn,
+            this.rankColumn,
+            this.cascadeColumn,
             timesColumn,
             nationColumn,
             nameColumn,
@@ -128,7 +136,7 @@
             // 
             // cooldownColumn
             // 
-            this.cooldownColumn.AspectName = "Cooldown";
+            this.cooldownColumn.AspectName = "";
             this.cooldownColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.cooldownColumn.MaximumWidth = 60;
             this.cooldownColumn.MinimumWidth = 60;
@@ -167,16 +175,6 @@
             this.logBox.Size = new System.Drawing.Size(480, 120);
             this.logBox.TabIndex = 33;
             // 
-            // timesColumn
-            // 
-            timesColumn.AspectName = "CurrentPlayer.RemainTimes";
-            timesColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            timesColumn.MaximumWidth = 40;
-            timesColumn.MinimumWidth = 40;
-            timesColumn.Text = "Lượt";
-            timesColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            timesColumn.Width = 40;
-            // 
             // AutoArenaView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -202,5 +200,7 @@
         private System.Windows.Forms.Button duelButton;
         private BrightIdeasSoftware.OLVColumn cooldownColumn;
         private System.Windows.Forms.TextBox logBox;
+        private BrightIdeasSoftware.OLVColumn cascadeColumn;
+        private BrightIdeasSoftware.OLVColumn rankColumn;
     }
 }

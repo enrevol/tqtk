@@ -26,6 +26,19 @@ namespace k8asd {
 
             isRefreshing = false;
             duelCounter = 0;
+
+            rankColumn.AspectGetter = (object obj) => {
+                var player = (ArenaInfo) obj;
+                return String.Format("{0} / {1}", player.CurrentPlayer.Rank, player.CurrentPlayer.TopRank);
+            };
+            cascadeColumn.AspectGetter = (object obj) => {
+                var player = (ArenaInfo) obj;
+                return String.Format("{0} / {1}", player.CurrentPlayer.Cascade, player.CurrentPlayer.TopCascade);
+            };
+            cooldownColumn.AspectGetter = (object obj) => {
+                var player = (ArenaInfo) obj;
+                return Utils.FormatDuration(player.Cooldown);
+            };
         }
 
         public void LogInfo(string newMessage) {

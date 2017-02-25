@@ -28,7 +28,8 @@ namespace k8asd {
                 result.players.Add(player);
             }
 
-            result.currentPlayer = ArenaPlayer.Parse(rankList.Last);
+            var playerInfo = token["playerInfo"];
+            result.currentPlayer = ArenaPlayer.Parse(playerInfo);
 
             var cd = (int) token["cd"];
             result.cooldown = new Cooldown(cd);
