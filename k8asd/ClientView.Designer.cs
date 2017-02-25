@@ -38,17 +38,20 @@ namespace k8asd {
             this.armyView = new k8asd.ArmyView();
             this.weaveTab = new System.Windows.Forms.TabPage();
             this.weaveView = new k8asd.WeaveView();
+            this.arenaTab = new System.Windows.Forms.TabPage();
             this.chatLogView = new k8asd.ChatLogView();
             this.messageLogView = new k8asd.MessageLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
+            this.arenaView = new k8asd.ArenaView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
             this.heroTrainingTab.SuspendLayout();
             this.armyTab.SuspendLayout();
             this.weaveTab.SuspendLayout();
+            this.arenaTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrData
@@ -96,6 +99,7 @@ namespace k8asd {
             this.tabControl.Controls.Add(this.heroTrainingTab);
             this.tabControl.Controls.Add(this.armyTab);
             this.tabControl.Controls.Add(this.weaveTab);
+            this.tabControl.Controls.Add(this.arenaTab);
             this.tabControl.Location = new System.Drawing.Point(320, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -160,6 +164,17 @@ namespace k8asd {
             this.weaveView.Size = new System.Drawing.Size(631, 526);
             this.weaveView.TabIndex = 0;
             // 
+            // arenaTab
+            // 
+            this.arenaTab.Controls.Add(this.arenaView);
+            this.arenaTab.Location = new System.Drawing.Point(4, 22);
+            this.arenaTab.Name = "arenaTab";
+            this.arenaTab.Padding = new System.Windows.Forms.Padding(3);
+            this.arenaTab.Size = new System.Drawing.Size(637, 532);
+            this.arenaTab.TabIndex = 3;
+            this.arenaTab.Text = "Võ đài";
+            this.arenaTab.UseVisualStyleBackColor = true;
+            // 
             // chatLogView
             // 
             this.chatLogView.Location = new System.Drawing.Point(0, 375);
@@ -195,6 +210,14 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
+            // arenaView
+            // 
+            this.arenaView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.arenaView.Location = new System.Drawing.Point(3, 3);
+            this.arenaView.Name = "arenaView";
+            this.arenaView.Size = new System.Drawing.Size(631, 526);
+            this.arenaView.TabIndex = 0;
+            // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -214,6 +237,7 @@ namespace k8asd {
             this.heroTrainingTab.ResumeLayout(false);
             this.armyTab.ResumeLayout(false);
             this.weaveTab.ResumeLayout(false);
+            this.arenaTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -236,6 +260,8 @@ namespace k8asd {
         private ChatLogView chatLogView;
         private TabPage weaveTab;
         private WeaveView weaveView;
+        private TabPage arenaTab;
+        private ArenaView arenaView;
     }
 }
 

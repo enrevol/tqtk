@@ -33,7 +33,7 @@ namespace k8asd {
         private PacketHandler packetHandler;
 
         private RichTextBoxEx[] txtChatBox = new RichTextBoxEx[7];
-        
+
         private int forcefreecd;
 
         private int[] traincd = new int[8];
@@ -71,6 +71,7 @@ namespace k8asd {
             packetReaders.Add(messageLogModel);
             packetReaders.Add(chatLogModel);
             packetReaders.Add(weaveView);
+            packetReaders.Add(arenaView);
 
             infoView.SetModel(infoModel);
             cooldownView.SetModel(cooldownModel);
@@ -84,11 +85,13 @@ namespace k8asd {
 
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
+            arenaView.SetLogModel(messageLogModel);
 
             heroTrainingView.SetPacketWriter(this);
             armyView.SetPacketWriter(this);
             chatLogModel.SetPacketWriter(this);
             weaveView.SetPacketWriter(this);
+            arenaView.SetPacketWriter(this);
 
             /*
             for (int i = 0; i < 6; i++)

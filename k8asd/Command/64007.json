@@ -1,0 +1,35 @@
+﻿{
+  "awards": null,
+  "battlereport": {
+    "attInspire": 0,
+    "attPetDto": null,
+    "attlost": 5456,
+    "defInspire": 0,
+    "defPetDto": null,
+    "deflost": 3453,
+    "fround": 4,
+    "id": "148801355285926917",
+    "message": "Ngài đã thất bại khi chiến đấu với Đại Đế",
+    "report": "Gong|Ngư Lân|55|0|0|0|0|0|0|Hoa Hùng|huaxiong|37|1301|1322|1322|0|0|0|0|0|0|Trương Lương |zhangliang|16|1302|888|888|Từ Vinh |chaijin|32|5302|1296|1296|0|0|0|0|0|0|0|0|0|0|0|0|Thôi Huy |lili|51|5301|1950|1950|0|0|0|0|0|0;Fang|Phong Thỉ|35|Thái Diễm |caiyan|30|4412|1024|1024|Viên Thuật |yuanshu|28|5403|1022|1022|0|0|0|0|0|0|0|0|0|0|0|0|Y Tịch |yiji|22|4413|840|840|0|0|0|0|0|0|0|0|0|0|0|0|Hồng Oánh |zhouyue|30|3404|1372|1372|0|0|0|0|0|0;FI_GJ|12|22|SK_PT|22|FI_SH|133|12|FI_SQ|25;FI_GJ|21|21|SK_GW|28|FI_SB|0;FI_GJ|14|21|SK_PT|21|FI_SH|109|14|FI_SQ|25;FI_GJ|22|12|SK_PT|12|FI_SH|16|12|FI_SQ|25;FI_GJ|15|22|SK_PT|22|FI_SH|355;FI_GJ|25|12|SK_GW|12|FI_SQJS|5|14|FI_SQJS|5|28|FI_SQ|34;FI_GJ|18|28|SK_PT|22|FI_SH|221|25|FI_SH|649|28|FI_SH|413;FI_GJ|28|12|SK_PT|12|FI_SH|69|12|FI_SQ|25|28|FI_SQ|25;FI_GJ|12|22|SK_PT|22|FI_SH|128|12|FI_SQ|25;FI_GJ|21|28|SK_GW|28|FI_SQ|41;FI_GJ|14|21|SK_PT|21|FI_SH|123|14|FI_SQ|25;FI_GJ|22|12|SK_PT|12|FI_SH|10|12|FI_SQ|25;FI_GJ|15|22|FI_BJ|22|FI_SH|185;FI_GJ|25|12|SK_GW|12|FI_SQJS|5|14|FI_SQJS|5|28|FI_SQ|34;FI_GJ|18|25|SK_PT|25|FI_SH|191|28|FI_SH|427;FI_ZT|28|FI_BJ|0;FI_ZF|28|12|SK_QMCJ|12|FI_SH|1227|14|FI_SH|888|15|FI_SH|1296|18|FI_SH|1329;FI_GJ|18|28|SK_PT|28|FI_SH|277|28|FI_SQ|25;FI_GJ|21|28|SK_GW|28|FI_SQ|75;FI_ZF|28|18|SK_QMCJ|18|FI_SH|529;FI_GJ|18|28|SK_PT|28|FI_SH|242|28|FI_SQ|25;FI_GJ|21|28|SK_GW|28|FI_SQ|75;FI_ZF|28|18|SK_QMCJ|18|FI_SH|92;",
+    "winp": "0.18905592",
+    "winside": 2
+  },
+  "state": 0,
+  "attacker": {
+    "playerid": 5542856,
+    "playerlevel": 55,
+    "playername": " MrSir"
+  },
+  "defender": {
+    "playerid": 5553489,
+    "playerlevel": 35,
+    "playername": "Đại Đế"
+  },
+  "reportId": 148801355285926917,
+  "playerbattleinfo": {
+    "protectcd": 0,
+    "tokencdusable": 1,
+    "tokencd": 0,
+    "forces": 23811
+  }
+}

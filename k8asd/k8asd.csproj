@@ -111,6 +111,13 @@
     <Compile Include="Account\AccountView.Designer.cs">
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Account\ClientManager.cs" />
+    <Compile Include="Arena\ArenaView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Arena\ArenaView.Designer.cs">
+      <DependentUpon>ArenaView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Campaign\CampaignView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -215,6 +222,9 @@
     <EmbeddedResource Include="Account\AccountView.resx">
       <DependentUpon>AccountView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Arena\ArenaView.resx">
+      <DependentUpon>ArenaView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChatLog\ChatLogView.resx">
       <DependentUpon>ChatLogView.cs</DependentUpon>
     </EmbeddedResource>
@@ -268,6 +278,8 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Command\11103_0.json" />
+    <None Include="Command\64007.json" />
+    <None Include="Command\64005.json" />
     <None Include="Command\34108.json" />
     <None Include="Command\34100.json" />
     <None Include="Command\33100_1.json" />
