@@ -12,31 +12,8 @@ using System.Windows.Forms;
 
 namespace k8asd {
     public partial class AutoArenaView : Form {
-        private class Player {
-            private ArenaView.Player player;
-            private Cooldown cooldown;
-
-            public ClientView Client { get; set; }
-
-            public static Player Parse(JToken token) {
-                var result = new Player();
-                result.cooldown = new Cooldown((int) token["cd"]);
-                result.player = ArenaView.Player.Parse(token["playerInfo"]);
-                return result;
-            }
-
-            public int Id { get { return player.Id; } }
-            public int Rank { get { return player.Rank; } }
-            public string Nation { get { return player.Nation; } }
-            public string Name { get { return player.Name; } }
-            public int Level { get { return player.Level; } }
-            public string RankDescription { get { return player.RankDescription; } }
-            public string CascadeDescription { get { return player.CascadeDescription; } }
-            public string Cooldown { get { return Utils.FormatDuration(cooldown.RemainingMilliseconds); } }
-        };
-
-        private List<ClientView> connectedClients;
-        private List<Player> players;
+        private Dictionary<ArenaInfo, ClientView> mappedClients;
+        private List<ArenaInfo> players;
 
         private bool isRefreshing;
         private int duelCounter;
@@ -44,39 +21,43 @@ namespace k8asd {
         public AutoArenaView() {
             InitializeComponent();
 
-            connectedClients = new List<ClientView>();
-            players = new List<Player>();
+            mappedClients = new Dictionary<ArenaInfo, ClientView>();
+            players = new List<ArenaInfo>();
 
             isRefreshing = false;
             duelCounter = 0;
         }
 
-        private ClientView FindClient(int playerId) {
-            foreach (var client in connectedClients) {
-                if (client.PlayerId == playerId) {
-                    return client;
-                }
+        public void LogInfo(string newMessage) {
+            if (logBox.Text.Length > 0) {
+                logBox.Text += Environment.NewLine;
             }
-            return null;
+            logBox.Text += String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
+            logBox.SelectionStart = logBox.TextLength;
+            logBox.ScrollToCaret();
         }
 
         private void refreshButton_Click(object sender, EventArgs e) {
             if (isRefreshing) {
+                LogInfo("Đang làm mới, không thể làm mới!");
                 return;
             }
             if (duelCounter > 0) {
+                LogInfo("Đang khiêu chiến, không thể làm mới!");
                 return;
             }
+            LogInfo("Bắt đầu làm mới...");
             isRefreshing = true;
 
             var clients = ClientManager.Instance.Clients;
-            connectedClients.Clear();
+            var connectedClients = new List<ClientView>();
             foreach (var client in clients) {
                 if (client.Connected) {
                     connectedClients.Add(client);
                 }
             }
 
+            mappedClients.Clear();
             players.Clear();
             playerList.Items.Clear();
             var queue = new Queue<ClientView>(connectedClients);
@@ -88,10 +69,11 @@ namespace k8asd {
                 Debug.Assert(packet.CommandId == "64005");
 
                 var token = JToken.Parse(packet.Message);
-                var player = Player.Parse(token);
-                player.Client = queue.Dequeue();
+                var player = ArenaInfo.Parse(token);
+                mappedClients.Add(player, queue.Dequeue());
                 players.Add(player);
-                players.Sort((lhs, rhs) => lhs.Rank.CompareTo(rhs.Rank));
+                players.Sort((lhs, rhs)
+                    => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
 
                 playerList.SetObjects(players, true);
 
@@ -104,43 +86,62 @@ namespace k8asd {
                     client.SendCommand(callback, "64005");
                 } else {
                     isRefreshing = false;
+                    LogInfo("Làm mới hoàn thành!");
                 }
             };
 
             updater();
         }
 
+        private bool canDuel(ArenaInfo lower, ArenaInfo upper) {
+            return upper.Players.Any(player => player.Id == lower.CurrentPlayer.Id);
+        }
+
         private void duelButton_Click(object sender, EventArgs e) {
             if (isRefreshing) {
+                LogInfo("Đang làm mới, không thể khiêu chiến!");
                 return;
             }
             if (duelCounter > 0) {
+                LogInfo("Đang khiêu chiến, không thể khiêu chiến!");
                 return;
             }
+            LogInfo("Bắt đầu khiêu chiến...");
 
-            var previousPlayers = new Player[10];
+            var availablePlayers = new List<ArenaInfo>();
             foreach (var player in players) {
-                var ending = player.Rank % 10;
-                if (previousPlayers[ending] != null) {
-                    var previousRank = previousPlayers[ending].Rank;
-                    if (previousRank + 90 >= player.Rank) {
-                        duelCounter += 2;
-                        Duel(() => {
+                bool matched = false;
+                if (availablePlayers.Count > 0) {
+                    var matchingPlayer = availablePlayers.FirstOrDefault(
+                        availablePlayer => canDuel(availablePlayer, player));
+                    if (matchingPlayer != null && player.CurrentPlayer.RemainTimes > 0) {
+                        matched = true;
+                        availablePlayers.Remove(matchingPlayer);
+                        LogInfo(String.Format("Tiến hành khiêu chiến: {0} vs. {1}",
+                            player.CurrentPlayer.Name, matchingPlayer.CurrentPlayer.Name));
+                        ++duelCounter;
+                        Action callback = () => {
                             --duelCounter;
-                            Duel(() => {
-                                --duelCounter;
-                            }, player, previousPlayers[ending]);
-                        }, previousPlayers[ending], player);
-                    } else {
-                        previousPlayers[ending] = player;
+                            if (duelCounter == 0) {
+                                LogInfo("Khiêu chiến hoàn thành!");
+                            }
+                        };
+                        Duel(callback, mappedClients[matchingPlayer], mappedClients[player],
+                            matchingPlayer.CurrentPlayer.Id, matchingPlayer.CurrentPlayer.Rank);
                     }
-                } else {
-                    previousPlayers[ending] = player;
                 }
+                if (!matched) {
+                    availablePlayers.Add(player);
+                }
+            }
+
+            if (duelCounter == 0) {
+                LogInfo("Không có cặp khiêu chiến!");
             }
         }
 
-        private void Duel(Action callback, Player lower, Player upper) {
+        private void Duel(Action callback, IPacketWriter lower, IPacketWriter upper,
+            int lowerId, int lowerRank) {
             // Chọn trận ngư lân (trống).
             Action<Packet> selectEmptyFormationCallback = null;
 
@@ -155,28 +156,26 @@ namespace k8asd {
 
             selectEmptyFormationCallback = (Packet packet) => {
                 Debug.Assert(packet.CommandId == "42106");
-                lower.Client.SendCommand(removeAllHeroesCallback, "42107", "9");
+                lower.SendCommand(removeAllHeroesCallback, "42107", "9");
             };
 
             removeAllHeroesCallback = (Packet packet) => {
                 Debug.Assert(packet.CommandId == "42107");
-                upper.Client.SendCommand(selectNonEmptyFormationCallback, "42106", "13");
+                upper.SendCommand(selectNonEmptyFormationCallback, "42106", "13");
             };
 
             selectNonEmptyFormationCallback = (Packet packet) => {
                 Debug.Assert(packet.CommandId == "42106");
-                upper.Client.SendCommand(duelCallback,
-                    "64007", lower.Id.ToString(), lower.Rank.ToString());
+                upper.SendCommand(duelCallback,
+                    "64007", lowerId.ToString(), lowerRank.ToString());
             };
 
             duelCallback = (Packet packet) => {
                 Debug.Assert(packet.CommandId == "64007");
-                if (callback != null) {
-                    callback();
-                }
+                callback();
             };
 
-            lower.Client.SendCommand(selectEmptyFormationCallback, "42106", "9");
+            lower.SendCommand(selectEmptyFormationCallback, "42106", "9");
         }
     }
 }

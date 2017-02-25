@@ -119,6 +119,7 @@
             this.playerList.AllColumns.Add(nameColumn);
             this.playerList.AllColumns.Add(levelColumn);
             this.playerList.AllColumns.Add(duelColumn);
+            this.playerList.CellEditUseWholeCell = false;
             this.playerList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             rankColumn,
             cascadeColumn,

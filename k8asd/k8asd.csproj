@@ -112,6 +112,8 @@
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
     <Compile Include="Account\ClientManager.cs" />
+    <Compile Include="Arena\ArenaInfo.cs" />
+    <Compile Include="Arena\ArenaPlayer.cs" />
     <Compile Include="Arena\ArenaView.cs">
       <SubType>UserControl</SubType>
     </Compile>
