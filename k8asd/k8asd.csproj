@@ -205,6 +205,7 @@
     <Compile Include="Shop\ShopView.Designer.cs">
       <DependentUpon>ShopView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Cooldown.cs" />
     <Compile Include="Weave\WeaveView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -309,7 +310,7 @@
       <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
     <Compile Include="Connection\Session.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="V.cs" />
   </ItemGroup>
   <ItemGroup>

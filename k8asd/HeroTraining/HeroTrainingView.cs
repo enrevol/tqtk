@@ -19,7 +19,7 @@ namespace k8asd {
             private int nextExp;
             private int trainFlag;
             private int trainModel;
-            private DateTime trainEndTime;
+            private Cooldown trainCooldown;
             private int expPerMin;
             private int honorCost;
             private int honorExp;
@@ -39,7 +39,7 @@ namespace k8asd {
                     if (trainFlag == 0) {
                         return 0;
                     }
-                    return trainEndTime.RemainingMilliseconds();
+                    return trainCooldown.RemainingMilliseconds;
                 }
             }
 
@@ -54,7 +54,7 @@ namespace k8asd {
                 this.exp = exp;
                 this.nextExp = nextExp;
                 trainFlag = trainModel = 0;
-                trainEndTime = DateTime.Now;
+                trainCooldown = new Cooldown();
                 expPerMin = honorCost = honorExp = 0;
             }
 
@@ -67,7 +67,7 @@ namespace k8asd {
                 this.nextExp = nextExp;
                 trainFlag = 1;
                 this.trainModel = trainModel;
-                trainEndTime = DateTime.Now.AddMilliseconds(remainingTime);
+                trainCooldown = new Cooldown(remainingTime);
                 this.expPerMin = expPerMin;
                 this.honorCost = honorCost;
                 this.honorExp = honorExp;

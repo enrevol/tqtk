@@ -113,14 +113,14 @@ namespace k8asd {
             private string condition;
             private int playerCount;
             private int maxPlayerCount;
-            private DateTime endTime;
+            private Cooldown cooldown;
 
             public int Id { get { return teamId; } }
             public string Name { get { return teamName; } }
             public string Condition { get { return condition; } }
             public int PlayerCount { get { return playerCount; } }
             public int MaxPlayerCount { get { return maxPlayerCount; } }
-            public int RemainingTime { get { return endTime.RemainingMilliseconds(); } }
+            public int RemainingTime { get { return cooldown.RemainingMilliseconds; } }
 
             public static Team Parse(JToken token, DateTime serverTime) {
                 var result = new Team();
@@ -131,15 +131,16 @@ namespace k8asd {
                 result.maxPlayerCount = (int) token["maxnum"];
                 var endtime = (long) token["endtime"];
                 var serverTimeOffset = serverTime - DateTime.Now;
-                result.endTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                var endDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                     .ToLocalTime().AddMilliseconds(endtime).Add(-serverTimeOffset);
+                result.cooldown = new Cooldown((endDateTime - DateTime.Now).Milliseconds);
                 return result;
             }
 
             public string Description() {
                 return String.Format("{0} {1} ({2}/{3}) [{4}]",
                     Name, Condition, PlayerCount, MaxPlayerCount,
-                    Utils.FormatDuration(endTime.RemainingMilliseconds()));
+                    Utils.FormatDuration(cooldown.RemainingMilliseconds));
             }
         }
 

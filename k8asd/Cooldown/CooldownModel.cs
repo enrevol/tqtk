@@ -8,12 +8,12 @@ using System.Windows.Forms;
 
 namespace k8asd {
     class CooldownModel : ICooldownModel, IPacketReader {
-        private DateTime imposeCooldownEndTime;
-        private DateTime guideCooldownEndTime;
-        private DateTime upgradeCooldownEndTime;
-        private DateTime appointCooldownEndTime;
-        private DateTime techCooldownEndTime;
-        private DateTime weaveCooldownEndTime;
+        private Cooldown imposeCooldown;
+        private Cooldown guideCooldown;
+        private Cooldown upgradeCooldown;
+        private Cooldown appointCooldown;
+        private Cooldown techCooldown;
+        private Cooldown weaveCooldown;
         private Timer oneSecondTimer;
 
         public event EventHandler<int> ImposeCooldownChanged;
@@ -24,6 +24,13 @@ namespace k8asd {
         public event EventHandler<int> WeaveCooldownChanged;
 
         public CooldownModel() {
+            imposeCooldown = new Cooldown();
+            guideCooldown = new Cooldown();
+            upgradeCooldown = new Cooldown();
+            appointCooldown = new Cooldown();
+            techCooldown = new Cooldown();
+            weaveCooldown = new Cooldown();
+
             oneSecondTimer = new Timer();
             oneSecondTimer.Interval = 1000;
             oneSecondTimer.Tick += OneSecondTimer_Tick;
@@ -44,50 +51,50 @@ namespace k8asd {
         }
 
         public int ImposeCooldown {
-            get { return imposeCooldownEndTime.RemainingMilliseconds(); }
+            get { return imposeCooldown.RemainingMilliseconds; }
             set {
-                imposeCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                imposeCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
         }
 
         public int GuideCooldown {
-            get { return guideCooldownEndTime.RemainingMilliseconds(); }
+            get { return guideCooldown.RemainingMilliseconds; }
             set {
-                guideCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                guideCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
 
             }
         }
 
         public int UpgradeCooldown {
-            get { return upgradeCooldownEndTime.RemainingMilliseconds(); }
+            get { return upgradeCooldown.RemainingMilliseconds; }
             set {
-                upgradeCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                upgradeCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
         }
 
         public int AppointCooldown {
-            get { return appointCooldownEndTime.RemainingMilliseconds(); }
+            get { return appointCooldown.RemainingMilliseconds; }
             set {
-                appointCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                appointCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
         }
 
         public int TechCooldown {
-            get { return techCooldownEndTime.RemainingMilliseconds(); }
+            get { return techCooldown.RemainingMilliseconds; }
             set {
-                techCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                techCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
         }
 
         public int WeaveCooldown {
-            get { return weaveCooldownEndTime.RemainingMilliseconds(); }
+            get { return weaveCooldown.RemainingMilliseconds; }
             set {
-                weaveCooldownEndTime = DateTime.Now.AddMilliseconds(value);
+                weaveCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
         }
@@ -112,6 +119,11 @@ namespace k8asd {
                     var cd = (int) token["cd"];
                     GuideCooldown = cd;
                 }
+            }
+            if (packet.CommandId == "45200") {
+                var token = JToken.Parse(packet.Message);
+                var makecd = (int) token["makecd"];
+                WeaveCooldown = makecd;
             }
         }
     }
