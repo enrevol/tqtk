@@ -528,7 +528,9 @@ namespace k8asd {
                 Kick(currentTeamId, members[1].Id);
                 return false;
             }
-            foreach (var member in members) {
+
+            for (int i = 1; i < members.Count; ++i) {
+                var member = members[i];
                 if (member.Name != slot1 && member.Name != slot2) {
                     Kick(currentTeamId, member.Id);
                     return false;
