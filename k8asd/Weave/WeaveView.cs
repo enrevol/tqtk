@@ -186,9 +186,6 @@ namespace k8asd {
             if (packet.CommandId == "45300") {
                 Parse45300(packet);
             }
-            if (packet.CommandId == "60603") {
-                // int x = 1;
-            }
         }
 
         private void Parse45200(Packet packet) {
@@ -208,42 +205,6 @@ namespace k8asd {
 
             var teamList = token["teamList"];
             ParseTeams(teamList);
-
-            /*
-            makecd = Convert.ToInt32(r45200.makecd);
-            btnWeaveTeam.Text = r45200.listteam.Count.ToString() + " tổ đội";
-            
-            if (weaveautoupdate)
-                switch (cbbWeaveMode.SelectedIndex) {
-                case 1:
-                    /*
-                    foreach (R45200.Team tm in r45200.listteam)
-                        if (((tm.nation == r11102.nation
-                            && tm.legion == "0")
-                            || tm.legion == r11102.legionid)
-                            && Convert.ToInt32(tm.limitlv)
-                            <= Convert.ToInt32(r45200.info.totallevel)
-                            && Convert.ToInt32(tm.num) < 3) {
-                            LogText("[Dệt] Gia nhập tổ đội dệt (" + tm.num + "/3) của " + tm.teamname);
-                            SendMsg("45209", tm.teamid);
-                            break;
-                        }
-                    break;
-                case 2:
-                    /*
-                    foreach (R45200.Team tm in r45200.listteam)
-                        if (tm.teamname == r11102.playername) {
-                            if (Convert.ToInt32(tm.num) >= numWeaveLimit.Value
-                                && chkWeaveMake.Checked)
-                                btnWeaveMake_Click(null, null);
-                            break;
-                        }
-                    break;
-                }
-            weaveok = true;
-            break;
-        #endregion
-        */
         }
 
         private void Parse45300(Packet packet) {
@@ -427,12 +388,7 @@ namespace k8asd {
         /// </summary>
         /// <returns>True if the the current player is hosting a weaving party, false otherwise</returns>
         private bool IsHosting() {
-            foreach (var team in teams) {
-                if (team.Id == currentTeamId) {
-                    return true;
-                }
-            }
-            return false;
+            return teams.Any(team => team.Id == currentTeamId);
         }
 
         private void UpdateAuto() {
