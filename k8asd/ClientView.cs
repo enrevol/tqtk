@@ -145,8 +145,15 @@ namespace k8asd {
 
             loginHelper = new LoginHelper(username, password);
 
-            loginAccountCallback = (statusTask) => {
-                var status = statusTask.Result;
+            loginAccountCallback = (task) => {
+                var exception = task.Exception;
+                if (exception != null && exception.InnerException != null) {
+                    messageLogModel.LogInfo(String.Format("{0}", exception.InnerException.Message));
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                }
+
+                var status = task.Result;
                 switch (status) {
                 case LoginStatus.NoConnection:
                     messageLogModel.LogInfo("Không có kết nối mạng.");
@@ -168,8 +175,15 @@ namespace k8asd {
                     TaskScheduler.FromCurrentSynchronizationContext());
             };
 
-            loginServerCallback = (statusTask) => {
-                var status = statusTask.Result;
+            loginServerCallback = (task) => {
+                var exception = task.Exception;
+                if (exception != null && exception.InnerException != null) {
+                    messageLogModel.LogInfo(String.Format("{0}", exception.InnerException.Message));
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                }
+
+                var status = task.Result;
                 switch (status) {
                 case LoginStatus.NoConnection:
                     messageLogModel.LogInfo("Không có kết nối mạng.");
