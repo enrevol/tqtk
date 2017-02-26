@@ -171,8 +171,10 @@ namespace k8asd {
             Action<Packet> callback = (Packet packet) => {
                 Parse45200(packet);
                 CheckAutoCreate();
-                CheckAutoMake();
-                CheckAutoQuitAndMake();
+                if (CheckLimitPlayer()) {
+                    CheckAutoMake();
+                    CheckAutoQuitAndMake();
+                }
             };
 
             if (packetWriter.SendCommand(callback, "45200")) {
@@ -250,8 +252,10 @@ namespace k8asd {
             if (teamObject != null) {
                 ParseTeamInfo(teamObject);
                 memberBox.Enabled = true;
-                CheckAutoMake();
-                CheckAutoQuitAndMake();
+                if (CheckLimitPlayer()) {
+                    CheckAutoMake();
+                    CheckAutoQuitAndMake();
+                }
             } else {
                 // teamId = 0;
                 memberBox.Enabled = false;
@@ -389,11 +393,13 @@ namespace k8asd {
         }
 
         private void createButton_Click(object sender, EventArgs e) {
-            Create((int) textileLevelInput.Value, TeamLimit.Nation);
+            var textileLevel = (int) textileLevelInput.Value;
+            Create(textileLevel, TeamLimit.Nation);
         }
 
         private void createLegionButton_Click(object sender, EventArgs e) {
-            Create((int) textileLevelInput.Value, TeamLimit.Legion);
+            var textileLevel = (int) textileLevelInput.Value;
+            Create(textileLevel, TeamLimit.Legion);
         }
 
         private void memberList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
@@ -450,7 +456,7 @@ namespace k8asd {
             if (IsHosting()) {
                 return;
             }
-            var textileLevel = (int) textileLevelInput.Value;
+            var textileLevel = (int) autoTextileLevelInput.Value;
             Create(textileLevel, TeamLimit.Legion);
         }
 
@@ -471,6 +477,9 @@ namespace k8asd {
             if (autoQuitAndMake.Checked && currentTurnCount <= 1) {
                 return;
             }
+            if (!CheckLimitPlayer()) {
+                return;
+            }
             Make(currentTeamId);
         }
 
@@ -487,8 +496,45 @@ namespace k8asd {
             if (autoMake.Checked && currentTurnCount > 1) {
                 return;
             }
-            Quit(currentTeamId);
-            Make(currentTeamId);
+            QuitAndMake(currentTeamId);
+        }
+
+        private bool CheckLimitPlayer() {
+            if (!IsHosting()) {
+                return true;
+            }
+            var slot1 = slot1PlayerInput.Text;
+            var slot2 = slot2PlayerInput.Text;
+            if (slot1.Length == 0 && slot2.Length == 0) {
+                // Two `anyone` slots.
+                return true;
+            }
+            if (slot1.Length == 0) {
+                // One `anyone` slot.
+                if (members.Count < 3) {
+                    // Still have a spare slot.
+                    return true;
+                }
+
+                // Swap.
+                var temp = slot2;
+                slot2 = slot1;
+                slot1 = temp;
+
+                if (members.Any(member => member.Name == slot1)) {
+                    // OK.
+                    return true;
+                }
+                Kick(currentTeamId, members[1].Id);
+                return false;
+            }
+            foreach (var member in members) {
+                if (member.Name != slot1 && member.Name != slot2) {
+                    Kick(currentTeamId, member.Id);
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void autoMake_CheckedChanged(object sender, EventArgs e) {
@@ -497,6 +543,15 @@ namespace k8asd {
 
         private void autoQuitAndMake_CheckedChanged(object sender, EventArgs e) {
 
+        }
+
+        private void quitAndMakeButton_Click(object sender, EventArgs e) {
+            QuitAndMake(currentTeamId);
+        }
+
+        private void QuitAndMake(int teamId) {
+            Quit(currentTeamId);
+            Make(currentTeamId);
         }
     }
 
