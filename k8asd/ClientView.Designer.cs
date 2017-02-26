@@ -26,9 +26,7 @@ namespace k8asd {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            this.tmrData = new System.Windows.Forms.Timer(this.components);
-            this.tmrCd = new System.Windows.Forms.Timer(this.components);
-            this.tmrReq = new System.Windows.Forms.Timer(this.components);
+            this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.barFoodBuy = new System.Windows.Forms.TrackBar();
             this.barFoodSell = new System.Windows.Forms.TrackBar();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -39,12 +37,12 @@ namespace k8asd {
             this.weaveTab = new System.Windows.Forms.TabPage();
             this.weaveView = new k8asd.WeaveView();
             this.arenaTab = new System.Windows.Forms.TabPage();
+            this.arenaView = new k8asd.ArenaView();
             this.chatLogView = new k8asd.ChatLogView();
             this.messageLogView = new k8asd.MessageLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.arenaView = new k8asd.ArenaView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -54,18 +52,10 @@ namespace k8asd {
             this.arenaTab.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tmrData
+            // dataTimer
             // 
-            this.tmrData.Interval = 1;
-            this.tmrData.Tick += new System.EventHandler(this.tmrData_Tick);
-            // 
-            // tmrCd
-            // 
-            this.tmrCd.Interval = 1000;
-            // 
-            // tmrReq
-            // 
-            this.tmrReq.Interval = 1000;
+            this.dataTimer.Interval = 10;
+            this.dataTimer.Tick += new System.EventHandler(this.dataTimer_Tick);
             // 
             // barFoodBuy
             // 
@@ -175,6 +165,14 @@ namespace k8asd {
             this.arenaTab.Text = "Võ đài";
             this.arenaTab.UseVisualStyleBackColor = true;
             // 
+            // arenaView
+            // 
+            this.arenaView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.arenaView.Location = new System.Drawing.Point(3, 3);
+            this.arenaView.Name = "arenaView";
+            this.arenaView.Size = new System.Drawing.Size(631, 526);
+            this.arenaView.TabIndex = 0;
+            // 
             // chatLogView
             // 
             this.chatLogView.Location = new System.Drawing.Point(0, 375);
@@ -210,14 +208,6 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
-            // arenaView
-            // 
-            this.arenaView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.arenaView.Location = new System.Drawing.Point(3, 3);
-            this.arenaView.Name = "arenaView";
-            this.arenaView.Size = new System.Drawing.Size(631, 526);
-            this.arenaView.TabIndex = 0;
-            // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -243,9 +233,7 @@ namespace k8asd {
         }
 
         #endregion
-        private System.Windows.Forms.Timer tmrData;
-        private System.Windows.Forms.Timer tmrCd;
-        private System.Windows.Forms.Timer tmrReq;
+        private System.Windows.Forms.Timer dataTimer;
         private TrackBar barFoodBuy;
         private TrackBar barFoodSell;
         private InfoView infoView;

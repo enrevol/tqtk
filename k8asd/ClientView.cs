@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace k8asd {
     public partial class ClientView : UserControl, IPacketWriter {
@@ -20,25 +21,17 @@ namespace k8asd {
 
         private List<IPacketReader> packetReaders;
 
-        public int num;
-        public int updateflag = 0;
-
-        public JToken loadtoken;
-
-        public TimeSpan sys;
-
-        private WayPoint HDVS = new WayPoint();
-
         private LoginHelper loginHelper;
         private PacketHandler packetHandler;
 
-        private RichTextBoxEx[] txtChatBox = new RichTextBoxEx[7];
+        private enum ConnectionStatus {
+            Connecting,
+            Connected,
+            Disconnecting,
+            Disconnected
+        };
 
-        private int forcefreecd;
-
-        private int[] traincd = new int[8];
-        private int[] chatcd = new int[4];
-        private int[] bindcd = new int[60];
+        private ConnectionStatus connectionStatus;
 
         private Configuration config;
 
@@ -51,10 +44,10 @@ namespace k8asd {
             }
         }
 
-        private string[] listpower = new string[25];
-
         public ClientView() {
             InitializeComponent();
+
+            connectionStatus = ConnectionStatus.Disconnected;
 
             infoModel = new InfoModel();
             cooldownModel = new CooldownModel();
@@ -92,76 +85,6 @@ namespace k8asd {
             chatLogModel.SetPacketWriter(this);
             weaveView.SetPacketWriter(this);
             arenaView.SetPacketWriter(this);
-
-            /*
-            for (int i = 0; i < 6; i++)
-                cbbChat.Items.Add(V.listchat[i]);
-            cbbChat.SelectedIndex = 3;
-
-            for (int i = 0; i < 7; i++) {
-                pagChat[i] = new KryptonPage();
-                txtChatBox[i] = new RichTextBoxEx();
-                txtChatBox[i].Dock = DockStyle.Fill;
-                txtChatBox[i].BackColor = Color.Black;
-                txtChatBox[i].ForeColor = V.listcolorchat[i];
-                txtChatBox[i].Font = new Font("Sogue", 9.25f);
-                txtChatBox[i].ReadOnly = true;
-                txtChatBox[i].ScrollBars = RichTextBoxScrollBars.ForcedVertical;
-                pagChat[i].Controls.Add(txtChatBox[i]);
-                pagChat[i].Text = V.listchat[i];
-                navChat.Pages.Add(pagChat[i]);
-            }
-            navChat.SelectedIndex = 6;
-
-            cbbArmyMode.Items.AddRange(V.listarmymode);
-            cbbArmyMode.SelectedIndex = 0;
-
-            cbbWeaveMode.Items.AddRange(V.listweavemode);
-            cbbWeaveMode.SelectedIndex = 0;
-
-            int asz = 18;
-            int sz = 30;
-            int dist = 1;
-            btnCampMap = new KryptonButton[asz, asz];
-            for (int i = 0; i < asz; i++)
-                for (int j = 0; j < asz; j++) {
-                    btnCampMap[i, j] = new KryptonButton();
-                    btnCampMap[i, j].Size = new Size(sz, sz);
-                    btnCampMap[i, j].Location = new Point(dist + i * (sz + dist), dist + j * (sz + dist));
-                    btnCampMap[i, j].Tag = i.ToString() + "." + j.ToString();
-                    btnCampMap[i, j].Click += btnCampMap_Click;
-                    pnlCampMap.Controls.Add(btnCampMap[i, j]);
-                }
-            cbbCamp.Items.AddRange(V.listcamp);
-            cbbCamp.SelectedIndex = 0;
-
-            WayPoint.Player player = new WayPoint.Player(new Point(0, 1));
-
-            player.Add(new Point(0, 0), new Point(3, 6));
-            HDVS.listplayer.Add(player);
-
-            player = new WayPoint.Player(new Point(0, 8));
-            player.Add(new Point(0, 7), new Point(2, 14));
-            HDVS.listplayer.Add(player);
-
-            player = new WayPoint.Player(new Point(0, 17));
-            player.Add(new Point(0, 15), new Point(7, 17));
-            player.Add(new Point(3, 12), new Point(7, 14));
-            HDVS.listplayer.Add(player);
-
-            player = new WayPoint.Player(new Point(7, 0));
-            player.Add(new Point(4, 0), new Point(7, 5));
-            HDVS.listplayer.Add(player);
-
-            player = new WayPoint.Player(new Point(7, 5));
-            player.Add(new Point(5, 6), new Point(7, 17));
-            HDVS.listplayer.Add(player);
-
-            cbbUpg1.SelectedIndexChanged -= cbbUpg2_SelectedIndexChanged;
-            cbbUpg1.Items.AddRange(V.listequiptype);
-            cbbUpg1.SelectedIndex = 0;
-            cbbUpg1.SelectedIndexChanged += cbbUpg2_SelectedIndexChanged;
-            */
         }
 
         private void ClientView_Load(object sender, EventArgs e) {
@@ -174,10 +97,6 @@ namespace k8asd {
 
         public int PlayerId {
             get { return Int32.Parse(loginHelper.Session.UserId); }
-        }
-
-        private void LogText(string s) {
-            //  txtLogs.AppendText("\n" + F.GetTime(sys) + " " + s);
         }
 
         public bool SendCommand(string cmd, params string[] parameters) {
@@ -193,10 +112,8 @@ namespace k8asd {
             }
 
             if (!succeeded) {
-                LogText("[Kết nối] Mất kết nối đến máy chủ");
-                tmrCd.Stop();
-                tmrData.Stop();
-                tmrReq.Stop();
+                messageLogModel.LogInfo("Mất kết nối đến máy chủ!");
+                dataTimer.Stop();
             }
             return succeeded;
         }
@@ -206,46 +123,83 @@ namespace k8asd {
         }
 
         private void LogIn(int serverId, string username, string password) {
+            if (connectionStatus == ConnectionStatus.Connected) {
+                messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
+                return;
+            }
+            if (connectionStatus == ConnectionStatus.Connecting) {
+                messageLogModel.LogInfo("Đang đang nhập, không cần đăng nhập lại!");
+                return;
+            }
+            if (connectionStatus == ConnectionStatus.Disconnecting) {
+                messageLogModel.LogInfo("Đang đang xuất, không thể đăng nhập!");
+                return;
+            }
+            Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
+
+            connectionStatus = ConnectionStatus.Connecting;
+            messageLogModel.LogInfo("Bắt đầu đăng nhập tài khoản...");
+
+            Action<Task<LoginStatus>> loginAccountCallback = null;
+            Action<Task<LoginStatus>> loginServerCallback = null;
+
             loginHelper = new LoginHelper(username, password);
 
-            // LogText("Bắt đầu đăng nhập tài khoản...");
-            var loginAccountStatus = loginHelper.LoginAccount();
-            switch (loginAccountStatus) {
-            case LoginStatus.NoConnection:
-                // LogText("Không có kết nối mạng.");
-                return;
-            case LoginStatus.WrongUsernameOrPassword:
-                // LogText("Sai tên người dùng hoặc mật khẩu.");
-                return;
-            case LoginStatus.UnknownError:
-                // LogText("Có lỗi xảy ra.");
-                return;
-            }
-            // LogText("Đăng nhập tài khoản thành công.");
+            loginAccountCallback = (statusTask) => {
+                var status = statusTask.Result;
+                switch (status) {
+                case LoginStatus.NoConnection:
+                    messageLogModel.LogInfo("Không có kết nối mạng.");
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                case LoginStatus.WrongUsernameOrPassword:
+                    messageLogModel.LogInfo("Sai tên người dùng hoặc mật khẩu.");
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                case LoginStatus.UnknownError:
+                    messageLogModel.LogInfo("Có lỗi xảy ra.");
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                }
+                messageLogModel.LogInfo("Đăng nhập tài khoản thành công.");
 
-            // LogText("Bắt đầu lấy thông tin để kết nối với máy chủ...");
-            var loginServerStatus = loginHelper.LoginServer(serverId);
-            switch (loginServerStatus) {
-            case LoginStatus.NoConnection:
-                // LogText("Không có kết nối mạng.");
-                return;
-            case LoginStatus.UnknownError:
-                // LogText("Có lỗi xảy ra.");
-                return;
-            }
-            // LogText("Lấy thông tin thành công.");
+                messageLogModel.LogInfo("Bắt đầu lấy thông tin để kết nối với máy chủ...");
+                loginHelper.LoginServer(serverId).ContinueWith(loginServerCallback,
+                    TaskScheduler.FromCurrentSynchronizationContext());
+            };
 
-            // LogText("Bắt đầu kết nối với máy chủ...");
-            packetHandler = new PacketHandler(loginHelper.Session);
-            if (!packetHandler.Connect()) {
-                // LogText("Kết nối với máy chủ thất bại.");
-            }
+            loginServerCallback = (statusTask) => {
+                var status = statusTask.Result;
+                switch (status) {
+                case LoginStatus.NoConnection:
+                    messageLogModel.LogInfo("Không có kết nối mạng.");
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                case LoginStatus.UnknownError:
+                    messageLogModel.LogInfo("Có lỗi xảy ra.");
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                }
+                messageLogModel.LogInfo("Lấy thông tin thành công.");
 
-            tmrData.Start();
-            SendCommand("10100");
+                messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
+                packetHandler = new PacketHandler(loginHelper.Session);
+                if (!packetHandler.Connect()) {
+                    messageLogModel.LogInfo("Kết nối với máy chủ thất bại.");
+                }
+                messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
+
+                connectionStatus = ConnectionStatus.Connected;
+
+                dataTimer.Start();
+                SendCommand("10100");
+            };
+
+            loginHelper.LoginAccount().ContinueWith(loginAccountCallback,
+                TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void tmrData_Tick(object sender, EventArgs e) {
+        private void dataTimer_Tick(object sender, EventArgs e) {
             var packet = packetHandler.ReadPacket();
             if (packet == null) {
                 return;
@@ -389,6 +343,7 @@ namespace k8asd {
 
             #region 14100
             case "14100": {
+                    /*
                     JToken token = JObject.Parse(cdata)["m"];
                     if (token["cde"] != null) {
                         forcefreecd = Convert.ToInt32(token["cde"].ToString());
@@ -398,6 +353,7 @@ namespace k8asd {
                         if (forcefreecd == 0)
                             forcefreecd += 600000;
                     }
+                    */
                 }
                 break;
             #endregion
@@ -425,40 +381,12 @@ namespace k8asd {
             #region 32101
             case "32101":
                 // R32101 r32101 = new R32101(cdata);
-                if (updateflag == 0) {
-                    LogText("[Cập nhật] Thông tin binh doanh...");
-                    SendCommand("14101");
-                }
+                //if (updateflag == 0) {
+                ///    LogText("[Cập nhật] Thông tin binh doanh...");
+                //    SendCommand("14101");
+                //}
                 break;
             #endregion
-
-            #region 32121
-            case "32121":
-                R32121 r32121 = new R32121(cdata);
-                //txtLegionName.Text = dt_32121.legionname;
-                //txtLegionDate.Text = dt_32121.createdate;
-                //txtLegionLv.Text = dt_32121.legionlv;
-                //txtLegionMemnum.Text = dt_32121.memnum + "/" + dt_32121.maxnum;
-                //txtLegionNation.Text = sNation[Convert.ToInt32(dt_32121.nation)];
-                //txtLegionCreater.Text = dt_32121.creater;
-                //lblLegion.Text = "<b>Bang chủ: </b>" + dt_32121.jtz
-                //    + "<br/><b>Đốc quân: </b>" + dt_32121.dj
-                //    + "<br/><b>Doanh trưởng: </b>" + dt_32121.yz
-                //    + "<br/><b>Thiên phu trưởng: </b>" + dt_32121.qfz
-                //    + "<br/><b>Bách phu trưởng: </b>" + dt_32121.bfz
-                //    + "<br/><br/><b>" + dt_32121.message + "</b>";
-                if (updateflag == 0)
-                    SendCommand("32101", "0", "1", "\x20");
-                break;
-            #endregion                
-
-            case "64005": {
-                    break;
-                }
-
-            case "64007": {
-                    break;
-                }
 
             default:
                 break;
@@ -558,14 +486,6 @@ namespace k8asd {
         */
         #endregion
 
-        // F.ShowDecTime(txtCampInfo3, ref camprecd);
-
-        //F.ShowDecTime(txtCampInfo5, ref campactcd);
-
-        // string makecdusable = makecd == 0 ? "1" : "0";
-
-        //F.CoolDown(txtWeaveCd, ref makecd, ref makecdusable);
-
         /*
         if (updateflag != 0) {
             btnImpose.Enabled = isimposelimit == "1" && imposecdusable == "1";
@@ -619,46 +539,6 @@ private void tmrReq_Tick(object sender, EventArgs e) {
 
         #endregion
 
-        #region Train
-
-        /*
-        if (chkTrain.Checked
-            && lstGuide.Items.Count > 0) {
-            F.Cycle(ref traincycle, lstGuide.Items.Count - 1);
-
-            int index = 0;
-            int lv = 0;
-
-            TagItem it = (TagItem) lstGuide.Items[traincycle];
-            for (int i = 0; i < r41100.listgeneral.Count; i++) {
-                R41100.General gen = r41100.listgeneral[i];
-                if (it.tag == gen.generalid) {
-                    lv = Convert.ToInt32(gen.generallevel);
-                    index = i;
-                    break;
-                }
-            }
-
-            int trainnum = 0;
-            for (int i = 0; i < r41100.listgeneral.Count; i++)
-                if (traincd[i] > 0)
-                    trainnum++;
-
-            if (it.tag != null && lv < Convert.ToInt32(r11102.playerlevel)) {
-                if (trainnum < Convert.ToInt32(r41100.maxnum)
-                    && traincd[index] == 0)
-                    SendMsg("41101", it.tag, "1");
-
-                if (guidecdusable == "1"
-                    && traincd[index] > 0
-                    && lstGuide.CheckedIndices.Contains(traincycle)
-                    && Convert.ToInt32(txtJyungong.Text) >= Convert.ToInt32(r41100.jyungong))
-                    SendMsg("41102", it.tag, "1", "1");
-            }
-        }
-
-        #endregion
-
         #region Forces
 
         /*
@@ -680,76 +560,7 @@ private void tmrReq_Tick(object sender, EventArgs e) {
 
         #endregion
 
-    }
-
-    #region Plus
-
-    /*
-    if (chkPlus.Checked && plusok) {
-        plusok = false;
-        int index = lstPlus.SelectedIndex;
-        int lv = Convert.ToInt32(r41300.listgeneral[index].generallevel);
-        int att1 = cbbPlusAtt1.SelectedIndex;
-        int att2 = cbbPlusAtt2.SelectedIndex;
-
-        int[] org =
-        {
-            Convert.ToInt32(r41302.originalattr.plusleader),
-            Convert.ToInt32(r41302.originalattr.plusforces),
-            Convert.ToInt32(r41302.originalattr.plusintelligence)
-        };
-
-        if (org[att1] >= lv + 20
-            && (!chkPlusAtt2.Checked
-            || org[F.AttPlus(att1, att2)] >= lv + 20)) {
-            LogText("[Cải tiến] Chỉ số đạt mức tối đa");
-            chkPlus.Checked = false;
-        } else
-            btnPlusPlus_Click(null, null);
-    }
-
-    #endregion
-
-    #region Weave
-    /*
-
-    if (weaveok) {
-        weaveautoupdate = false;
-        if (btnAuto.Text == "Dừng"
-            && chkWeave.Checked
-            && makecd == 0
-            && Convert.ToInt32(r45200.info.num) > 0)
-            switch (cbbWeaveMode.SelectedIndex) {
-            case 0:
-                if (r45300 == null) {
-                    weaveok = false;
-                    weavecreate = true;
-                    btnWeaveCreate_Click(null, null);
-                }
-                break;
-            case 1:
-                if (r45300 == null) {
-                    weaveautoupdate = true;
-                    weaveok = false;
-                    SendMsg("45200");
-                }
-                break;
-            case 2:
-                weaveautoupdate = true;
-                weaveok = false;
-                SendMsg("45200");
-                goto case 0;
-            }
-
-        if (navWorkshop.Visible
-            && !weaveautoupdate) {
-            weaveok = false;
-            SendMsg("45200");
-        }
-    }
-
-    #endregion
-            
+    }                        
 
 }
 
@@ -808,7 +619,77 @@ private void btnImposeAnswer2_Click(object sender, EventArgs e) {
 
         #endregion
 
-
-
     }
 }
+
+/*
+            * private WayPoint HDVS = new WayPoint();
+            * 
+           for (int i = 0; i < 6; i++)
+               cbbChat.Items.Add(V.listchat[i]);
+           cbbChat.SelectedIndex = 3;
+
+           for (int i = 0; i < 7; i++) {
+               pagChat[i] = new KryptonPage();
+               txtChatBox[i] = new RichTextBoxEx();
+               txtChatBox[i].Dock = DockStyle.Fill;
+               txtChatBox[i].BackColor = Color.Black;
+               txtChatBox[i].ForeColor = V.listcolorchat[i];
+               txtChatBox[i].Font = new Font("Sogue", 9.25f);
+               txtChatBox[i].ReadOnly = true;
+               txtChatBox[i].ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+               pagChat[i].Controls.Add(txtChatBox[i]);
+               pagChat[i].Text = V.listchat[i];
+               navChat.Pages.Add(pagChat[i]);
+           }
+           navChat.SelectedIndex = 6;
+
+           cbbArmyMode.Items.AddRange(V.listarmymode);
+           cbbArmyMode.SelectedIndex = 0;
+
+           cbbWeaveMode.Items.AddRange(V.listweavemode);
+           cbbWeaveMode.SelectedIndex = 0;
+
+           int asz = 18;
+           int sz = 30;
+           int dist = 1;
+           btnCampMap = new KryptonButton[asz, asz];
+           for (int i = 0; i < asz; i++)
+               for (int j = 0; j < asz; j++) {
+                   btnCampMap[i, j] = new KryptonButton();
+                   btnCampMap[i, j].Size = new Size(sz, sz);
+                   btnCampMap[i, j].Location = new Point(dist + i * (sz + dist), dist + j * (sz + dist));
+                   btnCampMap[i, j].Tag = i.ToString() + "." + j.ToString();
+                   btnCampMap[i, j].Click += btnCampMap_Click;
+                   pnlCampMap.Controls.Add(btnCampMap[i, j]);
+               }
+           cbbCamp.Items.AddRange(V.listcamp);
+           cbbCamp.SelectedIndex = 0;
+
+           WayPoint.Player player = new WayPoint.Player(new Point(0, 1));
+
+           player.Add(new Point(0, 0), new Point(3, 6));
+           HDVS.listplayer.Add(player);
+
+           player = new WayPoint.Player(new Point(0, 8));
+           player.Add(new Point(0, 7), new Point(2, 14));
+           HDVS.listplayer.Add(player);
+
+           player = new WayPoint.Player(new Point(0, 17));
+           player.Add(new Point(0, 15), new Point(7, 17));
+           player.Add(new Point(3, 12), new Point(7, 14));
+           HDVS.listplayer.Add(player);
+
+           player = new WayPoint.Player(new Point(7, 0));
+           player.Add(new Point(4, 0), new Point(7, 5));
+           HDVS.listplayer.Add(player);
+
+           player = new WayPoint.Player(new Point(7, 5));
+           player.Add(new Point(5, 6), new Point(7, 17));
+           HDVS.listplayer.Add(player);
+
+           cbbUpg1.SelectedIndexChanged -= cbbUpg2_SelectedIndexChanged;
+           cbbUpg1.Items.AddRange(V.listequiptype);
+           cbbUpg1.SelectedIndex = 0;
+           cbbUpg1.SelectedIndexChanged += cbbUpg2_SelectedIndexChanged;
+           */

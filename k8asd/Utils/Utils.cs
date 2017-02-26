@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace k8asd {
@@ -26,24 +27,36 @@ namespace k8asd {
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Creates an address to the website that contains the game flash object.
+        /// </summary>
         public static string CreateServerUrlAddress(int serverId) {
             return String.Format("http://app.slg.vn/tamquoctruyenky/slg?server={0}", serverId);
         }
 
-        public static string GetSource(string urlAddress, CookieContainer cookie) {
+        /// <summary>
+        /// Asynchronously gets the source from the specified address with the specified cookie.
+        /// </summary>
+        public static async Task<string> GetSource(string urlAddress, CookieContainer cookie) {
             var request = (HttpWebRequest) WebRequest.Create(urlAddress);
             request.CookieContainer = cookie;
-            return GetSource(request, cookie);
+            return await GetSource(request, cookie);
         }
 
-        public static string GetSource(HttpWebRequest request, CookieContainer cookie) {
+        /// <summary>
+        /// Asynchronously gets the source from the specified request with the specified cookie.
+        /// </summary>
+        public static async Task<string> GetSource(HttpWebRequest request, CookieContainer cookie) {
             string htmlCode = null;
-            using (var response = (HttpWebResponse) request.GetResponse()) {
+            using (var response = (HttpWebResponse) await request.GetResponseAsync()) {
                 htmlCode = GetSource(response, cookie);
             }
             return htmlCode;
         }
 
+        /// <summary>
+        /// Gets the source from the specified response with the specified cookie.
+        /// </summary>
         public static string GetSource(HttpWebResponse response, CookieContainer cookie) {
             string htmlCode = null;
             if (response.StatusCode == HttpStatusCode.OK) {
@@ -77,22 +90,32 @@ namespace k8asd {
             handler?.Invoke(sender, arg);
         }
 
-        // http://stackoverflow.com/questions/8535102/inconsistent-results-with-richtextbox-scrolltocaret
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
         private const int WM_VSCROLL = 277;
         private const int SB_PAGEBOTTOM = 7;
 
+        /// <summary>
+        /// http://stackoverflow.com/questions/8535102/inconsistent-results-with-richtextbox-scrolltocaret
+        /// An extension method to scroll the specified rich text box to the bottom.
+        /// </summary>
         public static void ScrollToBottom(RichTextBox box) {
             SendMessage(box.Handle, WM_VSCROLL, (IntPtr) SB_PAGEBOTTOM, IntPtr.Zero);
         }
 
-        // http://stackoverflow.com/questions/5143599/detecting-whether-on-ui-thread-in-wpf-and-winforms
+        /// <summary>
+        /// http://stackoverflow.com/questions/5143599/detecting-whether-on-ui-thread-in-wpf-and-winforms
+        /// Checks whether the current thread is UI Thread.
+        /// </summary>
         public static bool CurrentlyOnUiThread(Control control) {
             return !control.InvokeRequired;
         }
 
-        // http://stackoverflow.com/questions/2652460/how-to-get-the-name-of-the-current-method-from-code
+        /// <summary>
+        /// http://stackoverflow.com/questions/2652460/how-to-get-the-name-of-the-current-method-from-code
+        /// Gets the current function's name.
+        /// </summary>
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static string GetMyMethodName() {
             var st = new StackTrace(new StackFrame(1));

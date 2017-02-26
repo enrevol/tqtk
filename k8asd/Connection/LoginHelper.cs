@@ -2,6 +2,7 @@
 using System.Net;
 using System.IO;
 using System.Web;
+using System.Threading.Tasks;
 
 namespace k8asd {
     /// <summary>
@@ -55,7 +56,10 @@ namespace k8asd {
             cookie = new CookieContainer();
         }
 
-        private string ParseReferer(string htmlCode) {
+        /// <summary>
+        /// Parses the referer address from the specified html source code.
+        /// </summary>
+        private static string ParseReferer(string htmlCode) {
             // Example:
             // <form method="POST" action="http://id.slg.vn/oauth/authorize?redirect_uri=http%3A%2F%2Ftamquoctruyenky.vn%2Fauth%2Fcallback&amp;response_type=code&amp;client_id=4210935674" accept-charset="UTF-8">
 
@@ -76,7 +80,10 @@ namespace k8asd {
             return decodedAddress;
         }
 
-        private string ParseLoginToken(string htmlCode) {
+        /// <summary>
+        /// Parses the login token from the html source code.
+        /// </summary>
+        private static string ParseLoginToken(string htmlCode) {
             // Example html code:
             // <input type=\"hidden\" name=\"_token\" value=\"dQVExpyORASZp2zJrNcHJQCRorW3AYKWcbhVeVRc\">
 
@@ -101,30 +108,31 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Attempts to login SLG account with the provided email and password.
+        /// Asynchronously logins to the SLG account with the provided email and password.
         /// </summary>
-        /// <returns>True if the login process succeeded, false otherwise.</returns>
-        public LoginStatus LoginAccount() {
-            var htmlCode = Utils.GetSource(SLGAddress0, cookie);
+        public async Task<LoginStatus> LoginAccount() {
+            var htmlCode = await Utils.GetSource(SLGAddress0, cookie);
             if (htmlCode == null) {
-                // Cannot get html code from the login website.
+                // Could not get html code from the login website.
                 return LoginStatus.NoConnection;
             }
 
             var loginToken = ParseLoginToken(htmlCode);
             if (loginToken == null) {
+                // Could not find the login token.
                 return LoginStatus.UnknownError;
             }
 
             var referer = ParseReferer(htmlCode);
             if (referer == null) {
+                // Could not find the referer address.
                 return LoginStatus.UnknownError;
             }
 
-            return LoginAccount(referer, loginToken);
+            return await LoginAccount(referer, loginToken);
         }
 
-        private HttpWebRequest CreateWebRequest(string urlAddress, int timeOut, string content) {
+        private async Task<HttpWebRequest> CreateWebRequest(string urlAddress, int timeOut, string content) {
             var request = (HttpWebRequest) WebRequest.Create(urlAddress);
             request.Timeout = timeOut;
             request.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:6.0) Gecko/20100101 Firefox/6.0";
@@ -140,7 +148,7 @@ namespace k8asd {
             request.ContentType = "application/x-www-form-urlencoded";
             request.CookieContainer = cookie;
 
-            using (var writer = new StreamWriter(request.GetRequestStream())) {
+            using (var writer = new StreamWriter(await request.GetRequestStreamAsync())) {
                 writer.Write(content);
             }
             return request;
@@ -149,13 +157,11 @@ namespace k8asd {
         /// <summary>
         /// Attempts to login SLG account with the provided email and password and the specified login token.
         /// </summary>
-        /// <param name="loginToken">The login token.</param>
-        /// <returns>True if the login process succeeded, false otherwise.</returns>
-        public LoginStatus LoginAccount(string address, string loginToken) {
+        public async Task<LoginStatus> LoginAccount(string address, string loginToken) {
             var content = String.Format("_token={0}&callback=&email={1}&password={2}", loginToken, username, password);
-            var request = CreateWebRequest(address, 60000, content);
+            var request = await CreateWebRequest(address, 60000, content);
 
-            var htmlCode = Utils.GetSource(request, cookie);
+            var htmlCode = await Utils.GetSource(request, cookie);
             if (htmlCode == null) {
                 return LoginStatus.NoConnection;
             }
@@ -171,17 +177,16 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Attempts to login into TQTK server.
+        /// Asynchronously logins into TQTK server.
         /// </summary>
         /// <param name="serverId">The server id.</param>
-        /// <returns>True if the login process succeeded, false otherwise.</returns>
-        public LoginStatus LoginServer(int serverId) {
+        public async Task<LoginStatus> LoginServer(int serverId) {
             var urlAddress = Utils.CreateServerUrlAddress(serverId);
-            return LoginServer(urlAddress);
+            return await LoginServer(urlAddress);
         }
 
-        public LoginStatus LoginServer(string urlAddress) {
-            var htmlCode = Utils.GetSource(urlAddress, cookie);
+        public async Task<LoginStatus> LoginServer(string urlAddress) {
+            var htmlCode = await Utils.GetSource(urlAddress, cookie);
             if (htmlCode == null) {
                 return LoginStatus.NoConnection;
             }
@@ -210,7 +215,7 @@ namespace k8asd {
             var address = htmlCode.Substring(index, length);
 
             var decodedAddress = HttpUtility.HtmlDecode(address);
-            var srcHtmlCode = Utils.GetSource(decodedAddress, cookie);
+            var srcHtmlCode = await Utils.GetSource(decodedAddress, cookie);
 
             // Example htmlCode.
             //  var flashvars = {\r\n            userID : 5542014,\r\n            ip : 's1.tamquoc.slg.vn',\r\n            ports : '6001',\r\n            sessionKey : \"e2f380ab136ee18d25ada0912c29e8e4\",\r\n            locale:\"vi_VN\",\r\n            version:\"1.01\",\r\n            reportURL:\"http://s1.tamquoc.slg.vn/\",\r\n            customerURL:\"http://s1.tamquoc.slg.vn/sfadm/\",\r\n            gameURL:\"http://s1.tamquoc.slg.vn/\",\r\n            loginURL:\"http://tqtk.slg.vn/\",\r\n            rechargeURL:\"http://pay.slg.vn/topcoin\",\r\n\r\n            fid:\"null\",\r\n            bfid:\"null\",\r\n            rootpath:\"http://tamquoc-cdn-slg.cdn.vccloud.vn/7_0_0_0_27/\"\r\n        };
