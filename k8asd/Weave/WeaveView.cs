@@ -509,17 +509,19 @@ namespace k8asd {
                 // Two `anyone` slots.
                 return true;
             }
-            if (slot1.Length == 0) {
+            if (slot1.Length == 0 || slot2.Length == 0) {
                 // One `anyone` slot.
                 if (members.Count < 3) {
                     // Still have a spare slot.
                     return true;
                 }
 
-                // Swap.
-                var temp = slot2;
-                slot2 = slot1;
-                slot1 = temp;
+                if (slot1.Length == 0) {
+                    // Swap.
+                    var temp = slot2;
+                    slot2 = slot1;
+                    slot1 = temp;
+                }
 
                 if (members.Any(member => member.Name == slot1)) {
                     // OK.
