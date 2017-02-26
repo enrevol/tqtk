@@ -159,7 +159,7 @@ namespace k8asd {
         /// </summary>
         public async Task<LoginStatus> LoginAccount(string address, string loginToken) {
             var content = String.Format("_token={0}&callback=&email={1}&password={2}", loginToken, username, password);
-            var request = await CreateWebRequest(address, 60000, content);
+            var request = await CreateWebRequest(address, 2000, content);
 
             var htmlCode = await Utils.GetSource(request, cookie);
             if (htmlCode == null) {
