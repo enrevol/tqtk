@@ -221,6 +221,7 @@
       <DependentUpon>ShopView.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Cooldown.cs" />
+    <Compile Include="Utils\ScopeGuard.cs" />
     <Compile Include="Weave\WeaveView.cs">
       <SubType>UserControl</SubType>
     </Compile>

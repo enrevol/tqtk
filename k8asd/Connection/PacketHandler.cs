@@ -26,29 +26,52 @@ namespace k8asd {
 
         public PacketHandler(Session session) {
             this.session = session;
-            tcpClient = new TcpClient();
+            tcpClient = null;
             buffer = new byte[BufferSize];
             hasher = MD5.Create();
             callbacks = new Dictionary<string, Queue<Action<Packet>>>();
             ClearData();
         }
 
+        /// <summary>
+        /// Clears data received from the server.
+        /// </summary>
         private void ClearData() {
             streamData = "";
         }
 
-        public void Disconnect() {
-            // tcpClient_.
+        /// <summary>
+        /// Clears all callbacks.
+        /// </summary>
+        private void ClearCallbacks() {
+            foreach (var elt in callbacks) {
+                var queue = elt.Value;
+                while (queue.Count > 0) {
+                    queue.Dequeue()(null);
+                }
+            }
+            callbacks.Clear();
         }
 
         /// <summary>
-        /// Attempts to connect to the server.
+        /// Disconnects from the server.
         /// </summary>
-        /// <returns></returns>
-        public bool Connect() {
+        public void Disconnect() {
+            if (tcpClient != null) {
+                tcpClient.Close();
+                tcpClient = null;
+            }
+            ClearData();
+            ClearCallbacks();
+        }
+
+        /// <summary>
+        /// Asynchronously connects to the server.
+        /// </summary>
+        public async Task Connect() {
             Disconnect();
-            tcpClient.Connect(session.Ip, session.Ports);
-            return true;
+            tcpClient = new TcpClient();
+            await tcpClient.ConnectAsync(session.Ip, session.Ports);
         }
 
         public bool Connected {
