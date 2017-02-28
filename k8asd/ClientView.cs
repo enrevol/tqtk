@@ -119,15 +119,6 @@ namespace k8asd {
         }
 
         public async Task LogIn() {
-            try {
-                await LogIn(Configuration.ServerId, Configuration.Username, Configuration.Password);
-            } catch (Exception ex) {
-                messageLogModel.LogInfo(ex.Message);
-                messageLogModel.LogInfo("Đăng nhập thất bại!");
-            }
-        }
-
-        private async Task LogIn(int serverId, string username, string password) {
             if (connectionStatus == ConnectionStatus.Connected) {
                 messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
                 return;
@@ -140,8 +131,16 @@ namespace k8asd {
                 messageLogModel.LogInfo("Đang đang xuất, không thể đăng nhập!");
                 return;
             }
-            Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
+            try {
+                await LogIn(Configuration.ServerId, Configuration.Username, Configuration.Password);
+            } catch (Exception ex) {
+                messageLogModel.LogInfo(ex.Message);
+                messageLogModel.LogInfo("Đăng nhập thất bại!");
+            }
+        }
 
+        private async Task LogIn(int serverId, string username, string password) {
+            Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
             connectionStatus = ConnectionStatus.Connecting;
 
             using (var guard = new ScopeGuard(() => connectionStatus = ConnectionStatus.Disconnected)) {
