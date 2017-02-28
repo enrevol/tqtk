@@ -141,7 +141,7 @@
             this.playerList.SelectColumnsOnRightClick = false;
             this.playerList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
             this.playerList.ShowGroups = false;
-            this.playerList.Size = new System.Drawing.Size(440, 200);
+            this.playerList.Size = new System.Drawing.Size(440, 221);
             this.playerList.TabIndex = 29;
             this.playerList.UseCompatibleStateImageBehavior = false;
             this.playerList.View = System.Windows.Forms.View.Details;
@@ -184,7 +184,7 @@
             this.Controls.Add(this.playerList);
             this.Controls.Add(this.refreshButton);
             this.Name = "ArenaView";
-            this.Size = new System.Drawing.Size(450, 245);
+            this.Size = new System.Drawing.Size(450, 275);
             ((System.ComponentModel.ISupportInitialize)(this.playerList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

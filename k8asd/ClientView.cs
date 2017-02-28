@@ -122,6 +122,116 @@ namespace k8asd {
             LogIn(Configuration.ServerId, Configuration.Username, Configuration.Password);
         }
 
+        public void LogInAll(Queue<ClientView> queue)
+        {
+            LogInAll(Configuration.ServerId, Configuration.Username, Configuration.Password, queue);
+        }
+
+        private void LogInAll(int serverId, string username, string password, Queue<ClientView> queue)
+        {
+            if (connectionStatus == ConnectionStatus.Connected)
+            {
+                messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
+                return;
+            }
+            if (connectionStatus == ConnectionStatus.Connecting)
+            {
+                messageLogModel.LogInfo("Đang đang nhập, không cần đăng nhập lại!");
+                return;
+            }
+            if (connectionStatus == ConnectionStatus.Disconnecting)
+            {
+                messageLogModel.LogInfo("Đang đang xuất, không thể đăng nhập!");
+                return;
+            }
+            Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
+
+            connectionStatus = ConnectionStatus.Connecting;
+            messageLogModel.LogInfo("Bắt đầu đăng nhập tài khoản...");
+
+            Action<Task<LoginStatus>> loginAccountCallback = null;
+            Action<Task<LoginStatus>> loginServerCallback = null;
+
+            loginHelper = new LoginHelper(username, password);
+
+            loginAccountCallback = (task) => {
+                var exception = task.Exception;
+                if (exception != null && exception.InnerException != null)
+                {
+                    messageLogModel.LogInfo(String.Format("{0}", exception.InnerException.Message));
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                }
+
+                var status = task.Result;
+                switch (status)
+                {
+                    case LoginStatus.NoConnection:
+                        messageLogModel.LogInfo("Không có kết nối mạng.");
+                        connectionStatus = ConnectionStatus.Disconnected;
+                        return;
+                    case LoginStatus.WrongUsernameOrPassword:
+                        messageLogModel.LogInfo("Sai tên người dùng hoặc mật khẩu.");
+                        connectionStatus = ConnectionStatus.Disconnected;
+                        return;
+                    case LoginStatus.UnknownError:
+                        messageLogModel.LogInfo("Có lỗi xảy ra.");
+                        connectionStatus = ConnectionStatus.Disconnected;
+                        return;
+                }
+                messageLogModel.LogInfo("Đăng nhập tài khoản thành công.");
+
+                messageLogModel.LogInfo("Bắt đầu lấy thông tin để kết nối với máy chủ...");
+                loginHelper.LoginServer(serverId).ContinueWith(loginServerCallback, TaskScheduler.FromCurrentSynchronizationContext());
+            };
+
+            loginServerCallback = (task) => {
+                var exception = task.Exception;
+                if (exception != null && exception.InnerException != null)
+                {
+                    messageLogModel.LogInfo(String.Format("{0}", exception.InnerException.Message));
+                    connectionStatus = ConnectionStatus.Disconnected;
+                    return;
+                }
+
+                var status = task.Result;
+                switch (status)
+                {
+                    case LoginStatus.NoConnection:
+                        messageLogModel.LogInfo("Không có kết nối mạng.");
+                        connectionStatus = ConnectionStatus.Disconnected;
+                        return;
+                    case LoginStatus.UnknownError:
+                        messageLogModel.LogInfo("Có lỗi xảy ra.");
+                        connectionStatus = ConnectionStatus.Disconnected;
+                        return;
+                }
+                messageLogModel.LogInfo("Lấy thông tin thành công.");
+
+                messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
+                packetHandler = new PacketHandler(loginHelper.Session);
+                if (!packetHandler.Connect())
+                {
+                    messageLogModel.LogInfo("Kết nối với máy chủ thất bại.");
+                }
+                messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
+
+                connectionStatus = ConnectionStatus.Connected;
+
+                dataTimer.Start();
+                SendCommand("10100");
+
+                if (queue.Count > 0)
+                {
+                    queue.Dequeue();
+                    var client = queue.Peek();
+                    client.LogInAll(queue);
+                }
+            };
+
+            loginHelper.LoginAccount().ContinueWith(loginAccountCallback, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
         private void LogIn(int serverId, string username, string password) {
             if (connectionStatus == ConnectionStatus.Connected) {
                 messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
@@ -209,8 +319,7 @@ namespace k8asd {
                 SendCommand("10100");
             };
 
-            loginHelper.LoginAccount().ContinueWith(loginAccountCallback,
-                TaskScheduler.FromCurrentSynchronizationContext());
+            loginHelper.LoginAccount().ContinueWith(loginAccountCallback, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void dataTimer_Tick(object sender, EventArgs e) {

@@ -33,6 +33,7 @@ namespace k8asd
             System.Windows.Forms.MenuStrip menuStrip1;
             System.Windows.Forms.ToolStripMenuItem menuItem0;
             System.Windows.Forms.ToolStripMenuItem autoArenaButton;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this.clientList = new System.Windows.Forms.ListBox();
             this._ignore0 = new System.Windows.Forms.Panel();
@@ -42,12 +43,38 @@ namespace k8asd
             this.addButton = new System.Windows.Forms.Button();
             this.logoutButton = new System.Windows.Forms.Button();
             this.loginButton = new System.Windows.Forms.Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
-            this._ignore0.SuspendLayout();
             menuStrip1.SuspendLayout();
+            this._ignore0.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            menuItem0});
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new System.Drawing.Size(1350, 24);
+            menuStrip1.TabIndex = 2;
+            menuStrip1.Text = "menuStrip";
+            // 
+            // menuItem0
+            // 
+            menuItem0.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            autoArenaButton});
+            menuItem0.Name = "menuItem0";
+            menuItem0.Size = new System.Drawing.Size(58, 20);
+            menuItem0.Text = "Phụ trợ";
+            // 
+            // autoArenaButton
+            // 
+            autoArenaButton.Name = "autoArenaButton";
+            autoArenaButton.Size = new System.Drawing.Size(184, 22);
+            autoArenaButton.Text = "Tự động đánh võ đài";
+            autoArenaButton.Click += new System.EventHandler(this.autoArenaButton_Click);
             // 
             // oneSecondTimer
             // 
@@ -63,7 +90,7 @@ namespace k8asd
             this.clientList.Location = new System.Drawing.Point(0, 97);
             this.clientList.Name = "clientList";
             this.clientList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.clientList.Size = new System.Drawing.Size(150, 584);
+            this.clientList.Size = new System.Drawing.Size(168, 584);
             this.clientList.TabIndex = 0;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
@@ -102,6 +129,7 @@ namespace k8asd
             this.loginAllButton.Text = "Đăng Nhập All";
             this.loginAllButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.loginAllButton.UseVisualStyleBackColor = true;
+            this.loginAllButton.Click += new System.EventHandler(this.loginAllButton_Click);
             // 
             // removeButton
             // 
@@ -155,30 +183,12 @@ namespace k8asd
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
-            // menuStrip1
+            // imageList1
             // 
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            menuItem0});
-            menuStrip1.Location = new System.Drawing.Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new System.Drawing.Size(1350, 24);
-            menuStrip1.TabIndex = 2;
-            menuStrip1.Text = "menuStrip";
-            // 
-            // menuItem0
-            // 
-            menuItem0.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            autoArenaButton});
-            menuItem0.Name = "menuItem0";
-            menuItem0.Size = new System.Drawing.Size(58, 20);
-            menuItem0.Text = "Phụ trợ";
-            // 
-            // autoArenaButton
-            // 
-            autoArenaButton.Name = "autoArenaButton";
-            autoArenaButton.Size = new System.Drawing.Size(184, 22);
-            autoArenaButton.Text = "Tự động đánh võ đài";
-            autoArenaButton.Click += new System.EventHandler(this.autoArenaButton_Click);
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "btn_LoginFalse.png");
+            this.imageList1.Images.SetKeyName(1, "btn_LoginTrue.png");
             // 
             // MainView
             // 
@@ -194,9 +204,9 @@ namespace k8asd
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "test";
             this.Load += new System.EventHandler(this.MainView_Load);
-            this._ignore0.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            this._ignore0.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,6 +222,7 @@ namespace k8asd
         private Button removeButton;
         private Button loginAllButton;
         private Button button1;
+        private ImageList imageList1;
     }
 }
 

@@ -99,6 +99,7 @@ namespace k8asd {
                 updater();
             };
 
+            //lay hang vo dai tat ca cac acc
             updater = () => {
                 if (queue.Count > 0) {
                     var client = queue.Peek();
