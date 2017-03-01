@@ -1,15 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace k8asd {
     public interface IPacketWriter {
-        /// <summary>
-        /// Attempts to send the specified command and parameters to the server without a callback.
-        /// </summary>
-        /// <param name="command">The command id</param>
-        /// <param name="parameters">The additional parameters</param>
-        /// <returns></returns>
-        bool SendCommand(string command, params string[] parameters);
-
         /// <summary>
         /// Attempts to send the specified command and parameters to the server with a callback.
         /// </summary>
@@ -17,6 +10,10 @@ namespace k8asd {
         /// <param name="command">The command id</param>
         /// <param name="parameters">The additional parameters</param>
         /// <returns>Whether the attemption was successful</returns>
-        bool SendCommand(Action<Packet> callback, string command, params string[] parameters);
+        Task<Packet> SendCommandAsync(string command, params string[] parameters);
+
+        bool SendCommand(string cmd, params string[] parameters);
+
+        bool SendCommand(Action<Packet> callback, string cmd, params string[] parameters);
     }
 }

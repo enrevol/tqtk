@@ -34,15 +34,13 @@ namespace k8asd {
             //
         }
 
-        private void refreshButton_Click(object sender, EventArgs e) {
-            Action<Packet> callback = (Packet packet) => {
-                Debug.Assert(packet.CommandId == "64005");
-                Parse64005(packet);
-            };
-
-            if (packetWriter.SendCommand(callback, "64005")) {
-                //
+        private async void refreshButton_Click(object sender, EventArgs e) {
+            var packet = await packetWriter.SendCommandAsync("64005");
+            if (packet == null) {
+                return;
             }
+            Debug.Assert(packet.CommandId == "64005");
+            Parse64005(packet);
         }
 
         private void Parse64005(Packet packet) {
@@ -58,14 +56,13 @@ namespace k8asd {
             playerList.SelectedIndex = oldSelectedIndex;
         }
 
-        private void Duel(int playerId, int rank) {
-            Action<Packet> callback = (Packet packet) => {
-                Debug.Assert(packet.CommandId == "64007");
-                Parse64007(packet);
-            };
-            if (packetWriter.SendCommand(callback, "64007", playerId.ToString(), rank.ToString())) {
-                //
+        private async void Duel(int playerId, int rank) {
+            var packet = await packetWriter.SendCommandAsync("64007", playerId.ToString(), rank.ToString());
+            if (packet == null) {
+                return;
             }
+            Debug.Assert(packet.CommandId == "64007");
+            Parse64007(packet);
         }
 
         private void playerList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {

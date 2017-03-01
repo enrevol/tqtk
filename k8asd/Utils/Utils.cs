@@ -27,6 +27,32 @@ namespace k8asd {
             return builder.ToString();
         }
 
+        public static string EncodeMessage(HashAlgorithm hasher, string userId, string sessionKey,
+            string commandId, params string[] parameters) {
+            const string what_is_this = "5dcd73d391c90e8769618d42a916ea1b";
+
+            var input = commandId + userId;
+            var msg = String.Format("{0}\x1{1}\t{2}\x2", commandId, userId, sessionKey);
+
+            var timeSpan = DateTime.UtcNow - new DateTime(1970, 1, 1);
+            var millisecondsSinceEpoch = (long) timeSpan.TotalMilliseconds;
+
+            foreach (var parameter in parameters) {
+                input += parameter;
+                msg += parameter + '\t';
+            }
+
+            input += what_is_this;
+
+            if (parameters.Length > 0) {
+                msg = msg.Remove(msg.Length - 1);
+            }
+
+            var checksum = ComputeHash(hasher, input);
+            msg += String.Format("\x3{0}\x4{1}\x5\0", checksum, millisecondsSinceEpoch);
+            return msg;
+        }
+
         /// <summary>
         /// Creates an address to the website that contains the game flash object.
         /// </summary>

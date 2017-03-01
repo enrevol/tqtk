@@ -106,7 +106,7 @@ namespace k8asd {
         public bool SendCommand(Action<Packet> callback, string cmd, params string[] parameters) {
             bool succeeded = false;
             try {
-                succeeded = packetHandler.SendCommand(callback, cmd, parameters);
+                // succeeded = packetHandler.SendCommand(callback, cmd, parameters);
             } catch {
 
             }
@@ -116,6 +116,10 @@ namespace k8asd {
                 dataTimer.Stop();
             }
             return succeeded;
+        }
+
+        public async Task<Packet> SendCommandAsync(string command, params string[] parameters) {
+            return await packetHandler.SendCommand(command, parameters);
         }
 
         public async Task LogIn() {
@@ -182,14 +186,14 @@ namespace k8asd {
                 connectionStatus = ConnectionStatus.Connected;
                 guard.Dismiss();
 
-                dataTimer.Start();
                 timerArmy.Start();
-                SendCommand("10100");
+                await packetHandler.SendCommand("10100");
+                await packetHandler.SendCommand("11102");
             }
         }
 
         private void dataTimer_Tick(object sender, EventArgs e) {
-            var packet = packetHandler.ReadPacket();
+            Packet packet = null; //  packetHandler.ReadPacket();
             if (packet == null) {
                 return;
             }
@@ -199,7 +203,7 @@ namespace k8asd {
             }
 
             if (packet.CommandId == "10100") {
-                SendCommand("11102");
+
             }
 
             var cmd = packet.CommandId;
