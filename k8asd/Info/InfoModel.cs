@@ -182,6 +182,20 @@ namespace k8asd {
                     ParseInfo0(playerbattleinfo);
                 }
             }
+            if (packet.CommandId == "14102")
+            {
+                var token = JToken.Parse(packet.Message);
+                var playerupdateinfo = token["playerupdateinfo"];
+                if (playerupdateinfo != null)
+                {
+                    ParseInfo0(playerupdateinfo);
+                    ParseInfo1(playerupdateinfo);
+                }
+                else
+                {
+                    //
+                }
+            }
             // FIXME.
             /*
             R11103 r11103 = new R11103(cdata);

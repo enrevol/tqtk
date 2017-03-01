@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             BrightIdeasSoftware.OLVColumn nationColumn;
             BrightIdeasSoftware.OLVColumn nameColumn;
             BrightIdeasSoftware.OLVColumn levelColumn;
@@ -34,21 +35,15 @@
             this.refreshButton = new System.Windows.Forms.Button();
             this.duelButton = new System.Windows.Forms.Button();
             this.logBox = new System.Windows.Forms.TextBox();
+            this.chkAutoArena = new System.Windows.Forms.CheckBox();
+            this.lbArena = new System.Windows.Forms.Label();
+            this.timerArena = new System.Windows.Forms.Timer(this.components);
             nationColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             nameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             levelColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             timesColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.playerList)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cascadeColumn
-            // 
-            this.cascadeColumn.AspectName = "";
-            this.cascadeColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.cascadeColumn.MaximumWidth = 60;
-            this.cascadeColumn.MinimumWidth = 60;
-            this.cascadeColumn.Text = "L. thắng";
-            this.cascadeColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // nationColumn
             // 
@@ -80,15 +75,6 @@
             levelColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             levelColumn.Width = 40;
             // 
-            // rankColumn
-            // 
-            this.rankColumn.AspectName = "";
-            this.rankColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.rankColumn.MaximumWidth = 60;
-            this.rankColumn.MinimumWidth = 60;
-            this.rankColumn.Text = "Hạng";
-            this.rankColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // timesColumn
             // 
             timesColumn.AspectName = "CurrentPlayer.RemainTimes";
@@ -98,6 +84,24 @@
             timesColumn.Text = "Lượt";
             timesColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             timesColumn.Width = 40;
+            // 
+            // cascadeColumn
+            // 
+            this.cascadeColumn.AspectName = "";
+            this.cascadeColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cascadeColumn.MaximumWidth = 60;
+            this.cascadeColumn.MinimumWidth = 60;
+            this.cascadeColumn.Text = "L. thắng";
+            this.cascadeColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // rankColumn
+            // 
+            this.rankColumn.AspectName = "";
+            this.rankColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.rankColumn.MaximumWidth = 60;
+            this.rankColumn.MinimumWidth = 60;
+            this.rankColumn.Text = "Hạng";
+            this.rankColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // playerList
             // 
@@ -175,11 +179,38 @@
             this.logBox.Size = new System.Drawing.Size(480, 120);
             this.logBox.TabIndex = 33;
             // 
+            // chkAutoArena
+            // 
+            this.chkAutoArena.AutoSize = true;
+            this.chkAutoArena.Location = new System.Drawing.Point(241, 18);
+            this.chkAutoArena.Name = "chkAutoArena";
+            this.chkAutoArena.Size = new System.Drawing.Size(83, 17);
+            this.chkAutoArena.TabIndex = 34;
+            this.chkAutoArena.Text = "Auto Võ Đài";
+            this.chkAutoArena.UseVisualStyleBackColor = true;
+            this.chkAutoArena.CheckedChanged += new System.EventHandler(this.chkAutoArena_CheckedChanged);
+            // 
+            // lbArena
+            // 
+            this.lbArena.AutoSize = true;
+            this.lbArena.Location = new System.Drawing.Point(328, 18);
+            this.lbArena.Name = "lbArena";
+            this.lbArena.Size = new System.Drawing.Size(13, 13);
+            this.lbArena.TabIndex = 35;
+            this.lbArena.Text = "0";
+            // 
+            // timerArena
+            // 
+            this.timerArena.Interval = 1000;
+            this.timerArena.Tick += new System.EventHandler(this.timerArena_Tick);
+            // 
             // AutoArenaView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 461);
+            this.Controls.Add(this.lbArena);
+            this.Controls.Add(this.chkAutoArena);
             this.Controls.Add(this.logBox);
             this.Controls.Add(this.duelButton);
             this.Controls.Add(this.refreshButton);
@@ -202,5 +233,8 @@
         private System.Windows.Forms.TextBox logBox;
         private BrightIdeasSoftware.OLVColumn cascadeColumn;
         private BrightIdeasSoftware.OLVColumn rankColumn;
+        private System.Windows.Forms.CheckBox chkAutoArena;
+        private System.Windows.Forms.Label lbArena;
+        private System.Windows.Forms.Timer timerArena;
     }
 }

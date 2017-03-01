@@ -173,6 +173,7 @@ namespace k8asd {
 
             if (duelCounter == 0) {
                 LogInfo("Không có cặp khiêu chiến!");
+                callback();
             }
         }
 
@@ -220,6 +221,64 @@ namespace k8asd {
 
             // Chọn trận ngư lân.
             lower.SendCommand(selectEmptyFormationCallback, "42104", "9");
+        }
+
+        private void chkAutoArena_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.chkAutoArena.Checked)
+            {
+                this.timerArena.Start();
+            }
+            else
+            {
+                this.timerArena.Stop();
+            }
+        }
+
+        private string convertTime(string gio)
+        {
+            int dem = int.Parse(gio);
+            dem--;
+            if (dem <= -1)
+                dem = 0;
+            return dem + "";
+        }
+        private int count = 1;
+        private bool checkAuto = false;
+        private void timerArena_Tick(object sender, EventArgs e)
+        {
+            this.lbArena.Text = convertTime(this.lbArena.Text);
+            if (this.lbArena.Text == "0" && !checkAuto)
+            {
+                checkAuto = true;
+                AutoDuel(() =>
+                {
+                    DuelAndRefresh(() =>
+                    {
+                        Duel(() =>
+                        {
+                            count++;
+                            checkAuto = false;
+                            this.lbArena.Text = "915";
+                            if (count == 5)
+                            {
+                                this.timerArena.Stop();
+                            }
+                        });
+                    });
+                });
+            }
+        }
+
+        private void AutoDuel(Action callback)
+        {
+            RefreshPlayers(() =>
+            {
+                Duel(() =>
+                {
+                    RefreshPlayers(callback);
+                });
+            });
         }
     }
 }

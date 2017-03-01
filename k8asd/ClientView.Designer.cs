@@ -43,6 +43,7 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
+            this.timerArmy = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -208,6 +209,10 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
+            // timerArmy
+            // 
+            this.timerArmy.Tick += new System.EventHandler(this.timerArmy_Tick);
+            // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -250,6 +255,7 @@ namespace k8asd {
         private WeaveView weaveView;
         private TabPage arenaTab;
         private ArenaView arenaView;
+        private Timer timerArmy;
     }
 }
 
