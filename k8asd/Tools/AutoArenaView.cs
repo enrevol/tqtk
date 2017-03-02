@@ -173,7 +173,17 @@ namespace k8asd {
 
             if (duelCounter == 0) {
                 LogInfo("Không có cặp khiêu chiến!");
-                callback();
+                //callback();
+                if(chkAutoArena.Checked)
+                {
+                    count++;
+                    this.lbArena.Text = "905";
+                    checkAuto = false;
+                    if (count == 5)
+                    {
+                        this.timerArena.Stop();
+                    }
+                }
             }
         }
 
@@ -243,7 +253,7 @@ namespace k8asd {
                 dem = 0;
             return dem + "";
         }
-        private int count = 1;
+        private int count = 0;
         private bool checkAuto = false;
         private void timerArena_Tick(object sender, EventArgs e)
         {
@@ -255,15 +265,18 @@ namespace k8asd {
                 {
                     DuelAndRefresh(() =>
                     {
-                        Duel(() =>
+                        DuelAndRefresh(() =>
                         {
-                            count++;
-                            checkAuto = false;
-                            this.lbArena.Text = "915";
-                            if (count == 5)
+                            Duel(() =>
                             {
-                                this.timerArena.Stop();
-                            }
+                                count++;
+                                checkAuto = false;
+                                this.lbArena.Text = "905";
+                                if (count == 5)
+                                {
+                                    this.timerArena.Stop();
+                                }
+                            });
                         });
                     });
                 });
