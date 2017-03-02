@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace k8asd {
     public class ChatChannel {
@@ -57,7 +58,7 @@ namespace k8asd {
     }
 
     public interface IChatLogModel {
-        void SendMessage(ChatChannel channel, string content);
+        Task SendMessage(ChatChannel channel, string content);
 
         event EventHandler<ChatMessage> OnChatMessageAdded;
     }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace k8asd {
     public class ChatLogModel : IChatLogModel, IPacketReader {
@@ -95,8 +96,8 @@ namespace k8asd {
             OnChatMessageAdded(this, new ChatMessage(channel, sender, message));
         }
 
-        public void SendMessage(ChatChannel channel, string content) {
-            packetWriter.SendCommand("10103", infoModel.PlayerName, content, channel.Id.ToString(), " ");
+        public async Task SendMessage(ChatChannel channel, string content) {
+            await packetWriter.SendCommandAsync("10103", infoModel.PlayerName, content, channel.Id.ToString(), " ");
         }
     }
 }
