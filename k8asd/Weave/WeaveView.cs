@@ -19,51 +19,42 @@ namespace k8asd {
         }
 
         private class Team {
-            private string baojirate;
-            private int cost;
             private string desc;
             private int legion; // ???
-            private int level;
             private int limit; // ???
             private int limitlv; // ??
-            private int maxnum;
             private int mnation; // ???
             private int nation; // ???
-            private int num;
-            private int price;
             private string product;
-            private string succrate;
-            private int teamid;
-            private string teamname;
 
-            public int Id { get { return teamid; } }
-            public string Name { get { return teamname; } }
-            public int Level { get { return level; } }
-            public int PlayerCount { get { return num; } }
-            public int MaxPlayerCount { get { return maxnum; } }
-            public int Cost { get { return cost; } }
-            public int Price { get { return price; } }
-            public string SuccessRate { get { return succrate; } }
-            public string CriticalRate { get { return baojirate; } }
+            public int Id { get; private set; }
+            public string Name { get; private set; }
+            public int Level { get; private set; }
+            public int PlayerCount { get; private set; }
+            public int MaxPlayerCount { get; private set; }
+            public int Cost { get; private set; }
+            public int Price { get; private set; }
+            public string SuccessRate { get; private set; }
+            public string CriticalRate { get; private set; }
 
             public static Team Parse(JToken token) {
                 var result = new Team();
-                result.baojirate = (string) token["baojirate"];
-                result.cost = (int) token["cost"];
+                result.CriticalRate = (string) token["baojirate"];
+                result.Cost = (int) token["cost"];
                 result.desc = (string) token["desc"];
                 result.legion = (int) token["legion"];
-                result.level = (int) token["level"];
+                result.Level = (int) token["level"];
                 result.limit = (int) token["limit"];
                 result.limitlv = (int) token["limitlv"];
-                result.maxnum = (int) token["maxnum"];
+                result.MaxPlayerCount = (int) token["maxnum"];
                 result.mnation = (int) token["mnation"];
                 result.nation = (int) token["nation"];
-                result.num = (int) token["num"];
-                result.price = (int) token["price"];
+                result.PlayerCount = (int) token["num"];
+                result.Price = (int) token["price"];
                 result.product = (string) token["product"];
-                result.succrate = (string) token["succrate"];
-                result.teamid = (int) token["teamid"];
-                result.teamname = (string) token["teamname"];
+                result.SuccessRate = (string) token["succrate"];
+                result.Id = (int) token["teamid"];
+                result.Name = (string) token["teamname"];
                 return result;
             }
 
@@ -74,24 +65,19 @@ namespace k8asd {
         }
 
         private class Member {
-            private int level;
-            private string name;
-            private int playerid;
-            private int price;
-            private int spinnerTotalLevel;
-
-            public int Id { get { return playerid; } }
-            public string Name { get { return name; } }
-            public int Level { get { return level; } }
-            public int SpinnerLevel { get { return spinnerTotalLevel; } }
+            public int Id { get; private set; }
+            public int Level { get; private set; }
+            public string Name { get; private set; }
+            public int Price { get; private set; }
+            public int SpinnerLevel { get; private set; }
 
             public static Member Parse(JToken token) {
                 var result = new Member();
-                result.level = (int) token["level"];
-                result.name = (string) token["name"];
-                result.playerid = (int) token["playerid"];
-                result.price = (int) token["price"];
-                result.spinnerTotalLevel = (int) token["spinnerTotalLevel"];
+                result.Level = (int) token["level"];
+                result.Name = (string) token["name"];
+                result.Id = (int) token["playerid"];
+                result.Price = (int) token["price"];
+                result.SpinnerLevel = (int) token["spinnerTotalLevel"];
                 return result;
             }
 
@@ -101,32 +87,25 @@ namespace k8asd {
         }
 
         private class Product {
-            private string baojirate;
-            private int cost;
-            private string desc;
-            private int level;
-            private string name;
-            private int price;
-            private int prodid;
-            private string succrate;
-
-            public int Id { get { return prodid; } }
-            public int Level { get { return level; } }
-            public int Cost { get { return cost; } }
-            public int Price { get { return price; } }
-            public string SuccessRate { get { return succrate; } }
-            public string CriticalRate { get { return baojirate; } }
+            public int Id { get; private set; }
+            public int Level { get; private set; }
+            public string Name { get; private set; }
+            public int Cost { get; private set; }
+            public int Price { get; private set; }
+            public string Desc { get; private set; }
+            public string SuccessRate { get; private set; }
+            public string CriticalRate { get; private set; }
 
             public static Product Parse(JToken token) {
                 var result = new Product();
-                result.baojirate = (string) token["baojirate"];
-                result.cost = (int) token["cost"];
-                result.desc = (string) token["desc"];
-                result.level = (int) token["level"];
-                result.name = (string) token["name"];
-                result.price = (int) token["price"];
-                result.prodid = (int) token["prodid"];
-                result.succrate = (string) token["succrate"];
+                result.CriticalRate = (string) token["baojirate"];
+                result.Cost = (int) token["cost"];
+                result.Desc = (string) token["desc"];
+                result.Level = (int) token["level"];
+                result.Name = (string) token["name"];
+                result.Price = (int) token["price"];
+                result.Id = (int) token["prodid"];
+                result.SuccessRate = (string) token["succrate"];
                 return result;
             }
 
