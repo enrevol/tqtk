@@ -115,11 +115,29 @@ namespace k8asd {
             }
         }
 
+        /// <summary>
+        /// ID của team dệt hiện tại.
+        /// </summary>
         private int currentTeamId;
+
+        /// <summary>
+        /// Giá dệt hiện tại.
+        /// </summary>
         private int currentTextilePrice;
+
+        /// <summary>
+        /// Số lần dệt còn lại.
+        /// </summary>
         private int currentTurnCount;
 
+        /// <summary>
+        /// Danh sách tổ đội hiện tại.
+        /// </summary>
         private BindingList<Team> teams;
+
+        /// <summary>
+        /// Danh sách thành viên trong tổ đội dệt hiện tại.
+        /// </summary>
         private BindingList<Member> members;
 
         private ICooldownModel cooldown;
@@ -146,18 +164,21 @@ namespace k8asd {
             this.cooldown = cooldown;
         }
 
-        private void RefreshTeams() {
-            Action<Packet> callback = (Packet packet) => {
-                Parse45200(packet);
-                CheckAutoCreate();
+        /// <summary>
+        /// Cập nhật danh sách tổ đội.
+        /// </summary>
+        private async Task RefreshTeams() {
+            var packet = await packetWriter.SendCommandAsync("45200");
+            if (packet == null) {
+                return;
+            }
+            Parse45200(packet);
+            if (IsHosting()) {
                 if (CheckLimitPlayer()) {
-                    CheckAutoMake();
-                    CheckAutoQuitAndMake();
+                    await TryAutoMakeOrAutoQuitAndMake();
                 }
-            };
-
-            if (packetWriter.SendCommand(callback, "45200")) {
-                //
+            } else {
+                await TryAutoCreate();
             }
         }
 
@@ -193,8 +214,7 @@ namespace k8asd {
                 ParseTeamInfo(teamObject);
                 memberBox.Enabled = true;
                 if (CheckLimitPlayer()) {
-                    CheckAutoMake();
-                    CheckAutoQuitAndMake();
+                    TryAutoMakeOrAutoQuitAndMake().Forget();
                 }
             } else {
                 // teamId = 0;
@@ -259,107 +279,126 @@ namespace k8asd {
             teamRateLabel.Text = String.Format("Tỉ lệ: {0} - {1}", succrate, baojirate);
         }
 
-        private void refreshTeamButton_Click(object sender, EventArgs e) {
-            RefreshTeams();
+        private async void refreshTeamButton_Click(object sender, EventArgs e) {
+            await RefreshTeams();
         }
 
-        private void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
-            CheckAutoRefresh();
+        private async void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
+            await CheckAutoRefresh();
         }
 
         private void refreshTeamInterval_ValueChanged(object sender, EventArgs e) {
             refreshTeamTimer.Interval = (int) refreshTeamInterval.Value;
         }
 
-        private void refreshTeamTimer_Tick(object sender, EventArgs e) {
-            UpdateAuto();
+        private async void refreshTeamTimer_Tick(object sender, EventArgs e) {
+            await CheckAutoRefresh();
         }
 
         private void teamList_SelectedIndexChanged(object sender, EventArgs e) {
 
         }
 
-        private void teamList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
+        private async void teamList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
             var item = e.Item;
             var team = (Team) item.RowObject;
-            Join(team.Id);
+            await Join(team.Id);
         }
 
-        private void Create(int productId, TeamLimit limit) {
-            packetWriter.SendCommand("45202", productId.ToString(), "0", ((int) limit).ToString());
+        /// <summary>
+        /// Attempts to create a weaving party with the specified product id and team limitation.
+        /// </summary>
+        private async Task Create(int productId, TeamLimit limit) {
+            await packetWriter.SendCommandAsync("45202", productId.ToString(), "0", ((int) limit).ToString());
         }
 
-        private void Make(int teamId) {
-            packetWriter.SendCommand("45208", teamId.ToString());
+        /// <summary>
+        /// Attempts to make the weaving party whose the specified team id.
+        /// </summary>
+        private async Task Make(int teamId) {
+            await packetWriter.SendCommandAsync("45208", teamId.ToString());
         }
 
-        private void Disband(int teamId) {
-            packetWriter.SendCommand("45207", teamId.ToString());
+        /// <summary>
+        /// Attempts to disband the weaving party whose the specified team id.
+        /// </summary>
+        private async Task Disband(int teamId) {
+            await packetWriter.SendCommandAsync("45207", teamId.ToString());
         }
 
-        private void Join(int teamId) {
-            /*
-           KryptonContextMenuItem item = (KryptonContextMenuItem) sender;
-           if (r45300 == null
-               || (r45300.type == "3"
-               && item.Text.Contains(r11102.playername)))
-               SendMsg("45209", item.Tag.ToString());
-               */
-            packetWriter.SendCommand("45209", teamId.ToString());
+        /// <summary>
+        /// Attempts to join the weaving party whose the specified team id.
+        /// </summary>
+        private async Task Join(int teamId) {
+            await packetWriter.SendCommandAsync("45209", teamId.ToString());
         }
 
-        private void Quit(int teamId) {
-            packetWriter.SendCommand("45210", teamId.ToString());
+        /// <summary>
+        /// Attempts to quit the weaving party whose the specified team id.
+        /// </summary>
+        private async Task Quit(int teamId) {
+            await packetWriter.SendCommandAsync("45210", teamId.ToString());
         }
 
-        private void Kick(int teamId, int playerId) {
-            packetWriter.SendCommand("45206", teamId.ToString(), playerId.ToString());
+        /// <summary>
+        /// Attempts to kick the player whose the specified player id in the weaving party whose the specified team id.
+        /// </summary>
+        private async Task Kick(int teamId, int playerId) {
+            await packetWriter.SendCommandAsync("45206", teamId.ToString(), playerId.ToString());
         }
 
-        private void disbandButton_Click(object sender, EventArgs e) {
+        /// <summary>
+        /// Attempts to quit and make the weaving party whose the specified team id.
+        /// </summary>
+        /// <param name="teamId"></param>
+        private async Task QuitAndMake(int teamId) {
+            // Thoát và chế tạo một lúc (không chờ server gửi msg thoát xong rồi mới chế tạo).
+            await Task.WhenAll(Quit(teamId), Make(teamId));
+        }
+
+        private async void disbandButton_Click(object sender, EventArgs e) {
             if (currentTeamId != NoTeam) {
-                Disband(currentTeamId);
+                await Disband(currentTeamId);
             }
         }
 
-        private void makeButton_Click(object sender, EventArgs e) {
+        private async void makeButton_Click(object sender, EventArgs e) {
             if (currentTeamId != NoTeam) {
-                Make(currentTeamId);
+                await Make(currentTeamId);
             }
         }
 
-        private void forceAttackButton_Click(object sender, EventArgs e) {
-            packetWriter.SendCommand("45201");
-        }
+        // private void forceAttackButton_Click(object sender, EventArgs e) {
+        // Mở giao diện vải.
+        //     packetWriter.SendCommand("45201");
+        // }
 
-        private void createButton_Click(object sender, EventArgs e) {
+        private async void createButton_Click(object sender, EventArgs e) {
             var textileLevel = (int) textileLevelInput.Value;
-            Create(textileLevel, TeamLimit.Nation);
+            await Create(textileLevel, TeamLimit.Nation);
         }
 
-        private void createLegionButton_Click(object sender, EventArgs e) {
+        private async void createLegionButton_Click(object sender, EventArgs e) {
             var textileLevel = (int) textileLevelInput.Value;
-            Create(textileLevel, TeamLimit.Legion);
+            await Create(textileLevel, TeamLimit.Legion);
         }
 
-        private void memberList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
+        private async void memberList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
             if (currentTeamId != NoTeam) {
                 var item = e.Item;
                 var member = (Member) item.RowObject;
-                Kick(currentTeamId, member.Id);
+                await Kick(currentTeamId, member.Id);
             }
         }
 
-        private void quitButton_Click(object sender, EventArgs e) {
+        private async void quitButton_Click(object sender, EventArgs e) {
             if (currentTeamId != NoTeam) {
-                Quit(currentTeamId);
-            } else {
-                // packetWriter.SendCommand("60603", "12", "0", "200200", "200");
+                await Quit(currentTeamId);
             }
         }
 
-        private void autoCreate_CheckedChanged(object sender, EventArgs e) {
-            CheckAutoCreate();
+        private async void autoCreate_CheckedChanged(object sender, EventArgs e) {
+            await TryAutoCreate();
         }
 
         /// <summary>
@@ -370,18 +409,17 @@ namespace k8asd {
             return teams.Any(team => team.Id == currentTeamId);
         }
 
-        private void UpdateAuto() {
-            CheckAutoRefresh();
-        }
-
-        private void CheckAutoRefresh() {
+        private async Task CheckAutoRefresh() {
             if (!autoRefreshTeamBox.Checked) {
                 return;
             }
-            RefreshTeams();
+            await RefreshTeams();
         }
 
-        private void CheckAutoCreate() {
+        /// <summary>
+        /// Kiểm tra xem có thể tự động tạo tổ đội.
+        /// </summary>
+        private async Task TryAutoCreate() {
             if (!autoCreate.Checked) {
                 return;
             }
@@ -392,10 +430,20 @@ namespace k8asd {
                 return;
             }
             var textileLevel = (int) autoTextileLevelInput.Value;
-            Create(textileLevel, TeamLimit.Legion);
+            await Create(textileLevel, TeamLimit.Nation);
         }
 
-        private void CheckAutoMake() {
+        /// <summary>
+        /// Kiểm tra xong có thể tự động chế tạo hoặc tự động thoát và chế tạo (chỉ có thể chạy một trong hai).
+        /// </summary>
+        private async Task TryAutoMakeOrAutoQuitAndMake() {
+            await Task.WhenAll(TryAutoMake(), TryAutoQuitAndMake());
+        }
+
+        /// <summary>
+        /// Kiểm tra xem có thể tự động chế tạo.
+        /// </summary>
+        private async Task TryAutoMake() {
             if (!autoMake.Checked) {
                 return;
             }
@@ -415,10 +463,13 @@ namespace k8asd {
             if (!CheckLimitPlayer()) {
                 return;
             }
-            Make(currentTeamId);
+            await Make(currentTeamId);
         }
 
-        private void CheckAutoQuitAndMake() {
+        /// <summary>
+        /// Kiểm tra xem có thể tự động thoát và chế tạo.
+        /// </summary>
+        private async Task TryAutoQuitAndMake() {
             if (!autoQuitAndMake.Checked) {
                 return;
             }
@@ -431,9 +482,13 @@ namespace k8asd {
             if (autoMake.Checked && currentTurnCount > 1) {
                 return;
             }
-            QuitAndMake(currentTeamId);
+            await QuitAndMake(currentTeamId);
         }
 
+        /// <summary>
+        /// Kiểm tra các thành viên trong tổ đội có phù hợp điều kiện hay không để kick ra.
+        /// </summary>
+        /// <returns>True nếu tất cả thành viên đều phù hợp</returns>
         private bool CheckLimitPlayer() {
             if (!IsHosting()) {
                 return true;
@@ -462,14 +517,14 @@ namespace k8asd {
                     // OK.
                     return true;
                 }
-                Kick(currentTeamId, members[1].Id);
+                Kick(currentTeamId, members[1].Id).Forget();
                 return false;
             }
 
             for (int i = 1; i < members.Count; ++i) {
                 var member = members[i];
                 if (member.Name != slot1 && member.Name != slot2) {
-                    Kick(currentTeamId, member.Id);
+                    Kick(currentTeamId, member.Id).Forget();
                     return false;
                 }
             }
@@ -484,13 +539,8 @@ namespace k8asd {
 
         }
 
-        private void quitAndMakeButton_Click(object sender, EventArgs e) {
-            QuitAndMake(currentTeamId);
-        }
-
-        private void QuitAndMake(int teamId) {
-            Quit(currentTeamId);
-            Make(currentTeamId);
+        private async void quitAndMakeButton_Click(object sender, EventArgs e) {
+            await QuitAndMake(currentTeamId);
         }
     }
 
