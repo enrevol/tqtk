@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace k8asd {
     public partial class ArenaView : UserControl, IPacketReader {
@@ -56,7 +50,7 @@ namespace k8asd {
             playerList.SelectedIndex = oldSelectedIndex;
         }
 
-        private async void Duel(int playerId, int rank) {
+        private async Task Duel(int playerId, int rank) {
             var packet = await packetWriter.SendCommandAsync("64007", playerId.ToString(), rank.ToString());
             if (packet == null) {
                 return;
@@ -65,12 +59,12 @@ namespace k8asd {
             Parse64007(packet);
         }
 
-        private void playerList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
+        private async void playerList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
             var item = e.Item;
             var player = (ArenaPlayer) item.RowObject;
             messageLog.LogInfo(String.Format("[Võ đài] Khiêu chiến với {0} Lv. {1}",
                 player.Name, player.Level));
-            Duel(player.Id, player.Rank);
+            await Duel(player.Id, player.Rank);
         }
 
         private void Parse64007(Packet packet) {

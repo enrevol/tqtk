@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace k8asd {
@@ -52,7 +48,7 @@ namespace k8asd {
 
         public int ImposeCooldown {
             get { return imposeCooldown.RemainingMilliseconds; }
-            set {
+            private set {
                 imposeCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
@@ -60,7 +56,7 @@ namespace k8asd {
 
         public int GuideCooldown {
             get { return guideCooldown.RemainingMilliseconds; }
-            set {
+            private set {
                 guideCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
 
@@ -69,7 +65,7 @@ namespace k8asd {
 
         public int UpgradeCooldown {
             get { return upgradeCooldown.RemainingMilliseconds; }
-            set {
+            private set {
                 upgradeCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
@@ -77,7 +73,7 @@ namespace k8asd {
 
         public int AppointCooldown {
             get { return appointCooldown.RemainingMilliseconds; }
-            set {
+            private set {
                 appointCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
@@ -85,7 +81,7 @@ namespace k8asd {
 
         public int TechCooldown {
             get { return techCooldown.RemainingMilliseconds; }
-            set {
+            private set {
                 techCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }
@@ -93,7 +89,7 @@ namespace k8asd {
 
         public int WeaveCooldown {
             get { return weaveCooldown.RemainingMilliseconds; }
-            set {
+            private set {
                 weaveCooldown.RemainingMilliseconds = value;
                 UpdateCooldowns();
             }

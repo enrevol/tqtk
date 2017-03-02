@@ -37,7 +37,7 @@ namespace k8asd {
 
         public string PlayerName {
             get { return playerName; }
-            set {
+            private set {
                 playerName = value;
                 PlayerNameChanged.Raise(this, value);
             }
@@ -45,7 +45,7 @@ namespace k8asd {
 
         public int PlayerLevel {
             get { return playerLevel; }
-            set {
+            private set {
                 playerLevel = value;
                 PlayerLevelChanged.Raise(this, value);
             }
@@ -53,7 +53,7 @@ namespace k8asd {
 
         public string LegionName {
             get { return legionName; }
-            set {
+            private set {
                 legionName = value;
                 LegionNameChanged.Raise(this, value);
             }
@@ -65,7 +65,7 @@ namespace k8asd {
 
         public int SystemGold {
             get { return systemGold; }
-            set {
+            private set {
                 systemGold = value;
                 GoldChanged.Raise(this, Gold);
             }
@@ -73,7 +73,7 @@ namespace k8asd {
 
         public int UserGold {
             get { return userGold; }
-            set {
+            private set {
                 userGold = value;
                 GoldChanged.Raise(this, Gold);
             }
@@ -85,7 +85,7 @@ namespace k8asd {
 
         public int Reputation {
             get { return reputation; }
-            set {
+            private set {
                 reputation = value;
                 ReputationChanged.Raise(this, value);
             }
@@ -93,7 +93,7 @@ namespace k8asd {
 
         public int Honor {
             get { return honor; }
-            set {
+            private set {
                 honor = value;
                 HonorChanged.Raise(this, value);
             }
@@ -101,7 +101,7 @@ namespace k8asd {
 
         public int Food {
             get { return food; }
-            set {
+            private set {
                 food = value;
                 FoodChanged.Raise(this, value);
             }
@@ -109,7 +109,7 @@ namespace k8asd {
 
         public int MaxFood {
             get { return maxFood; }
-            set {
+            private set {
                 maxFood = value;
                 MaxFoodChanged.Raise(this, value);
             }
@@ -117,7 +117,7 @@ namespace k8asd {
 
         public int Force {
             get { return forces; }
-            set {
+            private set {
                 forces = value;
                 ForceChanged.Raise(this, value);
             }
@@ -125,7 +125,7 @@ namespace k8asd {
 
         public int MaxForce {
             get { return maxForces; }
-            set {
+            private set {
                 maxForces = value;
                 MaxForceChanged.Raise(this, value);
             }
@@ -133,7 +133,7 @@ namespace k8asd {
 
         public int Silver {
             get { return silver; }
-            set {
+            private set {
                 silver = value;
                 SilverChanged.Raise(this, value);
             }
@@ -141,7 +141,7 @@ namespace k8asd {
 
         public int MaxSilver {
             get { return maxSilver; }
-            set {
+            private set {
                 maxSilver = value;
                 MaxSilverChanged.Raise(this, value);
             }
@@ -149,6 +149,7 @@ namespace k8asd {
 
         public void OnPacketReceived(Packet packet) {
             if (packet.CommandId == "11102") {
+                // Vừa đăng nhập xong.
                 var token = JToken.Parse(packet.Message);
                 var player = token["player"];
 
@@ -164,8 +165,10 @@ namespace k8asd {
                 var limitvalue = token["limitvalue"];
                 ParseInfo1(limitvalue);
             }
-            if (packet.CommandId == "11103" ||
-                packet.CommandId == "41102") {
+            if (packet.CommandId == "11103"
+                || packet.CommandId == "14102" // Tuyển/đào tạo lính.
+                || packet.CommandId == "41102" // Cải tiến
+                ) {
                 var token = JToken.Parse(packet.Message);
                 var playerupdateinfo = token["playerupdateinfo"];
                 if (playerupdateinfo != null) {
@@ -176,24 +179,11 @@ namespace k8asd {
                 }
             }
             if (packet.CommandId == "34108") {
+                // Đánh xong NPC.
                 var token = JToken.Parse(packet.Message);
                 var playerbattleinfo = token["playerbattleinfo"];
                 if (playerbattleinfo != null) {
                     ParseInfo0(playerbattleinfo);
-                }
-            }
-            if (packet.CommandId == "14102")
-            {
-                var token = JToken.Parse(packet.Message);
-                var playerupdateinfo = token["playerupdateinfo"];
-                if (playerupdateinfo != null)
-                {
-                    ParseInfo0(playerupdateinfo);
-                    ParseInfo1(playerupdateinfo);
-                }
-                else
-                {
-                    //
                 }
             }
             // FIXME.
