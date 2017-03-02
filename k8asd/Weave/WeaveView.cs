@@ -284,7 +284,7 @@ namespace k8asd {
         }
 
         private async void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
-            await CheckAutoRefresh();
+            await TryAutoRefresh();
         }
 
         private void refreshTeamInterval_ValueChanged(object sender, EventArgs e) {
@@ -292,11 +292,7 @@ namespace k8asd {
         }
 
         private async void refreshTeamTimer_Tick(object sender, EventArgs e) {
-            await CheckAutoRefresh();
-        }
-
-        private void teamList_SelectedIndexChanged(object sender, EventArgs e) {
-
+            await TryAutoRefresh();
         }
 
         private async void teamList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
@@ -397,8 +393,8 @@ namespace k8asd {
             }
         }
 
-        private async void autoCreate_CheckedChanged(object sender, EventArgs e) {
-            await TryAutoCreate();
+        private async void quitAndMakeButton_Click(object sender, EventArgs e) {
+            await QuitAndMake(currentTeamId);
         }
 
         /// <summary>
@@ -409,7 +405,7 @@ namespace k8asd {
             return teams.Any(team => team.Id == currentTeamId);
         }
 
-        private async Task CheckAutoRefresh() {
+        private async Task TryAutoRefresh() {
             if (!autoRefreshTeamBox.Checked) {
                 return;
             }
@@ -529,18 +525,6 @@ namespace k8asd {
                 }
             }
             return true;
-        }
-
-        private void autoMake_CheckedChanged(object sender, EventArgs e) {
-
-        }
-
-        private void autoQuitAndMake_CheckedChanged(object sender, EventArgs e) {
-
-        }
-
-        private async void quitAndMakeButton_Click(object sender, EventArgs e) {
-            await QuitAndMake(currentTeamId);
         }
     }
 

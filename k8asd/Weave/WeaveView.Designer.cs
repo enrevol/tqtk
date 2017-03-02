@@ -375,8 +375,7 @@
             this.teamList.TabIndex = 22;
             this.teamList.UseCompatibleStateImageBehavior = false;
             this.teamList.View = System.Windows.Forms.View.Details;
-            this.teamList.ButtonClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.teamList_ButtonClick);
-            this.teamList.SelectedIndexChanged += new System.EventHandler(this.teamList_SelectedIndexChanged);
+            this.teamList.ButtonClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.teamList_ButtonClick);            
             // 
             // teamColumn
             // 
@@ -481,7 +480,6 @@
             this.autoQuitAndMake.TabIndex = 32;
             this.autoQuitAndMake.Text = "Tự thoát và dệt khi có 3 người (chế độ kéo vải)";
             this.autoQuitAndMake.UseVisualStyleBackColor = true;
-            this.autoQuitAndMake.CheckedChanged += new System.EventHandler(this.autoQuitAndMake_CheckedChanged);
             // 
             // autoCreate
             // 
@@ -492,7 +490,6 @@
             this.autoCreate.TabIndex = 33;
             this.autoCreate.Text = "Tự lập tổ đội bang sử dụng cấp vải";
             this.autoCreate.UseVisualStyleBackColor = true;
-            this.autoCreate.CheckedChanged += new System.EventHandler(this.autoCreate_CheckedChanged);
             // 
             // autoMake
             // 
@@ -503,7 +500,6 @@
             this.autoMake.TabIndex = 34;
             this.autoMake.Text = "Tự dệt khi có 3 người và giá dệt >=";
             this.autoMake.UseVisualStyleBackColor = true;
-            this.autoMake.CheckedChanged += new System.EventHandler(this.autoMake_CheckedChanged);
             // 
             // tabControl
             // 
