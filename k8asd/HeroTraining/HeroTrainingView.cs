@@ -8,32 +8,50 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace k8asd {
     public partial class HeroTrainingView : UserControl, IPacketReader {
         private class Hero {
-            private int id;
-            private string name;
-            private int level;
-            private int exp;
-            private int nextExp;
             private int trainFlag;
             private int trainModel;
             private Cooldown trainCooldown;
-            private int expPerMin;
-            private int honorCost;
-            private int honorExp;
 
-            public int Id { get { return id; } }
-            public string Name { get { return name; } }
-            public int Level { get { return level; } }
-            public int Exp { get { return exp; } }
-            public int NextExp { get { return nextExp; } }
+            /// <summary>
+            /// ID của tướng.
+            /// </summary>
+            public int Id { get; private set; }
 
+            /// <summary>
+            /// Tên tướng.
+            /// </summary>
+            public string Name { get; private set; }
+
+            /// <summary>
+            /// Cấp độ của tướng.
+            /// </summary>
+            public int Level { get; private set; }
+
+            /// <summary>
+            /// Kinh nghiệm hiện tại của tướng.
+            /// </summary>
+            public int Exp { get; private set; }
+
+            /// <summary>
+            /// Tổng kinh nghiệm cần của cấp độ hiện tại.
+            /// </summary>
+            public int NextExp { get; private set; }
+
+            /// <summary>
+            /// Tướng có đang trong trạng thái huấn luyện không?
+            /// </summary>
             public bool IsTraining {
                 get { return RemainingTime > 0; }
             }
 
+            /// <summary>
+            /// Thời gian huấn luyện còn lại (mi-li-giây).
+            /// </summary>
             public int RemainingTime {
                 get {
                     if (trainFlag == 0) {
@@ -43,84 +61,67 @@ namespace k8asd {
                 }
             }
 
-            public int ExpPerMin { get { return expPerMin; } }
-            public int HonorCost { get { return honorCost; } }
-            public int HonorExp { get { return honorExp; } }
+            /// <summary>
+            /// Kinh nghiệm huấn luyện mối phút.
+            /// </summary>
+            public int ExpPerMin { get; private set; }
 
-            public Hero(int id, string name, int level, int exp, int nextExp) {
-                this.id = id;
-                this.name = name;
-                this.level = level;
-                this.exp = exp;
-                this.nextExp = nextExp;
-                trainFlag = trainModel = 0;
-                trainCooldown = new Cooldown();
-                expPerMin = honorCost = honorExp = 0;
-            }
+            /// <summary>
+            /// Chiến tích cần cho mỗi lần mãnh tiến.
+            /// </summary>
+            public int HonorCost { get; private set; }
 
-            public Hero(int id, string name, int level, int exp, int nextExp,
-                int trainModel, int remainingTime, int expPerMin, int honorCost, int honorExp) {
-                this.id = id;
-                this.name = name;
-                this.level = level;
-                this.exp = exp;
-                this.nextExp = nextExp;
-                trainFlag = 1;
-                this.trainModel = trainModel;
-                trainCooldown = new Cooldown(remainingTime);
-                this.expPerMin = expPerMin;
-                this.honorCost = honorCost;
-                this.honorExp = honorExp;
-            }
+            /// <summary>
+            /// Kinh nghiệm đạt được cho mỗi lần mãnh tiến.
+            /// </summary>
+            public int HonorExp { get; private set; }
 
             public static Hero Parse(JToken token) {
-                var id = (int) token["generalid"];
-                var name = (string) token["generalname"];
-                var level = (int) token["generallevel"];
-                var exp = (int) token["generalexp"];
-                var nextlevelexp = (int) token["nextlevelexp"];
-                var trainflag = (int) token["trainflag"];
-                if (trainflag == 0) {
-                    return new Hero(id, name, level, exp, nextlevelexp);
+                var result = new Hero();
+                result.Id = (int) token["generalid"];
+                result.Name = (string) token["generalname"];
+                result.Level = (int) token["generallevel"];
+                result.Exp = (int) token["generalexp"];
+                result.NextExp = (int) token["nextlevelexp"];
+                result.trainFlag = (int) token["trainflag"];
+                if (result.trainFlag == 0) {
+                    result.trainCooldown = new Cooldown();
+                    result.trainModel = result.ExpPerMin = result.HonorCost = result.HonorExp = 0;
+                } else {
+                    result.trainModel = (int) token["trainmodel"];
+                    result.trainCooldown = new Cooldown((int) token["remainingtime"]);
+                    result.ExpPerMin = (int) token["exppermin"];
+                    result.HonorCost = (int) token["jyungong"];
+                    result.HonorExp = (int) token["jyungongexp"];
                 }
-                var trainmodel = (int) token["trainmodel"];
-                var remainingtime = (int) token["remainingtime"];
-                var exppermin = (int) token["exppermin"];
-                var jyungong = (int) token["jyungong"];
-                var jyungongexp = (int) token["jyungongexp"];
-                return new Hero(id, name, level, exp, nextlevelexp,
-                    trainmodel, remainingtime, exppermin, jyungong, jyungongexp);
+                return result;
             }
 
             public override string ToString() {
                 if (trainFlag == 0) {
-                    return String.Format("{0} Lv. {1}", name, level);
+                    return String.Format("{0} Lv. {1}", Name, Level);
                 }
-                return String.Format("{0} Lv. {1} (T)", name, level);
+                return String.Format("{0} Lv. {1} (T)", Name, Level);
             }
         }
 
+        /// <summary>
+        /// Kiểu huấn luyện, ví dụ: 20 phút, 2 tiếng, 8 tiếng.
+        /// </summary>
         private class TimeModel {
-            private int id;
             private int time;
             private string timeUnit;
             private string cost;
 
-            public int Id { get { return id; } }
-
-            public TimeModel(int id, int time, string timeUnit, string cost) {
-                this.id = id;
-                this.time = time;
-                this.timeUnit = timeUnit;
-                this.cost = cost;
-            }
+            public int Id { get; private set; }
 
             public static TimeModel Parse(JToken token) {
-                var id = (int) token["id"];
-                var time = (int) token["time"];
-                var timeunit = (string) token["timeunit"];
-                var cost = (string) token["cost"];
-                return new TimeModel(id, time, timeunit, cost);
+                var result = new TimeModel();
+                result.Id = (int) token["id"];
+                result.time = (int) token["time"];
+                result.timeUnit = (string) token["timeunit"];
+                result.cost = (string) token["cost"];
+                return result;
             }
 
             public override string ToString() {
@@ -128,7 +129,14 @@ namespace k8asd {
             }
         }
 
+        /// <summary>
+        /// Số lượng vị trí huấn luyện.
+        /// </summary>
         private int maxTrainingSlots;
+
+        /// <summary>
+        /// Dùng cho tự động luyện.
+        /// </summary>
         private int guidingIndex;
 
         private BindingList<Hero> heroes;
@@ -178,29 +186,45 @@ namespace k8asd {
         /// <summary>
         /// Attempts to refresh all heroes.
         /// </summary>
-        private void RefreshHeroes() {
-            if (packetWriter.SendCommand("41100", "0")) {
+        private async Task RefreshHeroes() {
+            using (var guard = new ScopeGuard(() => Enabled = true)) {
                 Enabled = false;
+                var packet = await packetWriter.SendCommandAsync("41100", "0");
+                if (packet == null) {
+                    return;
+                }
+                Debug.Assert(packet.CommandId == "41100");
+                Parse41100(packet);
             }
         }
 
         /// <summary>
         /// Attempts to refresh the selected hero.
         /// </summary>
-        private void RefreshSelectedHero() {
+        private async Task RefreshSelectedHero() {
             var item = heroList.SelectedItem;
-            if (item != null) {
-                var heroItem = (Hero) item;
-                if (packetWriter.SendCommand("41107", heroItem.Id.ToString())) {
-                    DisableDetailPanels();
+            if (item == null) {
+                return;
+            }
+
+            var heroItem = (Hero) item;
+            using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
+                DisableDetailPanels();
+
+                var packet = await packetWriter.SendCommandAsync("41107", heroItem.Id.ToString());
+                if (packet == null) {
+                    return;
                 }
+
+                Debug.Assert(packet.CommandId == "41107");
+                Parse41107(packet);
             }
         }
 
         /// <summary>
         /// Attempts to train (huấn luyện) the selected hero.
         /// </summary>
-        private void TrainSelectedHero() {
+        private async Task TrainSelectedHero() {
             var item0 = heroList.SelectedItem;
             if (item0 == null) {
                 return;
@@ -211,51 +235,54 @@ namespace k8asd {
             }
             var heroItem = (Hero) item0;
             var timeModelItem = (TimeModel) item1;
-            Train(heroItem, timeModelItem.Id);
+            await Train(heroItem, timeModelItem.Id);
         }
 
-        private void Train(Hero hero, int timeModelId) {
-            if (packetWriter.SendCommand("41101", hero.Id.ToString(), timeModelId.ToString())) {
+        private async Task Train(Hero hero, int timeModelId) {
+            using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
+                DisableDetailPanels();
+
+                var packet = await packetWriter.SendCommandAsync("41101", hero.Id.ToString(), timeModelId.ToString());
+                if (packet == null) {
+                    return;
+                }
+
                 logModel.LogInfo(String.Format("Bắt đầu huấn luyện tướng {0} Lv. {1} Exp {2}/{3}",
                     hero.Name, hero.Level, hero.Exp, hero.NextExp));
-                DisableDetailPanels();
+
+                Debug.Assert(packet.CommandId == "41101");
+                Parse41101(packet);
             }
         }
 
         /// <summary>
         /// Attempts to guide (mãnh tiến) the selected hero.
         /// </summary>
-        private void GuideSelectedHero() {
+        private async Task GuideSelectedHero() {
             var item = heroList.SelectedItem;
             var heroItem = (Hero) item;
-            Guide(heroItem);
+            await Guide(heroItem);
         }
 
-        private void Guide(Hero hero) {
-            if (packetWriter.SendCommand("41102", hero.Id.ToString(), "1", "1")) {
-                logModel.LogInfo(String.Format("Mãnh tiến tướng {0} Lv. {1} Exp {2}/{3}",
-                    hero.Name, hero.Level, hero.Exp, hero.NextExp));
+        private async Task Guide(Hero hero) {
+            using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
                 DisableDetailPanels();
+
+                var packet = await packetWriter.SendCommandAsync("41102", hero.Id.ToString(), "1", "1");
+                if (packet == null) {
+                    return;
+                }
+
+                logModel.LogInfo(String.Format("Mãnh tiến tướng {0} Lv. {1} Exp {2}/{3}",
+                        hero.Name, hero.Level, hero.Exp, hero.NextExp));
+
+                Debug.Assert(packet.CommandId == "41102");
+                Parse41102(packet);
             }
         }
 
         public void OnPacketReceived(Packet packet) {
-            if (packet.CommandId == "41100") {
-                Enabled = true;
-                Parse41100(packet);
-            }
-            if (packet.CommandId == "41101") {
-                EnableDetailPanels();
-                Parse41101(packet);
-            }
-            if (packet.CommandId == "41102") {
-                EnableDetailPanels();
-                Parse41102(packet);
-            }
-            if (packet.CommandId == "41107") {
-                EnableDetailPanels();
-                Parse41107(packet);
-            }
+            //
         }
 
         private void Parse41100(Packet packet) {
@@ -373,12 +400,12 @@ namespace k8asd {
             }
         }
 
-        private void trainButton_Click(object sender, EventArgs e) {
-            TrainSelectedHero();
+        private async void trainButton_Click(object sender, EventArgs e) {
+            await TrainSelectedHero();
         }
 
-        private void heroList_SelectedIndexChanged(object sender, EventArgs e) {
-            RefreshSelectedHero();
+        private async void heroList_SelectedIndexChanged(object sender, EventArgs e) {
+            await RefreshSelectedHero();
         }
 
         private void addButton_Click(object sender, EventArgs e) {
@@ -403,12 +430,12 @@ namespace k8asd {
             selectedHeroList.Items.Remove(item);
         }
 
-        private void refreshButton_Click(object sender, EventArgs e) {
-            RefreshHeroes();
+        private async void refreshButton_Click(object sender, EventArgs e) {
+            await RefreshHeroes();
         }
 
-        private void guideButton_Click(object sender, EventArgs e) {
-            GuideSelectedHero();
+        private async void guideButton_Click(object sender, EventArgs e) {
+            await GuideSelectedHero();
         }
 
         private void oneSecondTimer_Tick(object sender, EventArgs e) {
@@ -419,10 +446,10 @@ namespace k8asd {
             selectedHeroList.Items.Clear();
         }
 
-        private void trainingTimer_Tick(object sender, EventArgs e) {
+        private async void trainingTimer_Tick(object sender, EventArgs e) {
             if (autoTrainCheck.Checked) {
-                TrainUntrainedHero();
-                GuideNextHero();
+                await TrainUntrainedHero();
+                await GuideNextHero();
             }
         }
 
@@ -435,18 +462,18 @@ namespace k8asd {
             return null;
         }
 
-        private void TrainUntrainedHero() {
+        private async Task TrainUntrainedHero() {
             foreach (var item in selectedHeroList.Items) {
                 var selectedHero = (Hero) item;
                 var hero = FindHeroById(selectedHero.Id);
                 if (hero != null && !hero.IsTraining) {
-                    Train(hero, timeModels[0].Id);
+                    await Train(hero, timeModels[0].Id);
                     break;
                 }
             }
         }
 
-        private void GuideNextHero() {
+        private async Task GuideNextHero() {
             if (cooldownModel.GuideCooldown == 0) {
                 if (selectedHeroList.Items.Count > 0) {
                     if (guidingIndex >= selectedHeroList.Items.Count) {
@@ -455,7 +482,7 @@ namespace k8asd {
                     var selectedHero = (Hero) selectedHeroList.Items[guidingIndex];
                     var hero = FindHeroById(selectedHero.Id);
                     if (hero != null && hero.IsTraining) {
-                        Guide(hero);
+                        await Guide(hero);
                     }
                     ++guidingIndex;
                 }
