@@ -147,5 +147,12 @@ namespace k8asd {
             var st = new StackTrace(new StackFrame(1));
             return st.GetFrame(0).GetMethod().Name;
         }
+
+        /// <summary>
+        /// http://stackoverflow.com/questions/22629951/suppressing-warning-cs4014-because-this-call-is-not-awaited-execution-of-the
+        /// </summary>
+        public static void Forget(this Task task) {
+            task.ContinueWith(t => Console.WriteLine(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+        }
     }
 }
