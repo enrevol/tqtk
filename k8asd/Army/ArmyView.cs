@@ -53,49 +53,75 @@ namespace k8asd {
         }
 
         private class Army {
-            private int armyId;
-            private int armyLevel;
-            private string armyName;
-            private int armyLimit;
-            private int armyMaxLimit;
-            private bool attackable;
             private bool completed;
             private string intro;
-            private string droppedItemName;
-            private int honor;
-            private ArmyType armyType;
 
-            public int Id { get { return armyId; } }
-            public int Level { get { return armyLevel; } }
-            public string Name { get { return armyName; } }
-            public int Limit { get { return armyLimit; } }
-            public int MaxLimit { get { return armyMaxLimit; } }
-            public bool Attackable { get { return attackable; } }
-            public string ItemName { get { return droppedItemName; } }
-            public int Honor { get { return honor; } }
-            public ArmyType Type { get { return armyType; } }
+            /// <summary>
+            /// ID của NPC.
+            /// </summary>
+            public int Id { get; private set; }
+
+            /// <summary>
+            /// Cấp độ của NPC.
+            /// </summary>
+            public int Level { get; private set; }
+
+            /// <summary>
+            /// Tên NPC.
+            /// </summary>
+            public string Name { get; private set; }
+
+            /// <summary>
+            /// Số lượt đánh còn lại.
+            /// </summary>
+            public int Limit { get; private set; }
+
+            /// <summary>
+            /// Số lượt đánh tối đa.
+            /// </summary>
+            public int MaxLimit { get; private set; }
+
+            /// <summary>
+            /// Có thể tấn công không?
+            /// </summary>
+            public bool Attackable { get; private set; }
+
+            /// <summary>
+            /// Vật phẩm có thể rớt.
+            /// </summary>
+            public string ItemName { get; private set; }
+
+            /// <summary>
+            /// Chiến tích.
+            /// </summary>
+            public int Honor { get; private set; }
+
+            /// <summary>
+            /// Thể loại NPC.
+            /// </summary>
+            public ArmyType Type { get; private set; }
 
             public static Army Parse(JToken token) {
                 var result = new Army();
-                result.armyId = (int) token["armyid"];
-                result.armyLevel = (int) token["armylevel"];
-                result.armyName = (string) token["armyname"];
-                result.armyLimit = (int) token["armynum"];
-                result.armyMaxLimit = (int) token["armymaxnum"];
-                result.attackable = (bool) token["attackable"];
+                result.Id = (int) token["armyid"];
+                result.Level = (int) token["armylevel"];
+                result.Name = (string) token["armyname"];
+                result.Limit = (int) token["armynum"];
+                result.MaxLimit = (int) token["armymaxnum"];
+                result.Attackable = (bool) token["attackable"];
                 result.completed = (bool) token["complete"];
                 result.intro = (string) token["intro"];
-                result.droppedItemName = (string) token["itemname"];
-                result.honor = (int) token["jyungong"];
+                result.ItemName = (string) token["itemname"];
+                result.Honor = (int) token["jyungong"];
                 var type = (int) token["type"];
                 if (type == 1) {
-                    result.armyType = ArmyType.Normal;
+                    result.Type = ArmyType.Normal;
                 } else if (type == 2) {
-                    result.armyType = ArmyType.Elite;
+                    result.Type = ArmyType.Elite;
                 } else if (type == 3) {
-                    result.armyType = ArmyType.Hero;
+                    result.Type = ArmyType.Hero;
                 } else if (type == 5) {
-                    result.armyType = ArmyType.Army;
+                    result.Type = ArmyType.Army;
                 } else {
                     Debug.Assert(false);
                 }
@@ -108,27 +134,45 @@ namespace k8asd {
         }
 
         private class Team {
-            private int teamId;
-            private string teamName;
-            private string condition;
-            private int playerCount;
-            private int maxPlayerCount;
             private Cooldown cooldown;
 
-            public int Id { get { return teamId; } }
-            public string Name { get { return teamName; } }
-            public string Condition { get { return condition; } }
-            public int PlayerCount { get { return playerCount; } }
-            public int MaxPlayerCount { get { return maxPlayerCount; } }
+            /// <summary>
+            /// ID của tổ đội.
+            /// </summary>
+            public int Id { get; private set; }
+
+            /// <summary>
+            /// Tên tổ đội.
+            /// </summary>
+            public string Name { get; private set; }
+
+            /// <summary>
+            /// Điều kiện tham gia của tổ đội.
+            /// </summary>
+            public string Condition { get; private set; }
+
+            /// <summary>
+            /// Số lượng người chơi có trong tổ đội.
+            /// </summary>
+            public int PlayerCount { get; private set; }
+
+            /// <summary>
+            /// Số lượng người chơi tối đa trong tổ đội.
+            /// </summary>
+            public int MaxPlayerCount { get; private set; }
+
+            /// <summary>
+            /// Thời gian chờ còn lại.
+            /// </summary>
             public int RemainingTime { get { return cooldown.RemainingMilliseconds; } }
 
             public static Team Parse(JToken token, DateTime serverTime) {
                 var result = new Team();
-                result.teamId = (int) token["teamid"];
-                result.teamName = (string) token["teamname"];
-                result.condition = (string) token["condition"];
-                result.playerCount = (int) token["currentnum"];
-                result.maxPlayerCount = (int) token["maxnum"];
+                result.Id = (int) token["teamid"];
+                result.Name = (string) token["teamname"];
+                result.Condition = (string) token["condition"];
+                result.PlayerCount = (int) token["currentnum"];
+                result.MaxPlayerCount = (int) token["maxnum"];
                 var endtime = (long) token["endtime"];
                 var serverTimeOffset = serverTime - DateTime.Now;
                 var endDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
@@ -145,19 +189,15 @@ namespace k8asd {
         }
 
         private class Member {
-            private int playerId;
-            private int playerLevel;
-            private string playerName;
-
-            public int Id { get { return playerId; } }
-            public int Level { get { return playerLevel; } }
-            public string Name { get { return playerName; } }
+            public int Id { get; private set; }
+            public int Level { get; private set; }
+            public string Name { get; private set; }
 
             public static Member Parse(JToken token) {
                 var result = new Member();
-                result.playerId = (int) token["playerid"];
-                result.playerLevel = (int) token["playerlevel"];
-                result.playerName = (string) token["playername"];
+                result.Id = (int) token["playerid"];
+                result.Level = (int) token["playerlevel"];
+                result.Name = (string) token["playername"];
                 return result;
             }
 
@@ -190,58 +230,52 @@ namespace k8asd {
             infoModel = model;
         }
 
-        private void RefreshArmies() {
-            Action<Packet> callback = (Packet packet) => {
-                Debug.Assert(packet.CommandId == "33201");
-                var powerIds = new Queue<int>(Parse33201(packet));
-
-                Action updater;
-                Action<Packet> callback_ = null;
-
-                updater = () => {
-                    if (powerIds.Count > 0) {
-                        var powerId = powerIds.Dequeue();
-                        if (packetWriter.SendCommand(callback_, "33100", powerId.ToString())) {
-                            // OK.
-                        } else {
-                            Enabled = true;
-                        }
-                    } else {
-                        Enabled = true;
-                    }
-                };
-
-                callback_ = (Packet packet_) => {
-                    Debug.Assert(packet_.CommandId == "33100");
-                    Parse33100(packet_);
-                    updater();
-                };
-
-                updater();
-            };
-            if (packetWriter.SendCommand(callback, "33201", "1")) {
-                armies.Clear();
+        private async Task RefreshArmies() {
+            using (var guard = new ScopeGuard(() => Enabled = true)) {
                 Enabled = false;
+                armies.Clear();
+
+                var packet = await packetWriter.SendCommandAsync("33201", "1");
+                if (packet == null) {
+                    return;
+                }
+                Debug.Assert(packet.CommandId == "33201");
+
+                var powerIds = Parse33201(packet);
+                foreach (var powerId in powerIds) {
+                    var powerPacket = await packetWriter.SendCommandAsync("33100", powerId.ToString());
+                    if (powerPacket == null) {
+                        return;
+                    }
+                    Debug.Assert(powerPacket.CommandId == "33100");
+
+                    var army = Parse33100(powerPacket);
+                    if (army != null) {
+                        armies.Add(army);
+                    }
+                }
             }
         }
 
-        private void RefreshSelectedArmy() {
+        private async Task RefreshSelectedArmy() {
             var item = armyList.SelectedItem;
             if (item != null) {
                 var army = (Army) item;
-                RefreshArmy(army.Id);
+                await RefreshArmy(army.Id);
             }
         }
 
-        private void RefreshArmy(int armyId) {
-            packetWriter.SendCommand((Packet packet) => {
-                Debug.Assert(packet.CommandId == "34100");
-                Parse34100(packet);
-            }, "34100", armyId.ToString());
+        private async Task RefreshArmy(int armyId) {
+            var packet = await packetWriter.SendCommandAsync("34100", armyId.ToString());
+            if (packet == null) {
+                return;
+            }
+            Debug.Assert(packet.CommandId == "34100");
+            Parse34100(packet);
         }
 
-        private void refreshArmyButton_Click(object sender, EventArgs e) {
-            RefreshArmies();
+        private async void refreshArmyButton_Click(object sender, EventArgs e) {
+            await RefreshArmies();
         }
 
         public void OnPacketReceived(Packet packet) {
@@ -261,15 +295,16 @@ namespace k8asd {
             return powerIds;
         }
 
-        private void Parse33100(Packet packet) {
+        private Army Parse33100(Packet packet) {
             var token = JToken.Parse(packet.Message);
             var armiesToken = token["army"];
             foreach (var armyToken in armiesToken) {
                 var army = Army.Parse(armyToken);
                 if (army.Type == ArmyType.Army) {
-                    armies.Add(army);
+                    return army;
                 }
             }
+            return null;
         }
 
         private void Parse34100(Packet packet) {
@@ -338,48 +373,80 @@ namespace k8asd {
             // radArmy2.Checked = !radArmy1.Checked;
         }
 
-        private void Create(int armyId, int minimumLevel, TeamLimit limit) {
-            packetWriter.SendCommand("34101", armyId.ToString(),
+        /// <summary>
+        /// Tạo tổ đội quân đoàn.
+        /// </summary>
+        /// <param name="armyId">ID của quân đoàn.</param>
+        /// <param name="minimumLevel">Giới hạn cấp độ tối thiểu.</param>
+        /// <param name="limit">Giới hạn chung</param>
+        private async Task Create(int armyId, int minimumLevel, TeamLimit limit) {
+            await packetWriter.SendCommandAsync("34101", armyId.ToString(),
                 String.Format("4:{0};{1}", minimumLevel, (int) limit), "0");
         }
 
-        private void Join(int teamId) {
-            packetWriter.SendCommand("34102", teamId.ToString());
+        /// <summary>
+        /// Gia nhập tổ đội.
+        /// </summary>
+        private async Task Join(int teamId) {
+            await packetWriter.SendCommandAsync("34102", teamId.ToString());
         }
 
-        private void MovePlayerUp(int playerId) {
-            packetWriter.SendCommand("34103", playerId.ToString(), "0");
+        /// <summary>
+        /// Di chuyển người chơi lên 1 vị trí trong tổ đội.
+        /// </summary>
+        private async Task MovePlayerUp(int playerId) {
+            await packetWriter.SendCommandAsync("34103", playerId.ToString(), "0");
         }
 
-        private void MovePlayerDown(int playerId) {
-            packetWriter.SendCommand("34103", playerId.ToString(), "1");
+        /// <summary>
+        /// Di chuyển người chơi xuống 1 vị trí trong tổ đội.
+        /// </summary>
+        private async Task MovePlayerDown(int playerId) {
+            await packetWriter.SendCommandAsync("34103", playerId.ToString(), "1");
         }
 
-        private void KickPlayer(int playerId) {
-            packetWriter.SendCommand("34104", playerId.ToString());
+        /// <summary>
+        /// Kick người chơi ta khỏi tổ đội.
+        /// </summary>
+        private async Task KickPlayer(int playerId) {
+            await packetWriter.SendCommandAsync("34104", playerId.ToString());
         }
 
-        private void Disband() {
-            packetWriter.SendCommand("34105");
+        /// <summary>
+        /// Giải tán tổ đội.
+        /// </summary>
+        private async Task Disband() {
+            await packetWriter.SendCommandAsync("34105");
         }
 
-        private void Quit() {
-            packetWriter.SendCommand("34106");
+        /// <summary>
+        /// Thoát khỏi tổ đội.
+        /// </summary>
+        private async Task Quit() {
+            await packetWriter.SendCommandAsync("34106");
         }
 
-        private void Attack() {
-            packetWriter.SendCommand("34107", "0");
+        /// <summary>
+        /// Tấn công tổ đội.
+        /// </summary>
+        private async Task Attack() {
+            await packetWriter.SendCommandAsync("34107", "0");
         }
 
-        private void ForceAttack() {
+        /// <summary>
+        /// Ép tấn công.
+        /// </summary>
+        private async Task ForceAttack() {
             // Tạo quân đoàn đổng trác.
-            Create(900001, 0, TeamLimit.None);
+            var t1 = Create(900001, 0, TeamLimit.None);
 
             // Tấn công.
-            Attack();
+            var t2 = Attack();
 
             // Giải tán quân đoàn đổng trác.
-            Disband();
+            var t3 = Disband();
+
+            await Task.WhenAll(t1, t2, t3);
         }
 
         /*
@@ -412,77 +479,77 @@ namespace k8asd {
             honorLabel.Text = String.Format("Chiến tích: {0}", army.Honor);
         }
 
-        private void refreshTeamTimer_Tick(object sender, EventArgs e) {
+        private async void refreshTeamTimer_Tick(object sender, EventArgs e) {
             if (autoRefreshTeamBox.Checked) {
-                RefreshSelectedArmy();
+                await RefreshSelectedArmy();
             }
         }
 
-        private void refreshTeamButton_Click(object sender, EventArgs e) {
-            RefreshSelectedArmy();
+        private async void refreshTeamButton_Click(object sender, EventArgs e) {
+            await RefreshSelectedArmy();
         }
 
         private void teamList_SelectedIndexChanged(object sender, EventArgs e) {
 
         }
 
-        private void teamList_ButtonClick(object sender, CellClickEventArgs e) {
+        private async void teamList_ButtonClick(object sender, CellClickEventArgs e) {
             var item = e.Item;
             var team = (Team) item.RowObject;
-            Join(team.Id);
+            await Join(team.Id);
         }
 
-        private void joinX10Button_Click(object sender, EventArgs e) {
+        private async void joinX10Button_Click(object sender, EventArgs e) {
             var item = teamList.SelectedItem;
             if (item != null) {
                 var team = (Team) item.RowObject;
                 for (int i = 0; i < 10; ++i) {
-                    Join(team.Id);
+                    await Join(team.Id);
                 }
             }
         }
 
-        private void attackButton_Click(object sender, EventArgs e) {
-            Attack();
+        private async void attackButton_Click(object sender, EventArgs e) {
+            await Attack();
         }
 
-        private void disbandButton_Click(object sender, EventArgs e) {
-            Disband();
+        private async void disbandButton_Click(object sender, EventArgs e) {
+            await Disband();
         }
 
-        private void quitButton_Click(object sender, EventArgs e) {
-            Quit();
+        private async void quitButton_Click(object sender, EventArgs e) {
+            await Quit();
         }
 
-        private void forceAttackButton_Click(object sender, EventArgs e) {
-            ForceAttack();
+        private async void forceAttackButton_Click(object sender, EventArgs e) {
+            await ForceAttack();
         }
 
-        private void memberList_ButtonClick(object sender, CellClickEventArgs e) {
+        private async void memberList_ButtonClick(object sender, CellClickEventArgs e) {
             var item = e.Item;
             var member = (Member) item.RowObject;
             if (e.ColumnIndex == 1) {
-                KickPlayer(member.Id);
+                await KickPlayer(member.Id);
             } else if (e.ColumnIndex == 2) {
-                MovePlayerUp(member.Id);
+                await MovePlayerUp(member.Id);
             } else if (e.ColumnIndex == 3) {
-                MovePlayerDown(member.Id);
+                await MovePlayerDown(member.Id);
             }
         }
 
-        private void createButton_Click(object sender, EventArgs e) {
+        private async void createButton_Click(object sender, EventArgs e) {
             var item = armyList.SelectedItem;
             if (item != null) {
                 var army = (Army) item;
-                Create(army.Id, 0, TeamLimit.None);
+                await Create(army.Id, 0, TeamLimit.None);
             }
         }
 
-        private void createLegionButton_Click(object sender, EventArgs e) {
+        private async void createLegionButton_Click(object sender, EventArgs e) {
             var item = armyList.SelectedItem;
             if (item != null) {
                 var army = (Army) item;
-                Create(army.Id, 0, TeamLimit.Legion);
+                await Create(army.Id, 0, TeamLimit.Legion);
             }
         }
 
@@ -490,9 +557,9 @@ namespace k8asd {
             refreshTeamTimer.Interval = (int) refreshTeamInterval.Value;
         }
 
-        private void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
+        private async void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
             if (autoRefreshTeamBox.Checked) {
-                RefreshSelectedArmy();
+                await RefreshSelectedArmy();
             }
         }
     }
