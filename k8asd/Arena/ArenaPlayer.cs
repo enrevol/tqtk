@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace k8asd {
     public class ArenaPlayer {
@@ -23,11 +18,6 @@ namespace k8asd {
         private int awardnum;
 
         /// <summary>
-        /// Liên thắng hiện tại (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
-        /// </summary>
-        private int cascade;
-
-        /// <summary>
         /// ???
         /// </summary>
         private int cascadeRewards;
@@ -38,71 +28,66 @@ namespace k8asd {
         private int countDownRemain;
 
         /// <summary>
-        /// Cấp độ người chơi.
-        /// </summary>
-        private int level;
-
-        /// <summary>
-        /// Quốc gia.
-        /// </summary>
-        private string nation;
-
-        /// <summary>
-        /// ID người chơi.
-        /// </summary>
-        private int playerId;
-
-        /// <summary>
-        /// Tên người chơi.
-        /// </summary>
-        private string playerName;
-
-        /// <summary>
         /// Hạng.
         /// </summary>
-        private int rank;
-
-        /// <summary>
-        /// Có thể là lượt đánh còn lại (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
-        /// </summary>
-        private int remainTimes;
-
-        /// <summary>
-        /// Liên thắng cao nhất.
-        /// </summary>
-        private int topestCascade;
+        public int Rank { get; private set; }
 
         /// <summary>
         /// Hạng cao nhất (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
         /// </summary>
-        private int topestRank;
+        public int TopRank { get; private set; }
 
-        public int Rank { get { return rank; } }
-        public int TopRank { get { return topestRank; } }
-        public int Cascade { get { return cascade; } }
-        public int TopCascade { get { return topestCascade; } }
-        public int RemainTimes { get { return remainTimes; } }
-        public int Id { get { return playerId; } }
-        public string Name { get { return playerName; } }
-        public int Level { get { return level; } }
-        public string Nation { get { return nation; } }
+        /// <summary>
+        /// Liên thắng hiện tại (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
+        /// </summary>
+        public int Cascade { get; private set; }
+
+        /// <summary>
+        /// Liên thắng cao nhất.
+        /// </summary>
+        public int TopCascade { get; private set; }
+
+        /// <summary>
+        /// Lượt đánh còn lại (chỉ đúng với người chơi hiện tại; người chơi khác có giá trị bằng 0).
+        /// </summary>
+        public int RemainTimes { get; private set; }
+
+        /// <summary>
+        /// ID người chơi.
+        /// </summary>
+        public int Id { get; private set; }
+
+        /// <summary>
+        /// Tên người chơi.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Cấp độ người chơi.
+        /// </summary>
+        public int Level { get; private set; }
+
+        /// <summary>
+        /// Quốc gia.
+        /// </summary>
+        public string Nation { get; private set; }
 
         public static ArenaPlayer Parse(JToken token) {
             var result = new ArenaPlayer();
             result.awardLevel = (int) token["awardLevel"];
             result.awardName = (string) token["awardName"];
             result.awardnum = (int) token["awardnum"];
-            result.cascade = (int) token["cascade"];
+            result.Cascade = (int) token["cascade"];
             result.cascadeRewards = (int) token["cascadeRewards"];
             result.countDownRemain = (int) token["countDownRemain"];
-            result.level = (int) token["level"];
-            result.nation = (string) token["nation"];
-            result.playerId = (int) token["playerId"];
-            result.playerName = (string) token["playerName"];
-            result.rank = (int) token["rank"];
-            result.remainTimes = (int) token["remainTimes"];
-            result.topestCascade = (int) token["topestCascade"];
-            result.topestRank = (int) token["topestRank"];
+            result.Level = (int) token["level"];
+            result.Nation = (string) token["nation"];
+            result.Id = (int) token["playerId"];
+            result.Name = (string) token["playerName"];
+            result.Rank = (int) token["rank"];
+            result.RemainTimes = (int) token["remainTimes"];
+            result.TopCascade = (int) token["topestCascade"];
+            result.TopRank = (int) token["topestRank"];
             return result;
         }
     }
