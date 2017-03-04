@@ -222,7 +222,7 @@ namespace k8asd {
         }
 
         private async void timerArena_Tick(object sender, EventArgs e) {
-            int maxCooldown = players.Max(player => player.Cooldown);
+            int maxCooldown = (players.Count == 0 ? 0 : players.Max(player => player.Cooldown));
             cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
 
             if (!autoDuelCheck.Checked) {
