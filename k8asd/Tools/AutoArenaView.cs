@@ -35,6 +35,9 @@ namespace k8asd {
                 var player = (ArenaInfo) obj;
                 return Utils.FormatDuration(player.Cooldown);
             };
+
+            timerArena.Start();
+            timerArena.Interval = 1000; // 1 giây.
         }
 
         public void LogInfo(string newMessage) {
@@ -53,7 +56,6 @@ namespace k8asd {
         /// <summary>
         /// Cập nhật võ đài tất cả các tài khoản đang kết nối.
         /// </summary>
-        /// <returns></returns>
         private async Task RefreshPlayersAsync() {
             if (isRefreshing) {
                 LogInfo("Đang làm mới, không thể làm mới!");
@@ -106,12 +108,12 @@ namespace k8asd {
         }
 
         private async void duelButton_Click(object sender, EventArgs e) {
-            await DuelAndRefresh();
-            await DuelAndRefresh();
-            await DuelAndRefresh();
+            await DuelAndRefreshAsync();
+            await DuelAndRefreshAsync();
+            await DuelAndRefreshAsync();
         }
 
-        private async Task DuelAndRefresh() {
+        private async Task DuelAndRefreshAsync() {
             await DuelAsync();
             await RefreshPlayersAsync();
         }
@@ -213,65 +215,40 @@ namespace k8asd {
             return true;
         }
 
-        private void chkAutoArena_CheckedChanged(object sender, EventArgs e)
-        {
-            if (this.chkAutoArena.Checked)
-            {
-                this.timerArena.Start();
-            }
-            else
-            {
-                this.timerArena.Stop();
+        private async void autoDuelCheck_CheckedChanged(object sender, EventArgs e) {
+            if (autoDuelCheck.Checked) {
+                await RefreshPlayersAsync();
             }
         }
 
-        private string convertTime(string gio)
-        {
-            int dem = int.Parse(gio);
-            dem--;
-            if (dem <= -1)
-                dem = 0;
-            return dem + "";
-        }
-        private int count = 0;
-        private bool checkAuto = false;
-        private void timerArena_Tick(object sender, EventArgs e)
-        {
-            this.lbArena.Text = convertTime(this.lbArena.Text);
-            if (this.lbArena.Text == "0" && !checkAuto)
-            {
-                checkAuto = true;
-                AutoDuel(() =>
-                {
-                    DuelAndRefresh(() =>
-                    {
-                        DuelAndRefresh(() =>
-                        {
-                            Duel(() =>
-                            {
-                                count++;
-                                checkAuto = false;
-                                this.lbArena.Text = "905";
-                                if (count == 5)
-                                {
-                                    this.timerArena.Stop();
-                                }
-                            });
-                        });
-                    });
-                });
-            }
-        }
+        private async void timerArena_Tick(object sender, EventArgs e) {
+            int maxCooldown = players.Max(player => player.Cooldown);
+            cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
 
-        private void AutoDuel(Action callback)
-        {
-            RefreshPlayers(() =>
-            {
-                Duel(() =>
-                {
-                    RefreshPlayers(callback);
-                });
-            });
+            if (!autoDuelCheck.Checked) {
+                return;
+            }
+
+            if (isRefreshing || isDueling) {
+                return;
+            }
+
+            int maxRemainTimes = players.Max(player => player.CurrentPlayer.RemainTimes);
+            if (maxRemainTimes == 0) {
+                LogInfo("Hết số lần khiêu chiến.");
+                autoDuelCheck.Checked = false;
+                return;
+            }
+
+            if (maxCooldown > 0) {
+                return;
+            }
+
+            await RefreshPlayersAsync();
+            await DuelAndRefreshAsync();
+            await DuelAndRefreshAsync();
+            await DuelAndRefreshAsync();
+            await DuelAndRefreshAsync();
         }
     }
 }

@@ -35,8 +35,8 @@
             this.refreshButton = new System.Windows.Forms.Button();
             this.duelButton = new System.Windows.Forms.Button();
             this.logBox = new System.Windows.Forms.TextBox();
-            this.chkAutoArena = new System.Windows.Forms.CheckBox();
-            this.lbArena = new System.Windows.Forms.Label();
+            this.autoDuelCheck = new System.Windows.Forms.CheckBox();
+            this.cooldownLabel = new System.Windows.Forms.Label();
             this.timerArena = new System.Windows.Forms.Timer(this.components);
             nationColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             nameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -179,25 +179,25 @@
             this.logBox.Size = new System.Drawing.Size(480, 120);
             this.logBox.TabIndex = 33;
             // 
-            // chkAutoArena
+            // autoDuelCheck
             // 
-            this.chkAutoArena.AutoSize = true;
-            this.chkAutoArena.Location = new System.Drawing.Point(241, 18);
-            this.chkAutoArena.Name = "chkAutoArena";
-            this.chkAutoArena.Size = new System.Drawing.Size(83, 17);
-            this.chkAutoArena.TabIndex = 34;
-            this.chkAutoArena.Text = "Auto Võ Đài";
-            this.chkAutoArena.UseVisualStyleBackColor = true;
-            this.chkAutoArena.CheckedChanged += new System.EventHandler(this.chkAutoArena_CheckedChanged);
+            this.autoDuelCheck.AutoSize = true;
+            this.autoDuelCheck.Location = new System.Drawing.Point(240, 16);
+            this.autoDuelCheck.Name = "autoDuelCheck";
+            this.autoDuelCheck.Size = new System.Drawing.Size(125, 17);
+            this.autoDuelCheck.TabIndex = 34;
+            this.autoDuelCheck.Text = "Tự động khiêu chiến";
+            this.autoDuelCheck.UseVisualStyleBackColor = true;
+            this.autoDuelCheck.CheckedChanged += new System.EventHandler(this.autoDuelCheck_CheckedChanged);
             // 
-            // lbArena
+            // cooldownLabel
             // 
-            this.lbArena.AutoSize = true;
-            this.lbArena.Location = new System.Drawing.Point(328, 18);
-            this.lbArena.Name = "lbArena";
-            this.lbArena.Size = new System.Drawing.Size(13, 13);
-            this.lbArena.TabIndex = 35;
-            this.lbArena.Text = "0";
+            this.cooldownLabel.AutoSize = true;
+            this.cooldownLabel.Location = new System.Drawing.Point(380, 17);
+            this.cooldownLabel.Name = "cooldownLabel";
+            this.cooldownLabel.Size = new System.Drawing.Size(108, 13);
+            this.cooldownLabel.TabIndex = 35;
+            this.cooldownLabel.Text = "Đóng băng: 00:15:20";
             // 
             // timerArena
             // 
@@ -209,8 +209,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 461);
-            this.Controls.Add(this.lbArena);
-            this.Controls.Add(this.chkAutoArena);
+            this.Controls.Add(this.cooldownLabel);
+            this.Controls.Add(this.autoDuelCheck);
             this.Controls.Add(this.logBox);
             this.Controls.Add(this.duelButton);
             this.Controls.Add(this.refreshButton);
@@ -233,8 +233,8 @@
         private System.Windows.Forms.TextBox logBox;
         private BrightIdeasSoftware.OLVColumn cascadeColumn;
         private BrightIdeasSoftware.OLVColumn rankColumn;
-        private System.Windows.Forms.CheckBox chkAutoArena;
-        private System.Windows.Forms.Label lbArena;
+        private System.Windows.Forms.CheckBox autoDuelCheck;
+        private System.Windows.Forms.Label cooldownLabel;
         private System.Windows.Forms.Timer timerArena;
     }
 }
