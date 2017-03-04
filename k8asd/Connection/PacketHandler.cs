@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Collections.Concurrent;
+using Nito.AsyncEx;
+using System.Threading;
 
 namespace k8asd {
-    public class PacketHandler : IDisposable {
+    /// <summary>
+    /// Handles packets between the client and server.
+    /// </summary>
+    public class PacketHandler : IDisposable, IPacketWriter {
         public enum ConnectResult {
             Connecting,
             Failed,
@@ -17,36 +23,70 @@ namespace k8asd {
 
         private const int BufferSize = 1024;
 
-        private Session session;
+        public event EventHandler<Packet> OnPacketReceived;
+
+        public bool Connected {
+            get { return tcpClient.Connected; }
+        }
+
+        public Session Session { get; private set; }
+
         private TcpClient tcpClient;
+
+        /// <summary>
+        /// Accumulated messages received from the server.
+        /// </summary>
         private string streamData;
+
         private byte[] buffer;
+
+        /// <summary>
+        /// Used for encoding messages for sending.
+        /// </summary>
         private MD5 hasher;
 
-        private Dictionary<string, BufferBlock<Packet>> bufferBlocks;
+        /// <summary>
+        /// Packet queues.
+        /// </summary>
+        private ConcurrentDictionary<string, AsyncCollection<Packet>> queues;
 
-        public string Data { get { return streamData; } }
+        private CancellationTokenSource tokenSource;
+        private Task readingTask;
 
         public PacketHandler(Session session) {
-            this.session = session;
+            Session = session;
             tcpClient = null;
             buffer = new byte[BufferSize];
             hasher = MD5.Create();
-            bufferBlocks = new Dictionary<string, BufferBlock<Packet>>();
-            ClearData();
+            queues = new ConcurrentDictionary<string, AsyncCollection<Packet>>();
+            streamData = String.Empty;
+            tokenSource = null;
+            readingTask = null;
         }
 
         /// <summary>
         /// Clears data received from the server.
         /// </summary>
         private void ClearData() {
-            streamData = "";
+            streamData = String.Empty;
+            queues.Clear();
         }
 
         /// <summary>
-        /// Disconnects from the server.
+        /// Asynchronously connects to the server.
         /// </summary>
-        public void Disconnect() {
+        public async Task ConnectAsync() {
+            await Disconnect();
+            tcpClient = new TcpClient();
+            await tcpClient.ConnectAsync(Session.Ip, Session.Ports);
+            StartReadingData();
+        }
+
+        /// <summary>
+        /// Asynchronously disconnects from the server.
+        /// </summary>
+        public async Task Disconnect() {
+            await StopReadingData();
             if (tcpClient != null) {
                 tcpClient.Close();
                 tcpClient = null;
@@ -54,17 +94,39 @@ namespace k8asd {
             ClearData();
         }
 
-        /// <summary>
-        /// Asynchronously connects to the server.
-        /// </summary>
-        public async Task Connect() {
-            Disconnect();
-            tcpClient = new TcpClient();
-            await tcpClient.ConnectAsync(session.Ip, session.Ports);
-            ReadData();
+        public async Task<Packet> SendCommandAsync(string commandId, params string[] parameters) {
+            var msg = Utils.EncodeMessage(hasher, Session.UserId, Session.SessionKey, commandId, parameters);
+            var bytes = Encoding.UTF8.GetBytes(msg);
+            var stream = tcpClient.GetStream();
+            await stream.WriteAsync(bytes, 0, bytes.Length);
+            if (!tcpClient.Connected) {
+                // Failed.
+                return null;
+            }
+
+            var blocks = GetQueue(commandId);
+            var result = await blocks.TakeAsync();
+            return result;
         }
 
-        public async void ReadData() {
+        private void StartReadingData() {
+            if (tokenSource == null) {
+                tokenSource = new CancellationTokenSource();
+                readingTask = Task.Factory.StartNew(ReadData, tokenSource.Token,
+                    TaskCreationOptions.DenyChildAttach, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+
+        private async Task StopReadingData() {
+            if (tokenSource != null) {
+                tokenSource.Cancel();
+                tokenSource.Dispose();
+                tokenSource = null;
+                await readingTask;
+            }
+        }
+
+        private async Task ReadData() {
             while (true) {
                 var stream = tcpClient.GetStream();
                 var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
@@ -72,6 +134,7 @@ namespace k8asd {
 
                 var packet = ParsePacket();
                 if (packet != null) {
+                    OnPacketReceived.Raise(this, packet);
                     PushPacket(packet);
                 }
             }
@@ -95,41 +158,17 @@ namespace k8asd {
             return null;
         }
 
+        /// <summary>
+        /// Adds the specified packet to its corresponding queue.
+        /// </summary>
         private void PushPacket(Packet packet) {
             var id = packet.CommandId;
-            Debug.Assert(bufferBlocks.ContainsKey(id));
-
-            var blocks = bufferBlocks[id];
-            blocks.Post(packet);
-            blocks.Complete();
+            var queue = GetQueue(id);
+            queue.Add(packet);
         }
 
-        public bool Connected {
-            get { return tcpClient.Connected; }
-        }
-
-        public async Task<Packet> SendCommand(string commandId, params string[] parameters) {
-            var msg = Utils.EncodeMessage(hasher, session.UserId, session.SessionKey, commandId, parameters);
-            var bytes = Encoding.UTF8.GetBytes(msg);
-            var stream = tcpClient.GetStream();
-            await stream.WriteAsync(bytes, 0, bytes.Length);
-            if (!tcpClient.Connected) {
-                // Failed.
-                return null;
-            }
-
-            Packet result = null;
-            var consumerOptions = new ExecutionDataflowBlockOptions { BoundedCapacity = 1 };
-            var consumerBlock = new ActionBlock<Packet>(packet => result = packet, consumerOptions);
-
-            if (!bufferBlocks.ContainsKey(commandId)) {
-                bufferBlocks.Add(commandId, new BufferBlock<Packet>());
-            }
-            var blocks = bufferBlocks[commandId];
-            blocks.LinkTo(consumerBlock, new DataflowLinkOptions { PropagateCompletion = true });
-
-            await consumerBlock.Completion;
-            return result;
+        private AsyncCollection<Packet> GetQueue(string id) {
+            return queues.GetOrAdd(id, new AsyncCollection<Packet>());
         }
 
         private bool disposed = false;
@@ -140,8 +179,12 @@ namespace k8asd {
             }
 
             if (disposing) {
-                ((IDisposable) tcpClient).Dispose();
-                ((IDisposable) hasher).Dispose();
+                if (tcpClient != null) {
+                    tcpClient.Close();
+                    tcpClient = null;
+                }
+                hasher.Dispose();
+                hasher = null;
             }
             streamData = null;
             buffer = null;
