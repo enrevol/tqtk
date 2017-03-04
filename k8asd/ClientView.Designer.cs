@@ -26,7 +26,6 @@ namespace k8asd {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.barFoodBuy = new System.Windows.Forms.TrackBar();
             this.barFoodSell = new System.Windows.Forms.TrackBar();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -52,11 +51,6 @@ namespace k8asd {
             this.weaveTab.SuspendLayout();
             this.arenaTab.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // dataTimer
-            // 
-            this.dataTimer.Interval = 10;
-            this.dataTimer.Tick += new System.EventHandler(this.dataTimer_Tick);
             // 
             // barFoodBuy
             // 
@@ -238,7 +232,6 @@ namespace k8asd {
         }
 
         #endregion
-        private System.Windows.Forms.Timer dataTimer;
         private TrackBar barFoodBuy;
         private TrackBar barFoodSell;
         private InfoView infoView;
