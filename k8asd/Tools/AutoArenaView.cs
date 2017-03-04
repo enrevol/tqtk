@@ -164,7 +164,9 @@ namespace k8asd {
                 LogInfo("Không có cặp khiêu chiến!");
             } else {
                 await Task.WhenAll(duelTasks);
+                LogInfo("Khiêu chiến hoàn thành!");
             }
+            isDueling = false;
         }
 
         /// <summary>
