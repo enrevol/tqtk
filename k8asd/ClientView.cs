@@ -192,7 +192,10 @@ namespace k8asd {
                 this.timerArmy.Stop();
             }
         }
+    }
+}
 
+/*
             if (packet.CommandId == "10100") {
 
             }
@@ -253,7 +256,6 @@ namespace k8asd {
                         }
                     } else
                         LogText("[Kết nối] Nhân vật không tồn tại");
-                        */
                     break;
                 }
             #endregion
@@ -323,7 +325,6 @@ namespace k8asd {
                     LogText("[Giao dịch lúa] " + r13101.m);
                 break;
             #endregion
-                */
 
             #region 14100
             case "14100": {
@@ -337,7 +338,6 @@ namespace k8asd {
                         if (forcefreecd == 0)
                             forcefreecd += 600000;
                     }
-                    */
                 }
                 break;
             #endregion
@@ -376,8 +376,7 @@ namespace k8asd {
                 break;
             }
         }
-
-        /*
+        
         #region Timer
 
         private void tmrCd_Tick(object sender, EventArgs e) {
@@ -420,12 +419,9 @@ namespace k8asd {
             }
 
             #endregion
-            */
 
 
         #region CampaignOpenCd
-
-        /*
 
         if (campcd == 0) {
             lblCampCd.Text = "";
@@ -442,13 +438,11 @@ namespace k8asd {
         }
 
         F.DecTime(ref campcd);
-        */
 
         #endregion
 
         #region CampaignInnerCd
 
-        /*
         if (r47107 != null) {
             int elapsed = Convert.ToInt32(r47107.info.interval) - camprecd;
 
@@ -466,11 +460,9 @@ namespace k8asd {
                 }
             }
         }
-
-        */
+        
         #endregion
-
-        /*
+    
         if (updateflag != 0) {
             btnImpose.Enabled = isimposelimit == "1" && imposecdusable == "1";
             btnGuide.Enabled = guidecdusable == "1";
@@ -566,7 +558,6 @@ namespace k8asd {
     private void btnImposeAnswer2_Click(object sender, EventArgs e) {
     SendMsg("12406", "2");
     }
-    */
 
         #region Food
 
@@ -607,7 +598,6 @@ namespace k8asd {
     }
 }
 
-/*
             * private WayPoint HDVS = new WayPoint();
             * 
            for (int i = 0; i < 6; i++)
@@ -678,3 +668,4 @@ namespace k8asd {
            cbbUpg1.SelectedIndex = 0;
            cbbUpg1.SelectedIndexChanged += cbbUpg2_SelectedIndexChanged;
            */
+           }
