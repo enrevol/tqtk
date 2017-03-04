@@ -1,12 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,7 +12,7 @@ namespace k8asd {
         private List<ArenaInfo> players;
 
         private bool isRefreshing;
-        private int duelCounter;
+        private bool isDueling;
 
         public AutoArenaView() {
             InitializeComponent();
@@ -25,7 +21,7 @@ namespace k8asd {
             players = new List<ArenaInfo>();
 
             isRefreshing = false;
-            duelCounter = 0;
+            isDueling = false;
 
             rankColumn.AspectGetter = (object obj) => {
                 var player = (ArenaInfo) obj;
@@ -50,18 +46,20 @@ namespace k8asd {
             logBox.ScrollToCaret();
         }
 
-        private void refreshButton_Click(object sender, EventArgs e) {
-            RefreshPlayers(() => {
-                // Nothing.
-            });
+        private async void refreshButton_Click(object sender, EventArgs e) {
+            await RefreshPlayersAsync();
         }
 
-        private void RefreshPlayers(Action callback) {
+        /// <summary>
+        /// Cập nhật võ đài tất cả các tài khoản đang kết nối.
+        /// </summary>
+        /// <returns></returns>
+        private async Task RefreshPlayersAsync() {
             if (isRefreshing) {
                 LogInfo("Đang làm mới, không thể làm mới!");
                 return;
             }
-            if (duelCounter > 0) {
+            if (isDueling) {
                 LogInfo("Đang khiêu chiến, không thể làm mới!");
                 return;
             }
@@ -79,74 +77,69 @@ namespace k8asd {
             mappedClients.Clear();
             players.Clear();
             playerList.Items.Clear();
-            var queue = new Queue<ClientView>(connectedClients);
 
-            Action updater = null;
-            Action<Packet> updateCallback = null;
+            foreach (var client in connectedClients) {
+                var packet = await client.SendCommandAsync("64005");
+                if (packet != null) {
+                    Debug.Assert(packet.CommandId == "64005");
 
-            updateCallback = (packet) => {
-                Debug.Assert(packet.CommandId == "64005");
+                    var token = JToken.Parse(packet.Message);
+                    var player = ArenaInfo.Parse(token);
+                    mappedClients.Add(player, client);
+                    players.Add(player);
+                    playerList.SetObjects(players, true);
 
-                var token = JToken.Parse(packet.Message);
-                var player = ArenaInfo.Parse(token);
-                mappedClients.Add(player, queue.Dequeue());
-                players.Add(player);
-                players.Sort((lhs, rhs)
-                    => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
-
-                playerList.SetObjects(players, true);
-
-                updater();
-            };
-
-            //lay hang vo dai tat ca cac acc
-            updater = () => {
-                if (queue.Count > 0) {
-                    var client = queue.Peek();
-                    client.SendCommand(updateCallback, "64005");
-                } else {
-                    isRefreshing = false;
-                    LogInfo("Làm mới hoàn thành!");
-                    callback();
+                    // players.Sort((lhs, rhs)
+                    // => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
                 }
-            };
+            }
 
-            updater();
+            LogInfo("Làm mới hoàn thành!");
+            isRefreshing = false;
         }
 
+        /// <summary>
+        /// Kiểm tra xem người chơi upper có đánh được người chơi lower không?
+        /// </summary>
         private bool canDuel(ArenaInfo lower, ArenaInfo upper) {
             return upper.Players.Any(player => player.Id == lower.CurrentPlayer.Id);
         }
 
-        private void duelButton_Click(object sender, EventArgs e) {
-            DuelAndRefresh(() => {
-                DuelAndRefresh(() => {
-                    // Nothing.
-                });
-            });
+        private async void duelButton_Click(object sender, EventArgs e) {
+            await DuelAndRefresh();
+            await DuelAndRefresh();
         }
 
-        private void DuelAndRefresh(Action callback) {
-            Duel(() => {
-                RefreshPlayers(callback);
-            });
+        private async Task DuelAndRefresh() {
+            await DuelAsync();
+            await RefreshPlayersAsync();
         }
 
-        private void Duel(Action callback) {
+        /// <summary>
+        /// Khiêu chiến tất cả các tài khoản.
+        /// </summary>
+        private async Task DuelAsync() {
             if (isRefreshing) {
                 LogInfo("Đang làm mới, không thể khiêu chiến!");
                 return;
             }
-            if (duelCounter > 0) {
+            if (isDueling) {
                 LogInfo("Đang khiêu chiến, không thể khiêu chiến!");
                 return;
             }
             LogInfo("Bắt đầu khiêu chiến...");
+            isDueling = true;
 
+            // Danh sách các người chơi chưa có cặp.
             var availablePlayers = new List<ArenaInfo>();
+
+            var duelTasks = new List<Task<bool>>();
+
             foreach (var player in players) {
+                // Đã cặp đươc chưa?
                 bool matched = false;
                 if (availablePlayers.Count > 0) {
+                    // Tìm người có thể cặp.
                     var matchingPlayer = availablePlayers.FirstOrDefault(
                         availablePlayer => canDuel(availablePlayer, player));
                     if (matchingPlayer != null && player.CurrentPlayer.RemainTimes > 0 && player.Cooldown == 0) {
@@ -154,83 +147,69 @@ namespace k8asd {
                         availablePlayers.Remove(matchingPlayer);
                         LogInfo(String.Format("Tiến hành khiêu chiến: {0} vs. {1}",
                             player.CurrentPlayer.Name, matchingPlayer.CurrentPlayer.Name));
-                        ++duelCounter;
-                        Action duelCallback = () => {
-                            --duelCounter;
-                            if (duelCounter == 0) {
-                                LogInfo("Khiêu chiến hoàn thành!");
-                                callback();
-                            }
-                        };
-                        Duel(duelCallback, mappedClients[matchingPlayer], mappedClients[player],
-                            matchingPlayer.CurrentPlayer.Id, matchingPlayer.CurrentPlayer.Rank);
+                        duelTasks.Add(DuelAsync(mappedClients[matchingPlayer], mappedClients[player],
+                            matchingPlayer.CurrentPlayer.Id, matchingPlayer.CurrentPlayer.Rank));
                     }
                 }
                 if (!matched) {
+                    // Không cặp được, thêm vào danh sách chưa cặp.
                     availablePlayers.Add(player);
                 }
             }
 
-            if (duelCounter == 0) {
+            if (duelTasks.Count == 0) {
                 LogInfo("Không có cặp khiêu chiến!");
-                //callback();
-                if(chkAutoArena.Checked)
-                {
-                    count++;
-                    this.lbArena.Text = "905";
-                    checkAuto = false;
-                    if (count == 5)
-                    {
-                        this.timerArena.Stop();
-                    }
-                }
+            } else {
+                await Task.WhenAll(duelTasks);
             }
         }
 
-        private void Duel(Action callback, IPacketWriter lower, IPacketWriter upper,
-            int lowerId, int lowerRank) {
-            Action<Packet> selectEmptyFormationCallback = null;
-            Action<Packet> removeAllHeroesCallback = null;
-            Action<Packet> selectNonEmptyFormationCallback = null;
-            Action<Packet> duelCallback = null;
-            Action<Packet> restoreFormationCallback = null;
-
-            selectEmptyFormationCallback = (packet) => {
-                Debug.Assert(packet.CommandId == "42104");
-
-                // Gỡ bỏ toàn bộ tướng.
-                lower.SendCommand(removeAllHeroesCallback, "42107", "9");
-            };
-
-            removeAllHeroesCallback = (packet) => {
-                Debug.Assert(packet.CommandId == "42107");
-
-                // Chọn trận truỳ hình (không trống).
-                upper.SendCommand(selectNonEmptyFormationCallback, "42104", "13");
-            };
-
-            selectNonEmptyFormationCallback = (packet) => {
-                Debug.Assert(packet.CommandId == "42104");
-
-                // Khiêu chiến.
-                upper.SendCommand(duelCallback,
-                    "64007", lowerId.ToString(), lowerRank.ToString());
-            };
-
-            duelCallback = (packet) => {
-                Debug.Assert(packet.CommandId == "64007");
-
-                // Chọn lại trận truỳ hình.
-                lower.SendCommand(restoreFormationCallback, "42104", "13");
-            };
-
-            restoreFormationCallback = (packet) => {
-                Debug.Assert(packet.CommandId == "42104");
-                callback();
-            };
-
+        /// <summary>
+        /// Tiến hành khiêu chiến giữa 2 người.
+        /// </summary>
+        /// <param name="lower">Người chơi có thứ hạng cao hơn (số nhỏ hơn).</param>
+        /// <param name="upper">Người chơi có thứ hạng thấp hơn (số lớn hơn).</param>
+        /// <param name="lowerId">ID của người chơi thứ hạng cao.</param>
+        /// <param name="lowerRank">Thứ hạng của người chơi thứ hạng cao.</param>
+        /// <returns>True nếu khiêu chiến thành công.</returns>
+        private async Task<bool> DuelAsync(IPacketWriter lower, IPacketWriter upper, int lowerId, int lowerRank) {
             // Chọn trận ngư lân.
-            lower.SendCommand(selectEmptyFormationCallback, "42104", "9");
+            var p0 = await lower.SendCommandAsync("42104", "9");
+            if (p0 == null) {
+                return false;
+            }
+            Debug.Assert(p0.CommandId == "42104");
+
+            // Gỡ bỏ toàn bộ tướng.
+            var p1 = await lower.SendCommandAsync("42107", "9");
+            if (p1 == null) {
+                return false;
+            }
+            Debug.Assert(p1.CommandId == "42107");
+
+            // Chọn trận truỳ hình (không trống).
+            var p2 = await upper.SendCommandAsync("42104", "13");
+            if (p2 == null) {
+                return false;
+            }
+            Debug.Assert(p2.CommandId == "42104");
+
+            // Khiêu chiến.
+            var p3 = await upper.SendCommandAsync("64007", lowerId.ToString(), lowerRank.ToString());
+            if (p3 == null) {
+                return false;
+            }
+            Debug.Assert(p3.CommandId == "64007");
+            // FIXME: kiểm tra trận có tướng không?
+            // FIXME: kiểm tra thứ hạng thay đổi không?
+
+            // Chọn lại trận truỳ hình.
+            var p4 = await lower.SendCommandAsync("42104", "13");
+            if (p4 == null) {
+                return false;
+            }
+            Debug.Assert(p4.CommandId == "42104");
+            return true;
         }
 
         private void chkAutoArena_CheckedChanged(object sender, EventArgs e)
