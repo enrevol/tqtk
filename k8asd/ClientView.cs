@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public partial class ClientView : UserControl, IPacketWriter {
+    public partial class ClientView : UserControl, IPacketWriter, IPacketReader {
         private InfoModel infoModel;
         private CooldownModel cooldownModel;
         private McuModel mcuModel;
@@ -99,27 +99,12 @@ namespace k8asd {
             get { return Int32.Parse(loginHelper.Session.UserId); }
         }
 
-        public bool SendCommand(string cmd, params string[] parameters) {
-            return SendCommand(null, cmd, parameters);
-        }
-
-        public bool SendCommand(Action<Packet> callback, string cmd, params string[] parameters) {
-            bool succeeded = false;
-            try {
-                // succeeded = packetHandler.SendCommand(callback, cmd, parameters);
-            } catch {
-
-            }
-
-            if (!succeeded) {
-                messageLogModel.LogInfo("Mất kết nối đến máy chủ!");
-                dataTimer.Stop();
-            }
-            return succeeded;
-        }
-
         public async Task<Packet> SendCommandAsync(string command, params string[] parameters) {
-            return await packetHandler.SendCommand(command, parameters);
+            var packet = await packetHandler.SendCommandAsync(command, parameters);
+            if (packet == null) {
+                messageLogModel.LogInfo("Mất kết nối với máy chủ.");
+            }
+            return packet;
         }
 
         public async Task LogIn() {
@@ -180,27 +165,26 @@ namespace k8asd {
                 packetHandler = new PacketHandler(loginHelper.Session);
 
                 messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
-                await packetHandler.Connect();
+                await packetHandler.ConnectAsync();
                 messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
 
                 connectionStatus = ConnectionStatus.Connected;
                 guard.Dismiss();
 
                 timerArmy.Start();
-                await packetHandler.SendCommand("10100");
-                await packetHandler.SendCommand("11102");
+
+                packetHandler.OnPacketReceived += (sender, packet) => OnPacketReceived(packet);
+                await SendCommandAsync("10100");
+                await SendCommandAsync("11102");
+                // FIXME: handle case character not yet created.
             }
         }
 
-        private void dataTimer_Tick(object sender, EventArgs e) {
-            Packet packet = null; //  packetHandler.ReadPacket();
-            if (packet == null) {
-                return;
-            }
-
+        public void OnPacketReceived(Packet packet) {
             foreach (var reader in packetReaders) {
                 reader.OnPacketReceived(packet);
             }
+        }
 
             if (packet.CommandId == "10100") {
 
