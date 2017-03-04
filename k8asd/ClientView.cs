@@ -186,6 +186,13 @@ namespace k8asd {
             }
         }
 
+        private async void timerArmy_Tick(object sender, EventArgs e) {
+            await SendCommandAsync("14102", "3", "0");
+            if (infoModel.Force >= infoModel.MaxForce - 3) {
+                this.timerArmy.Stop();
+            }
+        }
+
             if (packet.CommandId == "10100") {
 
             }
@@ -596,14 +603,7 @@ namespace k8asd {
 
         #endregion
 
-        private void timerArmy_Tick(object sender, EventArgs e)
-        {
-            SendCommand("14102", "3", "0");
-            if (infoModel.Force >= infoModel.MaxForce -  3)
-            {
-                this.timerArmy.Stop();
-            }
-        }
+        
     }
 }
 
