@@ -186,7 +186,7 @@ namespace k8asd {
         /// <summary>
         /// Attempts to refresh all heroes.
         /// </summary>
-        private async Task RefreshHeroes() {
+        private async Task RefreshHeroesAsync() {
             using (var guard = new ScopeGuard(() => Enabled = true)) {
                 Enabled = false;
                 var packet = await packetWriter.SendCommandAsync("41100", "0");
@@ -201,7 +201,7 @@ namespace k8asd {
         /// <summary>
         /// Attempts to refresh the selected hero.
         /// </summary>
-        private async Task RefreshSelectedHero() {
+        private async Task RefreshSelectedHeroAsync() {
             var item = heroList.SelectedItem;
             if (item == null) {
                 return;
@@ -224,7 +224,7 @@ namespace k8asd {
         /// <summary>
         /// Attempts to train (huấn luyện) the selected hero.
         /// </summary>
-        private async Task TrainSelectedHero() {
+        private async Task TrainSelectedHeroAsync() {
             var item0 = heroList.SelectedItem;
             if (item0 == null) {
                 return;
@@ -235,10 +235,10 @@ namespace k8asd {
             }
             var heroItem = (Hero) item0;
             var timeModelItem = (TimeModel) item1;
-            await Train(heroItem, timeModelItem.Id);
+            await TrainAsync(heroItem, timeModelItem.Id);
         }
 
-        private async Task Train(Hero hero, int timeModelId) {
+        private async Task TrainAsync(Hero hero, int timeModelId) {
             using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
                 DisableDetailPanels();
 
@@ -258,13 +258,13 @@ namespace k8asd {
         /// <summary>
         /// Attempts to guide (mãnh tiến) the selected hero.
         /// </summary>
-        private async Task GuideSelectedHero() {
+        private async Task GuideSelectedHeroAsync() {
             var item = heroList.SelectedItem;
             var heroItem = (Hero) item;
-            await Guide(heroItem);
+            await GuideAsync(heroItem);
         }
 
-        private async Task Guide(Hero hero) {
+        private async Task GuideAsync(Hero hero) {
             using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
                 DisableDetailPanels();
 
@@ -401,11 +401,11 @@ namespace k8asd {
         }
 
         private async void trainButton_Click(object sender, EventArgs e) {
-            await TrainSelectedHero();
+            await TrainSelectedHeroAsync();
         }
 
         private async void heroList_SelectedIndexChanged(object sender, EventArgs e) {
-            await RefreshSelectedHero();
+            await RefreshSelectedHeroAsync();
         }
 
         private void addButton_Click(object sender, EventArgs e) {
@@ -431,11 +431,11 @@ namespace k8asd {
         }
 
         private async void refreshButton_Click(object sender, EventArgs e) {
-            await RefreshHeroes();
+            await RefreshHeroesAsync();
         }
 
         private async void guideButton_Click(object sender, EventArgs e) {
-            await GuideSelectedHero();
+            await GuideSelectedHeroAsync();
         }
 
         private void oneSecondTimer_Tick(object sender, EventArgs e) {
@@ -448,8 +448,8 @@ namespace k8asd {
 
         private async void trainingTimer_Tick(object sender, EventArgs e) {
             if (autoTrainCheck.Checked) {
-                await TrainUntrainedHero();
-                await GuideNextHero();
+                await TrainUntrainedHeroAsync();
+                await GuideNextHeroAsync();
             }
         }
 
@@ -462,18 +462,18 @@ namespace k8asd {
             return null;
         }
 
-        private async Task TrainUntrainedHero() {
+        private async Task TrainUntrainedHeroAsync() {
             foreach (var item in selectedHeroList.Items) {
                 var selectedHero = (Hero) item;
                 var hero = FindHeroById(selectedHero.Id);
                 if (hero != null && !hero.IsTraining) {
-                    await Train(hero, timeModels[0].Id);
+                    await TrainAsync(hero, timeModels[0].Id);
                     break;
                 }
             }
         }
 
-        private async Task GuideNextHero() {
+        private async Task GuideNextHeroAsync() {
             if (cooldownModel.GuideCooldown == 0) {
                 if (selectedHeroList.Items.Count > 0) {
                     if (guidingIndex >= selectedHeroList.Items.Count) {
@@ -482,7 +482,7 @@ namespace k8asd {
                     var selectedHero = (Hero) selectedHeroList.Items[guidingIndex];
                     var hero = FindHeroById(selectedHero.Id);
                     if (hero != null && hero.IsTraining) {
-                        await Guide(hero);
+                        await GuideAsync(hero);
                     }
                     ++guidingIndex;
                 }

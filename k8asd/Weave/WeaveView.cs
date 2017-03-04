@@ -163,7 +163,7 @@ namespace k8asd {
         /// <summary>
         /// Cập nhật danh sách tổ đội.
         /// </summary>
-        private async Task RefreshTeams() {
+        private async Task RefreshTeamsAsync() {
             var packet = await packetWriter.SendCommandAsync("45200");
             if (packet == null) {
                 return;
@@ -171,10 +171,10 @@ namespace k8asd {
             Parse45200(packet);
             if (IsHosting()) {
                 if (CheckLimitPlayer()) {
-                    await TryAutoMakeOrAutoQuitAndMake();
+                    await TryAutoMakeOrAutoQuitAndMakeAsync();
                 }
             } else {
-                await TryAutoCreate();
+                await TryAutoCreateAsync();
             }
         }
 
@@ -210,7 +210,7 @@ namespace k8asd {
                 ParseTeamInfo(teamObject);
                 memberBox.Enabled = true;
                 if (CheckLimitPlayer()) {
-                    TryAutoMakeOrAutoQuitAndMake().Forget();
+                    TryAutoMakeOrAutoQuitAndMakeAsync().Forget();
                 }
             } else {
                 // teamId = 0;
@@ -276,11 +276,11 @@ namespace k8asd {
         }
 
         private async void refreshTeamButton_Click(object sender, EventArgs e) {
-            await RefreshTeams();
+            await RefreshTeamsAsync();
         }
 
         private async void autoRefreshTeamBox_CheckedChanged(object sender, EventArgs e) {
-            await TryAutoRefresh();
+            await TryAutoRefreshAsync();
         }
 
         private void refreshTeamInterval_ValueChanged(object sender, EventArgs e) {
@@ -288,54 +288,54 @@ namespace k8asd {
         }
 
         private async void refreshTeamTimer_Tick(object sender, EventArgs e) {
-            await TryAutoRefresh();
+            await TryAutoRefreshAsync();
         }
 
         private async void teamList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
             var item = e.Item;
             var team = (Team) item.RowObject;
-            await Join(team.Id);
+            await JoinAsync(team.Id);
         }
 
         /// <summary>
         /// Attempts to create a weaving party with the specified product id and team limitation.
         /// </summary>
-        private async Task Create(int productId, TeamLimit limit) {
+        private async Task CreateAsync(int productId, TeamLimit limit) {
             await packetWriter.SendCommandAsync("45202", productId.ToString(), "0", ((int) limit).ToString());
         }
 
         /// <summary>
         /// Attempts to make the weaving party whose the specified team id.
         /// </summary>
-        private async Task Make(int teamId) {
+        private async Task MakeAsync(int teamId) {
             await packetWriter.SendCommandAsync("45208", teamId.ToString());
         }
 
         /// <summary>
         /// Attempts to disband the weaving party whose the specified team id.
         /// </summary>
-        private async Task Disband(int teamId) {
+        private async Task DisbandAsync(int teamId) {
             await packetWriter.SendCommandAsync("45207", teamId.ToString());
         }
 
         /// <summary>
         /// Attempts to join the weaving party whose the specified team id.
         /// </summary>
-        private async Task Join(int teamId) {
+        private async Task JoinAsync(int teamId) {
             await packetWriter.SendCommandAsync("45209", teamId.ToString());
         }
 
         /// <summary>
         /// Attempts to quit the weaving party whose the specified team id.
         /// </summary>
-        private async Task Quit(int teamId) {
+        private async Task QuitAsync(int teamId) {
             await packetWriter.SendCommandAsync("45210", teamId.ToString());
         }
 
         /// <summary>
         /// Attempts to kick the player whose the specified player id in the weaving party whose the specified team id.
         /// </summary>
-        private async Task Kick(int teamId, int playerId) {
+        private async Task KickAsync(int teamId, int playerId) {
             await packetWriter.SendCommandAsync("45206", teamId.ToString(), playerId.ToString());
         }
 
@@ -343,20 +343,20 @@ namespace k8asd {
         /// Attempts to quit and make the weaving party whose the specified team id.
         /// </summary>
         /// <param name="teamId"></param>
-        private async Task QuitAndMake(int teamId) {
+        private async Task QuitAndMakeAsync(int teamId) {
             // Thoát và chế tạo một lúc (không chờ server gửi msg thoát xong rồi mới chế tạo).
-            await Task.WhenAll(Quit(teamId), Make(teamId));
+            await Task.WhenAll(QuitAsync(teamId), MakeAsync(teamId));
         }
 
         private async void disbandButton_Click(object sender, EventArgs e) {
             if (currentTeamId != NoTeam) {
-                await Disband(currentTeamId);
+                await DisbandAsync(currentTeamId);
             }
         }
 
         private async void makeButton_Click(object sender, EventArgs e) {
             if (currentTeamId != NoTeam) {
-                await Make(currentTeamId);
+                await MakeAsync(currentTeamId);
             }
         }
 
@@ -367,30 +367,30 @@ namespace k8asd {
 
         private async void createButton_Click(object sender, EventArgs e) {
             var textileLevel = (int) textileLevelInput.Value;
-            await Create(textileLevel, TeamLimit.Nation);
+            await CreateAsync(textileLevel, TeamLimit.Nation);
         }
 
         private async void createLegionButton_Click(object sender, EventArgs e) {
             var textileLevel = (int) textileLevelInput.Value;
-            await Create(textileLevel, TeamLimit.Legion);
+            await CreateAsync(textileLevel, TeamLimit.Legion);
         }
 
         private async void memberList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
             if (currentTeamId != NoTeam) {
                 var item = e.Item;
                 var member = (Member) item.RowObject;
-                await Kick(currentTeamId, member.Id);
+                await KickAsync(currentTeamId, member.Id);
             }
         }
 
         private async void quitButton_Click(object sender, EventArgs e) {
             if (currentTeamId != NoTeam) {
-                await Quit(currentTeamId);
+                await QuitAsync(currentTeamId);
             }
         }
 
         private async void quitAndMakeButton_Click(object sender, EventArgs e) {
-            await QuitAndMake(currentTeamId);
+            await QuitAndMakeAsync(currentTeamId);
         }
 
         /// <summary>
@@ -401,17 +401,17 @@ namespace k8asd {
             return teams.Any(team => team.Id == currentTeamId);
         }
 
-        private async Task TryAutoRefresh() {
+        private async Task TryAutoRefreshAsync() {
             if (!autoRefreshTeamBox.Checked) {
                 return;
             }
-            await RefreshTeams();
+            await RefreshTeamsAsync();
         }
 
         /// <summary>
         /// Kiểm tra xem có thể tự động tạo tổ đội.
         /// </summary>
-        private async Task TryAutoCreate() {
+        private async Task TryAutoCreateAsync() {
             if (!autoCreate.Checked) {
                 return;
             }
@@ -422,20 +422,20 @@ namespace k8asd {
                 return;
             }
             var textileLevel = (int) autoTextileLevelInput.Value;
-            await Create(textileLevel, TeamLimit.Nation);
+            await CreateAsync(textileLevel, TeamLimit.Nation);
         }
 
         /// <summary>
         /// Kiểm tra xong có thể tự động chế tạo hoặc tự động thoát và chế tạo (chỉ có thể chạy một trong hai).
         /// </summary>
-        private async Task TryAutoMakeOrAutoQuitAndMake() {
-            await Task.WhenAll(TryAutoMake(), TryAutoQuitAndMake());
+        private async Task TryAutoMakeOrAutoQuitAndMakeAsync() {
+            await Task.WhenAll(TryAutoMakeAsync(), TryAutoQuitAndMakeAsync());
         }
 
         /// <summary>
         /// Kiểm tra xem có thể tự động chế tạo.
         /// </summary>
-        private async Task TryAutoMake() {
+        private async Task TryAutoMakeAsync() {
             if (!autoMake.Checked) {
                 return;
             }
@@ -455,13 +455,13 @@ namespace k8asd {
             if (!CheckLimitPlayer()) {
                 return;
             }
-            await Make(currentTeamId);
+            await MakeAsync(currentTeamId);
         }
 
         /// <summary>
         /// Kiểm tra xem có thể tự động thoát và chế tạo.
         /// </summary>
-        private async Task TryAutoQuitAndMake() {
+        private async Task TryAutoQuitAndMakeAsync() {
             if (!autoQuitAndMake.Checked) {
                 return;
             }
@@ -474,7 +474,7 @@ namespace k8asd {
             if (autoMake.Checked && currentTurnCount > 1) {
                 return;
             }
-            await QuitAndMake(currentTeamId);
+            await QuitAndMakeAsync(currentTeamId);
         }
 
         /// <summary>
@@ -509,14 +509,14 @@ namespace k8asd {
                     // OK.
                     return true;
                 }
-                Kick(currentTeamId, members[1].Id).Forget();
+                KickAsync(currentTeamId, members[1].Id).Forget();
                 return false;
             }
 
             for (int i = 1; i < members.Count; ++i) {
                 var member = members[i];
                 if (member.Name != slot1 && member.Name != slot2) {
-                    Kick(currentTeamId, member.Id).Forget();
+                    KickAsync(currentTeamId, member.Id).Forget();
                     return false;
                 }
             }
