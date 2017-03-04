@@ -11,9 +11,5 @@ namespace k8asd {
         /// <param name="parameters">The additional parameters</param>
         /// <returns>Whether the attemption was successful</returns>
         Task<Packet> SendCommandAsync(string command, params string[] parameters);
-
-        bool SendCommand(string cmd, params string[] parameters);
-
-        bool SendCommand(Action<Packet> callback, string cmd, params string[] parameters);
     }
 }
