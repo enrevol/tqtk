@@ -108,6 +108,7 @@ namespace k8asd {
         private async void duelButton_Click(object sender, EventArgs e) {
             await DuelAndRefresh();
             await DuelAndRefresh();
+            await DuelAndRefresh();
         }
 
         private async Task DuelAndRefresh() {
