@@ -23,14 +23,49 @@ namespace k8asd {
             private int nation; // ???
             private string product;
 
+            /// <summary>
+            /// ID của tổ đội.
+            /// </summary>
             public int Id { get; private set; }
+
+            /// <summary>
+            /// Tên tổ đội.
+            /// </summary>
             public string Name { get; private set; }
+
+            /// <summary>
+            /// Cấp vải tổ đội.
+            /// </summary>
             public int Level { get; private set; }
+
+            /// <summary>
+            /// Số lượng người chơi hiện tại trong tổ đội.
+            /// </summary>
             public int PlayerCount { get; private set; }
+
+            /// <summary>
+            /// Số lượng người chơi tối đa trong tổ đội.
+            /// </summary>
             public int MaxPlayerCount { get; private set; }
+
+            /// <summary>
+            /// Chi phí.
+            /// </summary>
             public int Cost { get; private set; }
+
+            /// <summary>
+            /// Giá bán.
+            /// </summary>
             public int Price { get; private set; }
+
+            /// <summary>
+            /// Tỉ lệ thành công.
+            /// </summary>
             public string SuccessRate { get; private set; }
+
+            /// <summary>
+            /// Tỉ lệ bạo kích.
+            /// </summary>
             public string CriticalRate { get; private set; }
 
             public static Team Parse(JToken token) {
@@ -61,10 +96,29 @@ namespace k8asd {
         }
 
         private class Member {
+            /// <summary>
+            /// ID của người chơi.
+            /// </summary>
             public int Id { get; private set; }
+
+            /// <summary>
+            /// Cấp độ người chơi.
+            /// </summary>
             public int Level { get; private set; }
+
+            /// <summary>
+            /// Tên người chơi.
+            /// </summary>
             public string Name { get; private set; }
+
+            /// <summary>
+            /// Giá bán.
+            /// </summary>
             public int Price { get; private set; }
+
+            /// <summary>
+            /// Tổng cấp độ công nhân.
+            /// </summary>
             public int SpinnerLevel { get; private set; }
 
             public static Member Parse(JToken token) {
@@ -83,13 +137,44 @@ namespace k8asd {
         }
 
         private class Product {
+            /// <summary>
+            /// ID vải.
+            /// </summary>
             public int Id { get; private set; }
+
+            /// <summary>
+            /// Cấp độ vải.
+            /// </summary>
             public int Level { get; private set; }
+
+            /// <summary>
+            /// Tên vải.
+            /// </summary>
             public string Name { get; private set; }
+
+            /// <summary>
+            /// Chi phí.
+            /// </summary>
             public int Cost { get; private set; }
+
+            /// <summary>
+            /// Giá bán.
+            /// </summary>
             public int Price { get; private set; }
+
+            /// <summary>
+            /// Mô tả.
+            /// </summary>
             public string Desc { get; private set; }
+
+            /// <summary>
+            /// Tỉ lệ thành công.
+            /// </summary>
             public string SuccessRate { get; private set; }
+
+            /// <summary>
+            /// Tỉ lệ thất bại.
+            /// </summary>
             public string CriticalRate { get; private set; }
 
             public static Product Parse(JToken token) {
