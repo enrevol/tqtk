@@ -224,7 +224,6 @@
     <Compile Include="ClientView.Designer.cs">
       <DependentUpon>ClientView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Funtions.cs" />
     <Compile Include="MessageLog\IMessageLogModel.cs" />
     <Compile Include="MessageLog\MessageLogModel.cs" />
     <Compile Include="MessageLog\MessageLogView.cs">
