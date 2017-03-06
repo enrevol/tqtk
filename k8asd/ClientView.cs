@@ -105,7 +105,7 @@ namespace k8asd {
                 return null;
             }
             var packet = await packetHandler.SendCommandAsync(command, parameters);
-            if (packet == null) {                
+            if (packet == null) {
                 messageLogModel.LogInfo("Mất kết nối với máy chủ.");
             }
             return packet;
