@@ -187,7 +187,7 @@
             // 
             // memberColumn
             // 
-            this.memberColumn.AspectName = "Description";
+            this.memberColumn.AspectName = "";
             this.memberColumn.Width = 200;
             // 
             // kickColumn
@@ -379,7 +379,7 @@
             // 
             // teamColumn
             // 
-            this.teamColumn.AspectName = "Description";
+            this.teamColumn.AspectName = "";
             this.teamColumn.Width = 280;
             // 
             // joinColumn

@@ -79,10 +79,5 @@ namespace k8asd {
             result.Name = (string) token["teamname"];
             return result;
         }
-
-        public string Description() {
-            return String.Format("{0} Lv. {1} ({2}/{3}) [{4} - {5}] [{6} - {7}]",
-                Name, Level, PlayerCount, MaxPlayerCount, Cost, Price, SuccessRate, CriticalRate);
-        }
     }
 }

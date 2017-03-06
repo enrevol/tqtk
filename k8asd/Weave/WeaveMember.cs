@@ -40,9 +40,5 @@ namespace k8asd {
             result.SpinnerLevel = (int) token["spinnerTotalLevel"];
             return result;
         }
-
-        public string Description() {
-            return String.Format("{0} Lv. {1} - Công nhân {2}", Name, Level, SpinnerLevel);
-        }
     }
 }

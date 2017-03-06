@@ -55,6 +55,19 @@ namespace k8asd {
             isRefreshing = false;
             currentTextilePrice = 0;
             currentTurnCount = 0;
+
+            teamColumn.AspectGetter = (obj) => {
+                var team = (WeaveTeam) obj;
+                return String.Format("{0} Lv. {1} ({2}/{3}) [{4} - {5}] [{6} - {7}]",
+                   team.Name, team.Level, team.PlayerCount, team.MaxPlayerCount,
+                   team.Cost, team.Price, team.SuccessRate, team.CriticalRate);
+            };
+
+            teamColumn.AspectGetter = (obj) => {
+                var member = (WeaveMember) obj;
+                return String.Format("{0} Lv. {1} - Công nhân {2}",
+                    member.Name, member.Level, member.SpinnerLevel);
+            };
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
