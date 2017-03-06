@@ -81,7 +81,7 @@ namespace k8asd {
             playerList.Items.Clear();
 
             foreach (var client in connectedClients) {
-                var packet = await client.SendCommandAsync("64005");
+                var packet = await client.RefreshArenaAsync();
                 if (packet != null) {
                     Debug.Assert(packet.CommandId == "64005");
 
@@ -179,28 +179,28 @@ namespace k8asd {
         /// <returns>True nếu khiêu chiến thành công.</returns>
         private async Task<bool> DuelAsync(IPacketWriter lower, IPacketWriter upper, int lowerId, int lowerRank) {
             // Chọn trận ngư lân.
-            var p0 = await lower.SendCommandAsync("42104", "9");
+            var p0 = await lower.SetDefaultFormationAsync(9);
             if (p0 == null) {
                 return false;
             }
             Debug.Assert(p0.CommandId == "42104");
 
             // Gỡ bỏ toàn bộ tướng.
-            var p1 = await lower.SendCommandAsync("42107", "9");
+            var p1 = await lower.RemoveAllHeroesFromFormationAsync(9);
             if (p1 == null) {
                 return false;
             }
             Debug.Assert(p1.CommandId == "42107");
 
             // Chọn trận truỳ hình (không trống).
-            var p2 = await upper.SendCommandAsync("42104", "13");
+            var p2 = await upper.SetDefaultFormationAsync(13);
             if (p2 == null) {
                 return false;
             }
             Debug.Assert(p2.CommandId == "42104");
 
             // Khiêu chiến.
-            var p3 = await upper.SendCommandAsync("64007", lowerId.ToString(), lowerRank.ToString());
+            var p3 = await upper.DuelArenaAsync(lowerId, lowerRank);
             if (p3 == null) {
                 return false;
             }
@@ -209,7 +209,7 @@ namespace k8asd {
             // FIXME: kiểm tra thứ hạng thay đổi không?
 
             // Chọn lại trận truỳ hình.
-            var p4 = await lower.SendCommandAsync("42104", "13");
+            var p4 = await lower.SetDefaultFormationAsync(13);
             if (p4 == null) {
                 return false;
             }

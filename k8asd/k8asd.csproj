@@ -143,6 +143,7 @@
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
     <Compile Include="Account\ClientManager.cs" />
+    <Compile Include="Arena\ArenaCommand.cs" />
     <Compile Include="Arena\ArenaInfo.cs" />
     <Compile Include="Arena\ArenaPlayer.cs" />
     <Compile Include="Arena\ArenaView.cs">
@@ -151,6 +152,7 @@
     <Compile Include="Arena\ArenaView.Designer.cs">
       <DependentUpon>ArenaView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="Tools\AutoArenaView.cs">
       <SubType>Form</SubType>
     </Compile>

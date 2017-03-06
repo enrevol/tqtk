@@ -29,7 +29,7 @@ namespace k8asd {
         }
 
         private async void refreshButton_Click(object sender, EventArgs e) {
-            var packet = await packetWriter.SendCommandAsync("64005");
+            var packet = await packetWriter.RefreshArenaAsync();
             if (packet == null) {
                 return;
             }
@@ -51,7 +51,7 @@ namespace k8asd {
         }
 
         private async Task Duel(int playerId, int rank) {
-            var packet = await packetWriter.SendCommandAsync("64007", playerId.ToString(), rank.ToString());
+            var packet = await packetWriter.DuelArenaAsync(playerId, rank);
             if (packet == null) {
                 return;
             }
