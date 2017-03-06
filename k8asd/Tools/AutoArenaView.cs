@@ -89,10 +89,9 @@ namespace k8asd {
                     var player = ArenaInfo.Parse(token);
                     mappedClients.Add(player, client);
                     players.Add(player);
+                    players.Sort((lhs, rhs)
+                        => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
                     playerList.SetObjects(players, true);
-
-                    // players.Sort((lhs, rhs)
-                    // => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
                 }
             }
 
