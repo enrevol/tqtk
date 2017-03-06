@@ -72,6 +72,7 @@ namespace k8asd {
             messageLogView.SetModel(messageLogModel);
             chatLogView.SetModel(chatLogModel);
             weaveView.SetCooldownModel(cooldownModel);
+            weaveView.SetInfoModel(infoModel);
 
             armyView.SetInfoModel(infoModel);
             chatLogModel.SetInfoModel(infoModel);
