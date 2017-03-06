@@ -375,7 +375,7 @@
             this.teamList.TabIndex = 22;
             this.teamList.UseCompatibleStateImageBehavior = false;
             this.teamList.View = System.Windows.Forms.View.Details;
-            this.teamList.ButtonClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.teamList_ButtonClick);            
+            this.teamList.ButtonClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.teamList_ButtonClick);
             // 
             // teamColumn
             // 
@@ -452,6 +452,15 @@
             label3.Size = new System.Drawing.Size(43, 13);
             label3.TabIndex = 41;
             label3.Text = "- Slot 2:";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(15, 175);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(237, 13);
+            label5.TabIndex = 43;
+            label5.Text = "Chỉ dệt khi có những người chơi sau trong tổ đội:";
             // 
             // autoTextileLevelInput
             // 
@@ -538,14 +547,14 @@
             // 
             this.slot2PlayerInput.Location = new System.Drawing.Point(80, 222);
             this.slot2PlayerInput.Name = "slot2PlayerInput";
-            this.slot2PlayerInput.Size = new System.Drawing.Size(115, 20);
+            this.slot2PlayerInput.Size = new System.Drawing.Size(280, 20);
             this.slot2PlayerInput.TabIndex = 42;
             // 
             // slot1PlayerInput
             // 
             this.slot1PlayerInput.Location = new System.Drawing.Point(80, 197);
             this.slot1PlayerInput.Name = "slot1PlayerInput";
-            this.slot1PlayerInput.Size = new System.Drawing.Size(115, 20);
+            this.slot1PlayerInput.Size = new System.Drawing.Size(280, 20);
             this.slot1PlayerInput.TabIndex = 38;
             // 
             // textilePriceInput
@@ -569,15 +578,6 @@
             0,
             0,
             0});
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(15, 175);
-            label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(237, 13);
-            label5.TabIndex = 43;
-            label5.Text = "Chỉ dệt khi có những người chơi sau trong tổ đội:";
             // 
             // WeaveView
             // 

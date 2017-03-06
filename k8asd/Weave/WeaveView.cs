@@ -4,200 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace k8asd {
     public partial class WeaveView : UserControl, IPacketReader {
         private const int NoTeam = -1;
 
-        private enum TeamLimit {
-            Nation = 1,
-            Legion = 2,
-        }
-
-        private class Team {
-            private string desc;
-            private int legion; // ???
-            private int limit; // ???
-            private int limitlv; // ??
-            private int mnation; // ???
-            private int nation; // ???
-            private string product;
-
-            /// <summary>
-            /// ID của tổ đội.
-            /// </summary>
-            public int Id { get; private set; }
-
-            /// <summary>
-            /// Tên tổ đội.
-            /// </summary>
-            public string Name { get; private set; }
-
-            /// <summary>
-            /// Cấp vải tổ đội.
-            /// </summary>
-            public int Level { get; private set; }
-
-            /// <summary>
-            /// Số lượng người chơi hiện tại trong tổ đội.
-            /// </summary>
-            public int PlayerCount { get; private set; }
-
-            /// <summary>
-            /// Số lượng người chơi tối đa trong tổ đội.
-            /// </summary>
-            public int MaxPlayerCount { get; private set; }
-
-            /// <summary>
-            /// Chi phí.
-            /// </summary>
-            public int Cost { get; private set; }
-
-            /// <summary>
-            /// Giá bán.
-            /// </summary>
-            public int Price { get; private set; }
-
-            /// <summary>
-            /// Tỉ lệ thành công.
-            /// </summary>
-            public string SuccessRate { get; private set; }
-
-            /// <summary>
-            /// Tỉ lệ bạo kích.
-            /// </summary>
-            public string CriticalRate { get; private set; }
-
-            public static Team Parse(JToken token) {
-                var result = new Team();
-                result.CriticalRate = (string) token["baojirate"];
-                result.Cost = (int) token["cost"];
-                result.desc = (string) token["desc"];
-                result.legion = (int) token["legion"];
-                result.Level = (int) token["level"];
-                result.limit = (int) token["limit"];
-                result.limitlv = (int) token["limitlv"];
-                result.MaxPlayerCount = (int) token["maxnum"];
-                result.mnation = (int) token["mnation"];
-                result.nation = (int) token["nation"];
-                result.PlayerCount = (int) token["num"];
-                result.Price = (int) token["price"];
-                result.product = (string) token["product"];
-                result.SuccessRate = (string) token["succrate"];
-                result.Id = (int) token["teamid"];
-                result.Name = (string) token["teamname"];
-                return result;
-            }
-
-            public string Description() {
-                return String.Format("{0} Lv. {1} ({2}/{3}) [{4} - {5}] [{6} - {7}]",
-                    Name, Level, PlayerCount, MaxPlayerCount, Cost, Price, SuccessRate, CriticalRate);
-            }
-        }
-
-        private class Member {
-            /// <summary>
-            /// ID của người chơi.
-            /// </summary>
-            public int Id { get; private set; }
-
-            /// <summary>
-            /// Cấp độ người chơi.
-            /// </summary>
-            public int Level { get; private set; }
-
-            /// <summary>
-            /// Tên người chơi.
-            /// </summary>
-            public string Name { get; private set; }
-
-            /// <summary>
-            /// Giá bán.
-            /// </summary>
-            public int Price { get; private set; }
-
-            /// <summary>
-            /// Tổng cấp độ công nhân.
-            /// </summary>
-            public int SpinnerLevel { get; private set; }
-
-            public static Member Parse(JToken token) {
-                var result = new Member();
-                result.Level = (int) token["level"];
-                result.Name = (string) token["name"];
-                result.Id = (int) token["playerid"];
-                result.Price = (int) token["price"];
-                result.SpinnerLevel = (int) token["spinnerTotalLevel"];
-                return result;
-            }
-
-            public string Description() {
-                return String.Format("{0} Lv. {1} - Công nhân {2}", Name, Level, SpinnerLevel);
-            }
-        }
-
-        private class Product {
-            /// <summary>
-            /// ID vải.
-            /// </summary>
-            public int Id { get; private set; }
-
-            /// <summary>
-            /// Cấp độ vải.
-            /// </summary>
-            public int Level { get; private set; }
-
-            /// <summary>
-            /// Tên vải.
-            /// </summary>
-            public string Name { get; private set; }
-
-            /// <summary>
-            /// Chi phí.
-            /// </summary>
-            public int Cost { get; private set; }
-
-            /// <summary>
-            /// Giá bán.
-            /// </summary>
-            public int Price { get; private set; }
-
-            /// <summary>
-            /// Mô tả.
-            /// </summary>
-            public string Desc { get; private set; }
-
-            /// <summary>
-            /// Tỉ lệ thành công.
-            /// </summary>
-            public string SuccessRate { get; private set; }
-
-            /// <summary>
-            /// Tỉ lệ thất bại.
-            /// </summary>
-            public string CriticalRate { get; private set; }
-
-            public static Product Parse(JToken token) {
-                var result = new Product();
-                result.CriticalRate = (string) token["baojirate"];
-                result.Cost = (int) token["cost"];
-                result.Desc = (string) token["desc"];
-                result.Level = (int) token["level"];
-                result.Name = (string) token["name"];
-                result.Price = (int) token["price"];
-                result.Id = (int) token["prodid"];
-                result.SuccessRate = (string) token["succrate"];
-                return result;
-            }
-
-            public string Description() {
-                return String.Format("Lv. {0} [{1} - {2}] [{3} - {4}]",
-                    Level, Cost, Price, SuccessRate, CriticalRate);
-            }
-        }
-
         /// <summary>
-        /// ID của team dệt hiện tại.
+        /// ID tổ đội hiện tại.
+        /// Nếu không thuộc tổ đội nào thì giá trị bằng NoTeam.
         /// </summary>
         private int currentTeamId;
 
@@ -212,29 +28,33 @@ namespace k8asd {
         private int currentTurnCount;
 
         /// <summary>
+        /// Có đang cập nhật dệt không?
+        /// </summary>
+        private bool isRefreshing;
+
+        /// <summary>
         /// Danh sách tổ đội hiện tại.
         /// </summary>
-        private BindingList<Team> teams;
+        private List<WeaveTeam> teams;
 
         /// <summary>
         /// Danh sách thành viên trong tổ đội dệt hiện tại.
         /// </summary>
-        private BindingList<Member> members;
+        private List<WeaveMember> members;
 
-        private ICooldownModel cooldown;
+        private ICooldownModel cooldownModel;
+        private IInfoModel infoModel;
         private IPacketWriter packetWriter;
 
         public WeaveView() {
             InitializeComponent();
 
-            teams = new BindingList<Team>();
-            members = new BindingList<Member>();
+            teams = new List<WeaveTeam>();
+            members = new List<WeaveMember>();
 
-            currentTeamId = NoTeam;
-            currentTextilePrice = 999;
+            isRefreshing = false;
+            currentTextilePrice = 0;
             currentTurnCount = 0;
-
-            memberBox.Enabled = false;
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -242,24 +62,35 @@ namespace k8asd {
         }
 
         public void SetCooldownModel(ICooldownModel cooldown) {
-            this.cooldown = cooldown;
+            cooldownModel = cooldown;
+        }
+
+        public void SetInfoModel(IInfoModel info) {
+            infoModel = info;
         }
 
         /// <summary>
         /// Cập nhật danh sách tổ đội.
         /// </summary>
         private async Task RefreshTeamsAsync() {
-            var packet = await packetWriter.SendCommandAsync("45200");
-            if (packet == null) {
+            if (isRefreshing) {
                 return;
             }
-            Parse45200(packet);
-            if (IsHosting()) {
-                if (CheckLimitPlayer()) {
-                    await TryAutoMakeOrAutoQuitAndMakeAsync();
+            isRefreshing = true;
+
+            using (var guard = new ScopeGuard(() => isRefreshing = false)) {
+                var packet = await packetWriter.RefreshWeaveAsync();
+                if (packet == null) {
+                    return;
                 }
-            } else {
-                await TryAutoCreateAsync();
+                Parse45200(packet);
+                if (IsHosting()) {
+                    if (CheckLimitPlayer()) {
+                        await TryAutoMakeOrAutoQuitAndMakeAsync();
+                    }
+                } else {
+                    await TryAutoCreateAsync();
+                }
             }
         }
 
@@ -274,12 +105,8 @@ namespace k8asd {
             var message = token["message"];
             if (message != null) {
                 // Chưa đủ lv 82.
-                baseInfoBox.Enabled = false;
-                teamBox.Enabled = false;
                 return;
             }
-            baseInfoBox.Enabled = true;
-            teamBox.Enabled = true;
 
             var baseinfo = token["baseinfo"];
             ParseBaseInfo(baseinfo);
@@ -290,17 +117,33 @@ namespace k8asd {
 
         private void Parse45300(Packet packet) {
             var token = JToken.Parse(packet.Message);
-            var teamObject = token["teamObject"];
-            if (teamObject != null) {
+            var type = (int) token["type"];
+            if (type == 0) {
+                // Vừa chế tạo xong.
+                // Sẽ kèm theo tin nhắn dệt được bao nhiêu bạc.
+                // Lưu ý: chế tạo xong sẽ gửi 45300 type=0 rồi gửi tiếp 45300 type=1.
+                return;
+            }
+            if (type == 1) {
+                // Bị ra khỏi tổ đội mà tổ đội biến mất luôn (giải tán/vừa dệt xong).
+                currentTeamId = NoTeam;
+                return;
+            }
+            if (type == 2) {
+                // Có người vào/ra tổ đội.                
+                var teamObject = token["teamObject"];
                 ParseTeamInfo(teamObject);
-                memberBox.Enabled = true;
                 if (CheckLimitPlayer()) {
                     TryAutoMakeOrAutoQuitAndMakeAsync().Forget();
                 }
-            } else {
-                // teamId = 0;
-                memberBox.Enabled = false;
+                return;
             }
+            if (type == 3) {
+                // Bị ra khỏi tổ đội mà tổ đội vẫn còn tồn tại (thoát ra/bị kick).
+                currentTeamId = NoTeam;
+                return;
+            }
+            Debug.Assert(false);
         }
 
         private void ParseBaseInfo(JToken token) {
@@ -326,7 +169,7 @@ namespace k8asd {
         private void ParseTeams(JToken token) {
             teams.Clear();
             foreach (var teamToken in token) {
-                var team = Team.Parse(teamToken);
+                var team = WeaveTeam.Parse(teamToken);
                 teams.Add(team);
             }
             var oldSelectedIndex = teamList.SelectedIndex;
@@ -337,7 +180,7 @@ namespace k8asd {
         private void ParseMembers(JToken token) {
             members.Clear();
             foreach (var memberToken in token) {
-                var member = Member.Parse(memberToken);
+                var member = WeaveMember.Parse(memberToken);
                 members.Add(member);
             }
             var oldSelectedIndex = memberList.SelectedIndex;
@@ -378,112 +221,70 @@ namespace k8asd {
 
         private async void teamList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
             var item = e.Item;
-            var team = (Team) item.RowObject;
-            await JoinAsync(team.Id);
-        }
-
-        /// <summary>
-        /// Attempts to create a weaving party with the specified product id and team limitation.
-        /// </summary>
-        private async Task CreateAsync(int productId, TeamLimit limit) {
-            await packetWriter.SendCommandAsync("45202", productId.ToString(), "0", ((int) limit).ToString());
-        }
-
-        /// <summary>
-        /// Attempts to make the weaving party whose the specified team id.
-        /// </summary>
-        private async Task MakeAsync(int teamId) {
-            await packetWriter.SendCommandAsync("45208", teamId.ToString());
-        }
-
-        /// <summary>
-        /// Attempts to disband the weaving party whose the specified team id.
-        /// </summary>
-        private async Task DisbandAsync(int teamId) {
-            await packetWriter.SendCommandAsync("45207", teamId.ToString());
-        }
-
-        /// <summary>
-        /// Attempts to join the weaving party whose the specified team id.
-        /// </summary>
-        private async Task JoinAsync(int teamId) {
-            await packetWriter.SendCommandAsync("45209", teamId.ToString());
-        }
-
-        /// <summary>
-        /// Attempts to quit the weaving party whose the specified team id.
-        /// </summary>
-        private async Task QuitAsync(int teamId) {
-            await packetWriter.SendCommandAsync("45210", teamId.ToString());
-        }
-
-        /// <summary>
-        /// Attempts to kick the player whose the specified player id in the weaving party whose the specified team id.
-        /// </summary>
-        private async Task KickAsync(int teamId, int playerId) {
-            await packetWriter.SendCommandAsync("45206", teamId.ToString(), playerId.ToString());
-        }
-
-        /// <summary>
-        /// Attempts to quit and make the weaving party whose the specified team id.
-        /// </summary>
-        /// <param name="teamId"></param>
-        private async Task QuitAndMakeAsync(int teamId) {
-            // Thoát và chế tạo một lúc (không chờ server gửi msg thoát xong rồi mới chế tạo).
-            await Task.WhenAll(QuitAsync(teamId), MakeAsync(teamId));
+            var team = (WeaveTeam) item.RowObject;
+            await packetWriter.JoinWeaveAsync(team.Id);
         }
 
         private async void disbandButton_Click(object sender, EventArgs e) {
-            if (currentTeamId != NoTeam) {
-                await DisbandAsync(currentTeamId);
+            if (!IsHosting()) {
+                return;
             }
+            await packetWriter.DisbandWeaveAsync(currentTeamId);
         }
 
         private async void makeButton_Click(object sender, EventArgs e) {
-            if (currentTeamId != NoTeam) {
-                await MakeAsync(currentTeamId);
+            if (!IsHosting()) {
+                return;
             }
+            await packetWriter.MakeWeaveAsync(currentTeamId);
         }
-
-        // private void forceAttackButton_Click(object sender, EventArgs e) {
-        // Mở giao diện vải.
-        //     packetWriter.SendCommand("45201");
-        // }
 
         private async void createButton_Click(object sender, EventArgs e) {
             var textileLevel = (int) textileLevelInput.Value;
-            await CreateAsync(textileLevel, TeamLimit.Nation);
+            await packetWriter.CreateWeaveAsync(textileLevel, WeaveTeamLimit.Nation);
         }
 
         private async void createLegionButton_Click(object sender, EventArgs e) {
             var textileLevel = (int) textileLevelInput.Value;
-            await CreateAsync(textileLevel, TeamLimit.Legion);
+            await packetWriter.CreateWeaveAsync(textileLevel, WeaveTeamLimit.Legion);
         }
 
         private async void memberList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
-            if (currentTeamId != NoTeam) {
-                var item = e.Item;
-                var member = (Member) item.RowObject;
-                await KickAsync(currentTeamId, member.Id);
+            if (!IsInParty()) {
+                return;
             }
+            var item = e.Item;
+            var member = (WeaveMember) item.RowObject;
+            await packetWriter.KickWeaveAsync(currentTeamId, member.Id);
         }
 
         private async void quitButton_Click(object sender, EventArgs e) {
-            if (currentTeamId != NoTeam) {
-                await QuitAsync(currentTeamId);
+            if (!IsInParty()) {
+                return;
             }
+            await packetWriter.QuitWeaveAsync(currentTeamId);
         }
 
         private async void quitAndMakeButton_Click(object sender, EventArgs e) {
-            await QuitAndMakeAsync(currentTeamId);
+            if (!IsInParty()) {
+                return;
+            }
+            await packetWriter.QuitAndMakeWeaveAsync(currentTeamId);
         }
 
         /// <summary>
-        /// Checks whether the current player is hosting any weaving party.
+        /// Kiểm tra xem người chơi hiện tại có đang lập tổ đội nào không?
+        /// Lập tổ đội không có nghĩa là phải ở trong tổ đội (lập xong thoát).
         /// </summary>
-        /// <returns>True if the the current player is hosting a weaving party, false otherwise</returns>
         private bool IsHosting() {
-            return teams.Any(team => team.Id == currentTeamId);
+            return teams.Count > 0 && teams.Any(team => team.Name == infoModel.PlayerName);
+        }
+
+        /// <summary>
+        /// Kiểm tra xem người chơi hiện tại có đang trong tổ đội nào không?
+        /// </summary>
+        private bool IsInParty() {
+            return currentTeamId != NoTeam;
         }
 
         private async Task TryAutoRefreshAsync() {
@@ -498,16 +299,20 @@ namespace k8asd {
         /// </summary>
         private async Task TryAutoCreateAsync() {
             if (!autoCreate.Checked) {
+                // Chưa bật.
                 return;
             }
-            if (cooldown.WeaveCooldown > 0) {
+            if (cooldownModel.WeaveCooldown > 0) {
+                // Chưa hết đóng băng.
                 return;
             }
             if (IsHosting()) {
+                // Đã lập tổ đội.
                 return;
             }
+            // OK.
             var textileLevel = (int) autoTextileLevelInput.Value;
-            await CreateAsync(textileLevel, TeamLimit.Nation);
+            await packetWriter.CreateWeaveAsync(textileLevel, WeaveTeamLimit.Nation);
         }
 
         /// <summary>
@@ -522,25 +327,32 @@ namespace k8asd {
         /// </summary>
         private async Task TryAutoMakeAsync() {
             if (!autoMake.Checked) {
+                // Chưa bật.
                 return;
             }
             var textilePrice = (int) textilePriceInput.Value;
             if (currentTextilePrice < textilePrice) {
+                // Giá chưa đủ cao.
                 return;
             }
             if (!IsHosting()) {
+                // Chưa lập tổ đội.
+                return;
+            }
+            if (!IsInParty()) {
+                // Không nằm trong tổ đội.
                 return;
             }
             if (members.Count < 3) {
+                // Chưa đủ số lượng thành viên/
                 return;
             }
             if (autoQuitAndMake.Checked && currentTurnCount <= 1) {
+                // Ưu tiên kéo dệt.
                 return;
             }
-            if (!CheckLimitPlayer()) {
-                return;
-            }
-            await MakeAsync(currentTeamId);
+            // OK.
+            await packetWriter.MakeWeaveAsync(currentTeamId);
         }
 
         /// <summary>
@@ -548,18 +360,31 @@ namespace k8asd {
         /// </summary>
         private async Task TryAutoQuitAndMakeAsync() {
             if (!autoQuitAndMake.Checked) {
+                // Chưa bật.
                 return;
             }
             if (!IsHosting()) {
+                // Chưa lập tổ đội.
+                return;
+            }
+            if (!IsInParty()) {
+                // Không nằm trong tổ đội.
                 return;
             }
             if (members.Count < 3) {
+                // Chưa đủ số lượng thành viên.
                 return;
             }
             if (autoMake.Checked && currentTurnCount > 1) {
+                // Ưu tiên dệt chung trước.
                 return;
             }
-            await QuitAndMakeAsync(currentTeamId);
+            // OK.
+            await packetWriter.QuitAndMakeWeaveAsync(currentTeamId);
+        }
+
+        private List<string> ParsePlayers(string input) {
+            return input.Split(',').ToList();
         }
 
         /// <summary>
@@ -568,43 +393,60 @@ namespace k8asd {
         /// <returns>True nếu tất cả thành viên đều phù hợp</returns>
         private bool CheckLimitPlayer() {
             if (!IsHosting()) {
+                // Chưa lập tổ đội.
                 return true;
             }
-            var slot1 = slot1PlayerInput.Text;
-            var slot2 = slot2PlayerInput.Text;
-            if (slot1.Length == 0 && slot2.Length == 0) {
-                // Two `anyone` slots.
+
+            if (!IsInParty()) {
+                // Không nằm trong tổ đội (lập tổ đội xong thoát).
                 return true;
             }
-            if (slot1.Length == 0 || slot2.Length == 0) {
-                // One `anyone` slot.
+
+            var slot1Players = ParsePlayers(slot1PlayerInput.Text);
+            var slot2Players = ParsePlayers(slot2PlayerInput.Text);
+            if (slot1Players.Count == 0 && slot2Players.Count == 0) {
+                // Ai vào cũng được.
+                return true;
+            }
+
+            if (slot1Players.Count == 0 || slot2Players.Count == 0) {
+                // Có 1 slot ai vào cũng được.
                 if (members.Count < 3) {
-                    // Still have a spare slot.
+                    // Vẫn còn 1 slot trống, chưa cần kick.
                     return true;
                 }
 
-                if (slot1.Length == 0) {
+                if (slot1Players.Count == 0) {
                     // Swap.
-                    var temp = slot2;
-                    slot2 = slot1;
-                    slot1 = temp;
+                    var temp = slot1Players;
+                    slot2Players = slot1Players;
+                    slot1Players = temp;
                 }
 
-                if (members.Any(member => member.Name == slot1)) {
+                if (slot1Players.Contains(members[1].Name) ||
+                    slot1Players.Contains(members[2].Name)) {
                     // OK.
                     return true;
                 }
-                KickAsync(currentTeamId, members[1].Id).Forget();
+
+                // Kick slot 1.
+                packetWriter.KickWeaveAsync(currentTeamId, members[1].Id).Forget();
                 return false;
             }
 
-            for (int i = 1; i < members.Count; ++i) {
-                var member = members[i];
-                if (member.Name != slot1 && member.Name != slot2) {
-                    KickAsync(currentTeamId, member.Id).Forget();
-                    return false;
-                }
+            // Kiểm tra slot 1.
+            if (members.Count > 1 && !slot1Players.Contains(members[1].Name)) {
+                packetWriter.KickWeaveAsync(currentTeamId, members[1].Id).Forget();
+                return false;
             }
+
+            // Kiểm tra slot 2.
+            if (members.Count > 2 && !slot2Players.Contains(members[2].Name)) {
+                packetWriter.KickWeaveAsync(currentTeamId, members[2].Id).Forget();
+                return false;
+            }
+
+            // OK.
             return true;
         }
     }
