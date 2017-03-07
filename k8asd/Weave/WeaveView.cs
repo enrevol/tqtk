@@ -140,6 +140,8 @@ namespace k8asd {
             if (type == 1) {
                 // Bị ra khỏi tổ đội mà tổ đội biến mất luôn (giải tán/vừa dệt xong).
                 currentTeamId = NoTeam;
+                members.Clear();
+                memberList.SetObjects(members, true);
                 return;
             }
             if (type == 2) {
@@ -154,6 +156,12 @@ namespace k8asd {
             if (type == 3) {
                 // Bị ra khỏi tổ đội mà tổ đội vẫn còn tồn tại (thoát ra/bị kick).
                 currentTeamId = NoTeam;
+                if (IsHosting()) {
+                    // Chủ tổ đội thoát tổ đội.
+                } else {
+                    members.Clear();
+                    memberList.SetObjects(members, true);
+                }
                 return;
             }
             Debug.Assert(false);
