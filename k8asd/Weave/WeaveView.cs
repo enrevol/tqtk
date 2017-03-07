@@ -63,7 +63,7 @@ namespace k8asd {
                    team.Cost, team.Price, team.SuccessRate, team.CriticalRate);
             };
 
-            teamColumn.AspectGetter = (obj) => {
+            memberColumn.AspectGetter = (obj) => {
                 var member = (WeaveMember) obj;
                 return String.Format("{0} Lv. {1} - Công nhân {2}",
                     member.Name, member.Level, member.SpinnerLevel);
