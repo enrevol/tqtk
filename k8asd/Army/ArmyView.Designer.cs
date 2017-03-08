@@ -37,6 +37,8 @@
             this.baseHonorLabel = new System.Windows.Forms.Label();
             this.refreshTeamButton = new System.Windows.Forms.Button();
             this.teamBox = new System.Windows.Forms.GroupBox();
+            this.chkAutoPt = new System.Windows.Forms.CheckBox();
+            this.chkKick = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.autoCreateTeam2 = new System.Windows.Forms.RadioButton();
             this.autoCreateTeam1 = new System.Windows.Forms.RadioButton();
@@ -66,7 +68,6 @@
             this.btnRemoveAccClone = new System.Windows.Forms.Button();
             this.btnAddAccClone = new System.Windows.Forms.Button();
             this.txtNameAccClone = new System.Windows.Forms.TextBox();
-            this.chkKick = new System.Windows.Forms.CheckBox();
             this.armyInfoBox.SuspendLayout();
             this.teamBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -191,6 +192,7 @@
             // 
             // teamBox
             // 
+            this.teamBox.Controls.Add(this.chkAutoPt);
             this.teamBox.Controls.Add(this.chkKick);
             this.teamBox.Controls.Add(this.groupBox1);
             this.teamBox.Controls.Add(this.createLegionButton);
@@ -211,6 +213,27 @@
             this.teamBox.TabIndex = 21;
             this.teamBox.TabStop = false;
             this.teamBox.Text = "Danh sách tổ đội";
+            // 
+            // chkAutoPt
+            // 
+            this.chkAutoPt.AutoSize = true;
+            this.chkAutoPt.Location = new System.Drawing.Point(193, 105);
+            this.chkAutoPt.Name = "chkAutoPt";
+            this.chkAutoPt.Size = new System.Drawing.Size(111, 17);
+            this.chkAutoPt.TabIndex = 33;
+            this.chkAutoPt.Text = "Tự lập quân đoàn";
+            this.chkAutoPt.UseVisualStyleBackColor = true;
+            this.chkAutoPt.CheckedChanged += new System.EventHandler(this.chkAutoPt_CheckedChanged);
+            // 
+            // chkKick
+            // 
+            this.chkKick.AutoSize = true;
+            this.chkKick.Location = new System.Drawing.Point(193, 43);
+            this.chkKick.Name = "chkKick";
+            this.chkKick.Size = new System.Drawing.Size(136, 56);
+            this.chkKick.TabIndex = 32;
+            this.chkKick.Text = "Đá văng thành viên \r\nkhông trong danh sách\r\nđồng ý đi quân đoàn\r\n\r\n";
+            this.chkKick.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -522,16 +545,6 @@
             this.txtNameAccClone.Size = new System.Drawing.Size(158, 20);
             this.txtNameAccClone.TabIndex = 102;
             // 
-            // chkKick
-            // 
-            this.chkKick.AutoSize = true;
-            this.chkKick.Location = new System.Drawing.Point(193, 43);
-            this.chkKick.Name = "chkKick";
-            this.chkKick.Size = new System.Drawing.Size(136, 56);
-            this.chkKick.TabIndex = 32;
-            this.chkKick.Text = "Đá văng thành viên \r\nkhông trong danh sách\r\nđồng ý đi quân đoàn\r\n\r\n";
-            this.chkKick.UseVisualStyleBackColor = true;
-            // 
             // ArmyView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -612,5 +625,6 @@
         private System.Windows.Forms.Button btnAddAccClone;
         private System.Windows.Forms.TextBox txtNameAccClone;
         private System.Windows.Forms.CheckBox chkKick;
+        private System.Windows.Forms.CheckBox chkAutoPt;
     }
 }

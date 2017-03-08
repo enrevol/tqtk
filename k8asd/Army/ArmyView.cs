@@ -16,6 +16,8 @@ namespace k8asd {
     public partial class ArmyView : UserControl, IPacketReader {
         private string FILE_DS = "dsacc.data";
         private static List<string> listAcc = new List<string>();
+        private Timer twoSecondTimer;
+        private bool isCreating = false;
 
         private enum TeamLimit {
             /// <summary>
@@ -226,6 +228,9 @@ namespace k8asd {
             members = new BindingList<Member>();
 
             loadClones();
+            twoSecondTimer = new Timer();
+            twoSecondTimer.Interval = 2000;
+            twoSecondTimer.Tick += TwoSecondTimer_Tick;
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -287,6 +292,18 @@ namespace k8asd {
         public void OnPacketReceived(Packet packet) {
             if (packet.CommandId == "34108") {
                 Parse34108(packet);
+            }
+
+            if (packet.CommandId == "34101")
+            {
+                if (!packet.Message.ToLower().Contains("ngài đã đánh bại bang hội này"))
+                {
+                    isCreating = true;
+                }   
+            }
+            if (packet.CommandId == "34105" || packet.CommandId == "34106" || packet.CommandId == "34107")
+            {
+                isCreating = false;
             }
         }
 
@@ -398,8 +415,10 @@ namespace k8asd {
         /// <param name="minimumLevel">Giới hạn cấp độ tối thiểu.</param>
         /// <param name="limit">Giới hạn chung</param>
         private async Task CreateAsync(int armyId, int minimumLevel, TeamLimit limit) {
-            await packetWriter.SendCommandAsync("34101", armyId.ToString(),
-                String.Format("4:{0};{1}", minimumLevel, (int) limit), "0");
+            if (!isCreating)
+            {
+                await packetWriter.SendCommandAsync("34101", armyId.ToString(), String.Format("4:{0};{1}", minimumLevel, (int)limit), "0");
+            }
         }
 
         /// <summary>
@@ -495,6 +514,11 @@ namespace k8asd {
             itemLabel.Text = army.ItemName;
             limitLabel.Text = String.Format("Giới hạn: {0}/{1}", army.Limit, army.MaxLimit);
             honorLabel.Text = String.Format("Chiến tích: {0}", army.Honor);
+            this.autoRefreshTeamBox.Checked = true;
+            if (isCreating)
+            {
+                this.disbandButton.PerformClick();
+            }
         }
 
         private async void refreshTeamTimer_Tick(object sender, EventArgs e) {
@@ -652,6 +676,24 @@ namespace k8asd {
         private void btnLoadAccClone_Click(object sender, EventArgs e)
         {
             loadClones();
+        }
+
+        private void TwoSecondTimer_Tick(object sender, EventArgs e)
+        {
+            this.createButton.PerformClick();
+        }
+
+        private void chkAutoPt_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.chkAutoPt.Checked)
+            {
+                twoSecondTimer.Start();
+            }
+            else
+            {
+                isCreating = false;
+                twoSecondTimer.Stop();
+            }
         }
     }
 

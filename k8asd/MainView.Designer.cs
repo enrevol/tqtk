@@ -90,7 +90,7 @@ namespace k8asd
             this.clientList.Location = new System.Drawing.Point(0, 97);
             this.clientList.Name = "clientList";
             this.clientList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.clientList.Size = new System.Drawing.Size(168, 584);
+            this.clientList.Size = new System.Drawing.Size(179, 584);
             this.clientList.TabIndex = 0;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
