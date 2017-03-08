@@ -624,6 +624,7 @@ namespace k8asd {
         public void loadClones()
         {
             listAcc = new List<string>();
+            this.lbList.Items.Clear();
             if (File.Exists(FILE_DS))
             {
                 string[] lines = System.IO.File.ReadAllLines(FILE_DS);
