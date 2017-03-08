@@ -223,7 +223,13 @@ namespace k8asd {
         }
 
         private async void timerArena_Tick(object sender, EventArgs e) {
-            int maxCooldown = (players.Count == 0 ? 0 : players.Max(player => player.Cooldown));
+            if (players.Count == 0) {
+                LogInfo("Không có tài khoản để khiêu chiến.");
+                autoDuelCheck.Checked = false;
+                return;
+            }
+
+            int maxCooldown = players.Max(player => player.Cooldown);
             cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
 
             if (!autoDuelCheck.Checked) {
