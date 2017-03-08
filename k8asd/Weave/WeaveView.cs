@@ -250,14 +250,14 @@ namespace k8asd {
             if (!IsHosting()) {
                 return;
             }
-            await packetWriter.DisbandWeaveAsync(currentTeamId);
+            await packetWriter.DisbandWeaveAsync(GetHostingTeamId());
         }
 
         private async void makeButton_Click(object sender, EventArgs e) {
             if (!IsHosting()) {
                 return;
             }
-            await packetWriter.MakeWeaveAsync(currentTeamId);
+            await packetWriter.MakeWeaveAsync(GetHostingTeamId());
         }
 
         private async void createButton_Click(object sender, EventArgs e) {
@@ -299,6 +299,13 @@ namespace k8asd {
         /// </summary>
         private bool IsHosting() {
             return teams.Count > 0 && teams.Any(team => team.Name == infoModel.PlayerName);
+        }
+
+        private int GetHostingTeamId() {
+            if (!IsHosting()) {
+                return NoTeam;
+            }
+            return teams.First(team => team.Name == infoModel.PlayerName).Id;
         }
 
         /// <summary>
