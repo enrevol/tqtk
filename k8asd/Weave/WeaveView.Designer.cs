@@ -430,10 +430,11 @@
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(15, 250);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(259, 52);
+            label1.Size = new System.Drawing.Size(259, 65);
             label1.TabIndex = 39;
-            label1.Text = "Chú ý:\r\n- Để trống thì ai vào cũng được.\r\n- Nhập đúng tên kể cả chữ viết hoa viết" +
-    " thường.\r\n- Những ai không đủ điều kiện thì sẽ bị kick ra tổ đội.";
+            label1.Text = "Chú ý:\r\n- Để trống thì ai vào cũng được.\r\n- Tên người chơi phân cách nhau bởi dấu" +
+    " phẩy.\r\n- Nhập đúng tên kể cả chữ viết hoa viết thường.\r\n- Những ai không đủ điề" +
+    "u kiện thì sẽ bị kick ra tổ đội.";
             // 
             // label2
             // 
