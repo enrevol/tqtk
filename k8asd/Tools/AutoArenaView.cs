@@ -252,6 +252,12 @@ namespace k8asd {
             }
 
             await RefreshPlayersAsync();
+            int recheckedMaxCooldown = players.Max(player => player.Cooldown);
+            if (recheckedMaxCooldown > 0) {
+                // Kiểm tra lại.
+                return;
+            }
+
             await DuelAndRefreshAsync();
             await DuelAndRefreshAsync();
             await DuelAndRefreshAsync();
