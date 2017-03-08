@@ -10,9 +10,13 @@ using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using BrightIdeasSoftware;
+using System.IO;
 
 namespace k8asd {
     public partial class ArmyView : UserControl, IPacketReader {
+        private string FILE_DS = "dsacc.data";
+        private static List<string> listAcc = new List<string>();
+
         private enum TeamLimit {
             /// <summary>
             /// Không giới hạn.
@@ -220,6 +224,8 @@ namespace k8asd {
 
             teams = new BindingList<Team>();
             members = new BindingList<Member>();
+
+            loadClones();
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -344,7 +350,7 @@ namespace k8asd {
             teamList.SelectedIndex = oldSelectedIndex;
         }
 
-        private void ParseMembers(JToken token) {
+        private async void ParseMembers(JToken token) {
             members.Clear();
             foreach (var memberToken in token) {
                 var member = Member.Parse(memberToken);
@@ -353,6 +359,18 @@ namespace k8asd {
             var oldSelectedIndex = memberList.SelectedIndex;
             memberList.SetObjects(members, true);
             memberList.SelectedIndex = oldSelectedIndex;
+
+            //auto kick
+            if (this.chkKick.Checked)
+            {
+                for (int i = 0; i < members.Count; i++)
+                {
+                    if (!findInList(members[i].Name))
+                    {
+                        await KickPlayerAsync(members[i].Id);
+                    }
+                }
+            }
         }
 
         private void UpdateArmyPanel(JToken token) {
@@ -561,6 +579,79 @@ namespace k8asd {
             if (autoRefreshTeamBox.Checked) {
                 await RefreshSelectedArmyAsync();
             }
+        }
+
+        #region Add clone vao listbox
+        public void addClone(string name)
+        {
+            this.lbList.Items.Add(name);
+            listAcc.Add(name);
+        }
+        #endregion
+
+        #region Remove clone vao listbox
+        public void removeClone(string name)
+        {
+            this.lbList.Items.Remove(name);
+            listAcc.Remove(name);
+        }
+        #endregion
+
+        public void loadClones()
+        {
+            listAcc = new List<string>();
+            if (File.Exists(FILE_DS))
+            {
+                string[] lines = System.IO.File.ReadAllLines(FILE_DS);
+
+                foreach (string line in lines)
+                {
+                    this.lbList.Items.Add(line);
+                    listAcc.Add(line);
+                }
+            }
+        }
+
+        public bool findInList(string name)
+        {
+            for (int i = 0; i < listAcc.Count; i++)
+            {
+                if (name == listAcc[i].ToString())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void btnAddAccClone_Click(object sender, EventArgs e)
+        {
+            addClone(txtNameAccClone.Text);
+            using (System.IO.StreamWriter listDef = new System.IO.StreamWriter(FILE_DS, true))
+            {
+                listDef.WriteLine(txtNameAccClone.Text);
+            }
+        }
+
+        private void btnRemoveAccClone_Click(object sender, EventArgs e)
+        {
+            if (this.lbList.SelectedItem != null)
+            {
+                string curItem = this.lbList.SelectedItem.ToString();
+                removeClone(curItem);
+            }
+            using (System.IO.StreamWriter listDef = new System.IO.StreamWriter(FILE_DS, false))
+            {
+                for (int i = 0; i < this.lbList.Items.Count; i++)
+                {
+                    listDef.WriteLine(this.lbList.Items[i].ToString());
+                }
+            }
+        }
+
+        private void btnLoadAccClone_Click(object sender, EventArgs e)
+        {
+            loadClones();
         }
     }
 

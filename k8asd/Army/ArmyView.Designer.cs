@@ -37,6 +37,10 @@
             this.baseHonorLabel = new System.Windows.Forms.Label();
             this.refreshTeamButton = new System.Windows.Forms.Button();
             this.teamBox = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.autoCreateTeam2 = new System.Windows.Forms.RadioButton();
+            this.autoCreateTeam1 = new System.Windows.Forms.RadioButton();
+            this.autoCreateTeam0 = new System.Windows.Forms.RadioButton();
             this.createLegionButton = new System.Windows.Forms.Button();
             this.createButton = new System.Windows.Forms.Button();
             this.inviteButton = new System.Windows.Forms.Button();
@@ -56,17 +60,20 @@
             this.memberBox = new System.Windows.Forms.GroupBox();
             this.autoRefreshTeamBox = new System.Windows.Forms.CheckBox();
             this.refreshTeamInterval = new System.Windows.Forms.NumericUpDown();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.autoCreateTeam0 = new System.Windows.Forms.RadioButton();
-            this.autoCreateTeam1 = new System.Windows.Forms.RadioButton();
-            this.autoCreateTeam2 = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lbList = new System.Windows.Forms.ListBox();
+            this.btnLoadAccClone = new System.Windows.Forms.Button();
+            this.btnRemoveAccClone = new System.Windows.Forms.Button();
+            this.btnAddAccClone = new System.Windows.Forms.Button();
+            this.txtNameAccClone = new System.Windows.Forms.TextBox();
+            this.chkKick = new System.Windows.Forms.CheckBox();
             this.armyInfoBox.SuspendLayout();
             this.teamBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).BeginInit();
             this.memberBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // armyList
@@ -184,6 +191,7 @@
             // 
             // teamBox
             // 
+            this.teamBox.Controls.Add(this.chkKick);
             this.teamBox.Controls.Add(this.groupBox1);
             this.teamBox.Controls.Add(this.createLegionButton);
             this.teamBox.Controls.Add(this.createButton);
@@ -203,6 +211,50 @@
             this.teamBox.TabIndex = 21;
             this.teamBox.TabStop = false;
             this.teamBox.Text = "Danh sách tổ đội";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.autoCreateTeam2);
+            this.groupBox1.Controls.Add(this.autoCreateTeam1);
+            this.groupBox1.Controls.Add(this.autoCreateTeam0);
+            this.groupBox1.Location = new System.Drawing.Point(10, 40);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(145, 91);
+            this.groupBox1.TabIndex = 31;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Tự động lập tổ đội";
+            // 
+            // autoCreateTeam2
+            // 
+            this.autoCreateTeam2.AutoSize = true;
+            this.autoCreateTeam2.Location = new System.Drawing.Point(13, 65);
+            this.autoCreateTeam2.Name = "autoCreateTeam2";
+            this.autoCreateTeam2.Size = new System.Drawing.Size(50, 17);
+            this.autoCreateTeam2.TabIndex = 2;
+            this.autoCreateTeam2.Text = "Bang";
+            this.autoCreateTeam2.UseVisualStyleBackColor = true;
+            // 
+            // autoCreateTeam1
+            // 
+            this.autoCreateTeam1.AutoSize = true;
+            this.autoCreateTeam1.Location = new System.Drawing.Point(12, 43);
+            this.autoCreateTeam1.Name = "autoCreateTeam1";
+            this.autoCreateTeam1.Size = new System.Drawing.Size(68, 17);
+            this.autoCreateTeam1.TabIndex = 1;
+            this.autoCreateTeam1.Text = "Quốc gia";
+            this.autoCreateTeam1.UseVisualStyleBackColor = true;
+            // 
+            // autoCreateTeam0
+            // 
+            this.autoCreateTeam0.AutoSize = true;
+            this.autoCreateTeam0.Checked = true;
+            this.autoCreateTeam0.Location = new System.Drawing.Point(12, 21);
+            this.autoCreateTeam0.Name = "autoCreateTeam0";
+            this.autoCreateTeam0.Size = new System.Drawing.Size(96, 17);
+            this.autoCreateTeam0.TabIndex = 0;
+            this.autoCreateTeam0.TabStop = true;
+            this.autoCreateTeam0.Text = "Không giới hạn";
+            this.autoCreateTeam0.UseVisualStyleBackColor = true;
             // 
             // createLegionButton
             // 
@@ -416,55 +468,80 @@
             0});
             this.refreshTeamInterval.ValueChanged += new System.EventHandler(this.refreshTeamInterval_ValueChanged);
             // 
-            // groupBox1
+            // label1
             // 
-            this.groupBox1.Controls.Add(this.autoCreateTeam2);
-            this.groupBox1.Controls.Add(this.autoCreateTeam1);
-            this.groupBox1.Controls.Add(this.autoCreateTeam0);
-            this.groupBox1.Location = new System.Drawing.Point(10, 40);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(145, 91);
-            this.groupBox1.TabIndex = 31;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Tự động lập tổ đội";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(594, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(161, 13);
+            this.label1.TabIndex = 27;
+            this.label1.Text = "Danh sách đồng ý di quân đoàn";
             // 
-            // autoCreateTeam0
+            // lbList
             // 
-            this.autoCreateTeam0.AutoSize = true;
-            this.autoCreateTeam0.Location = new System.Drawing.Point(12, 21);
-            this.autoCreateTeam0.Name = "autoCreateTeam0";
-            this.autoCreateTeam0.Size = new System.Drawing.Size(96, 17);
-            this.autoCreateTeam0.TabIndex = 0;
-            this.autoCreateTeam0.TabStop = true;
-            this.autoCreateTeam0.Text = "Không giới hạn";
-            this.autoCreateTeam0.UseVisualStyleBackColor = true;
+            this.lbList.FormattingEnabled = true;
+            this.lbList.Location = new System.Drawing.Point(597, 79);
+            this.lbList.Name = "lbList";
+            this.lbList.Size = new System.Drawing.Size(158, 446);
+            this.lbList.TabIndex = 28;
             // 
-            // autoCreateTeam1
+            // btnLoadAccClone
             // 
-            this.autoCreateTeam1.AutoSize = true;
-            this.autoCreateTeam1.Location = new System.Drawing.Point(10, 43);
-            this.autoCreateTeam1.Name = "autoCreateTeam1";
-            this.autoCreateTeam1.Size = new System.Drawing.Size(68, 17);
-            this.autoCreateTeam1.TabIndex = 1;
-            this.autoCreateTeam1.TabStop = true;
-            this.autoCreateTeam1.Text = "Quốc gia";
-            this.autoCreateTeam1.UseVisualStyleBackColor = true;
+            this.btnLoadAccClone.Location = new System.Drawing.Point(705, 50);
+            this.btnLoadAccClone.Name = "btnLoadAccClone";
+            this.btnLoadAccClone.Size = new System.Drawing.Size(50, 23);
+            this.btnLoadAccClone.TabIndex = 101;
+            this.btnLoadAccClone.Text = "Load";
+            this.btnLoadAccClone.UseVisualStyleBackColor = true;
+            this.btnLoadAccClone.Click += new System.EventHandler(this.btnLoadAccClone_Click);
             // 
-            // autoCreateTeam2
+            // btnRemoveAccClone
             // 
-            this.autoCreateTeam2.AutoSize = true;
-            this.autoCreateTeam2.Location = new System.Drawing.Point(11, 65);
-            this.autoCreateTeam2.Name = "autoCreateTeam2";
-            this.autoCreateTeam2.Size = new System.Drawing.Size(50, 17);
-            this.autoCreateTeam2.TabIndex = 2;
-            this.autoCreateTeam2.TabStop = true;
-            this.autoCreateTeam2.Text = "Bang";
-            this.autoCreateTeam2.UseVisualStyleBackColor = true;
+            this.btnRemoveAccClone.Location = new System.Drawing.Point(656, 50);
+            this.btnRemoveAccClone.Name = "btnRemoveAccClone";
+            this.btnRemoveAccClone.Size = new System.Drawing.Size(43, 23);
+            this.btnRemoveAccClone.TabIndex = 100;
+            this.btnRemoveAccClone.Text = "Del";
+            this.btnRemoveAccClone.UseVisualStyleBackColor = true;
+            this.btnRemoveAccClone.Click += new System.EventHandler(this.btnRemoveAccClone_Click);
+            // 
+            // btnAddAccClone
+            // 
+            this.btnAddAccClone.Location = new System.Drawing.Point(598, 50);
+            this.btnAddAccClone.Name = "btnAddAccClone";
+            this.btnAddAccClone.Size = new System.Drawing.Size(52, 23);
+            this.btnAddAccClone.TabIndex = 99;
+            this.btnAddAccClone.Text = "Add";
+            this.btnAddAccClone.UseVisualStyleBackColor = true;
+            this.btnAddAccClone.Click += new System.EventHandler(this.btnAddAccClone_Click);
+            // 
+            // txtNameAccClone
+            // 
+            this.txtNameAccClone.Location = new System.Drawing.Point(597, 27);
+            this.txtNameAccClone.Name = "txtNameAccClone";
+            this.txtNameAccClone.Size = new System.Drawing.Size(158, 20);
+            this.txtNameAccClone.TabIndex = 102;
+            // 
+            // chkKick
+            // 
+            this.chkKick.AutoSize = true;
+            this.chkKick.Location = new System.Drawing.Point(193, 43);
+            this.chkKick.Name = "chkKick";
+            this.chkKick.Size = new System.Drawing.Size(136, 56);
+            this.chkKick.TabIndex = 32;
+            this.chkKick.Text = "Đá văng thành viên \r\nkhông trong danh sách\r\nđồng ý đi quân đoàn\r\n\r\n";
+            this.chkKick.UseVisualStyleBackColor = true;
             // 
             // ArmyView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtNameAccClone);
+            this.Controls.Add(this.btnLoadAccClone);
+            this.Controls.Add(this.btnRemoveAccClone);
+            this.Controls.Add(this.btnAddAccClone);
+            this.Controls.Add(this.lbList);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.refreshTeamInterval);
             this.Controls.Add(this.autoRefreshTeamBox);
             this.Controls.Add(this.memberBox);
@@ -479,12 +556,12 @@
             this.armyInfoBox.PerformLayout();
             this.teamBox.ResumeLayout(false);
             this.teamBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.teamList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberList)).EndInit();
             this.memberBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.refreshTeamInterval)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -528,5 +605,12 @@
         private System.Windows.Forms.RadioButton autoCreateTeam2;
         private System.Windows.Forms.RadioButton autoCreateTeam1;
         private System.Windows.Forms.RadioButton autoCreateTeam0;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox lbList;
+        private System.Windows.Forms.Button btnLoadAccClone;
+        private System.Windows.Forms.Button btnRemoveAccClone;
+        private System.Windows.Forms.Button btnAddAccClone;
+        private System.Windows.Forms.TextBox txtNameAccClone;
+        private System.Windows.Forms.CheckBox chkKick;
     }
 }
