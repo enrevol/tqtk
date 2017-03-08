@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace k8asd {
@@ -88,6 +89,17 @@ namespace k8asd {
 
         private void UpdateExtraYinkuang(bool available) {
             extraYinkuangLabel.Visible = available;
+        }
+
+        private IPacketWriter packetWriter;
+        public void SetPacketWriter(IPacketWriter writer)
+        {
+            packetWriter = writer;
+        }
+
+        private async void btnPhaBangQD_Click(object sender, EventArgs e)
+        {
+            await packetWriter.SendCommandAsync("11301", "4", "0");
         }
     }
 }

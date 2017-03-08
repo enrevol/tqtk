@@ -36,8 +36,18 @@ namespace k8asd {
             }
         }
 
-        private void logoutButton_Click(object sender, EventArgs e) {
-
+        private async void logoutButton_Click(object sender, EventArgs e) {
+            var selectedClients = new List<ClientView>();
+            var items = clientList.SelectedItems;
+            foreach (var item in items)
+            {
+                var client = (ClientView)item;
+                selectedClients.Add(client);
+            }
+            foreach (var client in selectedClients)
+            {
+                await client.LogOut();
+            }
         }
 
         private void addButton_Click(object sender, EventArgs e) {

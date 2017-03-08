@@ -30,6 +30,7 @@
             this.extraNongtianLabel = new System.Windows.Forms.Label();
             this.extraYinkuangLabel = new System.Windows.Forms.Label();
             this.mcuCooldownLabel = new System.Windows.Forms.Label();
+            this.btnCoolDown = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // mcuLabel
@@ -46,7 +47,7 @@
             // 
             this.extraZhengzhanLabel.AccessibleName = "";
             this.extraZhengzhanLabel.AutoSize = true;
-            this.extraZhengzhanLabel.Location = new System.Drawing.Point(100, 5);
+            this.extraZhengzhanLabel.Location = new System.Drawing.Point(98, 5);
             this.extraZhengzhanLabel.Name = "extraZhengzhanLabel";
             this.extraZhengzhanLabel.Size = new System.Drawing.Size(15, 13);
             this.extraZhengzhanLabel.TabIndex = 6;
@@ -56,7 +57,7 @@
             // 
             this.extraGongjiLabel.AccessibleName = "";
             this.extraGongjiLabel.AutoSize = true;
-            this.extraGongjiLabel.Location = new System.Drawing.Point(120, 5);
+            this.extraGongjiLabel.Location = new System.Drawing.Point(111, 5);
             this.extraGongjiLabel.Name = "extraGongjiLabel";
             this.extraGongjiLabel.Size = new System.Drawing.Size(14, 13);
             this.extraGongjiLabel.TabIndex = 7;
@@ -66,7 +67,7 @@
             // 
             this.extraZhengfuLabel.AccessibleName = "";
             this.extraZhengfuLabel.AutoSize = true;
-            this.extraZhengfuLabel.Location = new System.Drawing.Point(140, 5);
+            this.extraZhengfuLabel.Location = new System.Drawing.Point(126, 5);
             this.extraZhengfuLabel.Name = "extraZhengfuLabel";
             this.extraZhengfuLabel.Size = new System.Drawing.Size(14, 13);
             this.extraZhengfuLabel.TabIndex = 8;
@@ -76,7 +77,7 @@
             // 
             this.extraNongtianLabel.AccessibleName = "";
             this.extraNongtianLabel.AutoSize = true;
-            this.extraNongtianLabel.Location = new System.Drawing.Point(160, 5);
+            this.extraNongtianLabel.Location = new System.Drawing.Point(139, 5);
             this.extraNongtianLabel.Name = "extraNongtianLabel";
             this.extraNongtianLabel.Size = new System.Drawing.Size(15, 13);
             this.extraNongtianLabel.TabIndex = 9;
@@ -86,7 +87,7 @@
             // 
             this.extraYinkuangLabel.AccessibleName = "";
             this.extraYinkuangLabel.AutoSize = true;
-            this.extraYinkuangLabel.Location = new System.Drawing.Point(180, 5);
+            this.extraYinkuangLabel.Location = new System.Drawing.Point(153, 5);
             this.extraYinkuangLabel.Name = "extraYinkuangLabel";
             this.extraYinkuangLabel.Size = new System.Drawing.Size(16, 13);
             this.extraYinkuangLabel.TabIndex = 10;
@@ -96,16 +97,27 @@
             // 
             this.mcuCooldownLabel.AccessibleName = "";
             this.mcuCooldownLabel.AutoSize = true;
-            this.mcuCooldownLabel.Location = new System.Drawing.Point(220, 5);
+            this.mcuCooldownLabel.Location = new System.Drawing.Point(179, 5);
             this.mcuCooldownLabel.Name = "mcuCooldownLabel";
             this.mcuCooldownLabel.Size = new System.Drawing.Size(49, 13);
             this.mcuCooldownLabel.TabIndex = 11;
             this.mcuCooldownLabel.Text = "23:59:59";
             // 
+            // btnCoolDown
+            // 
+            this.btnCoolDown.Location = new System.Drawing.Point(250, -1);
+            this.btnCoolDown.Name = "btnCoolDown";
+            this.btnCoolDown.Size = new System.Drawing.Size(56, 23);
+            this.btnCoolDown.TabIndex = 12;
+            this.btnCoolDown.Text = "PB QD";
+            this.btnCoolDown.UseVisualStyleBackColor = true;
+            this.btnCoolDown.Click += new System.EventHandler(this.btnPhaBangQD_Click);
+            // 
             // McuView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnCoolDown);
             this.Controls.Add(this.mcuCooldownLabel);
             this.Controls.Add(this.extraYinkuangLabel);
             this.Controls.Add(this.extraNongtianLabel);
@@ -114,7 +126,7 @@
             this.Controls.Add(this.extraZhengzhanLabel);
             this.Controls.Add(this.mcuLabel);
             this.Name = "McuView";
-            this.Size = new System.Drawing.Size(272, 22);
+            this.Size = new System.Drawing.Size(319, 22);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,5 +140,6 @@
         private System.Windows.Forms.Label extraNongtianLabel;
         private System.Windows.Forms.Label mcuCooldownLabel;
         private System.Windows.Forms.Label extraYinkuangLabel;
+        private System.Windows.Forms.Button btnCoolDown;
     }
 }

@@ -23,6 +23,7 @@ namespace k8asd {
 
         private LoginHelper loginHelper;
         private PacketHandler packetHandler;
+        private Timer oneSecondTimer;
 
         private enum ConnectionStatus {
             Connecting,
@@ -80,7 +81,7 @@ namespace k8asd {
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
             arenaView.SetLogModel(messageLogModel);
-
+            mcuView.SetPacketWriter(this);
             heroTrainingView.SetPacketWriter(this);
             armyView.SetPacketWriter(this);
             chatLogModel.SetPacketWriter(this);
@@ -133,6 +134,30 @@ namespace k8asd {
             }
         }
 
+        public async Task LogOut()
+        {
+            if (connectionStatus == ConnectionStatus.Connected)
+            {
+                messageLogModel.LogInfo("Đang đăng xuất!");
+                connectionStatus = ConnectionStatus.Disconnected;
+            }
+            try
+            {
+                oneSecondTimer.Stop();
+                if (packetHandler!=null)
+                {
+                    await packetHandler.Disconnect();
+                    packetHandler = null;
+                    messageLogModel.LogInfo("Đăng xuất thành công!");
+                }
+            }
+            catch (Exception ex)
+            {
+                messageLogModel.LogInfo(ex.Message);
+                messageLogModel.LogInfo("Đăng xuất thất bại!");
+            }
+        }
+
         private async Task LogIn(int serverId, string username, string password) {
             Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
             connectionStatus = ConnectionStatus.Connecting;
@@ -176,12 +201,15 @@ namespace k8asd {
                 connectionStatus = ConnectionStatus.Connected;
                 guard.Dismiss();
 
-                timerArmy.Start();
-
                 packetHandler.OnPacketReceived += (sender, packet) => OnPacketReceived(packet);
                 await SendCommandAsync("10100");
                 await SendCommandAsync("11102");
                 // FIXME: handle case character not yet created.
+
+                oneSecondTimer = new Timer();
+                oneSecondTimer.Interval = 150;
+                oneSecondTimer.Tick += OneSecondTimer_Tick;
+                oneSecondTimer.Start();
             }
         }
 
@@ -191,10 +219,15 @@ namespace k8asd {
             }
         }
 
-        private async void timerArmy_Tick(object sender, EventArgs e) {
-            await SendCommandAsync("14102", "3", "0");
-            if (infoModel.Force >= infoModel.MaxForce - 3) {
-                this.timerArmy.Stop();
+        private async void OneSecondTimer_Tick(object sender, EventArgs e)
+        {
+            if(packetHandler != null)
+            {
+                await SendCommandAsync("14102", "3", "0");
+                if (infoModel.Force >= infoModel.MaxForce - 3)
+                {
+                    oneSecondTimer.Stop();
+                }
             }
         }
     }

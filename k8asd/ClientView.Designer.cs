@@ -25,7 +25,6 @@ namespace k8asd {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
             this.barFoodBuy = new System.Windows.Forms.TrackBar();
             this.barFoodSell = new System.Windows.Forms.TrackBar();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -42,7 +41,6 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.timerArmy = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -193,7 +191,7 @@ namespace k8asd {
             // 
             this.mcuView.Location = new System.Drawing.Point(0, 195);
             this.mcuView.Name = "mcuView";
-            this.mcuView.Size = new System.Drawing.Size(272, 22);
+            this.mcuView.Size = new System.Drawing.Size(310, 22);
             this.mcuView.TabIndex = 29;
             // 
             // infoView
@@ -202,10 +200,6 @@ namespace k8asd {
             this.infoView.Name = "infoView";
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
-            // 
-            // timerArmy
-            // 
-            this.timerArmy.Tick += new System.EventHandler(this.timerArmy_Tick);
             // 
             // ClientView
             // 
@@ -248,7 +242,6 @@ namespace k8asd {
         private WeaveView weaveView;
         private TabPage arenaTab;
         private ArenaView arenaView;
-        private Timer timerArmy;
     }
 }
 

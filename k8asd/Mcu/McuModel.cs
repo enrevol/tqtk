@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Windows.Forms;
 
 namespace k8asd {
     class McuModel : IMcuModel, IPacketReader {
@@ -21,6 +22,29 @@ namespace k8asd {
         public event EventHandler<bool> ExtraZhengfuChanged;
         public event EventHandler<bool> ExtraZhengzhanChanged;
 
+        private Cooldown qdCooldown;
+        private Timer oneSecondTimer;
+
+        public McuModel()
+        {
+            qdCooldown = new Cooldown();
+
+            oneSecondTimer = new Timer();
+            oneSecondTimer.Interval = 1000;
+            oneSecondTimer.Tick += OneSecondTimer_Tick;
+            oneSecondTimer.Start();
+        }
+        private void OneSecondTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateCooldowns();
+        }
+
+        private void UpdateCooldowns()
+        {
+            McuCooldownChanged.Raise(this, McuCooldown);
+        }
+
+
         public int Mcu {
             get { return mcu; }
             private set {
@@ -38,9 +62,10 @@ namespace k8asd {
         }
 
         public int McuCooldown {
-            get { return mcuCooldown; }
+            get { return qdCooldown.RemainingMilliseconds; }
             private set {
-                mcuCooldown = value;
+                //mcuCooldown = value;
+                qdCooldown.RemainingMilliseconds = value;
                 McuCooldownChanged.Raise(this, value);
             }
         }
@@ -93,9 +118,13 @@ namespace k8asd {
                     ParseMcu(player);
                 }
             }
-            if (packet.CommandId == "11103") {
+            if (packet.CommandId == "11103" || packet.CommandId == "11301") {
                 var token = JToken.Parse(packet.Message);
                 var playerupdateinfo = token["playerupdateinfo"];
+                if (packet.CommandId == "11301")
+                {
+                    McuCooldown = 0;
+                }
                 if (playerupdateinfo != null) {
                     ParseMcu(playerupdateinfo);
                 }
