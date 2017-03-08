@@ -82,7 +82,7 @@
             this.armyList.FormattingEnabled = true;
             this.armyList.Location = new System.Drawing.Point(5, 120);
             this.armyList.Name = "armyList";
-            this.armyList.Size = new System.Drawing.Size(210, 212);
+            this.armyList.Size = new System.Drawing.Size(210, 407);
             this.armyList.TabIndex = 0;
             this.armyList.SelectedIndexChanged += new System.EventHandler(this.armyList_SelectedIndexChanged);
             // 
@@ -209,7 +209,7 @@
             this.teamBox.Controls.Add(this.baseHonorLabel);
             this.teamBox.Location = new System.Drawing.Point(225, 40);
             this.teamBox.Name = "teamBox";
-            this.teamBox.Size = new System.Drawing.Size(360, 286);
+            this.teamBox.Size = new System.Drawing.Size(360, 350);
             this.teamBox.TabIndex = 21;
             this.teamBox.TabStop = false;
             this.teamBox.Text = "Danh sách tổ đội";
@@ -217,7 +217,7 @@
             // chkAutoPt
             // 
             this.chkAutoPt.AutoSize = true;
-            this.chkAutoPt.Location = new System.Drawing.Point(193, 105);
+            this.chkAutoPt.Location = new System.Drawing.Point(193, 87);
             this.chkAutoPt.Name = "chkAutoPt";
             this.chkAutoPt.Size = new System.Drawing.Size(111, 17);
             this.chkAutoPt.TabIndex = 33;
@@ -228,7 +228,7 @@
             // chkKick
             // 
             this.chkKick.AutoSize = true;
-            this.chkKick.Location = new System.Drawing.Point(193, 43);
+            this.chkKick.Location = new System.Drawing.Point(193, 38);
             this.chkKick.Name = "chkKick";
             this.chkKick.Size = new System.Drawing.Size(136, 56);
             this.chkKick.TabIndex = 32;
@@ -242,7 +242,7 @@
             this.groupBox1.Controls.Add(this.autoCreateTeam0);
             this.groupBox1.Location = new System.Drawing.Point(10, 40);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(145, 91);
+            this.groupBox1.Size = new System.Drawing.Size(145, 69);
             this.groupBox1.TabIndex = 31;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tự động lập tổ đội";
@@ -250,7 +250,7 @@
             // autoCreateTeam2
             // 
             this.autoCreateTeam2.AutoSize = true;
-            this.autoCreateTeam2.Location = new System.Drawing.Point(13, 65);
+            this.autoCreateTeam2.Location = new System.Drawing.Point(12, 47);
             this.autoCreateTeam2.Name = "autoCreateTeam2";
             this.autoCreateTeam2.Size = new System.Drawing.Size(50, 17);
             this.autoCreateTeam2.TabIndex = 2;
@@ -260,7 +260,7 @@
             // autoCreateTeam1
             // 
             this.autoCreateTeam1.AutoSize = true;
-            this.autoCreateTeam1.Location = new System.Drawing.Point(12, 43);
+            this.autoCreateTeam1.Location = new System.Drawing.Point(12, 29);
             this.autoCreateTeam1.Name = "autoCreateTeam1";
             this.autoCreateTeam1.Size = new System.Drawing.Size(68, 17);
             this.autoCreateTeam1.TabIndex = 1;
@@ -271,7 +271,7 @@
             // 
             this.autoCreateTeam0.AutoSize = true;
             this.autoCreateTeam0.Checked = true;
-            this.autoCreateTeam0.Location = new System.Drawing.Point(12, 21);
+            this.autoCreateTeam0.Location = new System.Drawing.Point(12, 13);
             this.autoCreateTeam0.Name = "autoCreateTeam0";
             this.autoCreateTeam0.Size = new System.Drawing.Size(96, 17);
             this.autoCreateTeam0.TabIndex = 0;
@@ -281,7 +281,7 @@
             // 
             // createLegionButton
             // 
-            this.createLegionButton.Location = new System.Drawing.Point(270, 210);
+            this.createLegionButton.Location = new System.Drawing.Point(270, 275);
             this.createLegionButton.Name = "createLegionButton";
             this.createLegionButton.Size = new System.Drawing.Size(80, 30);
             this.createLegionButton.TabIndex = 30;
@@ -291,7 +291,7 @@
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(185, 210);
+            this.createButton.Location = new System.Drawing.Point(185, 275);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(80, 30);
             this.createButton.TabIndex = 29;
@@ -302,7 +302,7 @@
             // inviteButton
             // 
             this.inviteButton.Enabled = false;
-            this.inviteButton.Location = new System.Drawing.Point(10, 245);
+            this.inviteButton.Location = new System.Drawing.Point(10, 310);
             this.inviteButton.Name = "inviteButton";
             this.inviteButton.Size = new System.Drawing.Size(80, 30);
             this.inviteButton.TabIndex = 28;
@@ -311,7 +311,7 @@
             // 
             // quitButton
             // 
-            this.quitButton.Location = new System.Drawing.Point(95, 245);
+            this.quitButton.Location = new System.Drawing.Point(95, 310);
             this.quitButton.Name = "quitButton";
             this.quitButton.Size = new System.Drawing.Size(80, 30);
             this.quitButton.TabIndex = 27;
@@ -321,7 +321,7 @@
             // 
             // disbandButton
             // 
-            this.disbandButton.Location = new System.Drawing.Point(95, 210);
+            this.disbandButton.Location = new System.Drawing.Point(95, 275);
             this.disbandButton.Name = "disbandButton";
             this.disbandButton.Size = new System.Drawing.Size(80, 30);
             this.disbandButton.TabIndex = 26;
@@ -331,7 +331,7 @@
             // 
             // forceAttackButton
             // 
-            this.forceAttackButton.Location = new System.Drawing.Point(185, 245);
+            this.forceAttackButton.Location = new System.Drawing.Point(185, 310);
             this.forceAttackButton.Name = "forceAttackButton";
             this.forceAttackButton.Size = new System.Drawing.Size(80, 30);
             this.forceAttackButton.TabIndex = 25;
@@ -341,7 +341,7 @@
             // 
             // attackButton
             // 
-            this.attackButton.Location = new System.Drawing.Point(10, 210);
+            this.attackButton.Location = new System.Drawing.Point(10, 275);
             this.attackButton.Name = "attackButton";
             this.attackButton.Size = new System.Drawing.Size(80, 30);
             this.attackButton.TabIndex = 24;
@@ -351,7 +351,7 @@
             // 
             // joinX10Button
             // 
-            this.joinX10Button.Location = new System.Drawing.Point(270, 245);
+            this.joinX10Button.Location = new System.Drawing.Point(270, 310);
             this.joinX10Button.Name = "joinX10Button";
             this.joinX10Button.Size = new System.Drawing.Size(80, 30);
             this.joinX10Button.TabIndex = 23;
@@ -369,11 +369,11 @@
             this.joinColumn});
             this.teamList.Cursor = System.Windows.Forms.Cursors.Default;
             this.teamList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.teamList.Location = new System.Drawing.Point(10, 144);
+            this.teamList.Location = new System.Drawing.Point(10, 115);
             this.teamList.MultiSelect = false;
             this.teamList.Name = "teamList";
             this.teamList.ShowGroups = false;
-            this.teamList.Size = new System.Drawing.Size(340, 56);
+            this.teamList.Size = new System.Drawing.Size(340, 154);
             this.teamList.TabIndex = 22;
             this.teamList.UseCompatibleStateImageBehavior = false;
             this.teamList.View = System.Windows.Forms.View.Details;
@@ -407,11 +407,11 @@
             this.moveDownColumn});
             this.memberList.Cursor = System.Windows.Forms.Cursors.Default;
             this.memberList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.memberList.Location = new System.Drawing.Point(10, 50);
+            this.memberList.Location = new System.Drawing.Point(10, 19);
             this.memberList.MultiSelect = false;
             this.memberList.Name = "memberList";
             this.memberList.ShowGroups = false;
-            this.memberList.Size = new System.Drawing.Size(340, 140);
+            this.memberList.Size = new System.Drawing.Size(340, 110);
             this.memberList.TabIndex = 22;
             this.memberList.UseCompatibleStateImageBehavior = false;
             this.memberList.View = System.Windows.Forms.View.Details;
@@ -449,9 +449,9 @@
             // memberBox
             // 
             this.memberBox.Controls.Add(this.memberList);
-            this.memberBox.Location = new System.Drawing.Point(225, 335);
+            this.memberBox.Location = new System.Drawing.Point(225, 396);
             this.memberBox.Name = "memberBox";
-            this.memberBox.Size = new System.Drawing.Size(360, 200);
+            this.memberBox.Size = new System.Drawing.Size(360, 139);
             this.memberBox.TabIndex = 23;
             this.memberBox.TabStop = false;
             this.memberBox.Text = "Danh sách thành viên tổ đội";
