@@ -412,7 +412,8 @@ namespace k8asd {
         }
 
         private List<string> ParsePlayers(string input) {
-            return input.Split(',').ToList();
+            var delimiters = new char[] { ',' };
+            return input.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         /// <summary>
