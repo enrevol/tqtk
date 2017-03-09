@@ -377,9 +377,13 @@ namespace k8asd {
             foreach (var teamToken in token) {
                 var team = Team.Parse(teamToken, infoModel.ServerTime);
                 teams.Add(team);
-                if (team.Condition.Equals(" cấp 0 trở lên") && this.chkAutoJoin.Checked && !isJoinning)
+                if (!findInList(team.Name))
                 {
-                    await JoinAsync(team.Id);
+                    if (team.Condition.Equals(" cấp 0 trở lên") && this.chkAutoJoin.Checked &&
+                    !isJoinning && team.PlayerCount < 8)
+                    {
+                        await JoinAsync(team.Id);
+                    }
                 }
             }
 
