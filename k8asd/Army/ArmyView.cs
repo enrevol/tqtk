@@ -296,7 +296,8 @@ namespace k8asd {
 
             if (packet.CommandId == "34101")
             {
-                if (!packet.Message.ToLower().Contains("ngài đã đánh bại bang hội này"))
+                if (!packet.Message.ToLower().Contains("ngài đã đánh bại bang hội này") &&
+                    !packet.Message.ToLower().Contains("lượt vẫn đang đóng băng"))
                 {
                     isCreating = true;
                 }   
