@@ -206,10 +206,10 @@ namespace k8asd {
                 await SendCommandAsync("11102");
                 // FIXME: handle case character not yet created.
 
-                oneSecondTimer = new Timer();
-                oneSecondTimer.Interval = 150;
-                oneSecondTimer.Tick += OneSecondTimer_Tick;
-                oneSecondTimer.Start();
+                //oneSecondTimer = new Timer();
+                //oneSecondTimer.Interval = 150;
+                //oneSecondTimer.Tick += OneSecondTimer_Tick;
+                //oneSecondTimer.Start();
             }
         }
 
