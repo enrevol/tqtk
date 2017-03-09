@@ -18,6 +18,7 @@ namespace k8asd {
         private static List<string> listAcc = new List<string>();
         private Timer twoSecondTimer;
         private bool isCreating = false;
+        private bool isJoinning = false;
 
         private enum TeamLimit {
             /// <summary>
@@ -300,11 +301,21 @@ namespace k8asd {
                     !packet.Message.ToLower().Contains("lượt vẫn đang đóng băng"))
                 {
                     isCreating = true;
+                    isJoinning = false;
                 }   
             }
             if (packet.CommandId == "34105" || packet.CommandId == "34106" || packet.CommandId == "34107")
             {
                 isCreating = false;
+                isJoinning = false;
+            }
+            if (packet.CommandId == "34102")
+            {
+                isJoinning = true;
+            }
+            if (packet.CommandId == "34104")
+            {
+                isJoinning = true;
             }
         }
 
@@ -335,13 +346,17 @@ namespace k8asd {
             var token = JToken.Parse(packet.Message);
 
             var armies = token["armies"];
-            UpdateArmyPanel(armies);
+            //fix chua the lam moi quan doan nay
+            if (armies != null)
+            {
+                UpdateArmyPanel(armies);
 
-            var team = token["team"];
-            ParseTeams(team);
+                var team = token["team"];
+                ParseTeams(team);
 
-            var member = token["member"];
-            ParseMembers(member);
+                var member = token["member"];
+                ParseMembers(member);
+            }
         }
 
         private void Parse34108(Packet packet) {
@@ -357,12 +372,17 @@ namespace k8asd {
             }
         }
 
-        private void ParseTeams(JToken token) {
+        private async void ParseTeams(JToken token) {
             teams.Clear();
             foreach (var teamToken in token) {
                 var team = Team.Parse(teamToken, infoModel.ServerTime);
                 teams.Add(team);
+                if (team.Condition.Equals(" cấp 0 trở lên") && this.chkAutoJoin.Checked && !isJoinning)
+                {
+                    await JoinAsync(team.Id);
+                }
             }
+
             var oldSelectedIndex = teamList.SelectedIndex;
             teamList.SetObjects(teams, true);
             teamList.SelectedIndex = oldSelectedIndex;
@@ -377,6 +397,12 @@ namespace k8asd {
             var oldSelectedIndex = memberList.SelectedIndex;
             memberList.SetObjects(members, true);
             memberList.SelectedIndex = oldSelectedIndex;
+
+            //kiem tra co con trong to doi hay ko
+            if (members.Count == 0)
+            {
+                isJoinning = false;
+            }
 
             //auto kick
             if (this.chkKick.Checked)
