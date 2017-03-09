@@ -301,7 +301,7 @@ namespace k8asd {
                     !packet.Message.ToLower().Contains("lượt vẫn đang đóng băng"))
                 {
                     isCreating = true;
-                    isJoinning = false;
+                    isJoinning = true;
                 }   
             }
             if (packet.CommandId == "34105" || packet.CommandId == "34106" || packet.CommandId == "34107")
@@ -316,6 +316,10 @@ namespace k8asd {
             if (packet.CommandId == "34104")
             {
                 isJoinning = true;
+                if (!packet.Message.ToLower().Equals(""))
+                {
+                    isJoinning = false;
+                }
             }
         }
 
