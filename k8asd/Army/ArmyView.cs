@@ -218,6 +218,7 @@ namespace k8asd {
         private BindingList<Member> members;
         private IPacketWriter packetWriter;
         private IInfoModel infoModel;
+        private IMcuModel mcuModel;
 
         public ArmyView() {
             InitializeComponent();
@@ -240,6 +241,11 @@ namespace k8asd {
 
         public void SetInfoModel(IInfoModel model) {
             infoModel = model;
+        }
+
+        public void SetMcuModel(IMcuModel model)
+        {
+            mcuModel = model;
         }
 
         private async Task RefreshArmiesAsync() {
@@ -384,7 +390,7 @@ namespace k8asd {
                 if (!findInList(team.Name))
                 {
                     if (team.Condition.Equals(" cấp 0 trở lên") && this.chkAutoJoin.Checked &&
-                    !isJoinning && team.PlayerCount < 8)
+                    !isJoinning && team.PlayerCount < 8 && mcuModel.Tokencdusable == true)
                     {
                         await JoinAsync(team.Id);
                     }

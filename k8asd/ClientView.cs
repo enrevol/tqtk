@@ -76,6 +76,7 @@ namespace k8asd {
             weaveView.SetInfoModel(infoModel);
 
             armyView.SetInfoModel(infoModel);
+            armyView.SetMcuModel(mcuModel);
             chatLogModel.SetInfoModel(infoModel);
 
             heroTrainingView.SetCooldownModel(cooldownModel);
@@ -143,7 +144,7 @@ namespace k8asd {
             }
             try
             {
-                oneSecondTimer.Stop();
+                //oneSecondTimer.Stop();
                 if (packetHandler!=null)
                 {
                     await packetHandler.Disconnect();

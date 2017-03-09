@@ -12,6 +12,7 @@ namespace k8asd {
         bool extraZhengfu;
         bool extraNongtian;
         bool extraYinkuang;
+        bool tokencdusable;
 
         public event EventHandler<int> MaxMcuChanged;
         public event EventHandler<int> McuChanged;
@@ -21,6 +22,7 @@ namespace k8asd {
         public event EventHandler<bool> ExtraYinkuangChanged;
         public event EventHandler<bool> ExtraZhengfuChanged;
         public event EventHandler<bool> ExtraZhengzhanChanged;
+        public event EventHandler<bool> TokencdusableChanged;
 
         private Cooldown qdCooldown;
         private Timer oneSecondTimer;
@@ -109,6 +111,15 @@ namespace k8asd {
                 ExtraZhengfuChanged.Raise(this, value);
             }
         }
+        public bool Tokencdusable
+        {
+            get { return tokencdusable; }
+            private set
+            {
+                tokencdusable = value;
+                TokencdusableChanged.Raise(this, value);
+            }
+        }
 
         public void OnPacketReceived(Packet packet) {
             if (packet.CommandId == "11102") {
@@ -145,6 +156,7 @@ namespace k8asd {
             ExtraZhengfu = (bool?) token["extrazhengfu"] ?? ExtraZhengfu;
             ExtraNongtian = (bool?) token["extranongtian"] ?? ExtraNongtian;
             ExtraYinkuang = (bool?) token["extrayinkuang"] ?? ExtraYinkuang;
+            Tokencdusable = (bool?)token["tokencdusable"] ?? Tokencdusable;
         }
     }
 }

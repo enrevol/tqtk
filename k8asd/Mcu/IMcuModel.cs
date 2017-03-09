@@ -42,6 +42,11 @@ namespace k8asd {
         /// </summary>
         bool ExtraYinkuang { get; }
 
+        /// <summary>
+        /// Free T turn.
+        /// </summary>
+        bool Tokencdusable { get; }
+
         event EventHandler<int> McuChanged;
         event EventHandler<int> MaxMcuChanged;
         event EventHandler<int> McuCooldownChanged;
@@ -50,5 +55,6 @@ namespace k8asd {
         event EventHandler<bool> ExtraZhengfuChanged;
         event EventHandler<bool> ExtraNongtianChanged;
         event EventHandler<bool> ExtraYinkuangChanged;
+        event EventHandler<bool> TokencdusableChanged;
     }
 }
