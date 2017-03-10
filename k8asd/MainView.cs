@@ -24,15 +24,35 @@ namespace k8asd {
             Text = DateTime.Now.ToString("hh:mm:ss");
         }
 
-        private async void loginButton_Click(object sender, EventArgs e) {
+        private void loginButton_Click(object sender, EventArgs e) {
             var selectedClients = new List<ClientView>();
             var items = clientList.SelectedItems;
             foreach (var item in items) {
                 var client = (ClientView) item;
                 selectedClients.Add(client);
             }
-            foreach (var client in selectedClients) {
-                await client.LogIn();
+
+            int one = selectedClients.Count / 3;
+            int start1 = 0;
+            int end1 = one;
+
+            int two = (selectedClients.Count - one) / 2;
+            int start2 = one;
+            int end2 = one + two;
+
+            int start3 = end2;
+            int end3 = selectedClients.Count;
+
+            ImproveLogin(start1, end1, selectedClients);
+            ImproveLogin(start2, end2, selectedClients);
+            ImproveLogin(start3, end3, selectedClients);
+        }
+
+        public async void ImproveLogin(int start, int end, List<ClientView> arr)
+        {
+            for (int i = start; i < end; i++)
+            {
+                await arr[i].LogIn();
             }
         }
 
@@ -115,11 +135,27 @@ namespace k8asd {
             view.Show();
         }
 
-        private async void loginAllButton_Click(object sender, EventArgs e) {
+        private void loginAllButton_Click(object sender, EventArgs e) {
             var clients = ClientManager.Instance.Clients;
-            foreach (var client in clients) {
-                await client.LogIn();
-            }
+
+            int one = clients.Count / 3;
+            int start1 = 0;
+            int end1 = one;
+
+            int two = (clients.Count - one) / 2;
+            int start2 = one;
+            int end2 = one + two;
+
+            int start3 = end2;
+            int end3 = clients.Count;
+
+            ImproveLogin(start1, end1, clients);
+            ImproveLogin(start2, end2, clients);
+            ImproveLogin(start3, end3, clients);
+
+            //foreach (var client in clients) {
+            //    await client.LogIn();
+            //}
         }
     }
 }
