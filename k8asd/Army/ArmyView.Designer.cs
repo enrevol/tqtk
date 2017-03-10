@@ -37,6 +37,7 @@
             this.baseHonorLabel = new System.Windows.Forms.Label();
             this.refreshTeamButton = new System.Windows.Forms.Button();
             this.teamBox = new System.Windows.Forms.GroupBox();
+            this.chkAutoJoin = new System.Windows.Forms.CheckBox();
             this.chkAutoPt = new System.Windows.Forms.CheckBox();
             this.chkKick = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -68,7 +69,6 @@
             this.btnRemoveAccClone = new System.Windows.Forms.Button();
             this.btnAddAccClone = new System.Windows.Forms.Button();
             this.txtNameAccClone = new System.Windows.Forms.TextBox();
-            this.chkAutoJoin = new System.Windows.Forms.CheckBox();
             this.armyInfoBox.SuspendLayout();
             this.teamBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -216,6 +216,16 @@
             this.teamBox.TabStop = false;
             this.teamBox.Text = "Danh sách tổ đội";
             // 
+            // chkAutoJoin
+            // 
+            this.chkAutoJoin.AutoSize = true;
+            this.chkAutoJoin.Location = new System.Drawing.Point(161, 88);
+            this.chkAutoJoin.Name = "chkAutoJoin";
+            this.chkAutoJoin.Size = new System.Drawing.Size(112, 17);
+            this.chkAutoJoin.TabIndex = 34;
+            this.chkAutoJoin.Text = "Tự tham gia tổ đội";
+            this.chkAutoJoin.UseVisualStyleBackColor = true;
+            // 
             // chkAutoPt
             // 
             this.chkAutoPt.AutoSize = true;
@@ -225,7 +235,6 @@
             this.chkAutoPt.TabIndex = 33;
             this.chkAutoPt.Text = "Tự lập quân đoàn";
             this.chkAutoPt.UseVisualStyleBackColor = true;
-            this.chkAutoPt.CheckedChanged += new System.EventHandler(this.chkAutoPt_CheckedChanged);
             // 
             // chkKick
             // 
@@ -546,16 +555,6 @@
             this.txtNameAccClone.Name = "txtNameAccClone";
             this.txtNameAccClone.Size = new System.Drawing.Size(158, 20);
             this.txtNameAccClone.TabIndex = 102;
-            // 
-            // chkAutoJoin
-            // 
-            this.chkAutoJoin.AutoSize = true;
-            this.chkAutoJoin.Location = new System.Drawing.Point(161, 88);
-            this.chkAutoJoin.Name = "chkAutoJoin";
-            this.chkAutoJoin.Size = new System.Drawing.Size(112, 17);
-            this.chkAutoJoin.TabIndex = 34;
-            this.chkAutoJoin.Text = "Tự tham gia tổ đội";
-            this.chkAutoJoin.UseVisualStyleBackColor = true;
             // 
             // ArmyView
             // 

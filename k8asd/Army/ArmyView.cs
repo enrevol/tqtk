@@ -16,7 +16,6 @@ namespace k8asd {
     public partial class ArmyView : UserControl, IPacketReader {
         private string FILE_DS = "dsacc.data";
         private static List<string> listAcc = new List<string>();
-        private Timer twoSecondTimer;
         private bool isCreating = false;
         private bool isJoinning = false;
 
@@ -230,9 +229,6 @@ namespace k8asd {
             members = new BindingList<Member>();
 
             loadClones();
-            twoSecondTimer = new Timer();
-            twoSecondTimer.Interval = 2000;
-            twoSecondTimer.Tick += TwoSecondTimer_Tick;
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -397,6 +393,14 @@ namespace k8asd {
                 }
             }
 
+            //auto create
+            Console.WriteLine("test: " + isCreating);
+            if (this.chkAutoPt.Checked && !isCreating && mcuModel.Tokencdusable == true)
+            {
+                //this.createButton.PerformClick();
+                createArmy();
+            }
+
             var oldSelectedIndex = teamList.SelectedIndex;
             teamList.SetObjects(teams, true);
             teamList.SelectedIndex = oldSelectedIndex;
@@ -416,6 +420,7 @@ namespace k8asd {
             if (members.Count == 0)
             {
                 isJoinning = false;
+                isCreating = false;
             }
 
             //auto kick
@@ -620,10 +625,21 @@ namespace k8asd {
             }
         }
 
-        private async void createButton_Click(object sender, EventArgs e) {
+        private void createButton_Click(object sender, EventArgs e) {
+            createArmy();
+            //var item = armyList.SelectedItem;
+            //if (item != null) {
+            //    var army = (Army) item;
+            //    await CreateAsync(army.Id, 0, TeamLimit.None);
+            //}
+        }
+
+        public async void createArmy()
+        {
             var item = armyList.SelectedItem;
-            if (item != null) {
-                var army = (Army) item;
+            if (item != null)
+            {
+                var army = (Army)item;
                 await CreateAsync(army.Id, 0, TeamLimit.None);
             }
         }
@@ -718,24 +734,6 @@ namespace k8asd {
         private void btnLoadAccClone_Click(object sender, EventArgs e)
         {
             loadClones();
-        }
-
-        private void TwoSecondTimer_Tick(object sender, EventArgs e)
-        {
-            this.createButton.PerformClick();
-        }
-
-        private void chkAutoPt_CheckedChanged(object sender, EventArgs e)
-        {
-            if (this.chkAutoPt.Checked)
-            {
-                twoSecondTimer.Start();
-            }
-            else
-            {
-                isCreating = false;
-                twoSecondTimer.Stop();
-            }
         }
     }
 

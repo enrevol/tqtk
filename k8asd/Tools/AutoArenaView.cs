@@ -178,14 +178,14 @@ namespace k8asd {
         /// <returns>True nếu khiêu chiến thành công.</returns>
         private async Task<bool> DuelAsync(IPacketWriter lower, IPacketWriter upper, int lowerId, int lowerRank) {
             // Chọn trận ngư lân.
-            var p0 = await lower.SetDefaultFormationAsync(9);
+            var p0 = await lower.SetDefaultFormationAsync(10);
             if (p0 == null) {
                 return false;
             }
             Debug.Assert(p0.CommandId == "42104");
 
             // Gỡ bỏ toàn bộ tướng.
-            var p1 = await lower.RemoveAllHeroesFromFormationAsync(9);
+            var p1 = await lower.RemoveAllHeroesFromFormationAsync(10);
             if (p1 == null) {
                 return false;
             }
