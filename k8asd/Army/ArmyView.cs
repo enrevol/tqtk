@@ -186,12 +186,6 @@ namespace k8asd {
                 result.cooldown = new Cooldown((int) (endDateTime - DateTime.Now).TotalMilliseconds);
                 return result;
             }
-
-            public string Description() {
-                return String.Format("{0} {1} ({2}/{3}) [{4}]",
-                    Name, Condition, PlayerCount, MaxPlayerCount,
-                    Utils.FormatDuration(cooldown.RemainingMilliseconds));
-            }
         }
 
         private class Member {
@@ -256,7 +250,7 @@ namespace k8asd {
                 Enabled = false;
                 armies.Clear();
 
-                var packet = await packetWriter.SendCommandAsync("33201", "1");
+                var packet = await packetWriter.RefreshPowerAreaAsync(1);
                 if (packet == null) {
                     return;
                 }
@@ -264,7 +258,7 @@ namespace k8asd {
 
                 var powerIds = Parse33201(packet);
                 foreach (var powerId in powerIds) {
-                    var powerPacket = await packetWriter.SendCommandAsync("33100", powerId.ToString());
+                    var powerPacket = await packetWriter.RefreshPowerAsync(powerId);
                     if (powerPacket == null) {
                         return;
                     }
@@ -287,7 +281,7 @@ namespace k8asd {
         }
 
         private async Task RefreshArmyAsync(int armyId) {
-            var packet = await packetWriter.SendCommandAsync("34100", armyId.ToString());
+            var packet = await packetWriter.RefreshArmyAsync(armyId);
             if (packet == null) {
                 return;
             }
@@ -395,7 +389,7 @@ namespace k8asd {
                     if (team.Condition.Equals(" cấp 0 trở lên") && this.chkAutoJoin.Checked &&
                     !isJoinning && team.PlayerCount < 8 && mcuModel.Tokencdusable == true)
                     {
-                        await JoinAsync(team.Id);
+                        await packetWriter.JoinArmyAsync(team.Id);
                     }
                 }
             }
@@ -437,7 +431,7 @@ namespace k8asd {
                 {
                     if (!findInList(members[i].Name))
                     {
-                        await KickPlayerAsync(members[i].Id);
+                        await packetWriter.KickArmyPlayerAsync(members[i].Id);
                     }
                 }
             }
@@ -453,14 +447,6 @@ namespace k8asd {
             baseHonorLabel.Text = String.Format("Chiến tích cơ bản: {0}", honor);
         }
 
-        private void radArmy2_CheckedChanged(object sender, EventArgs e) {
-            //radArmy1.Checked = !radArmy2.Checked;
-        }
-
-        private void radArmy1_CheckedChanged(object sender, EventArgs e) {
-            // radArmy2.Checked = !radArmy1.Checked;
-        }
-
         /// <summary>
         /// Tạo tổ đội quân đoàn.
         /// </summary>
@@ -472,56 +458,7 @@ namespace k8asd {
             {
                 await packetWriter.SendCommandAsync("34101", armyId.ToString(), String.Format("4:{0};{1}", minimumLevel, (int)limit), "0");
             }
-        }
-
-        /// <summary>
-        /// Gia nhập tổ đội.
-        /// </summary>
-        private async Task JoinAsync(int teamId) {
-            await packetWriter.SendCommandAsync("34102", teamId.ToString());
-        }
-
-        /// <summary>
-        /// Di chuyển người chơi lên 1 vị trí trong tổ đội.
-        /// </summary>
-        private async Task MovePlayerUpAsync(int playerId) {
-            await packetWriter.SendCommandAsync("34103", playerId.ToString(), "0");
-        }
-
-        /// <summary>
-        /// Di chuyển người chơi xuống 1 vị trí trong tổ đội.
-        /// </summary>
-        private async Task MovePlayerDownAsync(int playerId) {
-            await packetWriter.SendCommandAsync("34103", playerId.ToString(), "1");
-        }
-
-        /// <summary>
-        /// Kick người chơi ta khỏi tổ đội.
-        /// </summary>
-        private async Task KickPlayerAsync(int playerId) {
-            await packetWriter.SendCommandAsync("34104", playerId.ToString());
-        }
-
-        /// <summary>
-        /// Giải tán tổ đội.
-        /// </summary>
-        private async Task DisbandAsync() {
-            await packetWriter.SendCommandAsync("34105");
-        }
-
-        /// <summary>
-        /// Thoát khỏi tổ đội.
-        /// </summary>
-        private async Task QuitAsync() {
-            await packetWriter.SendCommandAsync("34106");
-        }
-
-        /// <summary>
-        /// Tấn công tổ đội.
-        /// </summary>
-        private async Task AttackAsync() {
-            await packetWriter.SendCommandAsync("34107", "0");
-        }
+        }        
 
         /// <summary>
         /// Ép tấn công.
@@ -531,10 +468,10 @@ namespace k8asd {
             var t1 = CreateAsync(900001, 0, TeamLimit.None);
 
             // Tấn công.
-            var t2 = AttackAsync();
+            var t2 = packetWriter.AttackArmyAsync();
 
             // Giải tán quân đoàn đổng trác.
-            var t3 = DisbandAsync();
+            var t3 = packetWriter.DisbandArmyAsync();
 
             await Task.WhenAll(t1, t2, t3);
         }
@@ -591,7 +528,7 @@ namespace k8asd {
         private async void teamList_ButtonClick(object sender, CellClickEventArgs e) {
             var item = e.Item;
             var team = (Team) item.RowObject;
-            await JoinAsync(team.Id);
+            await packetWriter.JoinArmyAsync(team.Id);
         }
 
         private async void joinX10Button_Click(object sender, EventArgs e) {
@@ -599,21 +536,21 @@ namespace k8asd {
             if (item != null) {
                 var team = (Team) item.RowObject;
                 for (int i = 0; i < 10; ++i) {
-                    await JoinAsync(team.Id);
+                    await packetWriter.JoinArmyAsync(team.Id);
                 }
             }
         }
 
         private async void attackButton_Click(object sender, EventArgs e) {
-            await AttackAsync();
+            await packetWriter.AttackArmyAsync();
         }
 
         private async void disbandButton_Click(object sender, EventArgs e) {
-            await DisbandAsync();
+            await packetWriter.DisbandArmyAsync();
         }
 
         private async void quitButton_Click(object sender, EventArgs e) {
-            await QuitAsync();
+            await packetWriter.QuitArmyAsync();
         }
 
         private async void forceAttackButton_Click(object sender, EventArgs e) {
@@ -624,11 +561,11 @@ namespace k8asd {
             var item = e.Item;
             var member = (Member) item.RowObject;
             if (e.ColumnIndex == 1) {
-                await KickPlayerAsync(member.Id);
+                await packetWriter.KickArmyPlayerAsync(member.Id);
             } else if (e.ColumnIndex == 2) {
-                await MovePlayerUpAsync(member.Id);
+                await packetWriter.MoveArmyPlayerUpAsync(member.Id);
             } else if (e.ColumnIndex == 3) {
-                await MovePlayerDownAsync(member.Id);
+                await packetWriter.MoveArmyPlayerDownAsync(member.Id);
             }
         }
 
