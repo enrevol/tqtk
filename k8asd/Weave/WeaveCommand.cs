@@ -25,14 +25,6 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Chế tạo.
-        /// </summary>
-        /// <param name="teamId">ID tổ đội.</param>
-        public static async Task<Packet> MakeWeaveAsync(this IPacketWriter writer, int teamId) {
-            return await writer.SendCommandAsync("45208", teamId.ToString());
-        }
-
-        /// <summary>
         /// Lập tổ đội dệt.
         /// </summary>
         /// <param name="productId">ID vải.</param>
@@ -42,12 +34,29 @@ namespace k8asd {
         }
 
         /// <summary>
+        /// Kick người chơi trong tổ đội dệt.
+        /// </summary>
+        /// <param name="teamId">ID tổ đội.</param>
+        /// <param name="playerId">ID người chơi</param>
+        public static async Task<Packet> KickWeaveAsync(this IPacketWriter writer, int teamId, int playerId) {
+            return await writer.SendCommandAsync("45206", teamId.ToString(), playerId.ToString());
+        }
+
+        /// <summary>
         /// Giải tán tổ đội dệt.
         /// <param name="teamId">ID tổ đội.</param>
         /// </summary>
         public static async Task<Packet> DisbandWeaveAsync(this IPacketWriter writer, int teamId) {
             return await writer.SendCommandAsync("45207", teamId.ToString());
         }
+
+        /// <summary>
+        /// Chế tạo.
+        /// </summary>
+        /// <param name="teamId">ID tổ đội.</param>
+        public static async Task<Packet> MakeWeaveAsync(this IPacketWriter writer, int teamId) {
+            return await writer.SendCommandAsync("45208", teamId.ToString());
+        }        
 
         /// <summary>
         /// Gia nhập tổ đội dệt.
@@ -63,16 +72,7 @@ namespace k8asd {
         /// <param name="teamId">ID tổ đội.</param>
         public static async Task<Packet> QuitWeaveAsync(this IPacketWriter writer, int teamId) {
             return await writer.SendCommandAsync("45210", teamId.ToString());
-        }
-
-        /// <summary>
-        /// Kick người chơi trong tổ đội dệt.
-        /// </summary>
-        /// <param name="teamId">ID tổ đội.</param>
-        /// <param name="playerId">ID người chơi</param>
-        public static async Task<Packet> KickWeaveAsync(this IPacketWriter writer, int teamId, int playerId) {
-            return await writer.SendCommandAsync("45206", teamId.ToString(), playerId.ToString());
-        }
+        }        
 
         /// <summary>
         /// Thoát và chế tạo một lúc.
