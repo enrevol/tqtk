@@ -228,6 +228,13 @@ namespace k8asd {
             teams = new BindingList<Team>();
             members = new BindingList<Member>();
 
+            teamColumn.AspectGetter = (obj) => {
+                var team = (Team) obj;
+                return String.Format("{0} {1} ({2}/{3}) [{4}]",
+                    team.Name, team.Condition, team.PlayerCount, team.MaxPlayerCount,
+                    Utils.FormatDuration(team.RemainingTime));
+            };
+
             loadClones();
         }
 

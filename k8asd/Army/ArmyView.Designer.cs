@@ -393,7 +393,7 @@
             // 
             // teamColumn
             // 
-            this.teamColumn.AspectName = "Description";
+            this.teamColumn.AspectName = "";
             this.teamColumn.Width = 260;
             // 
             // joinColumn
