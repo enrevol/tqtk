@@ -269,9 +269,20 @@
             // textileLevelInput
             // 
             this.textileLevelInput.Location = new System.Drawing.Point(319, 205);
+            this.textileLevelInput.Maximum = new decimal(new int[] {
+            70,
+            0,
+            0,
+            0});
+            this.textileLevelInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.textileLevelInput.Name = "textileLevelInput";
             this.textileLevelInput.Size = new System.Drawing.Size(50, 20);
             this.textileLevelInput.TabIndex = 33;
+            this.textileLevelInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textileLevelInput.Value = new decimal(new int[] {
             21,
             0,
@@ -466,9 +477,20 @@
             // autoTextileLevelInput
             // 
             this.autoTextileLevelInput.Location = new System.Drawing.Point(210, 14);
+            this.autoTextileLevelInput.Maximum = new decimal(new int[] {
+            70,
+            0,
+            0,
+            0});
+            this.autoTextileLevelInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.autoTextileLevelInput.Name = "autoTextileLevelInput";
             this.autoTextileLevelInput.Size = new System.Drawing.Size(50, 20);
             this.autoTextileLevelInput.TabIndex = 31;
+            this.autoTextileLevelInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.autoTextileLevelInput.Value = new decimal(new int[] {
             21,
             0,
@@ -574,6 +596,7 @@
             this.textilePriceInput.Name = "textilePriceInput";
             this.textilePriceInput.Size = new System.Drawing.Size(50, 20);
             this.textilePriceInput.TabIndex = 36;
+            this.textilePriceInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textilePriceInput.Value = new decimal(new int[] {
             120,
             0,
