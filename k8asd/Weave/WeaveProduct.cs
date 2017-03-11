@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 
 namespace k8asd {
     /// <summary>
@@ -57,11 +56,6 @@ namespace k8asd {
             result.Id = (int) token["prodid"];
             result.SuccessRate = (string) token["succrate"];
             return result;
-        }
-
-        public string Description() {
-            return String.Format("Lv. {0} [{1} - {2}] [{3} - {4}]",
-                Level, Cost, Price, SuccessRate, CriticalRate);
         }
     }
 }

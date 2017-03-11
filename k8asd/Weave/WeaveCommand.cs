@@ -78,9 +78,9 @@ namespace k8asd {
         /// Thoát và chế tạo một lúc.
         /// </summary>
         /// <param name="teamId">ID tổ đội</param>
-        public static async Task QuitAndMakeWeaveAsync(this IPacketWriter writer, int teamId) {
+        public static async Task<Packet[]> QuitAndMakeWeaveAsync(this IPacketWriter writer, int teamId) {
             // Thoát và chế tạo một lúc (không chờ server gửi msg thoát xong rồi mới chế tạo).
-            await Task.WhenAll(writer.QuitWeaveAsync(teamId), writer.MakeWeaveAsync(teamId));
+            return await Task.WhenAll(writer.QuitWeaveAsync(teamId), writer.MakeWeaveAsync(teamId));
         }
     }
 }
