@@ -183,7 +183,7 @@ namespace k8asd {
                 var serverTimeOffset = serverTime - DateTime.Now;
                 var endDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                     .ToLocalTime().AddMilliseconds(endtime).Add(-serverTimeOffset);
-                result.cooldown = new Cooldown((endDateTime - DateTime.Now).Milliseconds);
+                result.cooldown = new Cooldown((int) (endDateTime - DateTime.Now).TotalMilliseconds);
                 return result;
             }
 
