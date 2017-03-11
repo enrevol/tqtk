@@ -430,7 +430,7 @@
             // 
             // memberColumn
             // 
-            this.memberColumn.AspectName = "Description";
+            this.memberColumn.AspectName = "";
             this.memberColumn.Width = 200;
             // 
             // kickColumn

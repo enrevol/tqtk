@@ -152,6 +152,10 @@
     <Compile Include="Arena\ArenaView.Designer.cs">
       <DependentUpon>ArenaView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Army\Army.cs" />
+    <Compile Include="Army\ArmyCommand.cs" />
+    <Compile Include="Army\ArmyMember.cs" />
+    <Compile Include="Army\ArmyTeam.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="Tools\AutoArenaView.cs">
       <SubType>Form</SubType>

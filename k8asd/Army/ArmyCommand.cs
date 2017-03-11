@@ -1,10 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace k8asd {
+    enum ArmyTeamLimit {
+        /// <summary>
+        /// Không giới hạn.
+        /// </summary>
+        None = 1,
+
+        /// <summary>
+        /// Giới hạn quốc gia.
+        /// </summary>
+        Nation = 2,
+
+        /// <summary>
+        /// Giới hạn bang hội.
+        /// </summary>
+        Legion = 3,
+    }
+
+    enum ArmyType {
+        /// <summary>
+        /// NPC thường.
+        /// </summary>
+        Normal,
+
+        /// <summary>
+        /// NCP tinh anh (rớt đồ).
+        /// </summary>
+        Elite,
+
+        /// <summary>
+        /// NPC tướng (đánh 1 lần).
+        /// </summary>
+        Hero,
+
+        /// <summary>
+        /// Quân đoàn.
+        /// </summary>
+        Army
+    }
+
     static class ArmyCommand {
         public static async Task<Packet> RefreshPowerAsync(this IPacketWriter writer, int powerId) {
             return await writer.SendCommandAsync("33100", powerId.ToString());
