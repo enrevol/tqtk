@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,7 @@ namespace k8asd {
 
         private bool isRefreshing;
         private bool isDueling;
+        private bool timerLocking;
 
         public AutoArenaView() {
             InitializeComponent();
@@ -36,6 +38,7 @@ namespace k8asd {
                 return Utils.FormatDuration(player.Cooldown);
             };
 
+            timerLocking = false;
             timerArena.Start();
             timerArena.Interval = 1000; // 1 giây.
         }
@@ -50,24 +53,10 @@ namespace k8asd {
         }
 
         private async void refreshButton_Click(object sender, EventArgs e) {
-            await RefreshPlayersAsync();
+            await RefreshPlayersAsync(FindConnectedClients());
         }
 
-        /// <summary>
-        /// Cập nhật võ đài tất cả các tài khoản đang kết nối.
-        /// </summary>
-        private async Task RefreshPlayersAsync() {
-            if (isRefreshing) {
-                LogInfo("Đang làm mới, không thể làm mới!");
-                return;
-            }
-            if (isDueling) {
-                LogInfo("Đang khiêu chiến, không thể làm mới!");
-                return;
-            }
-            LogInfo("Bắt đầu làm mới...");
-            isRefreshing = true;
-
+        private List<ClientView> FindConnectedClients() {
             var clients = ClientManager.Instance.Clients;
             var connectedClients = new List<ClientView>();
             foreach (var client in clients) {
@@ -75,6 +64,23 @@ namespace k8asd {
                     connectedClients.Add(client);
                 }
             }
+            return connectedClients;
+        }
+
+        /// <summary>
+        /// Cập nhật võ đài tất cả các tài khoản đang kết nối.
+        /// </summary>
+        private async Task<bool> RefreshPlayersAsync(List<ClientView> connectedClients) {
+            if (isRefreshing) {
+                LogInfo("Đang làm mới, không thể làm mới!");
+                return false;
+            }
+            if (isDueling) {
+                LogInfo("Đang khiêu chiến, không thể làm mới!");
+                return false;
+            }
+            LogInfo("Bắt đầu làm mới...");
+            isRefreshing = true;
 
             mappedClients.Clear();
             players.Clear();
@@ -82,21 +88,28 @@ namespace k8asd {
 
             foreach (var client in connectedClients) {
                 var packet = await client.RefreshArenaAsync();
-                if (packet != null) {
-                    Debug.Assert(packet.CommandId == "64005");
-
-                    var token = JToken.Parse(packet.Message);
-                    var player = ArenaInfo.Parse(token);
-                    mappedClients.Add(player, client);
-                    players.Add(player);
-                    players.Sort((lhs, rhs)
-                        => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
-                    playerList.SetObjects(players, true);
+                if (packet == null) {
+                    continue;
                 }
+                Debug.Assert(packet.CommandId == "64005");
+                var token = JToken.Parse(packet.Message);
+
+                var errmessage = token["errmessage"];
+                if (errmessage != null) {
+                    // { "errmessage": "A system error occurred! code:64005" }
+                    continue;
+                }
+
+                var player = ArenaInfo.Parse(token);
+                mappedClients.Add(player, client);
+                players.Add(player);
+                players.Sort((lhs, rhs) => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
+                playerList.SetObjects(players, true);
             }
 
             LogInfo("Làm mới hoàn thành!");
             isRefreshing = false;
+            return true;
         }
 
         /// <summary>
@@ -107,65 +120,116 @@ namespace k8asd {
         }
 
         private async void duelButton_Click(object sender, EventArgs e) {
-            await DuelAndRefreshAsync();
-            await DuelAndRefreshAsync();
-            await DuelAndRefreshAsync();
+            while (await DuelAndRefreshAsync()) {
+                //
+            }
         }
 
-        private async Task DuelAndRefreshAsync() {
-            await DuelAsync();
-            await RefreshPlayersAsync();
+        private async Task<bool> DuelAndRefreshAsync() {
+            var pairs = FindDuelPairs();
+            if (await DuelAsync(pairs)) {
+                var clients = FindConnectedClients();
+                await RefreshPlayersAsync(clients);
+                return true;
+            }
+            return false;
+        }
+
+        private class DuelPair {
+            public ArenaInfo Lower { get; private set; }
+            public ArenaInfo Upper { get; private set; }
+
+            public DuelPair(ArenaInfo lower, ArenaInfo upper) {
+                Lower = lower;
+                Upper = upper;
+            }
         }
 
         /// <summary>
-        /// Khiêu chiến tất cả các tài khoản.
+        /// Tìm danh sách các cặp có thể đấu.
         /// </summary>
-        private async Task DuelAsync() {
-            if (isRefreshing) {
-                LogInfo("Đang làm mới, không thể khiêu chiến!");
-                return;
-            }
-            if (isDueling) {
-                LogInfo("Đang khiêu chiến, không thể khiêu chiến!");
-                return;
-            }
-            LogInfo("Bắt đầu khiêu chiến...");
-            isDueling = true;
-
+        private List<DuelPair> FindDuelPairs() {
             // Danh sách các người chơi chưa có cặp.
             var availablePlayers = new List<ArenaInfo>();
 
-            var duelTasks = new List<Task<bool>>();
+            var result = new List<DuelPair>();
 
             foreach (var player in players) {
                 // Đã cặp đươc chưa?
                 bool matched = false;
-                if (availablePlayers.Count > 0) {
+                do {
+                    if (player.CurrentPlayer.RemainTimes == 0) {
+                        // Hết lượt.
+                        break;
+                    }
+                    if (player.Cooldown > 0) {
+                        // Chưa hết thời gian đóng băng.
+                        break;
+                    }
+                    if (availablePlayers.Count == 0) {
+                        // Không có ai.
+                        break;
+                    }
                     // Tìm người có thể cặp.
                     var matchingPlayer = availablePlayers.FirstOrDefault(
                         availablePlayer => canDuel(availablePlayer, player));
-                    if (matchingPlayer != null && player.CurrentPlayer.RemainTimes > 0 && player.Cooldown == 0) {
-                        matched = true;
-                        availablePlayers.Remove(matchingPlayer);
-                        LogInfo(String.Format("Tiến hành khiêu chiến: {0} vs. {1}",
-                            player.CurrentPlayer.Name, matchingPlayer.CurrentPlayer.Name));
-                        duelTasks.Add(DuelAsync(mappedClients[matchingPlayer], mappedClients[player],
-                            matchingPlayer.CurrentPlayer.Id, matchingPlayer.CurrentPlayer.Rank));
+
+                    if (matchingPlayer == null) {
+                        // Không tìm được ai.
+                        break;
                     }
-                }
+
+                    // OK.
+                    matched = true;
+                    availablePlayers.Remove(matchingPlayer);
+
+                    result.Add(new DuelPair(matchingPlayer, player));
+                } while (false);
+
                 if (!matched) {
                     // Không cặp được, thêm vào danh sách chưa cặp.
                     availablePlayers.Add(player);
                 }
             }
+            return result;
+        }
 
-            if (duelTasks.Count == 0) {
-                LogInfo("Không có cặp khiêu chiến!");
-            } else {
-                await Task.WhenAll(duelTasks);
-                LogInfo("Khiêu chiến hoàn thành!");
+        /// <summary>
+        /// Khiêu chiến tất cả các tài khoản.
+        /// </summary>
+        /// <returns>True nếu có cặp khiêu chiến.</returns>
+        private async Task<bool> DuelAsync(List<DuelPair> pairs) {
+            if (isRefreshing) {
+                LogInfo("Đang làm mới, không thể khiêu chiến!");
+                return false;
             }
+            if (isDueling) {
+                LogInfo("Đang khiêu chiến, không thể khiêu chiến!");
+                return false;
+            }
+            if (pairs.Count == 0) {
+                LogInfo("Không có cặp khiêu chiến!");
+                return false;
+            }
+            LogInfo("Bắt đầu khiêu chiến...");
+            isDueling = true;
+
+            var duelTasks = new List<Task>();
+            foreach (var pair in pairs) {
+                var lower = pair.Lower;
+                var upper = pair.Upper;
+                var lowerPlayer = lower.CurrentPlayer;
+                var upperPlayer = upper.CurrentPlayer;
+                duelTasks.Add(Task.Factory.StartNew(async () => {
+                    LogInfo(String.Format("Tiến hành khiêu chiến: {0} vs. {1}", upperPlayer.Name, lowerPlayer.Name));
+                    await DuelAsync(mappedClients[lower], mappedClients[upper], lowerPlayer.Id, lowerPlayer.Rank);
+                }, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.FromCurrentSynchronizationContext()));
+            }
+            await Task.WhenAll(duelTasks);
+
+            LogInfo("Khiêu chiến hoàn thành!");
             isDueling = false;
+            return true;
         }
 
         /// <summary>
@@ -216,52 +280,72 @@ namespace k8asd {
             return true;
         }
 
-        private async void autoDuelCheck_CheckedChanged(object sender, EventArgs e) {
-            if (autoDuelCheck.Checked) {
-                await RefreshPlayersAsync();
-            }
+        /// <summary>
+        /// Cập nhật thời gian đóng băng.
+        /// </summary>
+        /// <returns>Thời gian đóng băng lâu nhất.</returns>
+        private int UpdateCooldown() {
+            int maxCooldown = players.Count == 0 ? 0 : players.Max(player => player.Cooldown);
+            cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
+            return maxCooldown;
         }
 
         private async void timerArena_Tick(object sender, EventArgs e) {
-            if (players.Count == 0) {
-                LogInfo("Không có tài khoản để khiêu chiến.");
-                autoDuelCheck.Checked = false;
-                return;
+            var maxCooldown = UpdateCooldown();
+
+            timerLocking = true;
+            using (var guard = new ScopeGuard(() => timerLocking = false)) {
+                if (players.Count == 0) {
+                    // Lazily refresh players.
+                    await RefreshPlayersAsync(FindConnectedClients());
+                    if (players.Count == 0) {
+                        LogInfo("Không có tài khoản để khiêu chiến.");
+                        autoDuelCheck.Checked = false;
+                        return;
+                    }
+                }
+
+                if (!autoDuelCheck.Checked) {
+                    return;
+                }
+
+                if (isRefreshing || isDueling) {
+                    return;
+                }
+
+                int maxRemainTimes = players.Max(player => player.CurrentPlayer.RemainTimes);
+                if (maxRemainTimes == 0) {
+                    LogInfo("Hết số lần khiêu chiến.");
+                    autoDuelCheck.Checked = false;
+                    return;
+                }
+
+                if (maxCooldown > 0) {
+                    return;
+                }
+
+                // Kiểm tra lại thời gian đóng băng có thật sự là hết chưa.
+                await RefreshPlayersAsync(FindConnectedClients());
+                if (players.Count == 0) {
+                    LogInfo("Không có tài khoản để khiêu chiến.");
+                    autoDuelCheck.Checked = false;
+                    return;
+                }
+
+                int recheckedMaxCooldown = players.Max(player => player.Cooldown);
+                if (recheckedMaxCooldown > 0) {
+                    // Kiểm tra lại.
+                    return;
+                }
+
+                while (await DuelAndRefreshAsync()) {
+                    //
+                }
             }
+        }
 
-            int maxCooldown = players.Max(player => player.Cooldown);
-            cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
+        private void autoDuelCheck_CheckedChanged(object sender, EventArgs e) {
 
-            if (!autoDuelCheck.Checked) {
-                return;
-            }
-
-            if (isRefreshing || isDueling) {
-                return;
-            }
-
-            int maxRemainTimes = players.Max(player => player.CurrentPlayer.RemainTimes);
-            if (maxRemainTimes == 0) {
-                LogInfo("Hết số lần khiêu chiến.");
-                autoDuelCheck.Checked = false;
-                return;
-            }
-
-            if (maxCooldown > 0) {
-                return;
-            }
-
-            await RefreshPlayersAsync();
-            int recheckedMaxCooldown = players.Max(player => player.Cooldown);
-            if (recheckedMaxCooldown > 0) {
-                // Kiểm tra lại.
-                return;
-            }
-
-            await DuelAndRefreshAsync();
-            await DuelAndRefreshAsync();
-            await DuelAndRefreshAsync();
-            await DuelAndRefreshAsync();
         }
     }
 }
