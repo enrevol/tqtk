@@ -22,7 +22,7 @@ namespace k8asd {
 
         private const int BufferSize = 1024;
 
-        public event EventHandler<Packet> OnPacketReceived;
+        public event EventHandler<Packet> PacketReceived;
 
         public bool Connected {
             get { return tcpClient.Connected; }
@@ -136,7 +136,7 @@ namespace k8asd {
 
                 var packet = ParsePacket();
                 if (packet != null) {
-                    OnPacketReceived.Raise(this, packet);
+                    PacketReceived.Raise(this, packet);
                     PushPacket(packet);
                 }
             }

@@ -6,7 +6,7 @@ namespace k8asd {
         /// <summary>
         /// Occurs when the server has sent a message.
         /// </summary>
-        event EventHandler<Packet> OnPacketReceived;
+        event EventHandler<Packet> PacketReceived;
 
         /// <summary>
         /// Attempts to send the specified command and parameters to the server with a callback.

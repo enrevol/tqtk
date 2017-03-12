@@ -45,9 +45,9 @@ namespace k8asd {
             }
         }
 
-        public event EventHandler<Packet> OnPacketReceived {
-            add { packetHandler.OnPacketReceived += value; }
-            remove { packetHandler.OnPacketReceived -= value; }
+        public event EventHandler<Packet> PacketReceived {
+            add { packetHandler.PacketReceived += value; }
+            remove { packetHandler.PacketReceived -= value; }
         }
 
         public ClientView() {
@@ -211,7 +211,7 @@ namespace k8asd {
                 connectionStatus = ConnectionStatus.Connected;
                 guard.Dismiss();
 
-                packetHandler.OnPacketReceived += (sender, packet) => OnPacketReceived(packet);
+                packetHandler.PacketReceived += (sender, packet) => OnPacketReceived(packet);
                 await SendCommandAsync("10100");
                 await SendCommandAsync("11102");
                 // FIXME: handle case character not yet created.
