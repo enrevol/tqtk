@@ -44,6 +44,7 @@ namespace k8asd
             this.logoutButton = new System.Windows.Forms.Button();
             this.loginButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.autoWeaveButton = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,8 @@ namespace k8asd
             // menuItem0
             // 
             menuItem0.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            autoArenaButton});
+            autoArenaButton,
+            this.autoWeaveButton});
             menuItem0.Name = "menuItem0";
             menuItem0.Size = new System.Drawing.Size(58, 20);
             menuItem0.Text = "Phụ trợ";
@@ -190,6 +192,13 @@ namespace k8asd
             this.imageList1.Images.SetKeyName(0, "btn_LoginFalse.png");
             this.imageList1.Images.SetKeyName(1, "btn_LoginTrue.png");
             // 
+            // autoWeaveButton
+            // 
+            this.autoWeaveButton.Name = "autoWeaveButton";
+            this.autoWeaveButton.Size = new System.Drawing.Size(184, 22);
+            this.autoWeaveButton.Text = "Tự động dệt";
+            this.autoWeaveButton.Click += new System.EventHandler(this.autoWeaveButton_Click);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -223,6 +232,7 @@ namespace k8asd
         private Button loginAllButton;
         private Button button1;
         private ImageList imageList1;
+        private ToolStripMenuItem autoWeaveButton;
     }
 }
 

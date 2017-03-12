@@ -131,6 +131,9 @@ namespace k8asd {
             await LogIn(clients);
         }
 
+        private void autoWeaveButton_Click(object sender, EventArgs e) {
+            var view = new AutoWeaveView();
+            view.Show();
         }
     }
 }
