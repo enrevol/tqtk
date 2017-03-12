@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace k8asd {
     public partial class MainView : Form {
@@ -24,36 +25,26 @@ namespace k8asd {
             Text = DateTime.Now.ToString("hh:mm:ss");
         }
 
-        private void loginButton_Click(object sender, EventArgs e) {
+
+        private async Task LogIn(List<ClientView> clients) {
+            const int ThreadCount = 3;
+            for (int i = 0; i < clients.Count; i += ThreadCount) {
+                var tasks = new List<Task>();
+                for (int j = 0; j < ThreadCount && i + j < clients.Count; ++j) {
+                    tasks.Add(clients[i + j].LogIn());
+                }
+                await Task.WhenAll(tasks);
+            }
+        }
+
+        private async void loginButton_Click(object sender, EventArgs e) {
             var selectedClients = new List<ClientView>();
             var items = clientList.SelectedItems;
             foreach (var item in items) {
                 var client = (ClientView) item;
                 selectedClients.Add(client);
             }
-
-            int one = selectedClients.Count / 3;
-            int start1 = 0;
-            int end1 = one;
-
-            int two = (selectedClients.Count - one) / 2;
-            int start2 = one;
-            int end2 = one + two;
-
-            int start3 = end2;
-            int end3 = selectedClients.Count;
-
-            ImproveLogin(start1, end1, selectedClients);
-            ImproveLogin(start2, end2, selectedClients);
-            ImproveLogin(start3, end3, selectedClients);
-        }
-
-        public async void ImproveLogin(int start, int end, List<ClientView> arr)
-        {
-            for (int i = start; i < end; i++)
-            {
-                await arr[i].LogIn();
-            }
+            await LogIn(selectedClients);
         }
 
         private async void logoutButton_Click(object sender, EventArgs e) {
@@ -135,27 +126,11 @@ namespace k8asd {
             view.Show();
         }
 
-        private void loginAllButton_Click(object sender, EventArgs e) {
+        private async void loginAllButton_Click(object sender, EventArgs e) {
             var clients = ClientManager.Instance.Clients;
+            await LogIn(clients);
+        }
 
-            int one = clients.Count / 3;
-            int start1 = 0;
-            int end1 = one;
-
-            int two = (clients.Count - one) / 2;
-            int start2 = one;
-            int end2 = one + two;
-
-            int start3 = end2;
-            int end3 = clients.Count;
-
-            ImproveLogin(start1, end1, clients);
-            ImproveLogin(start2, end2, clients);
-            ImproveLogin(start3, end3, clients);
-
-            //foreach (var client in clients) {
-            //    await client.LogIn();
-            //}
         }
     }
 }
