@@ -94,21 +94,23 @@ namespace k8asd {
             }
             isRefreshing = true;
 
-            var packet = await packetWriter.RefreshWeaveAsync();
-            if (packet == null) {
-                isRefreshing = false;
-                return;
-            }
-
-            Parse45200(packet);
-            if (IsHosting()) {
-                if (CheckLimitPlayer()) {
-                    await TryAutoMakeOrAutoQuitAndMakeAsync();
+            try {
+                var packet = await packetWriter.RefreshWeaveAsync();
+                if (packet == null) {
+                    return;
                 }
-            } else {
-                await TryAutoCreateAsync();
+
+                Parse45200(packet);
+                if (IsHosting()) {
+                    if (CheckLimitPlayer()) {
+                        await TryAutoMakeOrAutoQuitAndMakeAsync();
+                    }
+                } else {
+                    await TryAutoCreateAsync();
+                }
+            } finally {
+                isRefreshing = false;
             }
-            isRefreshing = false;
         }
 
         public void OnPacketReceived(Packet packet) {

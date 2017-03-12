@@ -293,8 +293,16 @@ namespace k8asd {
         private async void timerArena_Tick(object sender, EventArgs e) {
             var maxCooldown = UpdateCooldown();
 
+            if (timerLocking) {
+                return;
+            }
             timerLocking = true;
-            using (var guard = new ScopeGuard(() => timerLocking = false)) {
+
+            try {
+                if (!autoDuelCheck.Checked) {
+                    return;
+                }
+
                 if (players.Count == 0) {
                     // Lazily refresh players.
                     await RefreshPlayersAsync(FindConnectedClients());
@@ -303,10 +311,6 @@ namespace k8asd {
                         autoDuelCheck.Checked = false;
                         return;
                     }
-                }
-
-                if (!autoDuelCheck.Checked) {
-                    return;
                 }
 
                 if (isRefreshing || isDueling) {
@@ -341,6 +345,8 @@ namespace k8asd {
                 while (await DuelAndRefreshAsync()) {
                     //
                 }
+            } finally {
+                timerLocking = false;
             }
         }
 
