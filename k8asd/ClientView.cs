@@ -45,6 +45,11 @@ namespace k8asd {
             }
         }
 
+        public event EventHandler<Packet> OnPacketReceived {
+            add { packetHandler.OnPacketReceived += value; }
+            remove { packetHandler.OnPacketReceived -= value; }
+        }
+
         public ClientView() {
             InitializeComponent();
 
@@ -100,6 +105,10 @@ namespace k8asd {
 
         public int PlayerId {
             get { return Int32.Parse(loginHelper.Session.UserId); }
+        }
+
+        public string PlayerName {
+            get { return infoModel.PlayerName; }
         }
 
         public async Task<Packet> SendCommandAsync(string command, params string[] parameters) {

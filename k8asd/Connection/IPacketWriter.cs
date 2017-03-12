@@ -4,6 +4,11 @@ using System.Threading.Tasks;
 namespace k8asd {
     public interface IPacketWriter {
         /// <summary>
+        /// Occurs when the server has sent a message.
+        /// </summary>
+        event EventHandler<Packet> OnPacketReceived;
+
+        /// <summary>
         /// Attempts to send the specified command and parameters to the server with a callback.
         /// </summary>
         /// <param name="callback">Will be called when the corresponding reply from the server is received</param>
