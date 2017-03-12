@@ -22,6 +22,7 @@ namespace k8asd {
     };
 
     class WeaveInfo {
+        private Cooldown cooldown;
         private int gold;  // ???
 
         /// <summary>
@@ -59,6 +60,8 @@ namespace k8asd {
         /// </summary>
         public WeavePriceWay PriceWay { get; private set; }
 
+        public int Cooldown { get { return cooldown.RemainingMilliseconds; } }
+
         /// <summary>
         /// Danh sách tổ đội dệt.
         /// </summary>
@@ -90,6 +93,9 @@ namespace k8asd {
                 teams.Add(team);
             }
             result.Teams = teams;
+
+            var makecd = (int) token["makecd"];
+            result.cooldown = new Cooldown(makecd);
 
             return result;
         }
