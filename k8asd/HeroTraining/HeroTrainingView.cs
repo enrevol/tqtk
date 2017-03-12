@@ -187,7 +187,7 @@ namespace k8asd {
         /// Attempts to refresh all heroes.
         /// </summary>
         private async Task RefreshHeroesAsync() {
-            using (var guard = new ScopeGuard(() => Enabled = true)) {
+            try {
                 Enabled = false;
                 var packet = await packetWriter.SendCommandAsync("41100", "0");
                 if (packet == null) {
@@ -195,6 +195,8 @@ namespace k8asd {
                 }
                 Debug.Assert(packet.CommandId == "41100");
                 Parse41100(packet);
+            } finally {
+                Enabled = true;
             }
         }
 
@@ -208,7 +210,7 @@ namespace k8asd {
             }
 
             var heroItem = (Hero) item;
-            using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
+            try {
                 DisableDetailPanels();
 
                 var packet = await packetWriter.SendCommandAsync("41107", heroItem.Id.ToString());
@@ -218,6 +220,8 @@ namespace k8asd {
 
                 Debug.Assert(packet.CommandId == "41107");
                 Parse41107(packet);
+            } finally {
+                EnableDetailPanels();
             }
         }
 
@@ -239,7 +243,7 @@ namespace k8asd {
         }
 
         private async Task TrainAsync(Hero hero, int timeModelId) {
-            using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
+            try {
                 DisableDetailPanels();
 
                 var packet = await packetWriter.SendCommandAsync("41101", hero.Id.ToString(), timeModelId.ToString());
@@ -252,6 +256,8 @@ namespace k8asd {
 
                 Debug.Assert(packet.CommandId == "41101");
                 Parse41101(packet);
+            } finally {
+                EnableDetailPanels();
             }
         }
 
@@ -265,7 +271,7 @@ namespace k8asd {
         }
 
         private async Task GuideAsync(Hero hero) {
-            using (var guard = new ScopeGuard(() => EnableDetailPanels())) {
+            try {
                 DisableDetailPanels();
 
                 var packet = await packetWriter.SendCommandAsync("41102", hero.Id.ToString(), "1", "1");
@@ -278,6 +284,8 @@ namespace k8asd {
 
                 Debug.Assert(packet.CommandId == "41102");
                 Parse41102(packet);
+            } finally {
+                EnableDetailPanels();
             }
         }
 

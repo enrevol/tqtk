@@ -64,7 +64,7 @@ namespace k8asd {
         }
 
         private async Task RefreshArmiesAsync() {
-            using (var guard = new ScopeGuard(() => Enabled = true)) {
+            try { 
                 Enabled = false;
                 armies.Clear();
 
@@ -87,6 +87,8 @@ namespace k8asd {
                         armies.Add(army);
                     }
                 }
+            } finally {
+                Enabled = true;
             }
         }
 
