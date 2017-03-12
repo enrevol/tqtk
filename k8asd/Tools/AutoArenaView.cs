@@ -25,15 +25,15 @@ namespace k8asd {
             isRefreshing = false;
             isDueling = false;
 
-            rankColumn.AspectGetter = (object obj) => {
+            rankColumn.AspectGetter = obj => {
                 var player = (ArenaInfo) obj;
                 return String.Format("{0} / {1}", player.CurrentPlayer.Rank, player.CurrentPlayer.TopRank);
             };
-            cascadeColumn.AspectGetter = (object obj) => {
+            cascadeColumn.AspectGetter = obj => {
                 var player = (ArenaInfo) obj;
                 return String.Format("{0} / {1}", player.CurrentPlayer.Cascade, player.CurrentPlayer.TopCascade);
             };
-            cooldownColumn.AspectGetter = (object obj) => {
+            cooldownColumn.AspectGetter = obj => {
                 var player = (ArenaInfo) obj;
                 return Utils.FormatDuration(player.Cooldown);
             };
