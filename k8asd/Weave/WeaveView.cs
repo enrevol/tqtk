@@ -32,6 +32,8 @@ namespace k8asd {
         /// </summary>
         private bool isRefreshing;
 
+        private bool isChecking;
+
         /// <summary>
         /// Danh sách tổ đội hiện tại.
         /// </summary>
@@ -53,6 +55,7 @@ namespace k8asd {
             members = new List<WeaveMember>();
 
             isRefreshing = false;
+            isChecking = false;
             currentTextilePrice = 0;
             currentTurnCount = 0;
 
@@ -91,20 +94,21 @@ namespace k8asd {
             }
             isRefreshing = true;
 
-            using (var guard = new ScopeGuard(() => isRefreshing = false)) {
-                var packet = await packetWriter.RefreshWeaveAsync();
-                if (packet == null) {
-                    return;
-                }
-                Parse45200(packet);
-                if (IsHosting()) {
-                    if (CheckLimitPlayer()) {
-                        await TryAutoMakeOrAutoQuitAndMakeAsync();
-                    }
-                } else {
-                    await TryAutoCreateAsync();
-                }
+            var packet = await packetWriter.RefreshWeaveAsync();
+            if (packet == null) {
+                isRefreshing = false;
+                return;
             }
+
+            Parse45200(packet);
+            if (IsHosting()) {
+                if (CheckLimitPlayer()) {
+                    await TryAutoMakeOrAutoQuitAndMakeAsync();
+                }
+            } else {
+                await TryAutoCreateAsync();
+            }
+            isRefreshing = false;
         }
 
         public void OnPacketReceived(Packet packet) {
@@ -148,8 +152,10 @@ namespace k8asd {
                 // Có người vào/ra tổ đội.                
                 var teamObject = token["teamObject"];
                 ParseTeamInfo(teamObject);
-                if (CheckLimitPlayer()) {
-                    TryAutoMakeOrAutoQuitAndMakeAsync().Forget();
+                if (IsHosting()) {
+                    if (CheckLimitPlayer()) {
+                        TryAutoMakeOrAutoQuitAndMakeAsync().Forget();
+                    }
                 }
                 return;
             }
@@ -408,7 +414,7 @@ namespace k8asd {
                 return;
             }
             // OK.
-            await packetWriter.QuitAndMakeWeaveAsync(currentTeamId);
+            var packets = await packetWriter.QuitAndMakeWeaveAsync(currentTeamId);
         }
 
         private List<string> ParsePlayers(string input) {
@@ -421,13 +427,19 @@ namespace k8asd {
         /// </summary>
         /// <returns>True nếu tất cả thành viên đều phù hợp</returns>
         private bool CheckLimitPlayer() {
+            if (isChecking) {
+                return false;
+            }
+            isChecking = true;
             if (!IsHosting()) {
                 // Chưa lập tổ đội.
+                isChecking = false;
                 return true;
             }
 
             if (!IsInParty()) {
                 // Không nằm trong tổ đội (lập tổ đội xong thoát).
+                isChecking = false;
                 return true;
             }
 
@@ -435,6 +447,7 @@ namespace k8asd {
             var slot2Players = ParsePlayers(slot2PlayerInput.Text);
             if (slot1Players.Count == 0 && slot2Players.Count == 0) {
                 // Ai vào cũng được.
+                isChecking = false;
                 return true;
             }
 
@@ -442,6 +455,7 @@ namespace k8asd {
                 // Có 1 slot ai vào cũng được.
                 if (members.Count < 3) {
                     // Vẫn còn 1 slot trống, chưa cần kick.
+                    isChecking = false;
                     return true;
                 }
 
@@ -455,27 +469,32 @@ namespace k8asd {
                 if (slot1Players.Contains(members[1].Name) ||
                     slot1Players.Contains(members[2].Name)) {
                     // OK.
+                    isChecking = false;
                     return true;
                 }
 
                 // Kick slot 1.
                 packetWriter.KickWeaveAsync(currentTeamId, members[1].Id).Forget();
+                isChecking = false;
                 return false;
             }
 
             // Kiểm tra slot 1.
             if (members.Count > 1 && !slot1Players.Contains(members[1].Name)) {
                 packetWriter.KickWeaveAsync(currentTeamId, members[1].Id).Forget();
+                isChecking = false;
                 return false;
             }
 
             // Kiểm tra slot 2.
             if (members.Count > 2 && !slot2Players.Contains(members[2].Name)) {
                 packetWriter.KickWeaveAsync(currentTeamId, members[2].Id).Forget();
+                isChecking = false;
                 return false;
             }
 
             // OK.
+            isChecking = false;
             return true;
         }
     }
