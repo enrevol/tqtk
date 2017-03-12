@@ -342,8 +342,14 @@ namespace k8asd {
                     return;
                 }
 
+                int times = 0;
                 while (await DuelAndRefreshAsync()) {
-                    //
+                    ++times;
+                }
+
+                if (times == 0) {
+                    // Không đánh lượt nào vì không có cặp.
+                    autoDuelCheck.Checked = false;
                 }
             } finally {
                 timerLocking = false;
