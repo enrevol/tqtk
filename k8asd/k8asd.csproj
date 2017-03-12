@@ -252,6 +252,12 @@
     <Compile Include="Shop\ShopView.Designer.cs">
       <DependentUpon>ShopView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AutoWeaveView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\AutoWeaveView.Designer.cs">
+      <DependentUpon>AutoWeaveView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Cooldown.cs" />
     <Compile Include="Utils\ScopeGuard.cs" />
     <Compile Include="Weave\WeaveCommand.cs" />
@@ -321,6 +327,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\AutoArenaView.resx">
       <DependentUpon>AutoArenaView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\AutoWeaveView.resx">
+      <DependentUpon>AutoWeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Weave\WeaveView.resx">
       <DependentUpon>WeaveView.cs</DependentUpon>
