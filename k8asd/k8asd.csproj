@@ -255,6 +255,7 @@
     <Compile Include="Utils\Cooldown.cs" />
     <Compile Include="Utils\ScopeGuard.cs" />
     <Compile Include="Weave\WeaveCommand.cs" />
+    <Compile Include="Weave\WeaveInfo.cs" />
     <Compile Include="Weave\WeaveMember.cs" />
     <Compile Include="Weave\WeaveProduct.cs" />
     <Compile Include="Weave\WeaveTeam.cs" />

@@ -34,10 +34,7 @@ namespace k8asd {
 
         private bool isMaking;
 
-        /// <summary>
-        /// Danh sách tổ đội hiện tại.
-        /// </summary>
-        private List<WeaveTeam> teams;
+        private WeaveInfo weaveInfo;
 
         /// <summary>
         /// Danh sách thành viên trong tổ đội dệt hiện tại.
@@ -51,7 +48,7 @@ namespace k8asd {
         public WeaveView() {
             InitializeComponent();
 
-            teams = new List<WeaveTeam>();
+            weaveInfo = null;
             members = new List<WeaveMember>();
 
             isRefreshing = false;
@@ -121,17 +118,22 @@ namespace k8asd {
 
         private void Parse45200(Packet packet) {
             var token = JToken.Parse(packet.Message);
-            var message = token["message"];
-            if (message != null) {
+            weaveInfo = WeaveInfo.Parse(token);
+            if (weaveInfo == null) {
                 // Chưa đủ lv 82.
                 return;
             }
 
-            var baseinfo = token["baseinfo"];
-            ParseBaseInfo(baseinfo);
+            spinnerLevelLabel.Text = String.Format("Công nhân: Lv. {0}", weaveInfo.Level);
+            spinnerRateLabel.Text = String.Format("Tỉ lệ: {0} - {1}", weaveInfo.SuccessRate, weaveInfo.CriticalRate);
+            priceLabel.Text = String.Format("Giá bán: {0} {1} {2}", weaveInfo.Price,
+                weaveInfo.PriceWay == WeavePriceWay.Up ? "▲" : "▼",
+                weaveInfo.PriceWay == WeavePriceWay.Up ? "(Lên)" : "(Xuống)");
+            numLabel.Text = String.Format("Lượt: {0}/{1}", weaveInfo.Turns, weaveInfo.MaxTurns);
 
-            var teamList = token["teamList"];
-            ParseTeams(teamList);
+            var oldSelectedIndex = teamList.SelectedIndex;
+            teamList.SetObjects(weaveInfo.Teams, true);
+            teamList.SelectedIndex = oldSelectedIndex;
         }
 
         private void Parse45300(Packet packet) {
@@ -173,37 +175,6 @@ namespace k8asd {
                 return;
             }
             Debug.Assert(false);
-        }
-
-        private void ParseBaseInfo(JToken token) {
-            var num = (int) token["num"];
-            var price = (int) token["price"];
-            var maxnum = (int) token["maxnum"];
-            var succrate = (int) token["succrate"];
-            var gold = (int) token["gold"]; // ???
-            var totallevel = (int) token["totallevel"];
-            var baojirate = (int) token["baojirate"];
-            var priceway = (int) token["priceway"];
-
-            spinnerLevelLabel.Text = String.Format("Công nhân: Lv. {0}", totallevel);
-            spinnerRateLabel.Text = String.Format("Tỉ lệ: {0} - {1}", succrate, baojirate);
-            priceLabel.Text = String.Format("Giá bán: {0} {1} {2}", price,
-                priceway == 1 ? "▲" : "▼",
-                priceway == 1 ? "(Lên)" : "(Xuống)");
-            numLabel.Text = String.Format("Lượt: {0}/{1}", num, maxnum);
-
-            currentTurnCount = num;
-        }
-
-        private void ParseTeams(JToken token) {
-            teams.Clear();
-            foreach (var teamToken in token) {
-                var team = WeaveTeam.Parse(teamToken);
-                teams.Add(team);
-            }
-            var oldSelectedIndex = teamList.SelectedIndex;
-            teamList.SetObjects(teams, true);
-            teamList.SelectedIndex = oldSelectedIndex;
         }
 
         private void ParseMembers(JToken token) {
@@ -306,14 +277,20 @@ namespace k8asd {
         /// Lập tổ đội không có nghĩa là phải ở trong tổ đội (lập xong thoát).
         /// </summary>
         private bool IsHosting() {
-            return teams.Count > 0 && teams.Any(team => team.Name == infoModel.PlayerName);
+            if (weaveInfo == null) {
+                return false;
+            }
+            if (weaveInfo.Teams.Count == 0) {
+                return false;
+            }
+            return weaveInfo.Teams.Any(team => team.Name == infoModel.PlayerName);
         }
 
         private int GetHostingTeamId() {
             if (!IsHosting()) {
                 return NoTeam;
             }
-            return teams.First(team => team.Name == infoModel.PlayerName).Id;
+            return weaveInfo.Teams.First(team => team.Name == infoModel.PlayerName).Id;
         }
 
         /// <summary>
