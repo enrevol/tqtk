@@ -128,6 +128,9 @@ namespace k8asd {
 
         private async Task ReadData() {
             while (true) {
+                if (tokenSource.Token.IsCancellationRequested) {
+                    return;
+                }
                 var stream = tcpClient.GetStream();
                 var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                 streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
