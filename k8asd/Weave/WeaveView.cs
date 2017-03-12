@@ -18,16 +18,6 @@ namespace k8asd {
         private int currentTeamId;
 
         /// <summary>
-        /// Giá dệt hiện tại.
-        /// </summary>
-        private int currentTextilePrice;
-
-        /// <summary>
-        /// Số lần dệt còn lại.
-        /// </summary>
-        private int currentTurnCount;
-
-        /// <summary>
         /// Có đang cập nhật dệt không?
         /// </summary>
         private bool isRefreshing;
@@ -53,8 +43,6 @@ namespace k8asd {
 
             isRefreshing = false;
             isMaking = false;
-            currentTextilePrice = 0;
-            currentTurnCount = 0;
 
             teamColumn.AspectGetter = (obj) => {
                 var team = (WeaveTeam) obj;
@@ -348,13 +336,13 @@ namespace k8asd {
                 // Chưa bật.
                 return;
             }
-            var textilePrice = (int) textilePriceInput.Value;
-            if (currentTextilePrice < textilePrice) {
-                // Giá chưa đủ cao.
-                return;
-            }
             if (!IsHosting()) {
                 // Chưa lập tổ đội.
+                return;
+            }
+            var textilePrice = (int) textilePriceInput.Value;
+            if (weaveInfo.Price < textilePrice) {
+                // Giá chưa đủ cao.
                 return;
             }
             if (!IsInParty()) {
@@ -365,7 +353,7 @@ namespace k8asd {
                 // Chưa đủ số lượng thành viên/
                 return;
             }
-            if (autoQuitAndMake.Checked && currentTurnCount <= 1) {
+            if (autoQuitAndMake.Checked && weaveInfo.Turns <= 1) {
                 // Ưu tiên kéo dệt.
                 return;
             }
@@ -393,7 +381,7 @@ namespace k8asd {
                 // Chưa đủ số lượng thành viên.
                 return;
             }
-            if (autoMake.Checked && currentTurnCount > 1) {
+            if (autoMake.Checked && weaveInfo.Turns > 1) {
                 // Ưu tiên dệt chung trước.
                 return;
             }
