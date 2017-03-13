@@ -311,6 +311,7 @@ namespace k8asd {
                         autoDuelCheck.Checked = false;
                         return;
                     }
+                    maxCooldown = players.Max(player => player.Cooldown);                    
                 }
 
                 if (isRefreshing || isDueling) {
