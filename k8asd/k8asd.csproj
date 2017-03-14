@@ -265,6 +265,7 @@
     <Compile Include="Weave\WeaveMember.cs" />
     <Compile Include="Weave\WeaveProduct.cs" />
     <Compile Include="Weave\WeaveTeam.cs" />
+    <Compile Include="Weave\WeaveTeamDetail.cs" />
     <Compile Include="Weave\WeaveView.cs">
       <SubType>UserControl</SubType>
     </Compile>
