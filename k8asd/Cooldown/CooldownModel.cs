@@ -118,8 +118,12 @@ namespace k8asd {
             }
             if (packet.CommandId == "45200") {
                 var token = JToken.Parse(packet.Message);
-                var makecd = (int) token["makecd"];
-                WeaveCooldown = makecd;
+                var message = token["message"];
+                // {{ "message": "Ngài vẫn chưa có Xưởng Dệt hoặc cấp độ không đủ" }}
+                if (message != null) {
+                    var makecd = (int) token["makecd"];
+                    WeaveCooldown = makecd;
+                }
             }
         }
     }
