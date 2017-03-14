@@ -26,8 +26,9 @@ namespace k8asd {
             PullLevel,
         }
 
-        private Dictionary<WeaveInfo, ClientView> mappedClients;
-        private List<WeaveInfo> infos;
+        private Dictionary<int, ClientView> clients;
+        private Dictionary<int, WeaveInfo> infos;
+        private List<int> playerIds;
 
         private int hostingTeamId;
         private bool isRefreshing;
@@ -37,25 +38,26 @@ namespace k8asd {
         public AutoWeaveView() {
             InitializeComponent();
 
-            mappedClients = new Dictionary<WeaveInfo, ClientView>();
-            infos = new List<WeaveInfo>();
+            clients = new Dictionary<int, ClientView>();
+            infos = new Dictionary<int, WeaveInfo>();
+            playerIds = new List<int>();
 
             hostingTeamId = NoTeam;
             isRefreshing = false;
             isWeaving = false;
             timerLocking = false;
 
-            spinnerLevelColumn.AspectGetter = obj => ((WeaveInfo) obj).Level;
-            successRateColumn.AspectGetter = obj => ((WeaveInfo) obj).SuccessRate;
-            criticalRateColumn.AspectGetter = obj => ((WeaveInfo) obj).CriticalRate;
+            spinnerLevelColumn.AspectGetter = obj => infos[(int) obj].Level;
+            successRateColumn.AspectGetter = obj => infos[(int) obj].SuccessRate;
+            criticalRateColumn.AspectGetter = obj => infos[(int) obj].CriticalRate;
             priceColumn.AspectGetter = obj => {
-                var info = (WeaveInfo) obj;
+                var info = infos[(int) obj];
                 return String.Format("{0} {1}", info.Price,
                     (info.PriceWay == WeavePriceWay.Up ? "▲" : "▼"));
             };
-            turnColumn.AspectGetter = obj => ((WeaveInfo) obj).Turns;
-            nameColumn.AspectGetter = obj => mappedClients[(WeaveInfo) obj].PlayerName;
-            cooldownColumn.AspectGetter = obj => Utils.FormatDuration(((WeaveInfo) obj).Cooldown);
+            turnColumn.AspectGetter = obj => infos[(int) obj].Turns;
+            nameColumn.AspectGetter = obj => clients[(int) obj].PlayerName;
+            cooldownColumn.AspectGetter = obj => Utils.FormatDuration(infos[(int) obj].Cooldown);
 
             weaveTimer.Start();
             weaveTimer.Interval = 1000; // 1 giây.
@@ -82,8 +84,9 @@ namespace k8asd {
             }
             isRefreshing = true;
 
-            mappedClients.Clear();
+            clients.Clear();
             infos.Clear();
+            playerIds.Clear();
             playerList.Items.Clear();
 
             foreach (var client in connectedClients) {
@@ -99,33 +102,32 @@ namespace k8asd {
                     continue;
                 }
 
-                mappedClients.Add(info, client);
-                infos.Add(info);
-                playerList.SetObjects(infos);
+                var playerId = client.PlayerId;
+                playerIds.Add(playerId);
+                clients.Add(playerId, client);
+                infos.Add(playerId, info);
+                playerList.SetObjects(playerIds);
             }
 
             isRefreshing = false;
             return true;
         }
 
-        private async Task<bool> RefreshPlayerAsync(WeaveInfo weaveInfo) {
+        private async Task<bool> RefreshPlayerAsync(int playerId) {
             if (isRefreshing) {
                 return false;
             }
             isRefreshing = true;
             try {
-                var index = infos.FindIndex(info => info == weaveInfo);
-                Debug.Assert(index != -1);
-
-                var client = mappedClients[weaveInfo];
+                var client = clients[playerId];
                 var packet = await client.RefreshWeaveAsync();
                 if (packet == null) {
                     return false;
                 }
 
                 var token = JToken.Parse(packet.Message);
-                infos[index] = WeaveInfo.Parse(token);
-                playerList.SetObjects(infos);
+                infos[playerId] = WeaveInfo.Parse(token);
+                playerList.RefreshObject(playerId);
             } finally {
                 isRefreshing = false;
             }
@@ -174,50 +176,44 @@ namespace k8asd {
         }
 
         private class WeaveTeamInfo {
-            public WeaveInfo Host { get; private set; }
-            public WeaveInfo Slot1 { get; private set; }
-            public WeaveInfo Slot2 { get; private set; }
+            public int HostId { get; private set; }
+            public int Slot1Id { get; private set; }
+            public int Slot2Id { get; private set; }
 
-            public WeaveTeamInfo(WeaveInfo host, WeaveInfo slot1) {
-                Host = host;
-                Slot1 = slot1;
-                Slot2 = null;
+            public WeaveTeamInfo(int host, int slot1) {
+                HostId = host;
+                Slot1Id = slot1;
+                Slot2Id = 0;
             }
 
-            public WeaveTeamInfo(WeaveInfo host, WeaveInfo slot1, WeaveInfo slot2) {
-                Host = host;
-                Slot1 = slot1;
-                Slot2 = slot2;
+            public WeaveTeamInfo(int host, int slot1, int slot2) {
+                HostId = host;
+                Slot1Id = slot1;
+                Slot2Id = slot2;
             }
         }
 
-        private WeaveTeamInfo FindWeaveTeam(WeaveInfo host, List<WeaveInfo> members) {
-            if (host.Cooldown > 0) {
+        private WeaveTeamInfo FindWeaveTeam(int hostId, List<int> memberIds) {
+            if (infos[hostId].Cooldown > 0) {
                 return null;
             }
-            if (members.Count == 0) {
+            if (memberIds.Count == 0) {
                 return null;
             }
-            if (members.Count == 1) {
-                if (members[0].Cooldown > 0) {
+            if (memberIds.Count == 1) {
+                if (infos[memberIds[0]].Cooldown > 0) {
                     return null;
                 }
-                return new WeaveTeamInfo(host, members[0]);
+                return new WeaveTeamInfo(hostId, memberIds[0]);
             }
-            var orderedMembers = members.OrderBy(info => info.Cooldown);
-            if (members[0].Cooldown > 0 && members[1].Cooldown > 0) {
+            var orderedMembers = memberIds.OrderBy(id => infos[id].Cooldown);
+            if (infos[memberIds[0]].Cooldown > 0 && infos[memberIds[1]].Cooldown > 0) {
                 return null;
             }
-            return new WeaveTeamInfo(host, members[0], members[1]);
+            return new WeaveTeamInfo(hostId, memberIds[0], memberIds[1]);
         }
 
-        private async Task<bool> RecheckCooldown(WeaveInfo info) {
-            var client = mappedClients[info];
-            var ok = await RefreshPlayerAsync(info);
-            return ok;
-        }
-
-        private async Task<bool> WeaveAsync(WeaveInfo host, List<WeaveInfo> members) {
+        private async Task<bool> WeaveAsync(int hostId, List<int> memberIds) {
             if (isRefreshing) {
                 return false;
             }
@@ -226,15 +222,15 @@ namespace k8asd {
             }
             isWeaving = true;
 
-            if (members.Count == 1) {
+            if (memberIds.Count == 1) {
                 // Chỉ có 1 thành viên.
-                if (host.Turns > 1 && autoMake.Checked) {
+                if (infos[hostId].Turns > 1 && autoMake.Checked) {
 
                 } else {
 
                 }
             }
-            var orderedMembers = members.OrderBy(info => info.Cooldown);
+            var orderedMembers = memberIds.OrderBy(id => infos[id].Cooldown);
 
             isWeaving = false;
             return true;
@@ -245,7 +241,7 @@ namespace k8asd {
         /// </summary>
         /// <returns>Thời gian đóng băng tất cả các tài khoản.</returns>
         private void UpdateCooldown() {
-            int maxCooldown = infos.Count == 0 ? 0 : infos.Max(info => info.Cooldown);
+            int maxCooldown = playerIds.Count == 0 ? 0 : playerIds.Max(id => infos[id].Cooldown);
             cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
         }
 
@@ -261,49 +257,49 @@ namespace k8asd {
                     return;
                 }
 
-                if (infos.Count == 0) {
+                if (playerIds.Count == 0) {
                     // Làm mới thông tin tất cả tài khoản.
                     await RefreshPlayersAsync(FindConnectedClients());
-                    if (infos.Count == 0) {
+                    if (playerIds.Count == 0) {
                         // Không có tài khoản được kết nối.
                         autoWeave.Checked = false;
-                        return;
                     }
+                    return;
                 }
 
                 if (isRefreshing || isWeaving) {
                     return;
                 }
 
-                var hostInfo = infos.FirstOrDefault(info => mappedClients[info].PlayerName == hostInput.Text);
-                if (hostInfo == null) {
+                var hostId = playerIds.FirstOrDefault(id => clients[id].PlayerName == hostInput.Text);
+                if (hostId == 0) {
                     // Không tìm thấy chủ tổ đội có tên được nhập.
                     return;
                 }
 
-                var memberInfos = infos.Where(info => info != hostInfo).ToList();
-                if (memberInfos.Count == 0) {
-                    // Không có tài khoản thành viên nào.
+                var memberIds = playerIds.Where(id => id != hostId).ToList();
+                if (memberIds.Count == 0) {
+                    // Không có thành viên nào.
                     autoWeave.Checked = false;
                     return;
                 }
 
-                int maxTurns = memberInfos.Max(info => info.Turns);
+                int maxTurns = memberIds.Max(id => infos[id].Turns);
                 if (maxTurns == 0) {
                     // Các tài khoản khác hết lượt dệt.
                     autoWeave.Checked = false;
                     return;
                 }
 
-                var team = FindWeaveTeam(hostInfo, memberInfos);
+                var team = FindWeaveTeam(hostId, memberIds);
                 if (team == null) {
                     return;
                 }
 
                 // Kiểm tra lại đóng băng.
-                await RefreshPlayerAsync(hostInfo);
+                await RefreshPlayerAsync(hostId);
 
-                await WeaveAsync(hostInfo, memberInfos);
+                await WeaveAsync(hostId, memberIds);
             } finally {
                 timerLocking = false;
             }
