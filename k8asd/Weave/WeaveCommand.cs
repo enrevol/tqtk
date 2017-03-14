@@ -44,8 +44,8 @@ namespace k8asd {
 
         /// <summary>
         /// Giải tán tổ đội dệt.
-        /// <param name="teamId">ID tổ đội.</param>
         /// </summary>
+        /// <param name="teamId">ID tổ đội.</param>        
         public static async Task<Packet> DisbandWeaveAsync(this IPacketWriter writer, int teamId) {
             return await writer.SendCommandAsync("45207", teamId.ToString());
         }
