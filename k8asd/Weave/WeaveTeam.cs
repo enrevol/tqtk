@@ -3,6 +3,7 @@
 namespace k8asd {
     /// <summary>
     /// Chứa thông tin cho một tổ đội dệt.
+    /// Thuộc tin nhắn 45200.
     /// </summary>
     class WeaveTeam {
         private string desc;

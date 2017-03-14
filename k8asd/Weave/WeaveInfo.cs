@@ -21,6 +21,9 @@ namespace k8asd {
         Down = 0,
     };
 
+    /// <summary>
+    /// Thuộc tin nhắn 45200.
+    /// </summary>
     class WeaveInfo {
         private Cooldown cooldown;
         private int gold;  // ???

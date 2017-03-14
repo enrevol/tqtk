@@ -67,7 +67,6 @@
             this.configTab = new System.Windows.Forms.TabPage();
             this.slot2PlayerInput = new System.Windows.Forms.TextBox();
             this.slot1PlayerInput = new System.Windows.Forms.TextBox();
-            this.textilePriceInput = new System.Windows.Forms.NumericUpDown();
             noteLabel = new System.Windows.Forms.Label();
             interfaceTab = new System.Windows.Forms.TabPage();
             label4 = new System.Windows.Forms.Label();
@@ -86,7 +85,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.autoTextileLevelInput)).BeginInit();
             this.tabControl.SuspendLayout();
             this.configTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textilePriceInput)).BeginInit();
             this.SuspendLayout();
             // 
             // noteLabel
@@ -145,25 +143,25 @@
             this.teamLevelLabel.Name = "teamLevelLabel";
             this.teamLevelLabel.Size = new System.Drawing.Size(44, 13);
             this.teamLevelLabel.TabIndex = 24;
-            this.teamLevelLabel.Text = "Cấp: 22";
+            this.teamLevelLabel.Text = "Cấp: 99";
             // 
             // teamRateLabel
             // 
             this.teamRateLabel.AutoSize = true;
             this.teamRateLabel.Location = new System.Drawing.Point(180, 20);
             this.teamRateLabel.Name = "teamRateLabel";
-            this.teamRateLabel.Size = new System.Drawing.Size(88, 13);
+            this.teamRateLabel.Size = new System.Drawing.Size(94, 13);
             this.teamRateLabel.TabIndex = 23;
-            this.teamRateLabel.Text = "Tỉ lệ: 101% - 20%";
+            this.teamRateLabel.Text = "Tỉ lệ: 999% - 999%";
             // 
             // teamPriceLabel
             // 
             this.teamPriceLabel.AutoSize = true;
             this.teamPriceLabel.Location = new System.Drawing.Point(70, 20);
             this.teamPriceLabel.Name = "teamPriceLabel";
-            this.teamPriceLabel.Size = new System.Drawing.Size(80, 13);
+            this.teamPriceLabel.Size = new System.Drawing.Size(98, 13);
             this.teamPriceLabel.TabIndex = 18;
-            this.teamPriceLabel.Text = "Giá: 870 - 4350";
+            this.teamPriceLabel.Text = "Giá: 99999 - 99999";
             // 
             // memberList
             // 
@@ -214,11 +212,11 @@
             // spinnerRateLabel
             // 
             this.spinnerRateLabel.AutoSize = true;
-            this.spinnerRateLabel.Location = new System.Drawing.Point(115, 20);
+            this.spinnerRateLabel.Location = new System.Drawing.Point(105, 20);
             this.spinnerRateLabel.Name = "spinnerRateLabel";
-            this.spinnerRateLabel.Size = new System.Drawing.Size(54, 13);
+            this.spinnerRateLabel.Size = new System.Drawing.Size(78, 13);
             this.spinnerRateLabel.TabIndex = 16;
-            this.spinnerRateLabel.Text = "Tỉ lệ: 5 - 5";
+            this.spinnerRateLabel.Text = "Tỉ lệ: 999 - 999";
             // 
             // numLabel
             // 
@@ -227,7 +225,7 @@
             this.numLabel.Name = "numLabel";
             this.numLabel.Size = new System.Drawing.Size(63, 13);
             this.numLabel.TabIndex = 14;
-            this.numLabel.Text = "Lượt: 10/10";
+            this.numLabel.Text = "Lượt: 99/99";
             // 
             // spinnerLevelLabel
             // 
@@ -236,16 +234,16 @@
             this.spinnerLevelLabel.Name = "spinnerLevelLabel";
             this.spinnerLevelLabel.Size = new System.Drawing.Size(95, 13);
             this.spinnerLevelLabel.TabIndex = 15;
-            this.spinnerLevelLabel.Text = "Công nhân: Lv. 18";
+            this.spinnerLevelLabel.Text = "Công nhân: Lv. 99";
             // 
             // priceLabel
             // 
             this.priceLabel.AutoSize = true;
-            this.priceLabel.Location = new System.Drawing.Point(180, 20);
+            this.priceLabel.Location = new System.Drawing.Point(185, 20);
             this.priceLabel.Name = "priceLabel";
-            this.priceLabel.Size = new System.Drawing.Size(107, 13);
+            this.priceLabel.Size = new System.Drawing.Size(120, 13);
             this.priceLabel.TabIndex = 13;
-            this.priceLabel.Text = "Giá bán: 107 ▲ (Lên)";
+            this.priceLabel.Text = "Giá bán: 999 ▲ (Xuống)";
             // 
             // teamBox
             // 
@@ -528,9 +526,9 @@
             this.autoMake.AutoSize = true;
             this.autoMake.Location = new System.Drawing.Point(15, 50);
             this.autoMake.Name = "autoMake";
-            this.autoMake.Size = new System.Drawing.Size(192, 17);
+            this.autoMake.Size = new System.Drawing.Size(160, 17);
             this.autoMake.TabIndex = 34;
-            this.autoMake.Text = "Tự dệt khi có 3 người và giá dệt >=";
+            this.autoMake.Text = "Tự dệt chung khi có 3 người";
             this.autoMake.UseVisualStyleBackColor = true;
             // 
             // tabControl
@@ -552,7 +550,6 @@
             this.configTab.Controls.Add(label2);
             this.configTab.Controls.Add(label1);
             this.configTab.Controls.Add(this.slot1PlayerInput);
-            this.configTab.Controls.Add(this.textilePriceInput);
             this.configTab.Controls.Add(noteLabel);
             this.configTab.Controls.Add(this.autoTextileLevelInput);
             this.configTab.Controls.Add(this.autoQuitAndMake);
@@ -580,29 +577,6 @@
             this.slot1PlayerInput.Size = new System.Drawing.Size(280, 20);
             this.slot1PlayerInput.TabIndex = 38;
             // 
-            // textilePriceInput
-            // 
-            this.textilePriceInput.Location = new System.Drawing.Point(210, 49);
-            this.textilePriceInput.Maximum = new decimal(new int[] {
-            150,
-            0,
-            0,
-            0});
-            this.textilePriceInput.Minimum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.textilePriceInput.Name = "textilePriceInput";
-            this.textilePriceInput.Size = new System.Drawing.Size(50, 20);
-            this.textilePriceInput.TabIndex = 36;
-            this.textilePriceInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textilePriceInput.Value = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            // 
             // WeaveView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -626,7 +600,6 @@
             this.tabControl.ResumeLayout(false);
             this.configTab.ResumeLayout(false);
             this.configTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textilePriceInput)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -665,7 +638,6 @@
         private System.Windows.Forms.CheckBox autoMake;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage configTab;
-        private System.Windows.Forms.NumericUpDown textilePriceInput;
         private System.Windows.Forms.TextBox slot1PlayerInput;
         private System.Windows.Forms.TextBox slot2PlayerInput;
         private System.Windows.Forms.Button quitAndMakeButton;
