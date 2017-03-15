@@ -131,16 +131,21 @@ namespace k8asd {
             isReading = true;
             try {
                 var stream = tcpClient.GetStream();
-                var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                 try {
-                    streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                    if (bytesRead > 0) {
+                        streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    }
                 } catch (IOException ex) {
                     Console.WriteLine(ex.Message);
                     return false;
                 }
 
-                var packet = ParsePacket();
-                if (packet != null) {
+                while (true) {
+                    var packet = ParsePacket();
+                    if (packet == null) {
+                        break;
+                    }
                     PacketReceived.Raise(this, packet);
                     var id = packet.CommandId;
                     if (PopDelta(id)) {
