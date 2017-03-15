@@ -89,6 +89,12 @@ namespace k8asd {
                 AddMessage(ChatChannel.Local, sender, message);
                 return;
             }
+            if (category == 16) {
+                // sender: Hệ thống
+                // message: Kỹ thuật Bang Đẳng cấp đã nâng đến cấp 160
+                AddMessage(ChatChannel.Legion, sender, message);
+                return;
+            }
             return;
         }
 
