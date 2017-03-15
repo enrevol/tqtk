@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Collections.Concurrent;
 using Nito.AsyncEx;
-using System.Threading;
+using System.Timers;
+using System.IO;
 
 namespace k8asd {
     /// <summary>
@@ -20,6 +21,9 @@ namespace k8asd {
             Succeeded,
         };
 
+        /// <summary>
+        /// Size of the buffer used to read received data.
+        /// </summary>
         private const int BufferSize = 1024;
 
         public event EventHandler<Packet> PacketReceived;
@@ -30,6 +34,9 @@ namespace k8asd {
 
         public Session Session { get; private set; }
 
+        /// <summary>
+        /// Underlying TCP client to communicate with the server.
+        /// </summary>
         private TcpClient tcpClient;
 
         /// <summary>
@@ -37,6 +44,9 @@ namespace k8asd {
         /// </summary>
         private string streamData;
 
+        /// <summary>
+        /// Used to read received data.
+        /// </summary>
         private byte[] buffer;
 
         /// <summary>
@@ -47,20 +57,21 @@ namespace k8asd {
         /// <summary>
         /// Packet queues.
         /// </summary>
-        private ConcurrentDictionary<string, AsyncCollection<Packet>> queues;
+        private Dictionary<string, AsyncCollection<Packet>> queues;
 
-        private CancellationTokenSource tokenSource;
-        private Task readingTask;
+        private Dictionary<string, int> messageDelta;
+
+        private bool isReading;
 
         public PacketHandler(Session session) {
             Session = session;
             tcpClient = null;
             buffer = new byte[BufferSize];
             hasher = MD5.Create();
-            queues = new ConcurrentDictionary<string, AsyncCollection<Packet>>();
+            queues = new Dictionary<string, AsyncCollection<Packet>>();
+            messageDelta = new Dictionary<string, int>();
             streamData = String.Empty;
-            tokenSource = null;
-            readingTask = null;
+            isReading = false;
         }
 
         /// <summary>
@@ -69,23 +80,22 @@ namespace k8asd {
         private void ClearData() {
             streamData = String.Empty;
             queues.Clear();
+            messageDelta.Clear();
         }
 
         /// <summary>
         /// Asynchronously connects to the server.
         /// </summary>
         public async Task ConnectAsync() {
-            await Disconnect();
+            Disconnect();
             tcpClient = new TcpClient();
             await tcpClient.ConnectAsync(Session.Ip, Session.Ports);
-            StartReadingData();
         }
 
         /// <summary>
         /// Asynchronously disconnects from the server.
         /// </summary>
-        public async Task Disconnect() {
-            await StopReadingData();
+        public void Disconnect() {
             if (tcpClient != null) {
                 tcpClient.Close();
                 tcpClient = null;
@@ -97,9 +107,15 @@ namespace k8asd {
             var msg = Utils.EncodeMessage(hasher, Session.UserId, Session.SessionKey, commandId, parameters);
             var bytes = Encoding.UTF8.GetBytes(msg);
             var stream = tcpClient.GetStream();
-            await stream.WriteAsync(bytes, 0, bytes.Length);
-            if (!tcpClient.Connected) {
-                // Failed.
+            try {
+                await stream.WriteAsync(bytes, 0, bytes.Length);
+                if (!tcpClient.Connected) {
+                    // Failed.
+                    return null;
+                }
+                PushDelta(commandId);
+            } catch (SocketException ex) {
+                Console.WriteLine(ex.Message);
                 return null;
             }
 
@@ -108,38 +124,33 @@ namespace k8asd {
             return result;
         }
 
-        private void StartReadingData() {
-            if (tokenSource == null) {
-                tokenSource = new CancellationTokenSource();
-                readingTask = Task.Factory.StartNew(ReadData, tokenSource.Token,
-                    TaskCreationOptions.DenyChildAttach, TaskScheduler.FromCurrentSynchronizationContext());
+        public async Task<bool> ReadData() {
+            if (isReading) {
+                return true;
             }
-        }
-
-        private async Task StopReadingData() {
-            if (tokenSource != null) {
-                tokenSource.Cancel();
-                tokenSource.Dispose();
-                tokenSource = null;
-                await readingTask;
-            }
-        }
-
-        private async Task ReadData() {
-            while (true) {
-                if (tokenSource.Token.IsCancellationRequested) {
-                    return;
-                }
+            isReading = true;
+            try {
                 var stream = tcpClient.GetStream();
                 var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                try {
+                    streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                } catch (IOException ex) {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
 
                 var packet = ParsePacket();
                 if (packet != null) {
                     PacketReceived.Raise(this, packet);
-                    PushPacket(packet);
+                    var id = packet.CommandId;
+                    if (PopDelta(id)) {
+                        PushPacket(packet);
+                    }
                 }
+            } finally {
+                isReading = false;
             }
+            return true;
         }
 
         private Packet ParsePacket() {
@@ -170,7 +181,35 @@ namespace k8asd {
         }
 
         private AsyncCollection<Packet> GetQueue(string id) {
-            return queues.GetOrAdd(id, new AsyncCollection<Packet>());
+            if (!queues.ContainsKey(id)) {
+                queues.Add(id, new AsyncCollection<Packet>());
+            }
+            return queues[id];
+        }
+
+        private void EnsureDelta(string id) {
+            if (!messageDelta.ContainsKey(id)) {
+                messageDelta.Add(id, 0);
+            }
+        }
+
+        private int GetDelta(string id) {
+            EnsureDelta(id);
+            return messageDelta[id];
+        }
+
+        private void PushDelta(string id) {
+            EnsureDelta(id);
+            ++messageDelta[id];
+        }
+
+        private bool PopDelta(string id) {
+            EnsureDelta(id);
+            if (messageDelta[id] == 0) {
+                return false;
+            }
+            --messageDelta[id];
+            return true;
         }
 
         private bool disposed = false;
@@ -188,8 +227,11 @@ namespace k8asd {
                 hasher.Dispose();
                 hasher = null;
             }
+            Session = null;
             streamData = null;
             buffer = null;
+            queues = null;
+            messageDelta = null;
             disposed = true;
         }
 

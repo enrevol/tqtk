@@ -144,25 +144,20 @@ namespace k8asd {
             }
         }
 
-        public async Task LogOut()
-        {
-            if (connectionStatus == ConnectionStatus.Connected)
-            {
+        public void LogOut() {
+            if (connectionStatus == ConnectionStatus.Connected) {
                 messageLogModel.LogInfo("Đang đăng xuất!");
                 connectionStatus = ConnectionStatus.Disconnected;
             }
-            try
-            {
+            try {
                 //oneSecondTimer.Stop();
-                if (packetHandler!=null)
-                {
-                    await packetHandler.Disconnect();
+                dataTimer.Stop();
+                if (packetHandler != null) {
+                    packetHandler.Disconnect();
                     packetHandler = null;
                     messageLogModel.LogInfo("Đăng xuất thành công!");
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 messageLogModel.LogInfo(ex.Message);
                 messageLogModel.LogInfo("Đăng xuất thất bại!");
             }
@@ -212,6 +207,8 @@ namespace k8asd {
                 guard.Dismiss();
 
                 packetHandler.PacketReceived += (sender, packet) => OnPacketReceived(packet);
+                dataTimer.Start();
+
                 await SendCommandAsync("10100");
                 await SendCommandAsync("11102");
                 // FIXME: handle case character not yet created.
@@ -229,15 +226,18 @@ namespace k8asd {
             }
         }
 
-        private async void OneSecondTimer_Tick(object sender, EventArgs e)
-        {
-            if(packetHandler != null)
-            {
+        private async void OneSecondTimer_Tick(object sender, EventArgs e) {
+            if (packetHandler != null) {
                 await SendCommandAsync("14102", "3", "0");
-                if (infoModel.Force >= infoModel.MaxForce - 3)
-                {
+                if (infoModel.Force >= infoModel.MaxForce - 3) {
                     oneSecondTimer.Stop();
                 }
+            }
+        }
+
+        private async void dataTimer_Tick(object sender, EventArgs e) {
+            if (await packetHandler.ReadData()) {
+                // FIXME:
             }
         }
     }

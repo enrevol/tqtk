@@ -47,7 +47,7 @@ namespace k8asd {
             await LogIn(selectedClients);
         }
 
-        private async void logoutButton_Click(object sender, EventArgs e) {
+        private void logoutButton_Click(object sender, EventArgs e) {
             var selectedClients = new List<ClientView>();
             var items = clientList.SelectedItems;
             foreach (var item in items)
@@ -57,7 +57,7 @@ namespace k8asd {
             }
             foreach (var client in selectedClients)
             {
-                await client.LogOut();
+                client.LogOut();
             }
         }
 
