@@ -124,7 +124,6 @@ namespace k8asd {
                     !packet.Message.ToLower().Contains("lượt vẫn đang đóng băng"))
                 {
                     isCreating = true;
-                    isJoinning = true;
                 }   
             }
             if (packet.CommandId == "34105" || packet.CommandId == "34106" || packet.CommandId == "34107")
@@ -134,8 +133,13 @@ namespace k8asd {
             }
             if (packet.CommandId == "34102")
             {
-                isJoinning = true;
+                if (!packet.Message.ToLower().Contains("ngài đã đánh bại bang hội này") &&
+                    !packet.Message.ToLower().Contains("lượt vẫn đang đóng băng"))
+                {
+                    isJoinning = true;
+                }
             }
+
             if (packet.CommandId == "34104")
             {
                 isJoinning = true;
@@ -144,6 +148,7 @@ namespace k8asd {
                     isJoinning = false;
                 }
             }
+            Console.WriteLine("packet.CommandId " + packet.CommandId);
         }
 
         private List<int> Parse33201(Packet packet) {
@@ -214,11 +219,8 @@ namespace k8asd {
                 }
             }
 
-            //auto create
-            Console.WriteLine("test: " + isCreating);
             if (this.chkAutoPt.Checked && !isCreating && mcuModel.Tokencdusable == true)
             {
-                //this.createButton.PerformClick();
                 createArmy();
             }
 
@@ -243,7 +245,7 @@ namespace k8asd {
                 isJoinning = false;
                 isCreating = false;
             }
-
+            Console.WriteLine("test join: " + isJoinning);
             //auto kick
             if (this.chkKick.Checked)
             {
