@@ -9,33 +9,70 @@ using System.Windows.Forms;
 
 namespace k8asd {
     public partial class AutoArenaView : Form {
-        private Dictionary<ArenaInfo, ClientView> mappedClients;
-        private List<ArenaInfo> players;
+        /// <summary>
+        /// Ánh xạ từ ID sang Client (để gửi/nhận gói tin).
+        /// </summary>
+        private Dictionary<int, ClientView> clients;
 
+        /// <summary>
+        /// Ánh xạ từ ID sang thông tin võ đài (64005).
+        /// </summary>
+        private Dictionary<int, ArenaInfo> infos;
+
+        /// <summary>
+        /// Danh sách ID của người chơi để tự động đánh võ đài.
+        /// </summary>
+        private List<int> playerIds;
+
+        /// <summary>
+        /// Có đang làm mới thông tin võ đài không?
+        /// </summary>
         private bool isRefreshing;
+
+        /// <summary>
+        /// Có đang khiêu chiên võ đài không?
+        /// </summary>
         private bool isDueling;
+
         private bool timerLocking;
 
         public AutoArenaView() {
             InitializeComponent();
 
-            mappedClients = new Dictionary<ArenaInfo, ClientView>();
-            players = new List<ArenaInfo>();
+            clients = new Dictionary<int, ClientView>();
+            infos = new Dictionary<int, ArenaInfo>();
+            playerIds = new List<int>();
 
             isRefreshing = false;
             isDueling = false;
 
             rankColumn.AspectGetter = obj => {
-                var player = (ArenaInfo) obj;
-                return String.Format("{0} / {1}", player.CurrentPlayer.Rank, player.CurrentPlayer.TopRank);
+                var info = infos[(int) obj];
+                return String.Format("{0} / {1}", info.CurrentPlayer.Rank, info.CurrentPlayer.TopRank);
             };
             cascadeColumn.AspectGetter = obj => {
-                var player = (ArenaInfo) obj;
-                return String.Format("{0} / {1}", player.CurrentPlayer.Cascade, player.CurrentPlayer.TopCascade);
+                var info = infos[(int) obj];
+                return String.Format("{0} / {1}", info.CurrentPlayer.Cascade, info.CurrentPlayer.TopCascade);
+            };
+            timesColumn.AspectGetter = obj => {
+                var info = infos[(int) obj];
+                return info.CurrentPlayer.RemainTimes;
+            };
+            nationColumn.AspectGetter = obj => {
+                var info = infos[(int) obj];
+                return info.CurrentPlayer.Nation;
+            };
+            nameColumn.AspectGetter = obj => {
+                var info = infos[(int) obj];
+                return info.CurrentPlayer.Name;
+            };
+            levelColumn.AspectGetter = obj => {
+                var info = infos[(int) obj];
+                return info.CurrentPlayer.Level;
             };
             cooldownColumn.AspectGetter = obj => {
-                var player = (ArenaInfo) obj;
-                return Utils.FormatDuration(player.Cooldown);
+                var info = infos[(int) obj];
+                return Utils.FormatDuration(info.Cooldown);
             };
 
             timerLocking = false;
@@ -82,8 +119,9 @@ namespace k8asd {
             LogInfo("Bắt đầu làm mới...");
             isRefreshing = true;
 
-            mappedClients.Clear();
-            players.Clear();
+            clients.Clear();
+            infos.Clear();
+            playerIds.Clear();
             playerList.Items.Clear();
 
             foreach (var client in connectedClients) {
@@ -100,11 +138,19 @@ namespace k8asd {
                     continue;
                 }
 
-                var player = ArenaInfo.Parse(token);
-                mappedClients.Add(player, client);
-                players.Add(player);
-                players.Sort((lhs, rhs) => lhs.CurrentPlayer.Rank.CompareTo(rhs.CurrentPlayer.Rank));
-                playerList.SetObjects(players, true);
+                var info = ArenaInfo.Parse(token);
+                var playerId = client.PlayerId;
+                playerIds.Add(playerId);
+                clients.Add(playerId, client);
+                infos.Add(playerId, info);
+
+                playerIds.Sort((lhs, rhs) => {
+                    var lhsRank = infos[lhs].CurrentPlayer.Rank;
+                    var rhsRank = infos[rhs].CurrentPlayer.Rank;
+                    return lhsRank.CompareTo(rhsRank);
+                });
+
+                playerList.SetObjects(playerIds, true);
             }
 
             LogInfo("Làm mới hoàn thành!");
@@ -115,8 +161,11 @@ namespace k8asd {
         /// <summary>
         /// Kiểm tra xem người chơi upper có đánh được người chơi lower không?
         /// </summary>
-        private bool canDuel(ArenaInfo lower, ArenaInfo upper) {
-            return upper.Players.Any(player => player.Id == lower.CurrentPlayer.Id);
+        private bool canDuel(int lowerId, int upperId) {
+            var lowerInfo = infos[lowerId];
+            Debug.Assert(lowerInfo.CurrentPlayer.Id == lowerId);
+            var upperInfo = infos[upperId];
+            return upperInfo.Players.Any(player => player.Id == lowerInfo.CurrentPlayer.Id);
         }
 
         private async void duelButton_Click(object sender, EventArgs e) {
@@ -136,10 +185,10 @@ namespace k8asd {
         }
 
         private class DuelPair {
-            public ArenaInfo Lower { get; private set; }
-            public ArenaInfo Upper { get; private set; }
+            public int Lower { get; private set; }
+            public int Upper { get; private set; }
 
-            public DuelPair(ArenaInfo lower, ArenaInfo upper) {
+            public DuelPair(int lower, int upper) {
                 Lower = lower;
                 Upper = upper;
             }
@@ -150,45 +199,46 @@ namespace k8asd {
         /// </summary>
         private List<DuelPair> FindDuelPairs() {
             // Danh sách các người chơi chưa có cặp.
-            var availablePlayers = new List<ArenaInfo>();
+            var availablePlayerIds = new List<int>();
 
             var result = new List<DuelPair>();
 
-            foreach (var player in players) {
+            foreach (var playerId in playerIds) {
                 // Đã cặp đươc chưa?
                 bool matched = false;
                 do {
-                    if (player.CurrentPlayer.RemainTimes == 0) {
+                    var info = infos[playerId];
+                    if (info.CurrentPlayer.RemainTimes == 0) {
                         // Hết lượt.
                         break;
                     }
-                    if (player.Cooldown > 0) {
+                    if (info.Cooldown > 0) {
                         // Chưa hết thời gian đóng băng.
                         break;
                     }
-                    if (availablePlayers.Count == 0) {
+                    if (availablePlayerIds.Count == 0) {
                         // Không có ai.
                         break;
                     }
                     // Tìm người có thể cặp.
-                    var matchingPlayer = availablePlayers.FirstOrDefault(
-                        availablePlayer => canDuel(availablePlayer, player));
+                    var matchingPlayer = availablePlayerIds.FirstOrDefault(
+                        availablePlayer => canDuel(availablePlayer, playerId));
 
-                    if (matchingPlayer == null) {
+                    if (matchingPlayer == 0) {
                         // Không tìm được ai.
                         break;
                     }
 
                     // OK.
                     matched = true;
-                    availablePlayers.Remove(matchingPlayer);
+                    availablePlayerIds.Remove(matchingPlayer);
 
-                    result.Add(new DuelPair(matchingPlayer, player));
+                    result.Add(new DuelPair(matchingPlayer, playerId));
                 } while (false);
 
                 if (!matched) {
                     // Không cặp được, thêm vào danh sách chưa cặp.
-                    availablePlayers.Add(player);
+                    availablePlayerIds.Add(playerId);
                 }
             }
             return result;
@@ -216,13 +266,13 @@ namespace k8asd {
 
             var duelTasks = new List<Task>();
             foreach (var pair in pairs) {
-                var lower = pair.Lower;
-                var upper = pair.Upper;
-                var lowerPlayer = lower.CurrentPlayer;
-                var upperPlayer = upper.CurrentPlayer;
+                var lowerId = pair.Lower;
+                var upperId = pair.Upper;
+                var lowerPlayer = infos[lowerId].CurrentPlayer;
+                var upperPlayer = infos[upperId].CurrentPlayer;
                 duelTasks.Add(Task.Factory.StartNew(async () => {
                     LogInfo(String.Format("Tiến hành khiêu chiến: {0} vs. {1}", upperPlayer.Name, lowerPlayer.Name));
-                    await DuelAsync(mappedClients[lower], mappedClients[upper], lowerPlayer.Id, lowerPlayer.Rank);
+                    await DuelAsync(clients[lowerId], clients[upperId], lowerPlayer.Id, lowerPlayer.Rank);
                 }, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.FromCurrentSynchronizationContext()));
             }
             await Task.WhenAll(duelTasks);
@@ -285,7 +335,7 @@ namespace k8asd {
         /// </summary>
         /// <returns>Thời gian đóng băng lâu nhất.</returns>
         private int UpdateCooldown() {
-            int maxCooldown = players.Count == 0 ? 0 : players.Max(player => player.Cooldown);
+            int maxCooldown = infos.Count == 0 ? 0 : infos.Max(pair => pair.Value.Cooldown);
             cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
             return maxCooldown;
         }
@@ -303,22 +353,21 @@ namespace k8asd {
                     return;
                 }
 
-                if (players.Count == 0) {
+                if (infos.Count == 0) {
                     // Lazily refresh players.
                     await RefreshPlayersAsync(FindConnectedClients());
-                    if (players.Count == 0) {
+                    if (infos.Count == 0) {
                         LogInfo("Không có tài khoản để khiêu chiến.");
                         autoDuelCheck.Checked = false;
-                        return;
                     }
-                    maxCooldown = players.Max(player => player.Cooldown);                    
+                    return;
                 }
 
                 if (isRefreshing || isDueling) {
                     return;
                 }
 
-                int maxRemainTimes = players.Max(player => player.CurrentPlayer.RemainTimes);
+                int maxRemainTimes = infos.Max(pair => pair.Value.CurrentPlayer.RemainTimes);
                 if (maxRemainTimes == 0) {
                     LogInfo("Hết số lần khiêu chiến.");
                     autoDuelCheck.Checked = false;
@@ -331,13 +380,13 @@ namespace k8asd {
 
                 // Kiểm tra lại thời gian đóng băng có thật sự là hết chưa.
                 await RefreshPlayersAsync(FindConnectedClients());
-                if (players.Count == 0) {
+                if (infos.Count == 0) {
                     LogInfo("Không có tài khoản để khiêu chiến.");
                     autoDuelCheck.Checked = false;
                     return;
                 }
 
-                int recheckedMaxCooldown = players.Max(player => player.Cooldown);
+                int recheckedMaxCooldown = infos.Max(pair => pair.Value.Cooldown);
                 if (recheckedMaxCooldown > 0) {
                     // Kiểm tra lại.
                     return;
