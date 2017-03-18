@@ -335,7 +335,7 @@ namespace k8asd {
         /// </summary>
         /// <returns>Thời gian đóng băng lâu nhất.</returns>
         private int UpdateCooldown() {
-            int maxCooldown = infos.Count == 0 ? 0 : infos.Max(pair => pair.Value.Cooldown);
+            int maxCooldown = playerIds.Count == 0 ? 0 : playerIds.Max(id => infos[id].Cooldown);
             cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
             return maxCooldown;
         }
@@ -353,10 +353,10 @@ namespace k8asd {
                     return;
                 }
 
-                if (infos.Count == 0) {
+                if (playerIds.Count == 0) {
                     // Lazily refresh players.
                     await RefreshPlayersAsync(FindConnectedClients());
-                    if (infos.Count == 0) {
+                    if (playerIds.Count == 0) {
                         LogInfo("Không có tài khoản để khiêu chiến.");
                         autoDuelCheck.Checked = false;
                     }
@@ -367,7 +367,7 @@ namespace k8asd {
                     return;
                 }
 
-                int maxRemainTimes = infos.Max(pair => pair.Value.CurrentPlayer.RemainTimes);
+                int maxRemainTimes = playerIds.Max(id => infos[id].CurrentPlayer.RemainTimes);
                 if (maxRemainTimes == 0) {
                     LogInfo("Hết số lần khiêu chiến.");
                     autoDuelCheck.Checked = false;
@@ -380,13 +380,13 @@ namespace k8asd {
 
                 // Kiểm tra lại thời gian đóng băng có thật sự là hết chưa.
                 await RefreshPlayersAsync(FindConnectedClients());
-                if (infos.Count == 0) {
+                if (playerIds.Count == 0) {
                     LogInfo("Không có tài khoản để khiêu chiến.");
                     autoDuelCheck.Checked = false;
                     return;
                 }
 
-                int recheckedMaxCooldown = infos.Max(pair => pair.Value.Cooldown);
+                int recheckedMaxCooldown = playerIds.Max(id => infos[id].Cooldown);
                 if (recheckedMaxCooldown > 0) {
                     // Kiểm tra lại.
                     return;
