@@ -278,7 +278,7 @@ namespace k8asd {
         private async Task CreateAsync(int armyId, int minimumLevel, ArmyTeamLimit limit) {
             if (!isCreating)
             {
-                await packetWriter.SendCommandAsync("34101", armyId.ToString(), String.Format("4:{0};{1}", minimumLevel, (int)limit), "0");
+                await packetWriter.CreateArmyAsync(armyId, minimumLevel, limit, PartyType.Normal);
             }
         }        
 
@@ -290,7 +290,7 @@ namespace k8asd {
             var t1 = CreateAsync(900001, 0, ArmyTeamLimit.None);
 
             // Tấn công.
-            var t2 = packetWriter.AttackArmyAsync();
+            var t2 = packetWriter.AttackArmyAsync(PartyType.Normal);
 
             // Giải tán quân đoàn đổng trác.
             var t3 = packetWriter.DisbandArmyAsync();
@@ -364,7 +364,7 @@ namespace k8asd {
         }
 
         private async void attackButton_Click(object sender, EventArgs e) {
-            await packetWriter.AttackArmyAsync();
+            await packetWriter.AttackArmyAsync(PartyType.Normal);
         }
 
         private async void disbandButton_Click(object sender, EventArgs e) {

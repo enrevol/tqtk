@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace k8asd {
     enum ArmyTeamLimit {
@@ -22,22 +23,34 @@ namespace k8asd {
         /// <summary>
         /// NPC thường.
         /// </summary>
-        Normal,
+        Normal = 1,
 
         /// <summary>
         /// NCP tinh anh (rớt đồ).
         /// </summary>
-        Elite,
+        Elite = 2,
 
         /// <summary>
         /// NPC tướng (đánh 1 lần).
         /// </summary>
-        Hero,
+        Hero = 3,
 
         /// <summary>
         /// Quân đoàn.
         /// </summary>
-        Army
+        Army = 5,
+    }
+
+    enum PartyType {
+        /// <summary>
+        /// Thường.
+        /// </summary>
+        Normal = 0,
+
+        /// <summary>
+        /// Đặc công.
+        /// </summary>
+        Special = 1,
     }
 
     static class ArmyCommand {
@@ -56,6 +69,18 @@ namespace k8asd {
 
         public static async Task<Packet> RefreshArmyAsync(this IPacketWriter writer, int armyId) {
             return await writer.SendCommandAsync("34100", armyId.ToString());
+        }
+
+        /// <summary>
+        /// Tạo tổ đội quân đoàn.
+        /// </summary>
+        /// <param name="armyId">ID của quân đoàn.</param>
+        /// <param name="minimumLevel">Giới hạn cấp độ tối thiểu.</param>
+        /// <param name="limit">Giới hạn chung</param>
+        public static async Task<Packet> CreateArmyAsync(this IPacketWriter writer, int armyId,
+            int minimumLevel, ArmyTeamLimit limit, PartyType partyType) {
+            return await writer.SendCommandAsync("34101", armyId.ToString(),
+                String.Format("4:{0};{1}", minimumLevel, (int) limit), ((int) partyType).ToString());
         }
 
         /// <summary>
@@ -103,8 +128,8 @@ namespace k8asd {
         /// <summary>
         /// Tấn công tổ đội.
         /// </summary>
-        public static async Task<Packet> AttackArmyAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("34107", "0");
+        public static async Task<Packet> AttackArmyAsync(this IPacketWriter writer, PartyType partyType) {
+            return await writer.SendCommandAsync("34107", ((int) partyType).ToString());
         }
     }
 }

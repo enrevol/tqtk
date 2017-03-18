@@ -64,18 +64,7 @@ namespace k8asd {
             result.intro = (string) token["intro"];
             result.ItemName = (string) token["itemname"];
             result.Honor = (int) token["jyungong"];
-            var type = (int) token["type"];
-            if (type == 1) {
-                result.Type = ArmyType.Normal;
-            } else if (type == 2) {
-                result.Type = ArmyType.Elite;
-            } else if (type == 3) {
-                result.Type = ArmyType.Hero;
-            } else if (type == 5) {
-                result.Type = ArmyType.Army;
-            } else {
-                Debug.Assert(false);
-            }
+            result.Type = (ArmyType) (int) token["type"];
             return result;
         }
 
