@@ -4,10 +4,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Collections.Concurrent;
 using Nito.AsyncEx;
-using System.Timers;
 using System.IO;
 
 namespace k8asd {
@@ -130,26 +127,32 @@ namespace k8asd {
             }
             isReading = true;
             try {
-                var stream = tcpClient.GetStream();
-                try {
-                    var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                    if (bytesRead > 0) {
-                        streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    }
-                } catch (IOException ex) {
-                    Console.WriteLine(ex.Message);
-                    return false;
-                }
-
                 while (true) {
-                    var packet = ParsePacket();
-                    if (packet == null) {
-                        break;
+                    var stream = tcpClient.GetStream();
+                    try {
+                        var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                        if (bytesRead == 0) {
+                            break;
+                        }
+                        streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    } catch (SocketException ex) {
+                        Console.WriteLine(ex.Message);
+                        return false;
+                    } catch (IOException ex) {
+                        Console.WriteLine(ex.Message);
+                        return false;
                     }
-                    PacketReceived.Raise(this, packet);
-                    var id = packet.CommandId;
-                    if (PopDelta(id)) {
-                        PushPacket(packet);
+
+                    while (true) {
+                        var packet = ParsePacket();
+                        if (packet == null) {
+                            break;
+                        }
+                        PacketReceived.Raise(this, packet);
+                        var id = packet.CommandId;
+                        if (PopDelta(id)) {
+                            PushPacket(packet);
+                        }
                     }
                 }
             } finally {
