@@ -273,7 +273,7 @@ namespace k8asd {
                 duelTasks.Add(Task.Factory.StartNew(async () => {
                     LogInfo(String.Format("Tiến hành khiêu chiến: {0} vs. {1}", upperPlayer.Name, lowerPlayer.Name));
                     await DuelAsync(clients[lowerId], clients[upperId], lowerPlayer.Id, lowerPlayer.Rank);
-                }, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.FromCurrentSynchronizationContext()));
+                }, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.FromCurrentSynchronizationContext()).Unwrap());
             }
             await Task.WhenAll(duelTasks);
 
