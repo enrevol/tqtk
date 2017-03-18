@@ -77,6 +77,8 @@ namespace k8asd {
         /// <param name="armyId">ID của quân đoàn.</param>
         /// <param name="minimumLevel">Giới hạn cấp độ tối thiểu.</param>
         /// <param name="limit">Giới hạn chung</param>
+        /// <param name="partyType">Kiểu lập tổ đội; lập bình thường sẽ trừ số lượt đánh quân đoàn (nếu giải tán sẽ được cộng lại),
+        /// lập đặc công sẽ không trừ và cần VIP 4 trở lên.</param>
         public static async Task<Packet> CreateArmyAsync(this IPacketWriter writer, int armyId,
             int minimumLevel, ArmyTeamLimit limit, PartyType partyType) {
             return await writer.SendCommandAsync("34101", armyId.ToString(),
@@ -128,6 +130,7 @@ namespace k8asd {
         /// <summary>
         /// Tấn công tổ đội.
         /// </summary>
+        /// <param name="partyType">Kiểu tấn công; tấn công đặc công chỉ có thể thực hiện khi số lượt đánh quân đoàn hết (về 0) và cần đủ xu.</param>
         public static async Task<Packet> AttackArmyAsync(this IPacketWriter writer, PartyType partyType) {
             return await writer.SendCommandAsync("34107", ((int) partyType).ToString());
         }
