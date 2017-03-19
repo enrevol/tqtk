@@ -120,12 +120,7 @@ namespace k8asd {
                 teamPriceLabel.Text = String.Format("Giá: {0} - {1}", myTeam.Cost, myTeam.Price);
                 teamRateLabel.Text = String.Format("Tỉ lệ: {0} - {1}", myTeam.SuccessRate, myTeam.CriticalRate);
 
-                if (IsLeader()) {
-                    // Chủ tổ đội.
-                    if (CheckLimitPlayer()) {
-                        TryAutoMakeOrAutoQuitAndMakeAsync().Forget();
-                    }
-                }
+                CheckAutoMake();
                 return;
             }
             if (myTeam.Action == WeaveTeamAction.Produced) {
@@ -416,6 +411,23 @@ namespace k8asd {
 
             // OK.
             return true;
+        }
+
+        private void CheckAutoMake() {
+            if (IsLeader()) {
+                // Chủ tổ đội.
+                if (CheckLimitPlayer()) {
+                    TryAutoMakeOrAutoQuitAndMakeAsync().Forget();
+                }
+            }
+        }
+
+        private void autoQuitAndMake_CheckedChanged(object sender, EventArgs e) {
+            CheckAutoMake();
+        }
+
+        private void autoMake_CheckedChanged(object sender, EventArgs e) {
+            CheckAutoMake();
         }
     }
 
