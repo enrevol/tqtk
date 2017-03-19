@@ -152,6 +152,8 @@
     <Compile Include="Army\ArmyCommand.cs" />
     <Compile Include="Army\ArmyMember.cs" />
     <Compile Include="Army\ArmyTeam.cs" />
+    <Compile Include="Army\Power.cs" />
+    <Compile Include="Army\PowerDetail.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="Tools\AutoArenaView.cs">
       <SubType>Form</SubType>

@@ -74,17 +74,30 @@ namespace k8asd {
                 }
                 Debug.Assert(packet.CommandId == "33201");
 
-                var powerIds = Parse33201(packet);
-                foreach (var powerId in powerIds) {
+                var powerIds = new Queue<int>(Parse33201(packet));
+                var addedPowerIds = powerIds.ToList();
+                while (powerIds.Count > 0) {
+                    var powerId = powerIds.Dequeue();
                     var powerPacket = await packetWriter.RefreshPowerAsync(powerId);
                     if (powerPacket == null) {
                         return;
                     }
                     Debug.Assert(powerPacket.CommandId == "33100");
 
-                    var army = Parse33100(powerPacket);
-                    if (army != null) {
-                        armies.Add(army);
+                    var token = JToken.Parse(powerPacket.Message);
+                    var power = PowerDetail.Parse(token);
+                    var powerArmy = power.Armies.FirstOrDefault(army => army.Type == ArmyType.Army);
+                    if (powerArmy != null) {
+                        armies.Add(powerArmy);
+                    }
+                    foreach (var nextPower in power.NextPowers) {
+                        if (addedPowerIds.Contains(nextPower.Id)) {
+                            continue;
+                        }
+                        if (nextPower.Attackable) {
+                            addedPowerIds.Add(nextPower.Id);
+                            powerIds.Enqueue(nextPower.Id);
+                        }
                     }
                 }
             } finally {
@@ -154,24 +167,16 @@ namespace k8asd {
         private List<int> Parse33201(Packet packet) {
             var token = JToken.Parse(packet.Message);
             var powerIds = new List<int>();
+            if (token["message"] != null) {
+                // "message": "Sau khi đánh bại Tam Quốc Quần Anh mới có thể mở bản đồ này"
+                return powerIds;
+            }
             var powerList = token["powerList"];
             foreach (var power in powerList) {
                 var powerId = (int) power["powerId"];
                 powerIds.Add(powerId);
             }
             return powerIds;
-        }
-
-        private Army Parse33100(Packet packet) {
-            var token = JToken.Parse(packet.Message);
-            var armiesToken = token["army"];
-            foreach (var armyToken in armiesToken) {
-                var army = Army.Parse(armyToken);
-                if (army.Type == ArmyType.Army) {
-                    return army;
-                }
-            }
-            return null;
         }
 
         private void Parse34100(Packet packet) {
