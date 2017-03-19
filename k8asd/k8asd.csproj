@@ -154,6 +154,7 @@
     <Compile Include="Army\ArmyTeam.cs" />
     <Compile Include="Army\Power.cs" />
     <Compile Include="Army\PowerDetail.cs" />
+    <Compile Include="Campaign\CampaignCommand.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="Tools\AutoArenaView.cs">
       <SubType>Form</SubType>
@@ -279,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Arena\ArenaView.resx">
       <DependentUpon>ArenaView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Campaign\CampaignView.resx">
+      <DependentUpon>CampaignView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChatLog\ChatLogView.resx">
       <DependentUpon>ChatLogView.cs</DependentUpon>
