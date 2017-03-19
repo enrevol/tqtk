@@ -56,7 +56,7 @@ namespace k8asd {
         /// <param name="teamId">ID tổ đội.</param>
         public static async Task<Packet> MakeWeaveAsync(this IPacketWriter writer, int teamId) {
             return await writer.SendCommandAsync("45208", teamId.ToString());
-        }        
+        }
 
         /// <summary>
         /// Gia nhập tổ đội dệt.
@@ -72,15 +72,24 @@ namespace k8asd {
         /// <param name="teamId">ID tổ đội.</param>
         public static async Task<Packet> QuitWeaveAsync(this IPacketWriter writer, int teamId) {
             return await writer.SendCommandAsync("45210", teamId.ToString());
-        }        
+        }
 
         /// <summary>
         /// Thoát và chế tạo một lúc.
         /// </summary>
         /// <param name="teamId">ID tổ đội</param>
-        public static async Task<Packet[]> QuitAndMakeWeaveAsync(this IPacketWriter writer, int teamId) {
-            // Thoát và chế tạo một lúc (không chờ server gửi msg thoát xong rồi mới chế tạo).
-            return await Task.WhenAll(writer.QuitWeaveAsync(teamId), writer.MakeWeaveAsync(teamId));
+        public static async Task<Packet> QuitAndMakeWeaveAsync(this IPacketWriter writer, int teamId) {
+            // Nếu gửi gói thoát => gửi gói chế tạo => nhận gói thoát => xảy ra lỗi error code 45208.
+            // Nên gửi rồi nhận cho xong.
+            var p0 = await writer.QuitWeaveAsync(teamId);
+            if (p0 == null) {
+                return null;
+            }
+            var p1 = await writer.MakeWeaveAsync(teamId);
+            if (p1 == null) {
+                return null;
+            }
+            return p1;
         }
     }
 }
