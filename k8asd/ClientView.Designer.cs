@@ -37,12 +37,14 @@ namespace k8asd {
             this.weaveView = new k8asd.WeaveView();
             this.arenaTab = new System.Windows.Forms.TabPage();
             this.arenaView = new k8asd.ArenaView();
+            this.campaignTab = new System.Windows.Forms.TabPage();
+            this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.chatLogView = new k8asd.ChatLogView();
             this.messageLogView = new k8asd.MessageLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.dataTimer = new System.Windows.Forms.Timer(this.components);
+            this.campaignView = new k8asd.Campaign.CampaignView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -50,6 +52,7 @@ namespace k8asd {
             this.armyTab.SuspendLayout();
             this.weaveTab.SuspendLayout();
             this.arenaTab.SuspendLayout();
+            this.campaignTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // barFoodBuy
@@ -85,6 +88,7 @@ namespace k8asd {
             this.tabControl.Controls.Add(this.armyTab);
             this.tabControl.Controls.Add(this.weaveTab);
             this.tabControl.Controls.Add(this.arenaTab);
+            this.tabControl.Controls.Add(this.campaignTab);
             this.tabControl.Location = new System.Drawing.Point(320, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -168,6 +172,22 @@ namespace k8asd {
             this.arenaView.Size = new System.Drawing.Size(631, 526);
             this.arenaView.TabIndex = 0;
             // 
+            // campaignTab
+            // 
+            this.campaignTab.Controls.Add(this.campaignView);
+            this.campaignTab.Location = new System.Drawing.Point(4, 22);
+            this.campaignTab.Name = "campaignTab";
+            this.campaignTab.Padding = new System.Windows.Forms.Padding(3);
+            this.campaignTab.Size = new System.Drawing.Size(637, 532);
+            this.campaignTab.TabIndex = 4;
+            this.campaignTab.Text = "Chiến dịch";
+            this.campaignTab.UseVisualStyleBackColor = true;
+            // 
+            // dataTimer
+            // 
+            this.dataTimer.Interval = 50;
+            this.dataTimer.Tick += new System.EventHandler(this.dataTimer_Tick);
+            // 
             // chatLogView
             // 
             this.chatLogView.Location = new System.Drawing.Point(0, 375);
@@ -203,10 +223,13 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
-            // dataTimer
+            // campaignView
             // 
-            this.dataTimer.Interval = 50;
-            this.dataTimer.Tick += new System.EventHandler(this.dataTimer_Tick);
+            this.campaignView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.campaignView.Location = new System.Drawing.Point(3, 3);
+            this.campaignView.Name = "campaignView";
+            this.campaignView.Size = new System.Drawing.Size(631, 526);
+            this.campaignView.TabIndex = 0;
             // 
             // ClientView
             // 
@@ -228,6 +251,7 @@ namespace k8asd {
             this.armyTab.ResumeLayout(false);
             this.weaveTab.ResumeLayout(false);
             this.arenaTab.ResumeLayout(false);
+            this.campaignTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -250,6 +274,8 @@ namespace k8asd {
         private TabPage arenaTab;
         private ArenaView arenaView;
         private Timer dataTimer;
+        private TabPage campaignTab;
+        private Campaign.CampaignView campaignView;
     }
 }
 
