@@ -7,11 +7,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
-namespace k8asd.Campaign {
-    public partial class CampaignView : UserControl {
+namespace k8asd {
+    public partial class CampaignView : UserControl, IPacketReader {
+        private IPacketWriter packetWriter;
+        private IInfoModel infoModel;
+
         public CampaignView() {
             InitializeComponent();
+        }
+
+        public void SetPacketWriter(IPacketWriter writer) {
+            packetWriter = writer;
+        }
+
+        public void SetInfoModel(IInfoModel model) {
+            infoModel = model;
+        }
+
+
+        private async void testButton_Click(object sender, EventArgs e) {
+            await packetWriter.CreateCampaignAsync(1, 0, CampaignTeamLimit.None);
+            await packetWriter.AttackCampaignAsync();
+        }
+
+        public void OnPacketReceived(Packet packet) {
+            if (packet.CommandId == "11102") {
+                var token = JToken.Parse(packet.Message);
+                var player = token["player"];
+                var id = (string) player["id"];
+                if (id.Length > 0) {
+                    // Đang trong chiến dịch.
+                    // FIXME.
+                    int test = 1;
+                }
+            }
+            if (packet.CommandId == "47108") {
+                int test = 1;
+            }
         }
     }
 

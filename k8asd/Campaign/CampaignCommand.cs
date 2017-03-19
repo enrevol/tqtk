@@ -29,7 +29,7 @@ namespace k8asd {
         /// <param name="campaignId">ID của chiến dịch.</param>
         /// <param name="minimumLevel">Giới hạn cấp độ tối thiểu.</param>
         /// <param name="limit">Giới hạn chung</param>
-        public static async Task<Packet> CreateCampaignAsync(this IPacketWriter writer, int campaignId, int minimumLevel, ArmyTeamLimit limit) {
+        public static async Task<Packet> CreateCampaignAsync(this IPacketWriter writer, int campaignId, int minimumLevel, CampaignTeamLimit limit) {
             return await writer.SendCommandAsync("47001", campaignId.ToString(), String.Format("4:{0};{1}", minimumLevel, (int) limit));
         }
 
@@ -78,7 +78,7 @@ namespace k8asd {
         /// <summary>
         /// Tấn công tổ đội.
         /// </summary>
-        public static async Task<Packet> AttackArmyAsync(this IPacketWriter writer) {
+        public static async Task<Packet> AttackCampaignAsync(this IPacketWriter writer) {
             return await writer.SendCommandAsync("47007");
         }
 

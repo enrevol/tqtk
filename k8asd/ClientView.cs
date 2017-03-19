@@ -71,6 +71,7 @@ namespace k8asd {
             packetReaders.Add(chatLogModel);
             packetReaders.Add(weaveView);
             packetReaders.Add(arenaView);
+            packetReaders.Add(campaignView);
 
             infoView.SetModel(infoModel);
             cooldownView.SetModel(cooldownModel);
@@ -79,7 +80,7 @@ namespace k8asd {
             chatLogView.SetModel(chatLogModel);
             weaveView.SetCooldownModel(cooldownModel);
             weaveView.SetInfoModel(infoModel);
-
+            campaignView.SetInfoModel(infoModel);
             armyView.SetInfoModel(infoModel);
             armyView.SetMcuModel(mcuModel);
             chatLogModel.SetInfoModel(infoModel);
@@ -93,6 +94,7 @@ namespace k8asd {
             chatLogModel.SetPacketWriter(this);
             weaveView.SetPacketWriter(this);
             arenaView.SetPacketWriter(this);
+            campaignView.SetPacketWriter(this);
         }
 
         private void ClientView_Load(object sender, EventArgs e) {

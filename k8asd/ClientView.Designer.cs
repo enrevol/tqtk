@@ -44,7 +44,7 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.campaignView = new k8asd.Campaign.CampaignView();
+            this.campaignView = new k8asd.CampaignView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -275,7 +275,7 @@ namespace k8asd {
         private ArenaView arenaView;
         private Timer dataTimer;
         private TabPage campaignTab;
-        private Campaign.CampaignView campaignView;
+        private CampaignView campaignView;
     }
 }
 

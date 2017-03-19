@@ -344,6 +344,7 @@
     <None Include="app.config" />
     <None Include="Command\11103_0.json" />
     <None Include="Command\41203.json" />
+    <None Include="Command\47007.json" />
     <None Include="Command\64007.json" />
     <None Include="Command\64005.json" />
     <None Include="Command\34108.json" />
