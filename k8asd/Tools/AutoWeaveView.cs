@@ -222,7 +222,8 @@ namespace k8asd {
                 }
                 return new WeaveTeamInfo(hostId, memberIds[0]);
             }
-            var orderedMembers = memberIds.OrderByDescending(id => infos[id].Turns).ToList();
+            var orderedMembers = memberIds.OrderByDescending(id => infos[id].Turns).
+                ThenBy(id => infos[id].Cooldown).ToList();
             if (infos[orderedMembers[0]].Cooldown > 0 && infos[orderedMembers[1]].Cooldown > 0) {
                 return null;
             }
