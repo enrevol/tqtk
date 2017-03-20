@@ -134,8 +134,15 @@ namespace k8asd {
             return true;
         }
 
-        private async Task<bool> WeaveAsync(IPacketWriter host, string hostName, WeaveMode mode,
-            IPacketWriter slot1, IPacketWriter slot2) {
+        private async Task<bool> WeaveAsync(int hostId, int slot1Id) {
+            return await WeaveAsync(clients[hostId], WeaveMode.PullLevel, clients[slot1Id], null);
+        }
+
+        private async Task<bool> WeaveAsync(int hostId, int slot1Id, int slot2Id) {
+            return await WeaveAsync(clients[hostId], WeaveMode.PullLevel, clients[slot1Id], clients[slot2Id]);
+        }
+
+        private async Task<bool> WeaveAsync(IPacketWriter host, WeaveMode mode, IPacketWriter slot1, IPacketWriter slot2) {
             // Lập tổ đội.
             var textileLevel = (int) textileLevelInput.Value;
             try {
@@ -151,10 +158,19 @@ namespace k8asd {
 
             try {
                 Debug.Assert(hostingTeamId != NoTeam);
+                var tasks = new List<Task<Packet>>();
+                tasks.Add(slot1.JoinWeaveAsync(hostingTeamId));
+
+                if (slot2 != null) {
+                    tasks.Add(slot2.JoinWeaveAsync(hostingTeamId));
+                }
 
                 // Gia nhập tổ đội.
-                var p2s = await Task.WhenAll(slot1.JoinWeaveAsync(hostingTeamId), slot2.JoinWeaveAsync(hostingTeamId));
-                if (p2s[0] == null || p2s[1] == null) {
+                var p2s = await Task.WhenAll(tasks);
+                if (p2s[0] == null) {
+                    return false;
+                }
+                if (slot2 != null && p2s[1] == null) {
                     return false;
                 }
 
@@ -206,34 +222,11 @@ namespace k8asd {
                 }
                 return new WeaveTeamInfo(hostId, memberIds[0]);
             }
-            var orderedMembers = memberIds.OrderBy(id => infos[id].Cooldown);
-            if (infos[memberIds[0]].Cooldown > 0 && infos[memberIds[1]].Cooldown > 0) {
+            var orderedMembers = memberIds.OrderByDescending(id => infos[id].Turns).ToList();
+            if (infos[orderedMembers[0]].Cooldown > 0 && infos[orderedMembers[1]].Cooldown > 0) {
                 return null;
             }
-            return new WeaveTeamInfo(hostId, memberIds[0], memberIds[1]);
-        }
-
-        private async Task<bool> WeaveAsync(int hostId, List<int> memberIds) {
-            if (isRefreshing) {
-                return false;
-            }
-            if (isWeaving) {
-                return false;
-            }
-            isWeaving = true;
-
-            if (memberIds.Count == 1) {
-                // Chỉ có 1 thành viên.
-                if (infos[hostId].Turns > 1 && autoMake.Checked) {
-
-                } else {
-
-                }
-            }
-            var orderedMembers = memberIds.OrderBy(id => infos[id].Cooldown);
-
-            isWeaving = false;
-            return true;
+            return new WeaveTeamInfo(hostId, orderedMembers[0], orderedMembers[1]);
         }
 
         /// <summary>
@@ -298,8 +291,28 @@ namespace k8asd {
 
                 // Kiểm tra lại đóng băng.
                 await RefreshPlayerAsync(hostId);
+                if (infos[hostId].Cooldown > 0) {
+                    return;
+                }
 
-                await WeaveAsync(hostId, memberIds);
+                await RefreshPlayerAsync(team.Slot1Id);
+                if (infos[team.Slot1Id].Cooldown > 0) {
+                    return;
+                }
+
+                if (team.Slot2Id == 0) {
+                    // Dệt 2 người.
+                    await WeaveAsync(hostId, team.Slot1Id);
+                    return;
+                }
+
+                await RefreshPlayerAsync(team.Slot2Id);
+                if (infos[team.Slot2Id].Cooldown > 0) {
+                    return;
+                }
+
+                // Dệt 3 người.
+                await WeaveAsync(hostId, team.Slot1Id, team.Slot2Id);
             } finally {
                 timerLocking = false;
             }
