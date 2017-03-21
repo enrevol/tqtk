@@ -239,7 +239,6 @@
     </Compile>
     <Compile Include="Connection\Packet.cs" />
     <Compile Include="Connection\PacketHandler.cs" />
-    <Compile Include="Connection\IPacketReader.cs" />
     <Compile Include="Permutation.cs" />
     <Compile Include="Army\ArmyView.cs">
       <SubType>UserControl</SubType>

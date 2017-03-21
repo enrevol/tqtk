@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace k8asd {
-    public partial class WeaveView : UserControl, IPacketReader {
+    public partial class WeaveView : UserControl {
         private int InvalidTeamId = -1;
 
         /// <summary>
@@ -49,7 +49,11 @@ namespace k8asd {
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
             packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         public void SetCooldownModel(ICooldownModel cooldown) {
@@ -82,7 +86,7 @@ namespace k8asd {
             }
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "45300") {
                 Parse45300(packet);
             }

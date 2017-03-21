@@ -3,7 +3,9 @@ using System;
 using System.Windows.Forms;
 
 namespace k8asd {
-    class CooldownModel : ICooldownModel, IPacketReader {
+    class CooldownModel : ICooldownModel {
+        private IPacketWriter packetWriter;
+
         private Cooldown imposeCooldown;
         private Cooldown guideCooldown;
         private Cooldown upgradeCooldown;
@@ -31,6 +33,14 @@ namespace k8asd {
             oneSecondTimer.Interval = 1000;
             oneSecondTimer.Tick += OneSecondTimer_Tick;
             oneSecondTimer.Start();
+        }
+
+        public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
+            packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         private void OneSecondTimer_Tick(object sender, EventArgs e) {
@@ -95,7 +105,7 @@ namespace k8asd {
             }
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "11102") {
                 var token = JToken.Parse(packet.Message);
                 // techcdusable = (string) player["techcdusable"];

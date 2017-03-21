@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace k8asd {
-    public class MessageLogModel : IMessageLogModel, IPacketReader {
+    public class MessageLogModel : IMessageLogModel {
         private string message;
+        private IPacketWriter packetWriter;
 
         public event EventHandler<string> MessageChanged;
 
@@ -19,7 +16,15 @@ namespace k8asd {
             message = String.Empty;
         }
 
-        public void OnPacketReceived(Packet packet) {
+        public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
+            packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
+        }
+
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "10103") {
                 // Ignore chat messages.
                 return;

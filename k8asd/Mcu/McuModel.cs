@@ -3,7 +3,9 @@ using System;
 using System.Windows.Forms;
 
 namespace k8asd {
-    class McuModel : IMcuModel, IPacketReader {
+    class McuModel : IMcuModel {
+        private IPacketWriter packetWriter;
+
         int mcu;
         int maxMcu;
         int mcuCooldown;
@@ -46,6 +48,13 @@ namespace k8asd {
             McuCooldownChanged.Raise(this, McuCooldown);
         }
 
+        public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
+            packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
+        }
 
         public int Mcu {
             get { return mcu; }
@@ -121,7 +130,7 @@ namespace k8asd {
             }
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "11102") {
                 var token = JToken.Parse(packet.Message);
                 var player = token["player"];

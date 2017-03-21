@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
 namespace k8asd {
-    public partial class HeroTrainingView : UserControl, IPacketReader {
+    public partial class HeroTrainingView : UserControl {
         private class Hero {
             private int trainFlag;
             private int trainModel;
@@ -159,7 +159,11 @@ namespace k8asd {
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
             packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         public void SetLogModel(IMessageLogModel model) {
@@ -289,7 +293,7 @@ namespace k8asd {
             }
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             //
         }
 

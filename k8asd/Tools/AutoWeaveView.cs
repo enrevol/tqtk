@@ -319,7 +319,7 @@ namespace k8asd {
             }
         }
 
-        public void OnPacketReceived(object sender, Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "45300") {
                 var token = JToken.Parse(packet.Message);
                 var teamId = (int) token["teamObject"]["teamid"];

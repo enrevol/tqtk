@@ -3,30 +3,38 @@ using System;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public class ChatLogModel : IChatLogModel, IPacketReader {
+    public class ChatLogModel : IChatLogModel {
         public event EventHandler<ChatMessage> OnChatMessageAdded;
 
         private IInfoModel infoModel;
         private IPacketWriter packetWriter;
 
         public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
             packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         public void SetInfoModel(IInfoModel model) {
             infoModel = model;
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "10103") {
-                if (packet.Message.Length > 0) {
-                    var token = JToken.Parse(packet.Message);
-                    var message = (string) token["message"];
-                    var sender = (string) token["sender"];
-                    var category = (int) token["category"];
-                    var messageType = (int) token["messageType"];
-                    AddMessage(category, sender, message);
-                }
+                Parse10103(packet);
+            }
+        }
+
+        private void Parse10103(Packet packet) {
+            if (packet.Message.Length > 0) {
+                var token = JToken.Parse(packet.Message);
+                var message = (string) token["message"];
+                var sender = (string) token["sender"];
+                var category = (int) token["category"];
+                var messageType = (int) token["messageType"];
+                AddMessage(category, sender, message);
             }
         }
 

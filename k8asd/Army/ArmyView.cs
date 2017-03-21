@@ -13,7 +13,7 @@ using BrightIdeasSoftware;
 using System.IO;
 
 namespace k8asd {
-    public partial class ArmyView : UserControl, IPacketReader {
+    public partial class ArmyView : UserControl {
         private string FILE_DS = "dsacc.data";
         private static List<string> listAcc = new List<string>();
         private bool isCreating = false;
@@ -51,7 +51,11 @@ namespace k8asd {
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
             packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         public void SetInfoModel(IInfoModel model) {
@@ -126,7 +130,7 @@ namespace k8asd {
             await RefreshArmiesAsync();
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "34108") {
                 Parse34108(packet);
             }

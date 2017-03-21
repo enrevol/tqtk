@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
 namespace k8asd {
-    public partial class CampaignView : UserControl, IPacketReader {
+    public partial class CampaignView : UserControl {
         private IPacketWriter packetWriter;
         private IInfoModel infoModel;
 
@@ -19,7 +19,11 @@ namespace k8asd {
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
             packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         public void SetInfoModel(IInfoModel model) {
@@ -32,7 +36,7 @@ namespace k8asd {
             await packetWriter.AttackCampaignAsync();
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "11102") {
                 var token = JToken.Parse(packet.Message);
                 var player = token["player"];

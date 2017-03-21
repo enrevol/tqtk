@@ -12,14 +12,12 @@ using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public partial class ClientView : UserControl, IPacketWriter, IPacketReader {
+    public partial class ClientView : UserControl, IPacketWriter {
         private InfoModel infoModel;
         private CooldownModel cooldownModel;
         private McuModel mcuModel;
         private MessageLogModel messageLogModel;
         private ChatLogModel chatLogModel;
-
-        private List<IPacketReader> packetReaders;
 
         private LoginHelper loginHelper;
         private PacketHandler packetHandler;
@@ -45,10 +43,7 @@ namespace k8asd {
             }
         }
 
-        public event EventHandler<Packet> PacketReceived {
-            add { packetHandler.PacketReceived += value; }
-            remove { packetHandler.PacketReceived -= value; }
-        }
+        public event EventHandler<Packet> PacketReceived;
 
         public ClientView() {
             InitializeComponent();
@@ -60,18 +55,6 @@ namespace k8asd {
             mcuModel = new McuModel();
             messageLogModel = new MessageLogModel();
             chatLogModel = new ChatLogModel();
-
-            packetReaders = new List<IPacketReader>();
-            packetReaders.Add(infoModel);
-            packetReaders.Add(cooldownModel);
-            packetReaders.Add(mcuModel);
-            packetReaders.Add(heroTrainingView);
-            packetReaders.Add(armyView);
-            packetReaders.Add(messageLogModel);
-            packetReaders.Add(chatLogModel);
-            packetReaders.Add(weaveView);
-            packetReaders.Add(arenaView);
-            packetReaders.Add(campaignView);
 
             infoView.SetModel(infoModel);
             cooldownView.SetModel(cooldownModel);
@@ -88,9 +71,13 @@ namespace k8asd {
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
             arenaView.SetLogModel(messageLogModel);
+            infoModel.SetPacketWriter(this);
+            cooldownModel.SetPacketWriter(this);
             mcuView.SetPacketWriter(this);
+            mcuModel.SetPacketWriter(this);
             heroTrainingView.SetPacketWriter(this);
             armyView.SetPacketWriter(this);
+            messageLogModel.SetPacketWriter(this);
             chatLogModel.SetPacketWriter(this);
             weaveView.SetPacketWriter(this);
             arenaView.SetPacketWriter(this);
@@ -208,7 +195,7 @@ namespace k8asd {
                 connectionStatus = ConnectionStatus.Connected;
                 guard.Dismiss();
 
-                packetHandler.PacketReceived += (sender, packet) => OnPacketReceived(packet);
+                packetHandler.PacketReceived += (sender, packet) => PacketReceived.Raise(this, packet);
                 dataTimer.Start();
 
                 await SendCommandAsync("10100");
@@ -219,12 +206,6 @@ namespace k8asd {
                 //oneSecondTimer.Interval = 150;
                 //oneSecondTimer.Tick += OneSecondTimer_Tick;
                 //oneSecondTimer.Start();
-            }
-        }
-
-        public void OnPacketReceived(Packet packet) {
-            foreach (var reader in packetReaders) {
-                reader.OnPacketReceived(packet);
             }
         }
 

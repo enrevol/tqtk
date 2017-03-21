@@ -3,9 +3,10 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using BrightIdeasSoftware;
 
 namespace k8asd {
-    public partial class ArenaView : UserControl, IPacketReader {
+    public partial class ArenaView : UserControl {
         private ArenaInfo arenaInfo;
         private DateTime cooldownEndTime;
 
@@ -24,7 +25,7 @@ namespace k8asd {
             messageLog = log;
         }
 
-        public void OnPacketReceived(Packet packet) {
+        private void OnPacketReceived(Packet packet) {
             //
         }
 
@@ -59,7 +60,7 @@ namespace k8asd {
             Parse64007(packet);
         }
 
-        private async void playerList_ButtonClick(object sender, BrightIdeasSoftware.CellClickEventArgs e) {
+        private async void playerList_ButtonClick(object sender, CellClickEventArgs e) {
             var item = e.Item;
             var player = (ArenaPlayer) item.RowObject;
             messageLog.LogInfo(String.Format("[Võ đài] Khiêu chiến với {0} Lv. {1}",

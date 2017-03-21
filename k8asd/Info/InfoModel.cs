@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public class InfoModel : IInfoModel, IPacketReader {
+    public class InfoModel : IInfoModel {
+        private IPacketWriter packetWriter;
+
         private string playerName;
         private int playerLevel;
         private string legionName;
@@ -147,7 +149,15 @@ namespace k8asd {
             }
         }
 
-        public void OnPacketReceived(Packet packet) {
+        public void SetPacketWriter(IPacketWriter writer) {
+            if (packetWriter != null) {
+                packetWriter.PacketReceived -= OnPacketReceived;
+            }
+            packetWriter = writer;
+            packetWriter.PacketReceived += OnPacketReceived;
+        }
+
+        private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "11102") {
                 // Vừa đăng nhập xong.
                 var token = JToken.Parse(packet.Message);
