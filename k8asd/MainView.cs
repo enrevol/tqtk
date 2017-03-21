@@ -11,22 +11,32 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public partial class MainView : Form {
-        private BindingList<ClientView> clients;
-
         public MainView() {
             InitializeComponent();
 
-            clients = new BindingList<ClientView>();
-            clientList.DataSource = clients;
-            clientList.DisplayMember = "Configuration";
+            descriptionColumn.AspectGetter = (obj) => {
+                var client = (ClientView) obj;
+                return client.Configuration.ToString();
+            };
+            statusColumn.AspectGetter = (obj) => {
+                var client = (IClient) obj;
+                /*
+                switch (client.ConnectionStatus) {
+                case ConnectionStatus.Connected: return "Đã kết nối";
+                case ConnectionStatus.Connecting: return "Đang kết nối...";
+                case ConnectionStatus.Disconnected: return "Không kết nối";
+                case ConnectionStatus.Disconnecting: return "Đang ngắt kết nối...";
+                }
+                */
+                return String.Empty;
+            };
         }
 
         private void oneSecondTimer_Tick(object sender, EventArgs e) {
             Text = DateTime.Now.ToString("hh:mm:ss");
         }
 
-
-        private async Task LogIn(List<ClientView> clients) {
+        private async Task LogIn(List<IClient> clients) {
             const int ThreadCount = 3;
             for (int i = 0; i < clients.Count; i += ThreadCount) {
                 var tasks = new List<Task>();
@@ -38,25 +48,23 @@ namespace k8asd {
         }
 
         private async void loginButton_Click(object sender, EventArgs e) {
-            var selectedClients = new List<ClientView>();
+            var selectedClients = new List<IClient>();
             var items = clientList.SelectedItems;
             foreach (var item in items) {
-                var client = (ClientView) item;
+                var client = (IClient) item;
                 selectedClients.Add(client);
             }
             await LogIn(selectedClients);
         }
 
         private void logoutButton_Click(object sender, EventArgs e) {
-            var selectedClients = new List<ClientView>();
+            var selectedClients = new List<IClient>();
             var items = clientList.SelectedItems;
-            foreach (var item in items)
-            {
-                var client = (ClientView)item;
+            foreach (var item in items) {
+                var client = (IClient) item;
                 selectedClients.Add(client);
             }
-            foreach (var client in selectedClients)
-            {
+            foreach (var client in selectedClients) {
                 client.LogOut();
             }
         }
@@ -82,42 +90,51 @@ namespace k8asd {
             foreach (var client in selectedClients) {
                 RemoveClient(client);
             }
-            clientList.ClearSelected();
+            clientList.SelectedObjects = null;
         }
 
         private void MainView_Load(object sender, EventArgs e) {
             var configs = AccountManager.Instance.LoadConfigurations();
+            SuspendLayout();
             foreach (var config in configs) {
                 AddClient(config);
             }
+            ResumeLayout();
         }
 
         private void AddClient(Configuration config) {
             var client = new ClientView();
             client.Configuration = config;
             client.Dock = DockStyle.Fill;
-            clients.Add(client);
             Controls.Add(client);
             ClientManager.Instance.Add(client);
             client.BringToFront();
+            clientList.SetObjects(ClientManager.Instance.Clients);
+            client.ConnectionStatusChanged += OnConnectionStatusChanged;
         }
 
         private void RemoveClient(ClientView client) {
-            clients.Remove(client);
             ClientManager.Instance.Remove(client);
             AccountManager.Instance.DeleteConfiguration(
                 client.Configuration.ServerId,
                 client.Configuration.Username);
             Controls.Remove(client);
+            clientList.SetObjects(ClientManager.Instance.Clients);
+        }
+
+        private void OnConnectionStatusChanged(object sender, ConnectionStatus status) {
+            clientList.RefreshObject(sender);
         }
 
         private void clientList_SelectedIndexChanged(object sender, EventArgs e) {
             var item = clientList.SelectedItem;
             if (item != null) {
-                foreach (var client in clients) {
-                    client.Visible = false;
+                SuspendLayout();
+                foreach (var client in ClientManager.Instance.Clients) {
+                    ((ClientView) client).Visible = false;
                 }
-                ((ClientView) item).Visible = true;
+                ((ClientView) item.RowObject).Visible = true;
+                ResumeLayout();
             }
         }
 

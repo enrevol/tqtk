@@ -12,7 +12,7 @@ namespace k8asd {
         /// <summary>
         /// Ánh xạ từ ID sang Client (để gửi/nhận gói tin).
         /// </summary>
-        private Dictionary<int, ClientView> clients;
+        private Dictionary<int, IClient> clients;
 
         /// <summary>
         /// Ánh xạ từ ID sang thông tin võ đài (64005).
@@ -39,7 +39,7 @@ namespace k8asd {
         public AutoArenaView() {
             InitializeComponent();
 
-            clients = new Dictionary<int, ClientView>();
+            clients = new Dictionary<int, IClient>();
             infos = new Dictionary<int, ArenaInfo>();
             playerIds = new List<int>();
 
@@ -93,9 +93,9 @@ namespace k8asd {
             await RefreshPlayersAsync(FindConnectedClients());
         }
 
-        private List<ClientView> FindConnectedClients() {
+        private List<IClient> FindConnectedClients() {
             var clients = ClientManager.Instance.Clients;
-            var connectedClients = new List<ClientView>();
+            var connectedClients = new List<IClient>();
             foreach (var client in clients) {
                 if (client.ConnectionStatus == ConnectionStatus.Connected) {
                     connectedClients.Add(client);
@@ -107,7 +107,7 @@ namespace k8asd {
         /// <summary>
         /// Cập nhật võ đài tất cả các tài khoản đang kết nối.
         /// </summary>
-        private async Task<bool> RefreshPlayersAsync(List<ClientView> connectedClients) {
+        private async Task<bool> RefreshPlayersAsync(List<IClient> connectedClients) {
             if (isRefreshing) {
                 LogInfo("Đang làm mới, không thể làm mới!");
                 return false;

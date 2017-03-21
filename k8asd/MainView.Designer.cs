@@ -34,8 +34,8 @@ namespace k8asd
             System.Windows.Forms.ToolStripMenuItem menuItem0;
             System.Windows.Forms.ToolStripMenuItem autoArenaButton;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
+            this.autoWeaveButton = new System.Windows.Forms.ToolStripMenuItem();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
-            this.clientList = new System.Windows.Forms.ListBox();
             this._ignore0 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.loginAllButton = new System.Windows.Forms.Button();
@@ -44,12 +44,15 @@ namespace k8asd
             this.logoutButton = new System.Windows.Forms.Button();
             this.loginButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.autoWeaveButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.clientList = new BrightIdeasSoftware.ObjectListView();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             this._ignore0.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.clientList)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -78,23 +81,18 @@ namespace k8asd
             autoArenaButton.Text = "Tự động đánh võ đài";
             autoArenaButton.Click += new System.EventHandler(this.autoArenaButton_Click);
             // 
+            // autoWeaveButton
+            // 
+            this.autoWeaveButton.Name = "autoWeaveButton";
+            this.autoWeaveButton.Size = new System.Drawing.Size(184, 22);
+            this.autoWeaveButton.Text = "Tự động dệt";
+            this.autoWeaveButton.Click += new System.EventHandler(this.autoWeaveButton_Click);
+            // 
             // oneSecondTimer
             // 
             this.oneSecondTimer.Enabled = true;
             this.oneSecondTimer.Interval = 1000;
             this.oneSecondTimer.Tick += new System.EventHandler(this.oneSecondTimer_Tick);
-            // 
-            // clientList
-            // 
-            this.clientList.Dock = System.Windows.Forms.DockStyle.Left;
-            this.clientList.FormattingEnabled = true;
-            this.clientList.IntegralHeight = false;
-            this.clientList.Location = new System.Drawing.Point(0, 97);
-            this.clientList.Name = "clientList";
-            this.clientList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.clientList.Size = new System.Drawing.Size(200, 584);
-            this.clientList.TabIndex = 0;
-            this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
             // _ignore0
             // 
@@ -192,12 +190,47 @@ namespace k8asd
             this.imageList1.Images.SetKeyName(0, "btn_LoginFalse.png");
             this.imageList1.Images.SetKeyName(1, "btn_LoginTrue.png");
             // 
-            // autoWeaveButton
+            // statusColumn
             // 
-            this.autoWeaveButton.Name = "autoWeaveButton";
-            this.autoWeaveButton.Size = new System.Drawing.Size(184, 22);
-            this.autoWeaveButton.Text = "Tự động dệt";
-            this.autoWeaveButton.Click += new System.EventHandler(this.autoWeaveButton_Click);
+            this.statusColumn.AspectName = "";
+            this.statusColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.statusColumn.MaximumWidth = 55;
+            this.statusColumn.MinimumWidth = 55;
+            this.statusColumn.Text = "";
+            this.statusColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.statusColumn.Width = 55;
+            // 
+            // descriptionColumn
+            // 
+            this.descriptionColumn.AspectName = "";
+            this.descriptionColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.descriptionColumn.MaximumWidth = 200;
+            this.descriptionColumn.MinimumWidth = 200;
+            this.descriptionColumn.Text = "Client";
+            this.descriptionColumn.Width = 200;
+            // 
+            // clientList
+            // 
+            this.clientList.AllColumns.Add(this.statusColumn);
+            this.clientList.AllColumns.Add(this.descriptionColumn);
+            this.clientList.CellEditUseWholeCell = false;
+            this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.statusColumn,
+            this.descriptionColumn});
+            this.clientList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.clientList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.clientList.FullRowSelect = true;
+            this.clientList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.clientList.Location = new System.Drawing.Point(0, 97);
+            this.clientList.Name = "clientList";
+            this.clientList.SelectColumnsOnRightClick = false;
+            this.clientList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
+            this.clientList.ShowGroups = false;
+            this.clientList.Size = new System.Drawing.Size(247, 584);
+            this.clientList.TabIndex = 32;
+            this.clientList.UseCompatibleStateImageBehavior = false;
+            this.clientList.View = System.Windows.Forms.View.Details;
+            this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
             // MainView
             // 
@@ -216,6 +249,7 @@ namespace k8asd
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             this._ignore0.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.clientList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -223,7 +257,6 @@ namespace k8asd
 
         #endregion
         private System.Windows.Forms.Timer oneSecondTimer;
-        private ListBox clientList;
         private Panel _ignore0;
         private Button loginButton;
         private Button logoutButton;
@@ -233,6 +266,9 @@ namespace k8asd
         private Button button1;
         private ImageList imageList1;
         private ToolStripMenuItem autoWeaveButton;
+        private BrightIdeasSoftware.OLVColumn statusColumn;
+        private BrightIdeasSoftware.OLVColumn descriptionColumn;
+        private BrightIdeasSoftware.ObjectListView clientList;
     }
 }
 

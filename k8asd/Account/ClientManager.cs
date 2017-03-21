@@ -8,7 +8,7 @@ namespace k8asd {
     class ClientManager {
         private static ClientManager sharedInstance;
 
-        private List<ClientView> clients;
+        private List<IClient> clients;
 
         public static ClientManager Instance {
             get {
@@ -20,17 +20,17 @@ namespace k8asd {
         }
 
         private ClientManager() {
-            clients = new List<ClientView>();
+            clients = new List<IClient>();
         }
 
-        public void Add(ClientView client) {
+        public void Add(IClient client) {
             clients.Add(client);
         }
 
-        public void Remove(ClientView client) {
+        public void Remove(IClient client) {
             clients.Remove(client);
         }
 
-        public List<ClientView> Clients { get { return clients; } }
+        public List<IClient> Clients { get { return clients; } }
     }
 }

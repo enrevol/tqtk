@@ -26,7 +26,7 @@ namespace k8asd {
             PullLevel,
         }
 
-        private Dictionary<int, ClientView> clients;
+        private Dictionary<int, IClient> clients;
         private Dictionary<int, WeaveInfo> infos;
         private List<int> playerIds;
 
@@ -38,7 +38,7 @@ namespace k8asd {
         public AutoWeaveView() {
             InitializeComponent();
 
-            clients = new Dictionary<int, ClientView>();
+            clients = new Dictionary<int, IClient>();
             infos = new Dictionary<int, WeaveInfo>();
             playerIds = new List<int>();
 
@@ -67,9 +67,9 @@ namespace k8asd {
             await RefreshPlayersAsync(FindConnectedClients());
         }
 
-        private List<ClientView> FindConnectedClients() {
+        private List<IClient> FindConnectedClients() {
             var clients = ClientManager.Instance.Clients;
-            var connectedClients = new List<ClientView>();
+            var connectedClients = new List<IClient>();
             foreach (var client in clients) {
                 if (client.ConnectionStatus == ConnectionStatus.Connected) {
                     connectedClients.Add(client);
@@ -78,7 +78,7 @@ namespace k8asd {
             return connectedClients;
         }
 
-        private async Task<bool> RefreshPlayersAsync(List<ClientView> connectedClients) {
+        private async Task<bool> RefreshPlayersAsync(List<IClient> connectedClients) {
             if (isRefreshing) {
                 return false;
             }

@@ -47,5 +47,9 @@ namespace k8asd {
         /// Tên của người chơi.
         /// </summary>
         string PlayerName { get; }
+
+        Task LogIn();
+
+        void LogOut();
     }
 }
