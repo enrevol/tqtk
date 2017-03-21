@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public partial class ClientView : UserControl, IPacketWriter {
+    public partial class ClientView : UserControl, IClient {
         private InfoModel infoModel;
         private CooldownModel cooldownModel;
         private McuModel mcuModel;
@@ -22,27 +22,43 @@ namespace k8asd {
         private LoginHelper loginHelper;
         private PacketHandler packetHandler;
 
-        private enum ConnectionStatus {
-            Connecting,
-            Connected,
-            Disconnecting,
-            Disconnected
-        };
-
         private ConnectionStatus connectionStatus;
 
         private Configuration config;
 
         public Configuration Configuration {
-            get {
-                return config;
-            }
-            set {
-                config = value;
-            }
+            get { return config; }
+            set { config = value; }
         }
 
         public event EventHandler<Packet> PacketReceived;
+        public event EventHandler<ConnectionStatus> ConnectionStatusChanged;
+
+        public ConnectionStatus ConnectionStatus {
+            get { return connectionStatus; }
+            set {
+                connectionStatus = value;
+                ConnectionStatusChanged.Raise(this, value);
+            }
+        }
+
+        public int PlayerId {
+            get {
+                if (ConnectionStatus == ConnectionStatus.Connected) {
+                    return Int32.Parse(loginHelper.Session.UserId);
+                }
+                throw new InvalidOperationException("Tài khoản chưa kết nối.");
+            }
+        }
+
+        public string PlayerName {
+            get {
+                if (ConnectionStatus == ConnectionStatus.Connected) {
+                    return infoModel.PlayerName;
+                }
+                throw new InvalidOperationException("Tài khoản chưa kết nối.");
+            }
+        }
 
         public ClientView() {
             InitializeComponent();
@@ -70,6 +86,7 @@ namespace k8asd {
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
             arenaView.SetLogModel(messageLogModel);
+
             infoModel.SetPacketWriter(this);
             cooldownModel.SetPacketWriter(this);
             mcuView.SetPacketWriter(this);
@@ -87,18 +104,6 @@ namespace k8asd {
             //
         }
 
-        public bool Connected {
-            get { return packetHandler != null && packetHandler.Connected; }
-        }
-
-        public int PlayerId {
-            get { return Int32.Parse(loginHelper.Session.UserId); }
-        }
-
-        public string PlayerName {
-            get { return infoModel.PlayerName; }
-        }
-
         public async Task<Packet> SendCommandAsync(string command, params string[] parameters) {
             if (packetHandler == null) {
                 // Chưa kết nối.
@@ -107,6 +112,7 @@ namespace k8asd {
             var packet = await packetHandler.SendCommandAsync(command, parameters);
             if (packet == null) {
                 messageLogModel.LogInfo("Mất kết nối với máy chủ.");
+                ConnectionStatus = ConnectionStatus.Disconnected;
             }
             return packet;
         }
@@ -153,66 +159,63 @@ namespace k8asd {
 
         private async Task LogIn(int serverId, string username, string password) {
             Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
-            connectionStatus = ConnectionStatus.Connecting;
+            ConnectionStatus = ConnectionStatus.Connecting;
 
-            using (var guard = new ScopeGuard(() => connectionStatus = ConnectionStatus.Disconnected)) {
-                loginHelper = new LoginHelper(username, password);
+            loginHelper = new LoginHelper(username, password);
 
-                messageLogModel.LogInfo("Bắt đầu đăng nhập tài khoản...");
-                var loginAccountStatus = await loginHelper.LoginAccount();
-                switch (loginAccountStatus) {
-                case LoginStatus.NoConnection:
-                    messageLogModel.LogInfo("Không có kết nối mạng.");
-                    return;
-                case LoginStatus.WrongUsernameOrPassword:
-                    messageLogModel.LogInfo("Sai tên người dùng hoặc mật khẩu.");
-                    return;
-                case LoginStatus.UnknownError:
-                    messageLogModel.LogInfo("Có lỗi xảy ra.");
-                    return;
-                }
-                messageLogModel.LogInfo("Đăng nhập tài khoản thành công.");
-
-                messageLogModel.LogInfo("Bắt đầu lấy thông tin để kết nối với máy chủ...");
-                var loginServerStatus = await loginHelper.LoginServer(serverId);
-                switch (loginServerStatus) {
-                case LoginStatus.NoConnection:
-                    messageLogModel.LogInfo("Không có kết nối mạng.");
-                    return;
-                case LoginStatus.UnknownError:
-                    messageLogModel.LogInfo("Có lỗi xảy ra.");
-                    return;
-                }
-                messageLogModel.LogInfo("Lấy thông tin thành công.");
-
-                packetHandler = new PacketHandler(loginHelper.Session);
-
-                messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
-                await packetHandler.ConnectAsync();
-                messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
-
-                connectionStatus = ConnectionStatus.Connected;
-                guard.Dismiss();
-
-                packetHandler.PacketReceived += (sender, packet) => PacketReceived.Raise(this, packet);
-                dataTimer.Start();
-
-                await SendCommandAsync("10100");
-                await SendCommandAsync("11102");
-                // FIXME: handle case character not yet created.
-
-                //oneSecondTimer = new Timer();
-                //oneSecondTimer.Interval = 150;
-                //oneSecondTimer.Tick += OneSecondTimer_Tick;
-                //oneSecondTimer.Start();
+            messageLogModel.LogInfo("Bắt đầu đăng nhập tài khoản...");
+            var loginAccountStatus = await loginHelper.LoginAccount();
+            switch (loginAccountStatus) {
+            case LoginStatus.NoConnection:
+                messageLogModel.LogInfo("Không có kết nối mạng.");
+                ConnectionStatus = ConnectionStatus.Disconnected;
+                return;
+            case LoginStatus.WrongUsernameOrPassword:
+                messageLogModel.LogInfo("Sai tên người dùng hoặc mật khẩu.");
+                ConnectionStatus = ConnectionStatus.Disconnected;
+                return;
+            case LoginStatus.UnknownError:
+                messageLogModel.LogInfo("Có lỗi xảy ra.");
+                ConnectionStatus = ConnectionStatus.Disconnected;
+                return;
             }
+            messageLogModel.LogInfo("Đăng nhập tài khoản thành công.");
+
+            messageLogModel.LogInfo("Bắt đầu lấy thông tin để kết nối với máy chủ...");
+            var loginServerStatus = await loginHelper.LoginServer(serverId);
+            switch (loginServerStatus) {
+            case LoginStatus.NoConnection:
+                messageLogModel.LogInfo("Không có kết nối mạng.");
+                ConnectionStatus = ConnectionStatus.Disconnected;
+                return;
+            case LoginStatus.UnknownError:
+                messageLogModel.LogInfo("Có lỗi xảy ra.");
+                ConnectionStatus = ConnectionStatus.Disconnected;
+                return;
+            }
+            messageLogModel.LogInfo("Lấy thông tin thành công.");
+
+            packetHandler = new PacketHandler(loginHelper.Session);
+
+            messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
+            await packetHandler.ConnectAsync();
+            messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
+
+            packetHandler.PacketReceived += (sender, packet) => PacketReceived.Raise(this, packet);
+            dataTimer.Start();
+
+            await SendCommandAsync("10100");
+            await SendCommandAsync("11102");
+            // FIXME: handle case character not yet created.
+
+            ConnectionStatus = ConnectionStatus.Connected;
         }
 
         private async void OneSecondTimer_Tick(object sender, EventArgs e) {
             if (packetHandler != null) {
                 await SendCommandAsync("14102", "3", "0");
                 if (infoModel.Force >= infoModel.MaxForce - 3) {
-                    oneSecondTimer.Stop();
+                    // oneSecondTimer.Stop();
                 }
             }
         }
