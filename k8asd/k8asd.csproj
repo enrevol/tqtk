@@ -185,14 +185,14 @@
     <Compile Include="Info\InfoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Class.cs" />
+    <Compile Include="Legacy\Class.cs" />
     <Compile Include="Cooldown\CooldownView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Cooldown\CooldownView.Designer.cs">
       <DependentUpon>CooldownView.cs</DependentUpon>
     </Compile>
-    <Compile Include="F.cs" />
+    <Compile Include="Legacy\F.cs" />
     <Compile Include="HeroImprove\HeroImproveView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -223,10 +223,10 @@
     <Compile Include="Mcu\McuView.Designer.cs">
       <DependentUpon>McuView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ClientView.cs">
+    <Compile Include="Client\ClientView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ClientView.Designer.cs">
+    <Compile Include="Client\ClientView.Designer.cs">
       <DependentUpon>ClientView.cs</DependentUpon>
     </Compile>
     <Compile Include="MessageLog\IMessageLogModel.cs" />
@@ -239,7 +239,7 @@
     </Compile>
     <Compile Include="Connection\Packet.cs" />
     <Compile Include="Connection\PacketHandler.cs" />
-    <Compile Include="Permutation.cs" />
+    <Compile Include="Legacy\Permutation.cs" />
     <Compile Include="Army\ArmyView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -289,7 +289,7 @@
     <EmbeddedResource Include="Cooldown\CooldownView.resx">
       <DependentUpon>CooldownView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ClientView.resx">
+    <EmbeddedResource Include="Client\ClientView.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ClientView.cs</DependentUpon>
     </EmbeddedResource>
@@ -389,7 +389,7 @@
     </Compile>
     <Compile Include="Connection\Session.cs" />
     <Compile Include="Utils\Utils.cs" />
-    <Compile Include="V.cs" />
+    <Compile Include="Legacy\V.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
