@@ -142,11 +142,9 @@ namespace k8asd
             // 
             this.statusColumn.AspectName = "";
             this.statusColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.statusColumn.MaximumWidth = 30;
-            this.statusColumn.MinimumWidth = 30;
             this.statusColumn.Text = "";
             this.statusColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.statusColumn.Width = 30;
+            this.statusColumn.Width = 16;
             // 
             // descriptionColumn
             // 
