@@ -150,16 +150,15 @@ namespace k8asd
             // 
             this.descriptionColumn.AspectName = "";
             this.descriptionColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.descriptionColumn.MaximumWidth = 200;
-            this.descriptionColumn.MinimumWidth = 200;
+            this.descriptionColumn.MaximumWidth = 210;
+            this.descriptionColumn.MinimumWidth = 210;
             this.descriptionColumn.Text = "Client";
-            this.descriptionColumn.Width = 200;
+            this.descriptionColumn.Width = 210;
             // 
             // clientList
             // 
             this.clientList.AllColumns.Add(this.statusColumn);
             this.clientList.AllColumns.Add(this.descriptionColumn);
-            this.clientList.CellEditUseWholeCell = false;
             this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.statusColumn,
             this.descriptionColumn});
@@ -169,10 +168,8 @@ namespace k8asd
             this.clientList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.clientList.Location = new System.Drawing.Point(0, 97);
             this.clientList.Name = "clientList";
-            this.clientList.SelectColumnsOnRightClick = false;
-            this.clientList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
             this.clientList.ShowGroups = false;
-            this.clientList.Size = new System.Drawing.Size(247, 584);
+            this.clientList.Size = new System.Drawing.Size(250, 584);
             this.clientList.SmallImageList = this.imageList1;
             this.clientList.TabIndex = 32;
             this.clientList.UseCompatibleStateImageBehavior = false;
