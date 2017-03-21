@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using BrightIdeasSoftware;
 
 namespace k8asd {
     public partial class MainView : Form {
@@ -18,16 +19,14 @@ namespace k8asd {
                 var client = (ClientView) obj;
                 return client.Configuration.ToString();
             };
-            statusColumn.AspectGetter = (obj) => {
+            statusColumn.ImageGetter = (obj) => {
                 var client = (IClient) obj;
-                /*
                 switch (client.ConnectionStatus) {
-                case ConnectionStatus.Connected: return "Đã kết nối";
-                case ConnectionStatus.Connecting: return "Đang kết nối...";
-                case ConnectionStatus.Disconnected: return "Không kết nối";
-                case ConnectionStatus.Disconnecting: return "Đang ngắt kết nối...";
+                case ConnectionStatus.Connected: return "connected";
+                case ConnectionStatus.Connecting: return "disconnected";
+                case ConnectionStatus.Disconnected: return "disconnected";
+                case ConnectionStatus.Disconnecting: return "disconnected";
                 }
-                */
                 return String.Empty;
             };
         }
@@ -51,7 +50,7 @@ namespace k8asd {
             var selectedClients = new List<IClient>();
             var items = clientList.SelectedItems;
             foreach (var item in items) {
-                var client = (IClient) item;
+                var client = (IClient) ((OLVListItem) item).RowObject;
                 selectedClients.Add(client);
             }
             await LogIn(selectedClients);

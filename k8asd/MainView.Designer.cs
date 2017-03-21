@@ -39,14 +39,14 @@ namespace k8asd
             this._ignore0 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.loginAllButton = new System.Windows.Forms.Button();
-            this.removeButton = new System.Windows.Forms.Button();
-            this.addButton = new System.Windows.Forms.Button();
-            this.logoutButton = new System.Windows.Forms.Button();
-            this.loginButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
+            this.removeButton = new System.Windows.Forms.Button();
+            this.addButton = new System.Windows.Forms.Button();
+            this.logoutButton = new System.Windows.Forms.Button();
+            this.loginButton = new System.Windows.Forms.Button();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -131,6 +131,56 @@ namespace k8asd
             this.loginAllButton.UseVisualStyleBackColor = true;
             this.loginAllButton.Click += new System.EventHandler(this.loginAllButton_Click);
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "connected");
+            this.imageList1.Images.SetKeyName(1, "disconnected");
+            // 
+            // statusColumn
+            // 
+            this.statusColumn.AspectName = "";
+            this.statusColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.statusColumn.MaximumWidth = 30;
+            this.statusColumn.MinimumWidth = 30;
+            this.statusColumn.Text = "";
+            this.statusColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.statusColumn.Width = 30;
+            // 
+            // descriptionColumn
+            // 
+            this.descriptionColumn.AspectName = "";
+            this.descriptionColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.descriptionColumn.MaximumWidth = 200;
+            this.descriptionColumn.MinimumWidth = 200;
+            this.descriptionColumn.Text = "Client";
+            this.descriptionColumn.Width = 200;
+            // 
+            // clientList
+            // 
+            this.clientList.AllColumns.Add(this.statusColumn);
+            this.clientList.AllColumns.Add(this.descriptionColumn);
+            this.clientList.CellEditUseWholeCell = false;
+            this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.statusColumn,
+            this.descriptionColumn});
+            this.clientList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.clientList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.clientList.FullRowSelect = true;
+            this.clientList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.clientList.Location = new System.Drawing.Point(0, 97);
+            this.clientList.Name = "clientList";
+            this.clientList.SelectColumnsOnRightClick = false;
+            this.clientList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
+            this.clientList.ShowGroups = false;
+            this.clientList.Size = new System.Drawing.Size(247, 584);
+            this.clientList.SmallImageList = this.imageList1;
+            this.clientList.TabIndex = 32;
+            this.clientList.UseCompatibleStateImageBehavior = false;
+            this.clientList.View = System.Windows.Forms.View.Details;
+            this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
+            // 
             // removeButton
             // 
             this.removeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -182,55 +232,6 @@ namespace k8asd
             this.loginButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "btn_LoginFalse.png");
-            this.imageList1.Images.SetKeyName(1, "btn_LoginTrue.png");
-            // 
-            // statusColumn
-            // 
-            this.statusColumn.AspectName = "";
-            this.statusColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.statusColumn.MaximumWidth = 55;
-            this.statusColumn.MinimumWidth = 55;
-            this.statusColumn.Text = "";
-            this.statusColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.statusColumn.Width = 55;
-            // 
-            // descriptionColumn
-            // 
-            this.descriptionColumn.AspectName = "";
-            this.descriptionColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.descriptionColumn.MaximumWidth = 200;
-            this.descriptionColumn.MinimumWidth = 200;
-            this.descriptionColumn.Text = "Client";
-            this.descriptionColumn.Width = 200;
-            // 
-            // clientList
-            // 
-            this.clientList.AllColumns.Add(this.statusColumn);
-            this.clientList.AllColumns.Add(this.descriptionColumn);
-            this.clientList.CellEditUseWholeCell = false;
-            this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.statusColumn,
-            this.descriptionColumn});
-            this.clientList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.clientList.Dock = System.Windows.Forms.DockStyle.Left;
-            this.clientList.FullRowSelect = true;
-            this.clientList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.clientList.Location = new System.Drawing.Point(0, 97);
-            this.clientList.Name = "clientList";
-            this.clientList.SelectColumnsOnRightClick = false;
-            this.clientList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
-            this.clientList.ShowGroups = false;
-            this.clientList.Size = new System.Drawing.Size(247, 584);
-            this.clientList.TabIndex = 32;
-            this.clientList.UseCompatibleStateImageBehavior = false;
-            this.clientList.View = System.Windows.Forms.View.Details;
-            this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
             // MainView
             // 
