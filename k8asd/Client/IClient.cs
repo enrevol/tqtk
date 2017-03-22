@@ -50,6 +50,6 @@ namespace k8asd {
 
         Task LogIn();
 
-        void LogOut();
+        Task LogOut();
     }
 }

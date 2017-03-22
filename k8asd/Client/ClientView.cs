@@ -118,15 +118,15 @@ namespace k8asd {
         }
 
         public async Task LogIn() {
-            if (connectionStatus == ConnectionStatus.Connected) {
+            if (ConnectionStatus == ConnectionStatus.Connected) {
                 messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
                 return;
             }
-            if (connectionStatus == ConnectionStatus.Connecting) {
+            if (ConnectionStatus == ConnectionStatus.Connecting) {
                 messageLogModel.LogInfo("Đang đang nhập, không cần đăng nhập lại!");
                 return;
             }
-            if (connectionStatus == ConnectionStatus.Disconnecting) {
+            if (ConnectionStatus == ConnectionStatus.Disconnecting) {
                 messageLogModel.LogInfo("Đang đang xuất, không thể đăng nhập!");
                 return;
             }
@@ -138,19 +138,26 @@ namespace k8asd {
             }
         }
 
-        public void LogOut() {
-            if (connectionStatus == ConnectionStatus.Connected) {
-                messageLogModel.LogInfo("Đang đăng xuất!");
-                connectionStatus = ConnectionStatus.Disconnected;
+        public async Task LogOut() {
+            if (ConnectionStatus == ConnectionStatus.Disconnected) {
+                return;
             }
+            if (ConnectionStatus == ConnectionStatus.Disconnecting) {
+                return;
+            }
+            if (ConnectionStatus == ConnectionStatus.Connecting) {
+                messageLogModel.LogInfo("Đang đang nhập, không thể đăng xuất!");
+                return;
+            }
+
+            Debug.Assert(ConnectionStatus == ConnectionStatus.Connected);
+            ConnectionStatus = ConnectionStatus.Disconnecting;
+            messageLogModel.LogInfo("Bắt đầu đăng xuất...");
+
             try {
-                //oneSecondTimer.Stop();
                 dataTimer.Stop();
-                if (packetHandler != null) {
-                    packetHandler.Disconnect();
-                    packetHandler = null;
-                    messageLogModel.LogInfo("Đăng xuất thành công!");
-                }
+                await packetHandler.Disconnect();
+                messageLogModel.LogInfo("Đăng xuất thành công!");
             } catch (Exception ex) {
                 messageLogModel.LogInfo(ex.Message);
                 messageLogModel.LogInfo("Đăng xuất thất bại!");

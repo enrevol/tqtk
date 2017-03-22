@@ -56,15 +56,15 @@ namespace k8asd {
             await LogIn(selectedClients);
         }
 
-        private void logoutButton_Click(object sender, EventArgs e) {
+        private async void logoutButton_Click(object sender, EventArgs e) {
             var selectedClients = new List<IClient>();
             var items = clientList.SelectedItems;
             foreach (var item in items) {
-                var client = (IClient) item;
+                var client = (IClient) ((OLVListItem) item).RowObject;
                 selectedClients.Add(client);
             }
             foreach (var client in selectedClients) {
-                client.LogOut();
+                await client.LogOut();
             }
         }
 

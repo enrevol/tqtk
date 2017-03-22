@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Nito.AsyncEx;
 using System.IO;
+using System.Threading;
 
 namespace k8asd {
     /// <summary>
@@ -58,6 +59,9 @@ namespace k8asd {
 
         private Dictionary<string, int> messageDelta;
 
+        private CancellationTokenSource readingTokenSource;
+        private TaskCompletionSource readingTaskSignal;
+
         private bool isReading;
 
         public PacketHandler(Session session) {
@@ -68,6 +72,7 @@ namespace k8asd {
             queues = new Dictionary<string, AsyncCollection<Packet>>();
             messageDelta = new Dictionary<string, int>();
             streamData = String.Empty;
+            readingTokenSource = null;
             isReading = false;
         }
 
@@ -84,7 +89,7 @@ namespace k8asd {
         /// Asynchronously connects to the server.
         /// </summary>
         public async Task ConnectAsync() {
-            Disconnect();
+            await Disconnect();
             tcpClient = new TcpClient();
             await tcpClient.ConnectAsync(Session.Ip, Session.Ports);
         }
@@ -92,7 +97,12 @@ namespace k8asd {
         /// <summary>
         /// Asynchronously disconnects from the server.
         /// </summary>
-        public void Disconnect() {
+        public async Task Disconnect() {
+            if (readingTokenSource != null) {
+                readingTaskSignal = new TaskCompletionSource();
+                readingTokenSource.Cancel();
+                await readingTaskSignal.Task;
+            }
             if (tcpClient != null) {
                 tcpClient.Close();
                 tcpClient = null;
@@ -127,11 +137,15 @@ namespace k8asd {
             }
             isReading = true;
             try {
+                readingTokenSource = new CancellationTokenSource();
                 while (true) {
                     var stream = tcpClient.GetStream();
                     try {
-                        var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                        var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, readingTokenSource.Token);
                         if (bytesRead == 0) {
+                            break;
+                        }
+                        if (readingTokenSource.Token.IsCancellationRequested) {
                             break;
                         }
                         streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
@@ -142,7 +156,6 @@ namespace k8asd {
                         Console.WriteLine(ex.Message);
                         return false;
                     }
-
                     while (true) {
                         var packet = ParsePacket();
                         if (packet == null) {
@@ -157,6 +170,11 @@ namespace k8asd {
                 }
             } finally {
                 isReading = false;
+                readingTokenSource.Dispose();
+                readingTokenSource = null;
+                if (readingTaskSignal != null) {
+                    readingTaskSignal.SetResult();
+                }
             }
             return true;
         }
