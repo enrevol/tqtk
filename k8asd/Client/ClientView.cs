@@ -154,14 +154,10 @@ namespace k8asd {
             ConnectionStatus = ConnectionStatus.Disconnecting;
             messageLogModel.LogInfo("Bắt đầu đăng xuất...");
 
-            try {
-                dataTimer.Stop();
-                await packetHandler.Disconnect();
-                messageLogModel.LogInfo("Đăng xuất thành công!");
-            } catch (Exception ex) {
-                messageLogModel.LogInfo(ex.Message);
-                messageLogModel.LogInfo("Đăng xuất thất bại!");
-            }
+            dataTimer.Stop();
+            await packetHandler.Disconnect();
+            messageLogModel.LogInfo("Đăng xuất thành công.");
+            ConnectionStatus = ConnectionStatus.Disconnected;
         }
 
         private async Task LogIn(int serverId, string username, string password) {
@@ -211,11 +207,11 @@ namespace k8asd {
             packetHandler.PacketReceived += (sender, packet) => PacketReceived.Raise(this, packet);
             dataTimer.Start();
 
-            await SendCommandAsync("10100");
-            await SendCommandAsync("11102");
-            // FIXME: handle case character not yet created.
-
             ConnectionStatus = ConnectionStatus.Connected;
+
+            var p0 = await SendCommandAsync("10100");
+            var p1 = await SendCommandAsync("11102");
+            // FIXME: handle case character not yet created.            
         }
 
         private async void OneSecondTimer_Tick(object sender, EventArgs e) {

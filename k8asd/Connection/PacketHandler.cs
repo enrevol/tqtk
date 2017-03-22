@@ -59,7 +59,6 @@ namespace k8asd {
 
         private Dictionary<string, int> messageDelta;
 
-        private CancellationTokenSource readingTokenSource;
         private TaskCompletionSource readingTaskSignal;
 
         private bool isReading;
@@ -72,7 +71,6 @@ namespace k8asd {
             queues = new Dictionary<string, AsyncCollection<Packet>>();
             messageDelta = new Dictionary<string, int>();
             streamData = String.Empty;
-            readingTokenSource = null;
             isReading = false;
         }
 
@@ -98,14 +96,16 @@ namespace k8asd {
         /// Asynchronously disconnects from the server.
         /// </summary>
         public async Task Disconnect() {
-            if (readingTokenSource != null) {
+            if (isReading) {
                 readingTaskSignal = new TaskCompletionSource();
-                readingTokenSource.Cancel();
-                await readingTaskSignal.Task;
-            }
-            if (tcpClient != null) {
                 tcpClient.Close();
                 tcpClient = null;
+                await readingTaskSignal.Task;
+            } else {
+                if (tcpClient != null) {
+                    tcpClient.Close();
+                    tcpClient = null;
+                }
             }
             ClearData();
         }
@@ -137,15 +137,11 @@ namespace k8asd {
             }
             isReading = true;
             try {
-                readingTokenSource = new CancellationTokenSource();
-                while (true) {
+                while (tcpClient != null) {
                     var stream = tcpClient.GetStream();
                     try {
-                        var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, readingTokenSource.Token);
+                        var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                         if (bytesRead == 0) {
-                            break;
-                        }
-                        if (readingTokenSource.Token.IsCancellationRequested) {
                             break;
                         }
                         streamData += Encoding.UTF8.GetString(buffer, 0, bytesRead);
@@ -153,6 +149,9 @@ namespace k8asd {
                         Console.WriteLine(ex.Message);
                         return false;
                     } catch (IOException ex) {
+                        Console.WriteLine(ex.Message);
+                        return false;
+                    } catch (ObjectDisposedException ex) {
                         Console.WriteLine(ex.Message);
                         return false;
                     }
@@ -170,8 +169,6 @@ namespace k8asd {
                 }
             } finally {
                 isReading = false;
-                readingTokenSource.Dispose();
-                readingTokenSource = null;
                 if (readingTaskSignal != null) {
                     readingTaskSignal.SetResult();
                 }
