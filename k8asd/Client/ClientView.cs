@@ -105,7 +105,7 @@ namespace k8asd {
         }
 
         public async Task<Packet> SendCommandAsync(string command, params string[] parameters) {
-            if (packetHandler == null) {
+            if (ConnectionStatus != ConnectionStatus.Connected) {
                 // Chưa kết nối.
                 return null;
             }
