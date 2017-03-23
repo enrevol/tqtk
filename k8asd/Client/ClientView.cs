@@ -80,12 +80,13 @@ namespace k8asd {
             weaveView.SetInfoModel(infoModel);
             campaignView.SetInfoModel(infoModel);
             armyView.SetInfoModel(infoModel);
+            armyView.SetMessageLogModel(messageLogModel);
             armyView.SetMcuModel(mcuModel);
             chatLogModel.SetInfoModel(infoModel);
 
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
-            arenaView.SetLogModel(messageLogModel);
+            arenaView.SetLogModel(messageLogModel);            
 
             infoModel.SetPacketWriter(this);
             cooldownModel.SetPacketWriter(this);

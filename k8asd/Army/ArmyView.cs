@@ -22,7 +22,9 @@ namespace k8asd {
         private BindingList<Army> armies;
         private BindingList<ArmyTeam> teams;
         private BindingList<ArmyMember> members;
+
         private IPacketWriter packetWriter;
+        private IMessageLogModel messageLogModel;
         private IInfoModel infoModel;
         private IMcuModel mcuModel;
 
@@ -56,6 +58,10 @@ namespace k8asd {
             }
             packetWriter = writer;
             packetWriter.PacketReceived += OnPacketReceived;
+        }
+
+        public void SetMessageLogModel(IMessageLogModel model) {
+            messageLogModel = model;
         }
 
         public void SetInfoModel(IInfoModel model) {
@@ -202,14 +208,14 @@ namespace k8asd {
 
         private void Parse34108(Packet packet) {
             var token = JToken.Parse(packet.Message);
-            var battlereport = token["battlereport"];
-            var report = battlereport["report"];
-            var fieldreport = report["fieldreport"];
-            var gains = (string) report["gains"];
-            if (gains.Length == 0) {
-                // Failed.
+            var report = ArmyReport.Parse(token);
+            if (report.Gains.Length > 0) {
+                messageLogModel.LogInfo(String.Format("Tấn công quân đoàn nhận được: {0}", report.Gains));
             } else {
-                // Succeeded.
+                messageLogModel.LogInfo("Tấn công quân đoàn nhận thất bại.");
+            }
+            foreach (var detail in report.Reports) {
+                messageLogModel.LogInfo(detail);
             }
         }
 
