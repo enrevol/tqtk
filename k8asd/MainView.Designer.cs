@@ -43,6 +43,7 @@ namespace k8asd
             this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
+            this.autoSwapButton = new System.Windows.Forms.ToolStripMenuItem();
             this.removeButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
             this.logoutButton = new System.Windows.Forms.Button();
@@ -69,7 +70,8 @@ namespace k8asd
             // 
             menuItem0.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             autoArenaButton,
-            this.autoWeaveButton});
+            this.autoWeaveButton,
+            this.autoSwapButton});
             menuItem0.Name = "menuItem0";
             menuItem0.Size = new System.Drawing.Size(58, 20);
             menuItem0.Text = "Phụ trợ";
@@ -77,14 +79,14 @@ namespace k8asd
             // autoArenaButton
             // 
             autoArenaButton.Name = "autoArenaButton";
-            autoArenaButton.Size = new System.Drawing.Size(184, 22);
+            autoArenaButton.Size = new System.Drawing.Size(214, 22);
             autoArenaButton.Text = "Tự động đánh võ đài";
             autoArenaButton.Click += new System.EventHandler(this.autoArenaButton_Click);
             // 
             // autoWeaveButton
             // 
             this.autoWeaveButton.Name = "autoWeaveButton";
-            this.autoWeaveButton.Size = new System.Drawing.Size(184, 22);
+            this.autoWeaveButton.Size = new System.Drawing.Size(214, 22);
             this.autoWeaveButton.Text = "Tự động dệt";
             this.autoWeaveButton.Click += new System.EventHandler(this.autoWeaveButton_Click);
             // 
@@ -159,6 +161,7 @@ namespace k8asd
             // 
             this.clientList.AllColumns.Add(this.statusColumn);
             this.clientList.AllColumns.Add(this.descriptionColumn);
+            this.clientList.CellEditUseWholeCell = false;
             this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.statusColumn,
             this.descriptionColumn});
@@ -175,6 +178,13 @@ namespace k8asd
             this.clientList.UseCompatibleStateImageBehavior = false;
             this.clientList.View = System.Windows.Forms.View.Details;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
+            // 
+            // autoSwapButton
+            // 
+            this.autoSwapButton.Name = "autoSwapButton";
+            this.autoSwapButton.Size = new System.Drawing.Size(214, 22);
+            this.autoSwapButton.Text = "Tự động chuyển bang chủ";
+            this.autoSwapButton.Click += new System.EventHandler(this.autoSwapButton_Click);
             // 
             // removeButton
             // 
@@ -265,6 +275,7 @@ namespace k8asd
         private BrightIdeasSoftware.OLVColumn statusColumn;
         private BrightIdeasSoftware.OLVColumn descriptionColumn;
         private BrightIdeasSoftware.ObjectListView clientList;
+        private ToolStripMenuItem autoSwapButton;
     }
 }
 

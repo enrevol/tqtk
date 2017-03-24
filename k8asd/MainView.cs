@@ -152,5 +152,11 @@ namespace k8asd {
             var view = new AutoWeaveView();
             view.Show();
         }
+
+        private void autoSwapButton_Click(object sender, EventArgs e)
+        {
+            var view = new AutoSwap();
+            view.Show();
+        }
     }
 }

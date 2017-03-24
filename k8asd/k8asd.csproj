@@ -159,6 +159,9 @@
     <Compile Include="Client\ClientException.cs" />
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
+    <Compile Include="Swap\LegionInfo.cs" />
+    <Compile Include="Swap\SwapCommand.cs" />
+    <Compile Include="Swap\SwapInfo.cs" />
     <Compile Include="Tools\AutoArenaView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -257,6 +260,10 @@
     <Compile Include="Shop\ShopView.Designer.cs">
       <DependentUpon>ShopView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AutoSwap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\AutoSwap.Designer.cs" />
     <Compile Include="Tools\AutoWeaveView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -337,6 +344,7 @@
     <EmbeddedResource Include="Tools\AutoArenaView.resx">
       <DependentUpon>AutoArenaView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\AutoSwap.resx" />
     <EmbeddedResource Include="Tools\AutoWeaveView.resx">
       <DependentUpon>AutoWeaveView.cs</DependentUpon>
     </EmbeddedResource>
@@ -422,6 +430,7 @@
   <ItemGroup>
     <None Include="Resources\disconnected.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
