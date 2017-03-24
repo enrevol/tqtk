@@ -240,6 +240,16 @@ namespace k8asd {
             if (timerLocking) {
                 return;
             }
+
+            foreach (var id in playerIds) {
+                var client = clients[id];
+                if (client.ConnectionStatus == ConnectionStatus.Disconnected) {
+                    LogInfo(String.Format("Tài khoản {0} mất kết nối!", client.PlayerName));
+                    RemovePlayer(id);
+                    return;
+                }
+            }
+
             timerLocking = true;
             try {
                 if (!autoWeave.Checked) {
@@ -260,69 +270,67 @@ namespace k8asd {
                     return;
                 }
 
-                try {
-                    var hostId = playerIds.FirstOrDefault(id => clients[id].PlayerName == hostInput.Text);
-
-                    if (hostId == 0) {
-                        LogInfo("Không tìm thấy chủ tổ đội có tên được nhập!");
-                        autoWeave.Checked = false;
-                        return;
-                    }
-
-                    var memberIds = playerIds.Where(id => id != hostId).ToList();
-                    if (memberIds.Count == 0) {
-                        LogInfo("Không có thành viên để dệt.");
-                        autoWeave.Checked = false;
-                        return;
-                    }
-
-                    int maxTurns = memberIds.Max(id => infos[id].Turns);
-                    if (maxTurns == 0) {
-                        LogInfo("Đã hết lượt dệt.");
-                        autoWeave.Checked = false;
-                        return;
-                    }
-
-                    var weaveMemberIds = FindWeaveMemberIds(memberIds);
-                    if (weaveMemberIds.Count == 0) {
-                        return;
-                    }
-
-                    // Kiểm tra lại thời gian đóng băng của chủ tổ đội.
-                    if (!await RefreshPlayerAsync(hostId)) {
-                        // Mất kết nối.
-                        RemovePlayer(hostId);
-                        return;
-                    }
-                    if (infos[hostId].Cooldown > 0) {
-                        return;
-                    }
-
-                    // Kiểm tra lại thời gian đóng băng của thành viên.
-                    foreach (var memberId in weaveMemberIds) {
-                        if (!await RefreshPlayerAsync(memberId)) {
-                            // Mất kết nối.
-                            RemovePlayer(memberId);
-                            return;
-                        }
-                        if (infos[memberId].Cooldown > 0) {
-                            return;
-                        }
-                    }
-
-                    if (weaveMemberIds.Count == 1) {
-                        LogInfo(String.Format("Tiến hành dệt với: {0}", clients[weaveMemberIds[0]].PlayerName));
-                    } else {
-                        LogInfo(String.Format("Tiến hành dệt với: {0}, {1}",
-                            clients[weaveMemberIds[0]].PlayerName, clients[weaveMemberIds[1]].PlayerName));
-                    }
-                    await WeaveAsync(hostId, weaveMemberIds.ToArray());
-                } catch (ClientException ex) {
-                    Console.WriteLine(ex);
-                    LogInfo(String.Format("Tài khoản {0} mất kết nối!", ex.PlayerName));
-                    RemovePlayer(ex.PlayerId);
+                if (hostInput.Text.Length == 0) {
+                    LogInfo("Tên chủ tổ đội chưa nhập!");
+                    autoWeave.Checked = false;
                     return;
                 }
+
+                var hostId = playerIds.FirstOrDefault(id => clients[id].PlayerName == hostInput.Text);
+                if (hostId == 0) {
+                    LogInfo("Không tìm thấy chủ tổ đội có tên được nhập!");
+                    autoWeave.Checked = false;
+                    return;
+                }
+
+                var memberIds = playerIds.Where(id => id != hostId).ToList();
+                if (memberIds.Count == 0) {
+                    LogInfo("Không có thành viên để dệt.");
+                    autoWeave.Checked = false;
+                    return;
+                }
+
+                int maxTurns = memberIds.Max(id => infos[id].Turns);
+                if (maxTurns == 0) {
+                    LogInfo("Đã hết lượt dệt.");
+                    autoWeave.Checked = false;
+                    return;
+                }
+
+                var weaveMemberIds = FindWeaveMemberIds(memberIds);
+                if (weaveMemberIds.Count == 0) {
+                    return;
+                }
+
+                // Kiểm tra lại thời gian đóng băng của chủ tổ đội.
+                if (!await RefreshPlayerAsync(hostId)) {
+                    // Mất kết nối.
+                    RemovePlayer(hostId);
+                    return;
+                }
+                if (infos[hostId].Cooldown > 0) {
+                    return;
+                }
+
+                // Kiểm tra lại thời gian đóng băng của thành viên.
+                foreach (var memberId in weaveMemberIds) {
+                    if (!await RefreshPlayerAsync(memberId)) {
+                        // Mất kết nối.
+                        RemovePlayer(memberId);
+                        return;
+                    }
+                    if (infos[memberId].Cooldown > 0) {
+                        return;
+                    }
+                }
+
+                if (weaveMemberIds.Count == 1) {
+                    LogInfo(String.Format("Tiến hành dệt với: {0}", clients[weaveMemberIds[0]].PlayerName));
+                } else {
+                    LogInfo(String.Format("Tiến hành dệt với: {0}, {1}",
+                        clients[weaveMemberIds[0]].PlayerName, clients[weaveMemberIds[1]].PlayerName));
+                }
+                await WeaveAsync(hostId, weaveMemberIds.ToArray());
             } finally {
                 timerLocking = false;
             }

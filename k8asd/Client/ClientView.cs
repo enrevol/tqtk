@@ -46,28 +46,15 @@ namespace k8asd {
 
         public int PlayerId {
             get {
-                if (ConnectionStatus == ConnectionStatus.Connected) {
-                    return Int32.Parse(loginHelper.Session.UserId);
+                if (loginHelper == null) {
+                    return 0;
                 }
-                throw CreateException();
+                return Int32.Parse(loginHelper.Session.UserId);
             }
         }
 
         public string PlayerName {
-            get {
-                if (ConnectionStatus == ConnectionStatus.Connected) {
-                    return infoModel.PlayerName;
-                }
-                throw CreateException();
-            }
-        }
-
-        private ClientException CreateException() {
-            var exception = new ClientException("Tài khoản chưa kết nối.");
-            exception.Client = this;
-            exception.PlayerId = Int32.Parse(loginHelper.Session.UserId);
-            exception.PlayerName = infoModel.PlayerName;
-            return exception;
+            get { return infoModel.PlayerName; }
         }
 
         public ClientView() {
