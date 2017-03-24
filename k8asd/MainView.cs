@@ -82,9 +82,10 @@ namespace k8asd {
         }
 
         private void removeButton_Click(object sender, EventArgs e) {
-            var selectedClients = new List<ClientView>();
+            var selectedClients = new List<IClient>();
             foreach (var item in clientList.SelectedItems) {
-                selectedClients.Add((ClientView) item);
+                var client = (IClient) ((OLVListItem) item).RowObject;
+                selectedClients.Add(client);
             }
             foreach (var client in selectedClients) {
                 RemoveClient(client);
@@ -112,12 +113,12 @@ namespace k8asd {
             client.ConnectionStatusChanged += OnConnectionStatusChanged;
         }
 
-        private void RemoveClient(ClientView client) {
+        private void RemoveClient(IClient client) {
             ClientManager.Instance.Remove(client);
             AccountManager.Instance.DeleteConfiguration(
-                client.Configuration.ServerId,
-                client.Configuration.Username);
-            Controls.Remove(client);
+              ((ClientView) client).Configuration.ServerId,
+              ((ClientView) client).Configuration.Username);
+            Controls.Remove((ClientView) client);
             clientList.SetObjects(ClientManager.Instance.Clients);
         }
 
