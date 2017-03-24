@@ -231,8 +231,8 @@ namespace k8asd {
             if (infos[orderedMembers[0]].Cooldown > 0 && infos[orderedMembers[1]].Cooldown > 0) {
                 return result;
             }
-            result.Add(memberIds[0]);
-            result.Add(memberIds[1]);
+            result.Add(orderedMembers[0]);
+            result.Add(orderedMembers[1]);
             return result;
         }
 
