@@ -135,9 +135,9 @@ namespace k8asd {
             }
             isReading = true;
             try {
-                while (tcpClient != null) {
-                    var stream = tcpClient.GetStream();
+                while (tcpClient != null) {                    
                     try {
+                        var stream = tcpClient.GetStream();
                         var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                         if (bytesRead == 0) {
                             break;
