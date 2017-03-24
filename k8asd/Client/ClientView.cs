@@ -49,7 +49,7 @@ namespace k8asd {
                 if (ConnectionStatus == ConnectionStatus.Connected) {
                     return Int32.Parse(loginHelper.Session.UserId);
                 }
-                throw new InvalidOperationException("Tài khoản chưa kết nối.");
+                throw CreateException();
             }
         }
 
@@ -58,8 +58,16 @@ namespace k8asd {
                 if (ConnectionStatus == ConnectionStatus.Connected) {
                     return infoModel.PlayerName;
                 }
-                throw new InvalidOperationException("Tài khoản chưa kết nối.");
+                throw CreateException();
             }
+        }
+
+        private ClientException CreateException() {
+            var exception = new ClientException("Tài khoản chưa kết nối.");
+            exception.Client = this;
+            exception.PlayerId = Int32.Parse(loginHelper.Session.UserId);
+            exception.PlayerName = infoModel.PlayerName;
+            return exception;
         }
 
         public ClientView() {

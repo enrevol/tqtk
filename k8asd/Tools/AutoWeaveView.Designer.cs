@@ -38,10 +38,9 @@
             this.weaveTimer = new System.Windows.Forms.Timer(this.components);
             this.hostInput = new System.Windows.Forms.TextBox();
             this.autoWeave = new System.Windows.Forms.CheckBox();
-            this.cooldownLabel = new System.Windows.Forms.Label();
             this.textileLevelInput = new System.Windows.Forms.NumericUpDown();
-            this.weaveButton = new System.Windows.Forms.Button();
             this.autoMake = new System.Windows.Forms.CheckBox();
+            this.logBox = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.playerList)).BeginInit();
@@ -56,6 +55,15 @@
             label1.Size = new System.Drawing.Size(56, 13);
             label1.TabIndex = 33;
             label1.Text = "Chủ tổ đội";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(185, 55);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(43, 13);
+            label2.TabIndex = 37;
+            label2.Text = "Cấp vải";
             // 
             // playerList
             // 
@@ -81,13 +89,13 @@
             this.playerList.Cursor = System.Windows.Forms.Cursors.Default;
             this.playerList.FullRowSelect = true;
             this.playerList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.playerList.Location = new System.Drawing.Point(10, 180);
+            this.playerList.Location = new System.Drawing.Point(10, 210);
             this.playerList.MultiSelect = false;
             this.playerList.Name = "playerList";
             this.playerList.SelectColumnsOnRightClick = false;
             this.playerList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
             this.playerList.ShowGroups = false;
-            this.playerList.Size = new System.Drawing.Size(450, 270);
+            this.playerList.Size = new System.Drawing.Size(450, 240);
             this.playerList.TabIndex = 31;
             this.playerList.UseCompatibleStateImageBehavior = false;
             this.playerList.View = System.Windows.Forms.View.Details;
@@ -183,30 +191,12 @@
             // autoWeave
             // 
             this.autoWeave.AutoSize = true;
-            this.autoWeave.Location = new System.Drawing.Point(250, 16);
+            this.autoWeave.Location = new System.Drawing.Point(130, 16);
             this.autoWeave.Name = "autoWeave";
             this.autoWeave.Size = new System.Drawing.Size(85, 17);
             this.autoWeave.TabIndex = 35;
             this.autoWeave.Text = "Tự động dệt";
             this.autoWeave.UseVisualStyleBackColor = true;
-            // 
-            // cooldownLabel
-            // 
-            this.cooldownLabel.AutoSize = true;
-            this.cooldownLabel.Location = new System.Drawing.Point(350, 17);
-            this.cooldownLabel.Name = "cooldownLabel";
-            this.cooldownLabel.Size = new System.Drawing.Size(108, 13);
-            this.cooldownLabel.TabIndex = 36;
-            this.cooldownLabel.Text = "Đóng băng: 00:15:20";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(185, 55);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(43, 13);
-            label2.TabIndex = 37;
-            label2.Text = "Cấp vải";
             // 
             // textileLevelInput
             // 
@@ -231,15 +221,6 @@
             0,
             0});
             // 
-            // weaveButton
-            // 
-            this.weaveButton.Location = new System.Drawing.Point(120, 10);
-            this.weaveButton.Name = "weaveButton";
-            this.weaveButton.Size = new System.Drawing.Size(100, 30);
-            this.weaveButton.TabIndex = 39;
-            this.weaveButton.Text = "Dệt";
-            this.weaveButton.UseVisualStyleBackColor = true;
-            // 
             // autoMake
             // 
             this.autoMake.AutoSize = true;
@@ -250,16 +231,27 @@
             this.autoMake.Text = "Dệt chung khi lượt > 1";
             this.autoMake.UseVisualStyleBackColor = true;
             // 
+            // logBox
+            // 
+            this.logBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.logBox.Location = new System.Drawing.Point(10, 80);
+            this.logBox.Multiline = true;
+            this.logBox.Name = "logBox";
+            this.logBox.ReadOnly = true;
+            this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logBox.Size = new System.Drawing.Size(450, 120);
+            this.logBox.TabIndex = 41;
+            // 
             // AutoWeaveView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(474, 461);
+            this.Controls.Add(this.logBox);
             this.Controls.Add(this.autoMake);
-            this.Controls.Add(this.weaveButton);
             this.Controls.Add(this.textileLevelInput);
             this.Controls.Add(label2);
-            this.Controls.Add(this.cooldownLabel);
             this.Controls.Add(this.autoWeave);
             this.Controls.Add(this.hostInput);
             this.Controls.Add(label1);
@@ -289,9 +281,8 @@
         private System.Windows.Forms.Timer weaveTimer;
         private System.Windows.Forms.TextBox hostInput;
         private System.Windows.Forms.CheckBox autoWeave;
-        private System.Windows.Forms.Label cooldownLabel;
         private System.Windows.Forms.NumericUpDown textileLevelInput;
-        private System.Windows.Forms.Button weaveButton;
         private System.Windows.Forms.CheckBox autoMake;
+        private System.Windows.Forms.TextBox logBox;
     }
 }

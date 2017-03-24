@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +64,15 @@ namespace k8asd {
             await RefreshPlayersAsync(FindConnectedClients());
         }
 
+        public void LogInfo(string newMessage) {
+            if (logBox.Text.Length > 0) {
+                logBox.Text += Environment.NewLine;
+            }
+            logBox.Text += String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
+            logBox.SelectionStart = logBox.TextLength;
+            logBox.ScrollToCaret();
+        }
+
         private List<IClient> FindConnectedClients() {
             var clients = ClientManager.Instance.Clients;
             var connectedClients = new List<IClient>();
@@ -80,8 +86,14 @@ namespace k8asd {
 
         private async Task<bool> RefreshPlayersAsync(List<IClient> connectedClients) {
             if (isRefreshing) {
+                LogInfo("Đang làm mới, không thể làm mới!");
                 return false;
             }
+            if (isWeaving) {
+                LogInfo("Đang dệt, không thể làm mới!");
+                return false;
+            }
+            LogInfo("Bắt đầu làm mới...");
             isRefreshing = true;
 
             clients.Clear();
@@ -109,6 +121,7 @@ namespace k8asd {
                 playerList.SetObjects(playerIds);
             }
 
+            LogInfo("Làm mới hoàn thành!");
             isRefreshing = false;
             return true;
         }
@@ -134,15 +147,19 @@ namespace k8asd {
             return true;
         }
 
-        private async Task<bool> WeaveAsync(int hostId, int slot1Id) {
-            return await WeaveAsync(clients[hostId], WeaveMode.PullLevel, clients[slot1Id], null);
+        private void RemovePlayer(int playerId) {
+            playerIds.Remove(playerId);
+            clients.Remove(playerId);
+            infos.Remove(playerId);
+            playerList.SetObjects(playerIds);
         }
 
-        private async Task<bool> WeaveAsync(int hostId, int slot1Id, int slot2Id) {
-            return await WeaveAsync(clients[hostId], WeaveMode.PullLevel, clients[slot1Id], clients[slot2Id]);
+        private async Task<bool> WeaveAsync(int hostId, params int[] memberIds) {
+            var members = memberIds.Select(id => clients[id]).ToArray();
+            return await WeaveAsync(clients[hostId], WeaveMode.PullLevel, members);
         }
 
-        private async Task<bool> WeaveAsync(IPacketWriter host, WeaveMode mode, IPacketWriter slot1, IPacketWriter slot2) {
+        private async Task<bool> WeaveAsync(IPacketWriter host, WeaveMode mode, params IPacketWriter[] members) {
             // Lập tổ đội.
             var textileLevel = (int) textileLevelInput.Value;
             try {
@@ -159,19 +176,19 @@ namespace k8asd {
             try {
                 Debug.Assert(hostingTeamId != NoTeam);
                 var tasks = new List<Task<Packet>>();
-                tasks.Add(slot1.JoinWeaveAsync(hostingTeamId));
-
-                if (slot2 != null) {
-                    tasks.Add(slot2.JoinWeaveAsync(hostingTeamId));
+                foreach (var member in members) {
+                    tasks.Add(member.JoinWeaveAsync(hostingTeamId));
                 }
 
                 // Gia nhập tổ đội.
                 var p2s = await Task.WhenAll(tasks);
-                if (p2s[0] == null) {
-                    return false;
-                }
-                if (slot2 != null && p2s[1] == null) {
-                    return false;
+                foreach (var p in p2s) {
+                    if (p == null) {
+                        // Lỗi gia nhập.
+                        // Huỷ tổ đội.
+                        await host.DisbandWeaveAsync(hostingTeamId);
+                        return false;
+                    }
                 }
 
                 if (mode == WeaveMode.WeaveTogether) {
@@ -191,57 +208,35 @@ namespace k8asd {
             }
         }
 
-        private class WeaveTeamInfo {
-            public int HostId { get; private set; }
-            public int Slot1Id { get; private set; }
-            public int Slot2Id { get; private set; }
-
-            public WeaveTeamInfo(int host, int slot1) {
-                HostId = host;
-                Slot1Id = slot1;
-                Slot2Id = 0;
-            }
-
-            public WeaveTeamInfo(int host, int slot1, int slot2) {
-                HostId = host;
-                Slot1Id = slot1;
-                Slot2Id = slot2;
-            }
-        }
-
-        private WeaveTeamInfo FindWeaveTeam(int hostId, List<int> memberIds) {
-            if (infos[hostId].Cooldown > 0) {
-                return null;
-            }
+        private List<int> FindWeaveMemberIds(List<int> memberIds) {
+            var result = new List<int>();
             if (memberIds.Count == 0) {
-                return null;
+                // Không có ai.
+                return result;
             }
+
             if (memberIds.Count == 1) {
                 if (infos[memberIds[0]].Cooldown > 0) {
-                    return null;
+                    return result;
                 }
-                return new WeaveTeamInfo(hostId, memberIds[0]);
+
+                // Chỉ có 1 người.
+                result.Add(memberIds[0]);
+                return result;
             }
+
+            // Ưu tiên dệt người chơi có nhiều lượt nhất trước.
             var orderedMembers = memberIds.OrderByDescending(id => infos[id].Turns).
                 ThenBy(id => infos[id].Cooldown).ToList();
             if (infos[orderedMembers[0]].Cooldown > 0 && infos[orderedMembers[1]].Cooldown > 0) {
-                return null;
+                return result;
             }
-            return new WeaveTeamInfo(hostId, orderedMembers[0], orderedMembers[1]);
-        }
-
-        /// <summary>
-        /// Cập nhật thời gian đóng băng.
-        /// </summary>
-        /// <returns>Thời gian đóng băng tất cả các tài khoản.</returns>
-        private void UpdateCooldown() {
-            int maxCooldown = playerIds.Count == 0 ? 0 : playerIds.Max(id => infos[id].Cooldown);
-            cooldownLabel.Text = String.Format("Đóng băng: {0}", Utils.FormatDuration(maxCooldown));
+            result.Add(memberIds[0]);
+            result.Add(memberIds[1]);
+            return result;
         }
 
         private async void weaveTimer_Tick(object sender, EventArgs e) {
-            UpdateCooldown();
-
             if (timerLocking) {
                 return;
             }
@@ -265,55 +260,63 @@ namespace k8asd {
                     return;
                 }
 
-                var hostId = playerIds.FirstOrDefault(id => clients[id].PlayerName == hostInput.Text);
+                int hostId = 0;
+                try {
+                    hostId = playerIds.FirstOrDefault(id => clients[id].PlayerName == hostInput.Text);
+                } catch (ClientException ex) {
+                    Console.WriteLine(ex);
+                    LogInfo(String.Format("Tài khoản {0} mất kết nối!", ex.PlayerName));
+                    RemovePlayer(ex.PlayerId);
+                    return;
+                }
                 if (hostId == 0) {
-                    // Không tìm thấy chủ tổ đội có tên được nhập.
+                    LogInfo("Không tìm thấy chủ tổ đội có tên được nhập!");
+                    autoWeave.Checked = false;
                     return;
                 }
 
                 var memberIds = playerIds.Where(id => id != hostId).ToList();
                 if (memberIds.Count == 0) {
-                    // Không có thành viên nào.
+                    LogInfo("Không có thành viên để dệt.");
                     autoWeave.Checked = false;
                     return;
                 }
 
                 int maxTurns = memberIds.Max(id => infos[id].Turns);
                 if (maxTurns == 0) {
-                    // Các tài khoản khác hết lượt dệt.
+                    LogInfo("Đã hết lượt dệt.");
                     autoWeave.Checked = false;
                     return;
                 }
 
-                var team = FindWeaveTeam(hostId, memberIds);
-                if (team == null) {
+                var weaveMemberIds = FindWeaveMemberIds(memberIds);
+                if (weaveMemberIds.Count == 0) {
                     return;
                 }
 
-                // Kiểm tra lại đóng băng.
-                await RefreshPlayerAsync(hostId);
+                // Kiểm tra lại thời gian đóng băng của chủ tổ đội.
+                if (!await RefreshPlayerAsync(hostId)) {
+                    // Mất kết nối.
+                    RemovePlayer(hostId);
+                    return;
+                }
                 if (infos[hostId].Cooldown > 0) {
                     return;
                 }
 
-                await RefreshPlayerAsync(team.Slot1Id);
-                if (infos[team.Slot1Id].Cooldown > 0) {
-                    return;
+                // Kiểm tra lại thời gian đóng băng của thành viên.
+                foreach (var memberId in weaveMemberIds) {
+                    if (!await RefreshPlayerAsync(memberId)) {
+                        // Mất kết nối.
+                        RemovePlayer(memberId);
+                        return;
+                    }
+                    if (infos[memberId].Cooldown > 0) {
+                        return;
+                    }
                 }
 
-                if (team.Slot2Id == 0) {
-                    // Dệt 2 người.
-                    await WeaveAsync(hostId, team.Slot1Id);
-                    return;
-                }
-
-                await RefreshPlayerAsync(team.Slot2Id);
-                if (infos[team.Slot2Id].Cooldown > 0) {
-                    return;
-                }
-
-                // Dệt 3 người.
-                await WeaveAsync(hostId, team.Slot1Id, team.Slot2Id);
+                await WeaveAsync(hostId, weaveMemberIds.ToArray());
             } finally {
                 timerLocking = false;
             }
