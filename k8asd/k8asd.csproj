@@ -156,6 +156,7 @@
     <Compile Include="Army\Power.cs" />
     <Compile Include="Army\PowerDetail.cs" />
     <Compile Include="Campaign\CampaignCommand.cs" />
+    <Compile Include="Client\ClientException.cs" />
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="Tools\AutoArenaView.cs">
