@@ -89,6 +89,13 @@ namespace k8asd {
             logBox.ScrollToCaret();
         }
 
+        private void RemovePlayer(int playerId) {
+            playerIds.Remove(playerId);
+            clients.Remove(playerId);
+            infos.Remove(playerId);
+            playerList.SetObjects(playerIds);
+        }
+
         private async void refreshButton_Click(object sender, EventArgs e) {
             await RefreshPlayersAsync(FindConnectedClients());
         }
@@ -346,6 +353,16 @@ namespace k8asd {
             if (timerLocking) {
                 return;
             }
+
+            foreach (var id in playerIds) {
+                var client = clients[id];
+                if (client.ConnectionStatus == ConnectionStatus.Disconnected) {
+                    LogInfo(String.Format("Tài khoản {0} mất kết nối!", client.PlayerName));
+                    RemovePlayer(id);
+                    return;
+                }
+            }
+
             timerLocking = true;
 
             try {
