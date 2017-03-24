@@ -24,6 +24,8 @@ namespace k8asd {
 
         private ConnectionStatus connectionStatus;
 
+        private bool disconnectedLocking;
+
         private Configuration config;
 
         public Configuration Configuration {
@@ -63,6 +65,7 @@ namespace k8asd {
         public ClientView() {
             InitializeComponent();
 
+            disconnectedLocking = false;
             connectionStatus = ConnectionStatus.Disconnected;
 
             infoModel = new InfoModel();
@@ -86,7 +89,7 @@ namespace k8asd {
 
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
-            arenaView.SetLogModel(messageLogModel);            
+            arenaView.SetLogModel(messageLogModel);
 
             infoModel.SetPacketWriter(this);
             cooldownModel.SetPacketWriter(this);
@@ -112,8 +115,7 @@ namespace k8asd {
             }
             var packet = await packetHandler.SendCommandAsync(command, parameters);
             if (packet == null) {
-                messageLogModel.LogInfo("Mất kết nối với máy chủ.");
-                ConnectionStatus = ConnectionStatus.Disconnected;
+                await DisconnectedFromServer();
             }
             return packet;
         }
@@ -136,6 +138,7 @@ namespace k8asd {
             } catch (Exception ex) {
                 messageLogModel.LogInfo(ex.Message);
                 messageLogModel.LogInfo("Đăng nhập thất bại!");
+                ConnectionStatus = ConnectionStatus.Disconnected;
             }
         }
 
@@ -151,16 +154,69 @@ namespace k8asd {
                 return;
             }
 
+            messageLogModel.LogInfo("Bắt đầu đăng xuất...");
+            await Disconnect();
+            messageLogModel.LogInfo("Đăng xuất thành công.");
+        }
+
+        /// <summary>
+        /// Called when the client is suddenly disconnected from the server.
+        /// </summary>
+        private async Task DisconnectedFromServer() {
+            if (disconnectedLocking) {
+                return;
+            }
+            disconnectedLocking = true;
+            if (ConnectionStatus == ConnectionStatus.Connected) {
+                messageLogModel.LogInfo("Mất kết nối với máy chủ.");
+                await Disconnect();
+            }
+            disconnectedLocking = false;
+        }
+
+        /// <summary>
+        /// Manually disconnects the client.
+        /// </summary>
+        private async Task Disconnect() {
             Debug.Assert(ConnectionStatus == ConnectionStatus.Connected);
             ConnectionStatus = ConnectionStatus.Disconnecting;
-            messageLogModel.LogInfo("Bắt đầu đăng xuất...");
 
             dataTimer.Stop();
+            packetHandler.PacketReceived -= OnPacketReceived;
+
             await packetHandler.Disconnect();
-            messageLogModel.LogInfo("Đăng xuất thành công.");
+
             ConnectionStatus = ConnectionStatus.Disconnected;
         }
 
+        private async Task<bool> Connect() {
+            Debug.Assert(ConnectionStatus == ConnectionStatus.Connecting);
+            await packetHandler.ConnectAsync();
+
+            packetHandler.PacketReceived += OnPacketReceived;
+            dataTimer.Start();
+
+            ConnectionStatus = ConnectionStatus.Connected;
+
+            var p0 = await SendCommandAsync("10100");
+            if (p0 == null) {
+                await DisconnectedFromServer();
+                return false;
+            }
+
+            var p1 = await SendCommandAsync("11102");
+            if (p1 == null) {
+                await DisconnectedFromServer();
+                return false;
+            }
+
+            // FIXME: handle case character not yet created.
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to connect the client.
+        /// </summary>
         private async Task LogIn(int serverId, string username, string password) {
             Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
             ConnectionStatus = ConnectionStatus.Connecting;
@@ -200,19 +256,14 @@ namespace k8asd {
             messageLogModel.LogInfo("Lấy thông tin thành công.");
 
             packetHandler = new PacketHandler(loginHelper.Session);
-
             messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
-            await packetHandler.ConnectAsync();
-            messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
+            if (await Connect()) {
+                messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
+            }
+        }
 
-            packetHandler.PacketReceived += (sender, packet) => PacketReceived.Raise(this, packet);
-            dataTimer.Start();
-
-            ConnectionStatus = ConnectionStatus.Connected;
-
-            var p0 = await SendCommandAsync("10100");
-            var p1 = await SendCommandAsync("11102");
-            // FIXME: handle case character not yet created.            
+        private void OnPacketReceived(object sender, Packet packet) {
+            PacketReceived.Raise(this, packet);
         }
 
         private async void OneSecondTimer_Tick(object sender, EventArgs e) {
@@ -225,8 +276,16 @@ namespace k8asd {
         }
 
         private async void dataTimer_Tick(object sender, EventArgs e) {
-            if (await packetHandler.ReadData()) {
-                // FIXME:
+            if (!await packetHandler.ReadData()) {
+                await DisconnectedFromServer();
+            }
+        }
+
+        private async void testConnectionTimer_Tick(object sender, EventArgs e) {
+            if (ConnectionStatus == ConnectionStatus.Connected) {
+                if (!packetHandler.Connected) {
+                    await DisconnectedFromServer();
+                }
             }
         }
     }

@@ -26,10 +26,6 @@ namespace k8asd {
 
         public event EventHandler<Packet> PacketReceived;
 
-        public bool Connected {
-            get { return tcpClient.Connected; }
-        }
-
         public Session Session { get; private set; }
 
         /// <summary>
@@ -74,13 +70,16 @@ namespace k8asd {
             isReading = false;
         }
 
+        public bool Connected {
+            get { return Utils.IsClientConnected(tcpClient); }
+        }
+
         /// <summary>
         /// Clears data received from the server.
         /// </summary>
         private void ClearData() {
             streamData = String.Empty;
-            queues.Clear();
-            messageDelta.Clear();
+            FlushDelta();
         }
 
         /// <summary>
@@ -116,12 +115,11 @@ namespace k8asd {
             var stream = tcpClient.GetStream();
             try {
                 await stream.WriteAsync(bytes, 0, bytes.Length);
-                if (!tcpClient.Connected) {
-                    // Failed.
-                    return null;
-                }
                 PushDelta(commandId);
             } catch (SocketException ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            } catch (IOException ex) {
                 Console.WriteLine(ex.Message);
                 return null;
             }
@@ -214,6 +212,20 @@ namespace k8asd {
             if (!messageDelta.ContainsKey(id)) {
                 messageDelta.Add(id, 0);
             }
+        }
+
+        private void FlushDelta() {
+            foreach (var elt in messageDelta) {
+                var id = elt.Key;
+                var delta = elt.Value;
+                while (delta > 0) {
+                    // Push null packet.
+                    var queue = GetQueue(id);
+                    queue.Add(null);
+                    --delta;
+                }
+            }
+            messageDelta.Clear();
         }
 
         private int GetDelta(string id) {

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -153,6 +154,40 @@ namespace k8asd {
         /// </summary>
         public static void Forget(this Task task) {
             task.ContinueWith(t => Console.WriteLine(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        /// <summary>
+        /// http://stackoverflow.com/questions/6993295/how-to-determine-if-the-tcp-is-connected-or-not
+        /// </summary>
+        public static bool IsClientConnected(TcpClient client) {
+            try {
+                if (client != null && client.Client != null && client.Client.Connected) {
+                    /* pear to the documentation on Poll:
+                     * When passing SelectMode.SelectRead as a parameter to the Poll method it will return 
+                     * -either- true if Socket.Listen(Int32) has been called and a connection is pending;
+                     * -or- true if data is available for reading; 
+                     * -or- true if the connection has been closed, reset, or terminated; 
+                     * otherwise, returns false
+                     */
+
+                    // Detect if client disconnected
+                    if (client.Client.Poll(0, SelectMode.SelectRead)) {
+                        byte[] buff = new byte[1];
+                        if (client.Client.Receive(buff, SocketFlags.Peek) == 0) {
+                            // Client disconnected
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch {
+                return false;
+            }
         }
     }
 }
