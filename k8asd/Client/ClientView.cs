@@ -97,6 +97,7 @@ namespace k8asd {
             weaveView.SetPacketWriter(this);
             arenaView.SetPacketWriter(this);
             campaignView.SetPacketWriter(this);
+            packetView.SetPacketWriter(this);
         }
 
         private void ClientView_Load(object sender, EventArgs e) {
