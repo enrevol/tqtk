@@ -246,7 +246,7 @@ namespace k8asd {
             // Ưu tiên dệt người chơi có nhiều lượt nhất trước.
             var orderedMembers = memberIds.OrderByDescending(id => infos[id].Turns).
                 ThenBy(id => infos[id].Cooldown).ToList();
-            if (infos[orderedMembers[0]].Cooldown > 0 && infos[orderedMembers[1]].Cooldown > 0) {
+            if (infos[orderedMembers[0]].Cooldown > 0 || infos[orderedMembers[1]].Cooldown > 0) {
                 return result;
             }
             result.Add(orderedMembers[0]);
