@@ -158,7 +158,9 @@ namespace k8asd {
         /// Attempts to login SLG account with the provided email and password and the specified login token.
         /// </summary>
         public async Task<LoginStatus> LoginAccount(string address, string loginToken) {
-            var content = String.Format("_token={0}&callback=&email={1}&password={2}", loginToken, username, password);
+            var encodedUsername = HttpUtility.UrlEncode(username);
+            var encodedPassword = HttpUtility.UrlEncode(password);
+            var content = String.Format("_token={0}&callback=&email={1}&password={2}", loginToken, encodedUsername, encodedPassword);
             var request = await CreateWebRequest(address, 2000, content);
 
             var htmlCode = await Utils.GetSource(request, cookie);
