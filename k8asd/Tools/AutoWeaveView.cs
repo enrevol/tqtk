@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 namespace k8asd {
     public partial class AutoWeaveView : Form {
         private int NoTeam = -1;
+        private int LineLimit = 500;
 
         private enum WeaveMode {
             /// <summary>
@@ -69,6 +70,9 @@ namespace k8asd {
                 logBox.Text += Environment.NewLine;
             }
             logBox.Text += String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
+            if (logBox.Lines.Length > LineLimit) {
+                logBox.Text = logBox.Text.Remove(0, logBox.Lines[0].Length + Environment.NewLine.Length);
+            }
             logBox.SelectionStart = logBox.TextLength;
             logBox.ScrollToCaret();
         }

@@ -9,6 +9,8 @@ using System.Windows.Forms;
 
 namespace k8asd {
     public partial class AutoArenaView : Form {
+        private int LineLimit = 500;
+
         /// <summary>
         /// Ánh xạ từ ID sang Client (để gửi/nhận gói tin).
         /// </summary>
@@ -85,6 +87,9 @@ namespace k8asd {
                 logBox.Text += Environment.NewLine;
             }
             logBox.Text += String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
+            if (logBox.Lines.Length > LineLimit) {
+                logBox.Text = logBox.Text.Remove(0, logBox.Lines[0].Length + Environment.NewLine.Length);
+            }
             logBox.SelectionStart = logBox.TextLength;
             logBox.ScrollToCaret();
         }
