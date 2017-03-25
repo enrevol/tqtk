@@ -3,6 +3,8 @@ using System;
 
 namespace k8asd {
     public class MessageLogModel : IMessageLogModel {
+        private int LineLimit = 500;
+
         private string message;
         private IPacketWriter packetWriter;
 
@@ -52,6 +54,9 @@ namespace k8asd {
                 message += Environment.NewLine;
             }
             message += String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
+            if (logBox.Lines.Length > LineLimit) {
+                logBox.Text = logBox.Text.Remove(0, logBox.Lines[0].Length + Environment.NewLine.Length);
+            }
             MessageChanged.Raise(this, message);
         }
     }
