@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace k8asd {
     public class MessageLogModel : IMessageLogModel {
         private int LineLimit = 500;
+
+        private Queue<int> lineLengths;
 
         private string message;
         private IPacketWriter packetWriter;
@@ -16,6 +19,7 @@ namespace k8asd {
 
         public MessageLogModel() {
             message = String.Empty;
+            lineLengths = new Queue<int>();
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -53,9 +57,12 @@ namespace k8asd {
             if (message.Length > 0) {
                 message += Environment.NewLine;
             }
-            message += String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
-            if (logBox.Lines.Length > LineLimit) {
-                logBox.Text = logBox.Text.Remove(0, logBox.Lines[0].Length + Environment.NewLine.Length);
+            var line = String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
+            message += line;
+            lineLengths.Enqueue(line.Length);
+            while (lineLengths.Count > LineLimit) {
+                var firstLineLength = lineLengths.Dequeue() + Environment.NewLine.Length;
+                message = message.Remove(0, firstLineLength);
             }
             MessageChanged.Raise(this, message);
         }
