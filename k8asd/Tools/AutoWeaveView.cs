@@ -159,7 +159,7 @@ namespace k8asd {
             return await WeaveAsync(clients[hostId], WeaveMode.PullLevel, members);
         }
 
-        private async Task<bool> WeaveAsync(IPacketWriter host, WeaveMode mode, params IPacketWriter[] members) {
+        private async Task<bool> WeaveAsync(IClient host, WeaveMode mode, params IClient[] members) {
             // Lập tổ đội.
             var textileLevel = (int) textileLevelInput.Value;
             try {
@@ -171,7 +171,7 @@ namespace k8asd {
                 }
                 var state = StatePacket.Parse(p0);
                 if (!state.Ok) {
-                    LogInfo(state.Message);
+                    LogInfo(String.Format("{0}: {1}", host.PlayerName, state.Message));
                     return false;
                 }
             } finally {
@@ -187,12 +187,13 @@ namespace k8asd {
 
                 // Gia nhập tổ đội.
                 var p2s = await Task.WhenAll(tasks);
+                int memberIndex = 0;
                 foreach (var p in p2s) {
                     if (p == null) {
                         var state = StatePacket.Parse(p);
                         if (!state.Ok) {
                             // Lỗi gia nhập.
-                            LogInfo(state.Message);
+                            LogInfo(String.Format("{0}: {1}", members[memberIndex].PlayerName, state.Message));
                             return false;
                         }
 
@@ -201,6 +202,7 @@ namespace k8asd {
                         await host.DisbandWeaveAsync(hostingTeamId);
                         return false;
                     }
+                    ++memberIndex;
                 }
 
                 if (mode == WeaveMode.WeaveTogether) {
