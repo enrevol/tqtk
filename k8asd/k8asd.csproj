@@ -159,6 +159,21 @@
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Common\StatePacket.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
+    <Compile Include="Map\Area.cs" />
+    <Compile Include="Map\MapCommand.cs" />
+    <Compile Include="Map\MapView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Map\MapView.Designer.cs">
+      <DependentUpon>MapView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Map\World.cs" />
+    <Compile Include="Packet\PacketView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Packet\PacketView.Designer.cs">
+      <DependentUpon>PacketView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Swap\LegionInfo.cs" />
     <Compile Include="Swap\SwapCommand.cs" />
     <Compile Include="Swap\SwapInfo.cs" />
@@ -315,6 +330,9 @@
     <EmbeddedResource Include="Info\InfoView.resx">
       <DependentUpon>InfoView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Map\MapView.resx">
+      <DependentUpon>MapView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mcu\McuView.resx">
       <DependentUpon>McuView.cs</DependentUpon>
     </EmbeddedResource>
@@ -356,6 +374,8 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Command\11103_0.json" />
+    <None Include="Command\30100.json" />
+    <None Include="Command\31102.json" />
     <None Include="Command\41203.json" />
     <None Include="Command\47007.json" />
     <None Include="Command\64007.json" />
