@@ -143,11 +143,14 @@ namespace k8asd {
 
             if (packet.CommandId == "34101")
             {
-                if (!packet.Message.ToLower().Contains("ngài đã đánh bại bang hội này") &&
-                    !packet.Message.ToLower().Contains("lượt vẫn đang đóng băng"))
+                if (packet.Message.ToLower().Equals(""))
                 {
                     isCreating = true;
-                }   
+                }
+                else
+                {
+                    if (isCreating) isCreating = false;
+                }
             }
             if (packet.CommandId == "34105" || packet.CommandId == "34106" || packet.CommandId == "34107")
             {
@@ -156,10 +159,13 @@ namespace k8asd {
             }
             if (packet.CommandId == "34102")
             {
-                if (!packet.Message.ToLower().Contains("ngài đã đánh bại bang hội này") &&
-                    !packet.Message.ToLower().Contains("lượt vẫn đang đóng băng"))
+                if (packet.Message.ToLower().Equals(""))
                 {
                     isJoinning = true;
+                }
+                else
+                {
+                    if (isJoinning) isJoinning = false;
                 }
             }
 
@@ -171,7 +177,6 @@ namespace k8asd {
                     isJoinning = false;
                 }
             }
-            Console.WriteLine("packet.CommandId " + packet.CommandId);
         }
 
         private List<int> Parse33201(Packet packet) {
@@ -227,14 +232,14 @@ namespace k8asd {
                 if (!findInList(team.Name))
                 {
                     if (team.Condition.Equals(" cấp 0 trở lên") && this.chkAutoJoin.Checked &&
-                    !isJoinning && team.PlayerCount < 8 && mcuModel.Tokencdusable == true)
+                    !isJoinning && team.PlayerCount < 8 && mcuModel.McuCooldown == 0)
                     {
                         await packetWriter.JoinArmyAsync(team.Id);
                     }
                 }
             }
 
-            if (this.chkAutoPt.Checked && !isCreating && mcuModel.Tokencdusable == true)
+            if (this.chkAutoPt.Checked && !isCreating && mcuModel.McuCooldown == 0)
             {
                 createArmy();
             }
@@ -260,7 +265,7 @@ namespace k8asd {
                 isJoinning = false;
                 isCreating = false;
             }
-            Console.WriteLine("test join: " + isJoinning);
+
             //auto kick
             if (this.chkKick.Checked)
             {
