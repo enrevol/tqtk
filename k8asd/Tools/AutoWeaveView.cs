@@ -164,6 +164,7 @@ namespace k8asd {
             var textileLevel = (int) textileLevelInput.Value;
             try {
                 host.PacketReceived += OnPacketReceived;
+                var limit = (hostLegionButton.Checked ? WeaveTeamLimit.Legion : WeaveTeamLimit.None);
                 var p0 = await host.CreateWeaveAsync(textileLevel, WeaveTeamLimit.Nation);
                 if (p0 == null) {
                     return false;

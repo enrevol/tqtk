@@ -123,6 +123,17 @@
   <metadata name="label2.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <metadata name="noteLabel.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="noteLabel.Text" xml:space="preserve">
+    <value>Lưu ý đối với cấu hình dệt của chủ tổ đội.
+- Tắt tự lập tổ đội, tự dệt chung, tự thoát và dệt.
+- Phần chỉ dệt khi có người chơi trong tổ đội và tự động làm mới vẫn dùng bình thường.
+
+Lưu ý khác:
+- Trường hợp mạng chậm, mạng chập chờn không nên chọn lập tổ đội không giới hạn.</value>
+  </data>
   <metadata name="weaveTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

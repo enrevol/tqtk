@@ -6,6 +6,11 @@ namespace k8asd {
     /// </summary>
     public enum WeaveTeamLimit {
         /// <summary>
+        /// Giới hạn xuyên quốc gia.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
         /// Giới hạn quốc gia.
         /// </summary>
         Nation = 1,

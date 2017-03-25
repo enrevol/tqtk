@@ -26,6 +26,8 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
+            System.Windows.Forms.Label noteLabel;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AutoWeaveView));
             this.playerList = new BrightIdeasSoftware.ObjectListView();
             this.spinnerLevelColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.successRateColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -41,8 +43,11 @@
             this.textileLevelInput = new System.Windows.Forms.NumericUpDown();
             this.autoMake = new System.Windows.Forms.CheckBox();
             this.logBox = new System.Windows.Forms.TextBox();
+            this.hostNoneButton = new System.Windows.Forms.RadioButton();
+            this.hostLegionButton = new System.Windows.Forms.RadioButton();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
+            noteLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.playerList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.textileLevelInput)).BeginInit();
             this.SuspendLayout();
@@ -64,6 +69,15 @@
             label2.Size = new System.Drawing.Size(43, 13);
             label2.TabIndex = 37;
             label2.Text = "Cấp vải";
+            // 
+            // noteLabel
+            // 
+            noteLabel.AutoSize = true;
+            noteLabel.Location = new System.Drawing.Point(15, 80);
+            noteLabel.Name = "noteLabel";
+            noteLabel.Size = new System.Drawing.Size(417, 78);
+            noteLabel.TabIndex = 44;
+            noteLabel.Text = resources.GetString("noteLabel.Text");
             // 
             // playerList
             // 
@@ -89,13 +103,13 @@
             this.playerList.Cursor = System.Windows.Forms.Cursors.Default;
             this.playerList.FullRowSelect = true;
             this.playerList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.playerList.Location = new System.Drawing.Point(10, 210);
+            this.playerList.Location = new System.Drawing.Point(10, 300);
             this.playerList.MultiSelect = false;
             this.playerList.Name = "playerList";
             this.playerList.SelectColumnsOnRightClick = false;
             this.playerList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
             this.playerList.ShowGroups = false;
-            this.playerList.Size = new System.Drawing.Size(450, 240);
+            this.playerList.Size = new System.Drawing.Size(450, 230);
             this.playerList.TabIndex = 31;
             this.playerList.UseCompatibleStateImageBehavior = false;
             this.playerList.View = System.Windows.Forms.View.Details;
@@ -224,6 +238,7 @@
             // autoMake
             // 
             this.autoMake.AutoSize = true;
+            this.autoMake.Enabled = false;
             this.autoMake.Location = new System.Drawing.Point(310, 54);
             this.autoMake.Name = "autoMake";
             this.autoMake.Size = new System.Drawing.Size(131, 17);
@@ -235,7 +250,7 @@
             // 
             this.logBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.logBox.Location = new System.Drawing.Point(10, 80);
+            this.logBox.Location = new System.Drawing.Point(10, 170);
             this.logBox.Multiline = true;
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
@@ -243,11 +258,37 @@
             this.logBox.Size = new System.Drawing.Size(450, 120);
             this.logBox.TabIndex = 41;
             // 
+            // hostNoneButton
+            // 
+            this.hostNoneButton.AutoSize = true;
+            this.hostNoneButton.Location = new System.Drawing.Point(240, 15);
+            this.hostNoneButton.Name = "hostNoneButton";
+            this.hostNoneButton.Size = new System.Drawing.Size(116, 17);
+            this.hostNoneButton.TabIndex = 42;
+            this.hostNoneButton.TabStop = true;
+            this.hostNoneButton.Text = "Lập không giới hạn";
+            this.hostNoneButton.UseVisualStyleBackColor = true;
+            // 
+            // hostLegionButton
+            // 
+            this.hostLegionButton.AutoSize = true;
+            this.hostLegionButton.Checked = true;
+            this.hostLegionButton.Location = new System.Drawing.Point(370, 15);
+            this.hostLegionButton.Name = "hostLegionButton";
+            this.hostLegionButton.Size = new System.Drawing.Size(70, 17);
+            this.hostLegionButton.TabIndex = 43;
+            this.hostLegionButton.TabStop = true;
+            this.hostLegionButton.Text = "Lập bang";
+            this.hostLegionButton.UseVisualStyleBackColor = true;
+            // 
             // AutoWeaveView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 461);
+            this.ClientSize = new System.Drawing.Size(474, 541);
+            this.Controls.Add(noteLabel);
+            this.Controls.Add(this.hostLegionButton);
+            this.Controls.Add(this.hostNoneButton);
             this.Controls.Add(this.logBox);
             this.Controls.Add(this.autoMake);
             this.Controls.Add(this.textileLevelInput);
@@ -284,5 +325,7 @@
         private System.Windows.Forms.NumericUpDown textileLevelInput;
         private System.Windows.Forms.CheckBox autoMake;
         private System.Windows.Forms.TextBox logBox;
+        private System.Windows.Forms.RadioButton hostNoneButton;
+        private System.Windows.Forms.RadioButton hostLegionButton;
     }
 }
