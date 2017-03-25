@@ -168,10 +168,14 @@ namespace k8asd {
                 if (p0 == null) {
                     return false;
                 }
+                var state = StatePacket.Parse(p0);
+                if (!state.Ok) {
+                    LogInfo(state.Message);
+                    return false;
+                }
             } finally {
                 host.PacketReceived -= OnPacketReceived;
             }
-            // FIXME: Kiểm tra có tạo được không?
 
             try {
                 Debug.Assert(hostingTeamId != NoTeam);
@@ -184,7 +188,14 @@ namespace k8asd {
                 var p2s = await Task.WhenAll(tasks);
                 foreach (var p in p2s) {
                     if (p == null) {
-                        // Lỗi gia nhập.
+                        var state = StatePacket.Parse(p);
+                        if (!state.Ok) {
+                            // Lỗi gia nhập.
+                            LogInfo(state.Message);
+                            return false;
+                        }
+
+                        // Mất kết nối.
                         // Huỷ tổ đội.
                         await host.DisbandWeaveAsync(hostingTeamId);
                         return false;
