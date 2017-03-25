@@ -127,7 +127,7 @@
     <value>False</value>
   </metadata>
   <data name="noteLabel.Text" xml:space="preserve">
-    <value>Lưu ý đối với cấu hình dệt của chủ tổ đội.
+    <value>Lưu ý đối với cấu hình dệt của chủ tổ đội:
 - Tắt tự lập tổ đội, tự dệt chung, tự thoát và dệt.
 - Phần chỉ dệt khi có người chơi trong tổ đội và tự động làm mới vẫn dùng bình thường.
 
