@@ -338,14 +338,20 @@ namespace k8asd {
 
         private void selectAllMerchantButton_Click(object sender, EventArgs e) {
             foreach (var box in searchMerchantFilterBoxes) {
+                box.CheckedChanged -= Box_CheckedChanged;
                 box.Checked = true;
+                box.CheckedChanged += Box_CheckedChanged;
             }
+            RefreshSearchingResult();
         }
 
         private void deselectAllMerchantButton_Click(object sender, EventArgs e) {
             foreach (var box in searchMerchantFilterBoxes) {
+                box.CheckedChanged -= Box_CheckedChanged;
                 box.Checked = false;
+                box.CheckedChanged += Box_CheckedChanged;
             }
+            RefreshSearchingResult();
         }
 
         private void stopButton_Click(object sender, EventArgs e) {
