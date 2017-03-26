@@ -158,5 +158,10 @@ namespace k8asd {
             var view = new AutoSwap();
             view.Show();
         }
+
+        private void autoMerchantButton_Click(object sender, EventArgs e) {
+            var view = new AutoMerchantView();
+            view.Show();
+        }
     }
 }

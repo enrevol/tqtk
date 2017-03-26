@@ -1,0 +1,88 @@
+﻿{
+  "merchants": [
+    {
+      "addition": "Số lần dệt vải+1",
+      "cost": 30,
+      "id": 1,
+      "introduction": "Có cơ hội nhỏ tăng lượng vải dệt",
+      "name": "Lâu Lan"
+    },
+    {
+      "addition": "Số lần dệt vải+1",
+      "cost": 30,
+      "id": 2,
+      "introduction": "Có cơ hội lớn tăng lượng vải dệt",
+      "name": "Tây Vực"
+    },
+    {
+      "addition": "Giá bán cơ sở tăng",
+      "cost": 30,
+      "id": 3,
+      "introduction": "Giá bán tăng ít",
+      "name": "Ba Thục"
+    },
+    {
+      "addition": "Giá bán cơ sở tăng",
+      "cost": 30,
+      "id": 4,
+      "introduction": "Giá bán tăng mạnh",
+      "name": "Đại Lý"
+    },
+    {
+      "addition": "Lợi nhuận tăng lên gấp đôi",
+      "cost": 30,
+      "id": 5,
+      "introduction": "Có cơ hội nhỏ tăng lượng vải dệt bán được và lợi nhuận tăng lên gấp đôi",
+      "name": "Mân Nam"
+    },
+    {
+      "addition": "Lợi nhuận tăng lên gấp đôi",
+      "cost": 30,
+      "id": 6,
+      "introduction": "Có cơ hội lớn tăng lượng vải dệt bán được và lợi nhuận tăng lên gấp đôi",
+      "name": "Liêu Đông"
+    },
+    {
+      "addition": "Nhiều người dệt vải thì lợi nhuận tăng lên",
+      "cost": 60,
+      "id": 7,
+      "introduction": "Khi nhiều người cùng dệt vải thì lợi nhuận sẽ tăng lên",
+      "name": "Quan Đông "
+    },
+    {
+      "addition": "Giao dịch thuận lợi với thương nhân nước ngoài/ Bị cướp khi giao dịch với thương nhân nước ngoài",
+      "cost": 90,
+      "id": 8,
+      "introduction": "Có cơ hội tiến hành thương mại mậu dịch với nước ngoài, nhưng cũng có th�� bị cướp",
+      "name": "Hoài Nam "
+    },
+    {
+      "addition": "Giảm tỷ lệ bị cướp khi buôn bán với nước ngoài ",
+      "cost": 30,
+      "id": 9,
+      "introduction": "Tỷ lệ bị cướp khi buôn bán với nước ngoài giảm nhẹ",
+      "name": "Kinh Sở"
+    },
+    {
+      "addition": "Giảm tỷ lệ bị cướp khi buôn bán với nước ngoài ",
+      "cost": 45,
+      "id": 10,
+      "introduction": "Tỷ lệ bị cướp khi buôn bán với nước ngoài giảm mạnh",
+      "name": "Nam Việt"
+    },
+    {
+      "addition": "Tăng kinh nghiệm của công nhân",
+      "cost": 30,
+      "id": 11,
+      "introduction": "Tăng kinh nghiệm của nhân công dệt vải",
+      "name": "Tầm Dương "
+    },
+    {
+      "addition": "Giảm thời gian đóng băng dệt vải đi 1 phút",
+      "cost": 30,
+      "id": 12,
+      "introduction": "Giảm thời gian đóng băng dệt đi 1 phút",
+      "name": "Lĩnh Nam "
+    }
+  ]
+}

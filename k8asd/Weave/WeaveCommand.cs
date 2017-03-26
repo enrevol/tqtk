@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace k8asd {
     /// <summary>
@@ -22,6 +23,14 @@ namespace k8asd {
     }
 
     static class WeaveCommand {
+        public static async Task<MerchantInfo> RefreshMerchantAsync(this IPacketWriter writer) {
+            var packet = await writer.SendCommandAsync("43201");
+            if (packet == null) {
+                return null;
+            }
+            return MerchantInfo.Parse(JToken.Parse(packet.Message));
+        }
+
         /// <summary>
         /// Cập nhật thông tin dệt.
         /// </summary>

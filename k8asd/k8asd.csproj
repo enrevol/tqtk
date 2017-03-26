@@ -275,6 +275,12 @@
     <Compile Include="Shop\ShopView.Designer.cs">
       <DependentUpon>ShopView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AutoMerchantView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\AutoMerchantView.Designer.cs">
+      <DependentUpon>AutoMerchantView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\AutoSwap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -287,6 +293,7 @@
     </Compile>
     <Compile Include="Utils\Cooldown.cs" />
     <Compile Include="Utils\ScopeGuard.cs" />
+    <Compile Include="Weave\MerchantInfo.cs" />
     <Compile Include="Weave\WeaveCommand.cs" />
     <Compile Include="Weave\WeaveInfo.cs" />
     <Compile Include="Weave\WeaveMember.cs" />
@@ -365,6 +372,9 @@
     <EmbeddedResource Include="Tools\AutoArenaView.resx">
       <DependentUpon>AutoArenaView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\AutoMerchantView.resx">
+      <DependentUpon>AutoMerchantView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\AutoSwap.resx" />
     <EmbeddedResource Include="Tools\AutoWeaveView.resx">
       <DependentUpon>AutoWeaveView.cs</DependentUpon>
@@ -377,6 +387,8 @@
     <None Include="Command\30100.json" />
     <None Include="Command\31102.json" />
     <None Include="Command\41203.json" />
+    <None Include="Command\43201.json" />
+    <None Include="Command\43200.json" />
     <None Include="Command\47007.json" />
     <None Include="Command\64007.json" />
     <None Include="Command\64005.json" />

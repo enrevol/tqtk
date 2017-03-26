@@ -113,6 +113,25 @@ namespace k8asd {
             return String.Format("{0:00}:{1:00}:{2:00}", dateTime.Hour, dateTime.Minute, dateTime.Second);
         }
 
+        public static string GetMerchantName(this Merchant merchant) {
+            switch (merchant) {
+            case Merchant.LauLan: return "Lâu Lan";
+            case Merchant.TayVuc: return "Tây Vực";
+            case Merchant.BaThuc: return "Ba Thục";
+            case Merchant.DaiLy: return "Đại Lý";
+            case Merchant.ManNam: return "Mẫn Nam";
+            case Merchant.LieuDong: return "Liêu Đông";
+            case Merchant.QuanDong: return "Quan Đông";
+            case Merchant.HoaiNam: return "Hoài Nam";
+            case Merchant.KinhSo: return "Kinh Sở";
+            case Merchant.NamViet: return "Nam Việt";
+            case Merchant.TamDuong: return "Tầm Dương";
+            case Merchant.LinhNam: return "Lĩnh Nam";
+            }
+            Debug.Assert(false);
+            return String.Empty;
+        }
+
         public static void Raise<T>(this EventHandler<T> handler, object sender, T arg) {
             handler?.Invoke(sender, arg);
         }

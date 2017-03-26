@@ -1,0 +1,11 @@
+{
+  "merchantIds": [
+    1,
+    2,
+    7,
+    10
+  ],
+  "defMerchantId": 1,
+  "isFullBusinessMan": 1,
+  "totalGold": 150
+}

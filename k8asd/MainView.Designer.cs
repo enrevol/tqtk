@@ -35,19 +35,20 @@ namespace k8asd
             System.Windows.Forms.ToolStripMenuItem autoArenaButton;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             this.autoWeaveButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoSwapButton = new System.Windows.Forms.ToolStripMenuItem();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this._ignore0 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.loginAllButton = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.clientList = new BrightIdeasSoftware.ObjectListView();
-            this.autoSwapButton = new System.Windows.Forms.ToolStripMenuItem();
             this.removeButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
             this.logoutButton = new System.Windows.Forms.Button();
             this.loginButton = new System.Windows.Forms.Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.clientList = new BrightIdeasSoftware.ObjectListView();
+            this.autoMerchantButton = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +72,7 @@ namespace k8asd
             menuItem0.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             autoArenaButton,
             this.autoWeaveButton,
+            this.autoMerchantButton,
             this.autoSwapButton});
             menuItem0.Name = "menuItem0";
             menuItem0.Size = new System.Drawing.Size(58, 20);
@@ -89,6 +91,13 @@ namespace k8asd
             this.autoWeaveButton.Size = new System.Drawing.Size(214, 22);
             this.autoWeaveButton.Text = "Tự động dệt";
             this.autoWeaveButton.Click += new System.EventHandler(this.autoWeaveButton_Click);
+            // 
+            // autoSwapButton
+            // 
+            this.autoSwapButton.Name = "autoSwapButton";
+            this.autoSwapButton.Size = new System.Drawing.Size(214, 22);
+            this.autoSwapButton.Text = "Tự động chuyển bang chủ";
+            this.autoSwapButton.Click += new System.EventHandler(this.autoSwapButton_Click);
             // 
             // oneSecondTimer
             // 
@@ -132,59 +141,6 @@ namespace k8asd
             this.loginAllButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.loginAllButton.UseVisualStyleBackColor = true;
             this.loginAllButton.Click += new System.EventHandler(this.loginAllButton_Click);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "connected");
-            this.imageList1.Images.SetKeyName(1, "disconnected");
-            // 
-            // statusColumn
-            // 
-            this.statusColumn.AspectName = "";
-            this.statusColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.statusColumn.Text = "";
-            this.statusColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.statusColumn.Width = 16;
-            // 
-            // descriptionColumn
-            // 
-            this.descriptionColumn.AspectName = "";
-            this.descriptionColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.descriptionColumn.MaximumWidth = 210;
-            this.descriptionColumn.MinimumWidth = 210;
-            this.descriptionColumn.Text = "Client";
-            this.descriptionColumn.Width = 210;
-            // 
-            // clientList
-            // 
-            this.clientList.AllColumns.Add(this.statusColumn);
-            this.clientList.AllColumns.Add(this.descriptionColumn);
-            this.clientList.CellEditUseWholeCell = false;
-            this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.statusColumn,
-            this.descriptionColumn});
-            this.clientList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.clientList.Dock = System.Windows.Forms.DockStyle.Left;
-            this.clientList.FullRowSelect = true;
-            this.clientList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.clientList.Location = new System.Drawing.Point(0, 97);
-            this.clientList.Name = "clientList";
-            this.clientList.ShowGroups = false;
-            this.clientList.Size = new System.Drawing.Size(250, 584);
-            this.clientList.SmallImageList = this.imageList1;
-            this.clientList.TabIndex = 32;
-            this.clientList.UseCompatibleStateImageBehavior = false;
-            this.clientList.View = System.Windows.Forms.View.Details;
-            this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
-            // 
-            // autoSwapButton
-            // 
-            this.autoSwapButton.Name = "autoSwapButton";
-            this.autoSwapButton.Size = new System.Drawing.Size(214, 22);
-            this.autoSwapButton.Text = "Tự động chuyển bang chủ";
-            this.autoSwapButton.Click += new System.EventHandler(this.autoSwapButton_Click);
             // 
             // removeButton
             // 
@@ -238,6 +194,59 @@ namespace k8asd
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "connected");
+            this.imageList1.Images.SetKeyName(1, "disconnected");
+            // 
+            // statusColumn
+            // 
+            this.statusColumn.AspectName = "";
+            this.statusColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.statusColumn.Text = "";
+            this.statusColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.statusColumn.Width = 16;
+            // 
+            // descriptionColumn
+            // 
+            this.descriptionColumn.AspectName = "";
+            this.descriptionColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.descriptionColumn.MaximumWidth = 210;
+            this.descriptionColumn.MinimumWidth = 210;
+            this.descriptionColumn.Text = "Client";
+            this.descriptionColumn.Width = 210;
+            // 
+            // clientList
+            // 
+            this.clientList.AllColumns.Add(this.statusColumn);
+            this.clientList.AllColumns.Add(this.descriptionColumn);
+            this.clientList.CellEditUseWholeCell = false;
+            this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.statusColumn,
+            this.descriptionColumn});
+            this.clientList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.clientList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.clientList.FullRowSelect = true;
+            this.clientList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.clientList.Location = new System.Drawing.Point(0, 97);
+            this.clientList.Name = "clientList";
+            this.clientList.ShowGroups = false;
+            this.clientList.Size = new System.Drawing.Size(250, 584);
+            this.clientList.SmallImageList = this.imageList1;
+            this.clientList.TabIndex = 32;
+            this.clientList.UseCompatibleStateImageBehavior = false;
+            this.clientList.View = System.Windows.Forms.View.Details;
+            this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
+            // 
+            // autoMerchantButton
+            // 
+            this.autoMerchantButton.Name = "autoMerchantButton";
+            this.autoMerchantButton.Size = new System.Drawing.Size(214, 22);
+            this.autoMerchantButton.Text = "Tự động tìm thương minh";
+            this.autoMerchantButton.Click += new System.EventHandler(this.autoMerchantButton_Click);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -276,6 +285,7 @@ namespace k8asd
         private BrightIdeasSoftware.OLVColumn descriptionColumn;
         private BrightIdeasSoftware.ObjectListView clientList;
         private ToolStripMenuItem autoSwapButton;
+        private ToolStripMenuItem autoMerchantButton;
     }
 }
 
