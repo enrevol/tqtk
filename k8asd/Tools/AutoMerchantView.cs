@@ -265,7 +265,7 @@ namespace k8asd {
                 stopButton.Enabled = false;
             }
 
-            LogInfo("Tìm kiếm hoàn thành");
+            LogInfo("Tìm kiếm hoàn thành!");
             return true;
         }
 
@@ -307,7 +307,7 @@ namespace k8asd {
                 }
                 filteredResult.Add(player);
             }
-            foundPlayerList.SetObjects(filteredResult);
+            foundPlayerList.SetObjects(filteredResult, true);
         }
 
         private void Box_CheckedChanged(object sender, EventArgs e) {
