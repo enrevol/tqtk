@@ -27,16 +27,19 @@
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label3;
             System.Windows.Forms.Label label4;
+            System.Windows.Forms.Label label5;
             this.sendButton = new System.Windows.Forms.Button();
             this.commandInput = new System.Windows.Forms.TextBox();
             this.param1Input = new System.Windows.Forms.TextBox();
             this.param2Input = new System.Windows.Forms.TextBox();
             this.replyBox = new System.Windows.Forms.TextBox();
             this.param3Input = new System.Windows.Forms.TextBox();
+            this.param4Input = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
+            label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -111,12 +114,12 @@
             this.replyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.replyBox.Location = new System.Drawing.Point(15, 160);
+            this.replyBox.Location = new System.Drawing.Point(15, 190);
             this.replyBox.Multiline = true;
             this.replyBox.Name = "replyBox";
             this.replyBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.replyBox.Size = new System.Drawing.Size(300, 200);
-            this.replyBox.TabIndex = 5;
+            this.replyBox.Size = new System.Drawing.Size(300, 165);
+            this.replyBox.TabIndex = 6;
             // 
             // param3Input
             // 
@@ -125,10 +128,28 @@
             this.param3Input.Size = new System.Drawing.Size(100, 20);
             this.param3Input.TabIndex = 4;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(20, 160);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(43, 13);
+            label5.TabIndex = 10;
+            label5.Text = "Param4";
+            // 
+            // param4Input
+            // 
+            this.param4Input.Location = new System.Drawing.Point(100, 157);
+            this.param4Input.Name = "param4Input";
+            this.param4Input.Size = new System.Drawing.Size(100, 20);
+            this.param4Input.TabIndex = 5;
+            // 
             // PacketView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.param4Input);
+            this.Controls.Add(label5);
             this.Controls.Add(label4);
             this.Controls.Add(label3);
             this.Controls.Add(label2);
@@ -154,5 +175,6 @@
         private System.Windows.Forms.TextBox param2Input;
         private System.Windows.Forms.TextBox replyBox;
         private System.Windows.Forms.TextBox param3Input;
+        private System.Windows.Forms.TextBox param4Input;
     }
 }

@@ -28,7 +28,8 @@ namespace k8asd {
             var param1 = param1Input.Text;
             var param2 = param2Input.Text;
             var param3 = param3Input.Text;
-            await SendCommand(commandId, param1, param2, param3);
+            var param4 = param4Input.Text;
+            await SendCommand(commandId, param1, param2, param3, param4);
             sendButton.Enabled = true;
         }
 
