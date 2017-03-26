@@ -158,9 +158,9 @@ namespace k8asd {
             playerList.SetObjects(playerIds);
         }
 
-        private async Task<bool> WeaveAsync(int hostId, params int[] memberIds) {
+        private async Task<bool> WeaveAsync(int hostId, WeaveMode mode, params int[] memberIds) {
             var members = memberIds.Select(id => clients[id]).ToArray();
-            return await WeaveAsync(clients[hostId], WeaveMode.PullLevel, members);
+            return await WeaveAsync(clients[hostId], mode, members);
         }
 
         private async Task<bool> WeaveAsync(IClient host, WeaveMode mode, params IClient[] members) {
@@ -330,6 +330,12 @@ namespace k8asd {
                     return;
                 }
 
+                if (infos[hostId].Turns == 0) {
+                    LogInfo("Chủ tổ đội đã hết lượt dệt.");
+                    autoWeave.Checked = false;
+                    return;
+                }
+
                 // Kiểm tra lại thời gian đóng băng của thành viên.
                 foreach (var memberId in weaveMemberIds) {
                     if (!await RefreshPlayerAsync(memberId)) {
@@ -342,13 +348,18 @@ namespace k8asd {
                     }
                 }
 
-                if (weaveMemberIds.Count == 1) {
-                    LogInfo(String.Format("Tiến hành dệt với: {0}", clients[weaveMemberIds[0]].PlayerName));
-                } else {
-                    LogInfo(String.Format("Tiến hành dệt với: {0}, {1}",
-                        clients[weaveMemberIds[0]].PlayerName, clients[weaveMemberIds[1]].PlayerName));
+                var partyMemberIds = new List<int>();
+                partyMemberIds.AddRange(weaveMemberIds);
+
+                var mode = WeaveMode.PullLevel;
+                if (makeTogetherBox.Checked && infos[hostId].Turns > 1) {
+                    mode = WeaveMode.WeaveTogether;
+                    partyMemberIds.Add(hostId);
                 }
-                await WeaveAsync(hostId, weaveMemberIds.ToArray());
+
+                LogInfo(String.Format("Tiến hành dệt với: {0}", 
+                    String.Join(", ", partyMemberIds.Select(id => clients[id].PlayerName))));
+                await WeaveAsync(hostId, mode, weaveMemberIds.ToArray());
             } finally {
                 timerLocking = false;
             }

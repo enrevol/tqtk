@@ -41,7 +41,7 @@
             this.hostInput = new System.Windows.Forms.TextBox();
             this.autoWeave = new System.Windows.Forms.CheckBox();
             this.textileLevelInput = new System.Windows.Forms.NumericUpDown();
-            this.autoMake = new System.Windows.Forms.CheckBox();
+            this.makeTogetherBox = new System.Windows.Forms.CheckBox();
             this.logBox = new System.Windows.Forms.TextBox();
             this.hostNoneButton = new System.Windows.Forms.RadioButton();
             this.hostLegionButton = new System.Windows.Forms.RadioButton();
@@ -235,16 +235,15 @@
             0,
             0});
             // 
-            // autoMake
+            // makeTogetherBox
             // 
-            this.autoMake.AutoSize = true;
-            this.autoMake.Enabled = false;
-            this.autoMake.Location = new System.Drawing.Point(310, 54);
-            this.autoMake.Name = "autoMake";
-            this.autoMake.Size = new System.Drawing.Size(131, 17);
-            this.autoMake.TabIndex = 40;
-            this.autoMake.Text = "Dệt chung khi lượt > 1";
-            this.autoMake.UseVisualStyleBackColor = true;
+            this.makeTogetherBox.AutoSize = true;
+            this.makeTogetherBox.Location = new System.Drawing.Point(310, 54);
+            this.makeTogetherBox.Name = "makeTogetherBox";
+            this.makeTogetherBox.Size = new System.Drawing.Size(131, 17);
+            this.makeTogetherBox.TabIndex = 40;
+            this.makeTogetherBox.Text = "Dệt chung khi lượt > 1";
+            this.makeTogetherBox.UseVisualStyleBackColor = true;
             // 
             // logBox
             // 
@@ -290,7 +289,7 @@
             this.Controls.Add(this.hostLegionButton);
             this.Controls.Add(this.hostNoneButton);
             this.Controls.Add(this.logBox);
-            this.Controls.Add(this.autoMake);
+            this.Controls.Add(this.makeTogetherBox);
             this.Controls.Add(this.textileLevelInput);
             this.Controls.Add(label2);
             this.Controls.Add(this.autoWeave);
@@ -323,7 +322,7 @@
         private System.Windows.Forms.TextBox hostInput;
         private System.Windows.Forms.CheckBox autoWeave;
         private System.Windows.Forms.NumericUpDown textileLevelInput;
-        private System.Windows.Forms.CheckBox autoMake;
+        private System.Windows.Forms.CheckBox makeTogetherBox;
         private System.Windows.Forms.TextBox logBox;
         private System.Windows.Forms.RadioButton hostNoneButton;
         private System.Windows.Forms.RadioButton hostLegionButton;
