@@ -160,6 +160,8 @@
     <Compile Include="Common\StatePacket.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="Map\Area.cs" />
+    <Compile Include="Map\City.cs" />
+    <Compile Include="Map\CityDetail.cs" />
     <Compile Include="Map\MapCommand.cs" />
     <Compile Include="Map\MapView.cs">
       <SubType>UserControl</SubType>
@@ -167,6 +169,7 @@
     <Compile Include="Map\MapView.Designer.cs">
       <DependentUpon>MapView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Map\Scope.cs" />
     <Compile Include="Map\World.cs" />
     <Compile Include="Packet\PacketView.cs">
       <SubType>UserControl</SubType>
@@ -385,6 +388,9 @@
     <None Include="app.config" />
     <None Include="Command\11103_0.json" />
     <None Include="Command\30100.json" />
+    <None Include="Command\31101.json" />
+    <None Include="Command\31106_2.json" />
+    <None Include="Command\31106_1.json" />
     <None Include="Command\31102.json" />
     <None Include="Command\41203.json" />
     <None Include="Command\43201.json" />

@@ -23,17 +23,19 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.refreshTeamButton = new System.Windows.Forms.Button();
+            this.searchButton = new System.Windows.Forms.Button();
             this.foundPlayerList = new BrightIdeasSoftware.ObjectListView();
-            this.foundPlayerArea = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.foundPlayerScope = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.foundPlayerName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.foundPlayerMerchant = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.foundPlayerAutoMerchant = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.foundPlayerAreaColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.foundPlayerScopeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.foundPlayerNameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.foundPlayerMerchantColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.foundPlayerAutoMerchantColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.foundPlayerSendColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerList = new BrightIdeasSoftware.ObjectListView();
             this.playerNameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerReceivedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerSentColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.playerMerchantColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerMerchant0Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerMerchant1Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerMerchant2Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -47,38 +49,37 @@
             this.playerMerchant10Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.playerMerchant11Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.refreshPlayerButton = new System.Windows.Forms.Button();
-            this.playerMerchantColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.foundPlayerSendColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.foundPlayerList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playerList)).BeginInit();
             this.SuspendLayout();
             // 
-            // refreshTeamButton
+            // searchButton
             // 
-            this.refreshTeamButton.Location = new System.Drawing.Point(10, 10);
-            this.refreshTeamButton.Name = "refreshTeamButton";
-            this.refreshTeamButton.Size = new System.Drawing.Size(100, 30);
-            this.refreshTeamButton.TabIndex = 29;
-            this.refreshTeamButton.Text = "Làm mới khu vực";
-            this.refreshTeamButton.UseVisualStyleBackColor = true;
+            this.searchButton.Location = new System.Drawing.Point(10, 10);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(100, 30);
+            this.searchButton.TabIndex = 29;
+            this.searchButton.Text = "Tìm kiếm";
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // foundPlayerList
             // 
-            this.foundPlayerList.AllColumns.Add(this.foundPlayerArea);
-            this.foundPlayerList.AllColumns.Add(this.foundPlayerScope);
-            this.foundPlayerList.AllColumns.Add(this.foundPlayerName);
-            this.foundPlayerList.AllColumns.Add(this.foundPlayerMerchant);
-            this.foundPlayerList.AllColumns.Add(this.foundPlayerAutoMerchant);
+            this.foundPlayerList.AllColumns.Add(this.foundPlayerAreaColumn);
+            this.foundPlayerList.AllColumns.Add(this.foundPlayerScopeColumn);
+            this.foundPlayerList.AllColumns.Add(this.foundPlayerNameColumn);
+            this.foundPlayerList.AllColumns.Add(this.foundPlayerMerchantColumn);
+            this.foundPlayerList.AllColumns.Add(this.foundPlayerAutoMerchantColumn);
             this.foundPlayerList.AllColumns.Add(this.foundPlayerSendColumn);
             this.foundPlayerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.foundPlayerList.CellEditUseWholeCell = false;
             this.foundPlayerList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.foundPlayerArea,
-            this.foundPlayerScope,
-            this.foundPlayerName,
-            this.foundPlayerMerchant,
-            this.foundPlayerAutoMerchant,
+            this.foundPlayerAreaColumn,
+            this.foundPlayerScopeColumn,
+            this.foundPlayerNameColumn,
+            this.foundPlayerMerchantColumn,
+            this.foundPlayerAutoMerchantColumn,
             this.foundPlayerSendColumn});
             this.foundPlayerList.Cursor = System.Windows.Forms.Cursors.Default;
             this.foundPlayerList.FullRowSelect = true;
@@ -94,52 +95,60 @@
             this.foundPlayerList.UseCompatibleStateImageBehavior = false;
             this.foundPlayerList.View = System.Windows.Forms.View.Details;
             // 
-            // foundPlayerArea
+            // foundPlayerAreaColumn
             // 
-            this.foundPlayerArea.AspectName = "";
-            this.foundPlayerArea.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerArea.MaximumWidth = 80;
-            this.foundPlayerArea.MinimumWidth = 80;
-            this.foundPlayerArea.Text = "Thành";
-            this.foundPlayerArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerArea.Width = 80;
+            this.foundPlayerAreaColumn.AspectName = "";
+            this.foundPlayerAreaColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerAreaColumn.MaximumWidth = 80;
+            this.foundPlayerAreaColumn.MinimumWidth = 80;
+            this.foundPlayerAreaColumn.Text = "Thành";
+            this.foundPlayerAreaColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerAreaColumn.Width = 80;
             // 
-            // foundPlayerScope
+            // foundPlayerScopeColumn
             // 
-            this.foundPlayerScope.AspectName = "";
-            this.foundPlayerScope.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerScope.MaximumWidth = 55;
-            this.foundPlayerScope.MinimumWidth = 55;
-            this.foundPlayerScope.Text = "Khu vực";
-            this.foundPlayerScope.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerScope.Width = 55;
+            this.foundPlayerScopeColumn.AspectName = "";
+            this.foundPlayerScopeColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerScopeColumn.MaximumWidth = 55;
+            this.foundPlayerScopeColumn.MinimumWidth = 55;
+            this.foundPlayerScopeColumn.Text = "Khu vực";
+            this.foundPlayerScopeColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerScopeColumn.Width = 55;
             // 
-            // foundPlayerName
+            // foundPlayerNameColumn
             // 
-            this.foundPlayerName.AspectName = "";
-            this.foundPlayerName.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerName.MaximumWidth = 100;
-            this.foundPlayerName.MinimumWidth = 100;
-            this.foundPlayerName.Text = "Người chơi";
-            this.foundPlayerName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerName.Width = 100;
+            this.foundPlayerNameColumn.AspectName = "";
+            this.foundPlayerNameColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerNameColumn.MaximumWidth = 100;
+            this.foundPlayerNameColumn.MinimumWidth = 100;
+            this.foundPlayerNameColumn.Text = "Người chơi";
+            this.foundPlayerNameColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerNameColumn.Width = 100;
             // 
-            // foundPlayerMerchant
+            // foundPlayerMerchantColumn
             // 
-            this.foundPlayerMerchant.MaximumWidth = 70;
-            this.foundPlayerMerchant.MinimumWidth = 70;
-            this.foundPlayerMerchant.Text = "T. Minh";
-            this.foundPlayerMerchant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerMerchant.Width = 70;
+            this.foundPlayerMerchantColumn.MaximumWidth = 70;
+            this.foundPlayerMerchantColumn.MinimumWidth = 70;
+            this.foundPlayerMerchantColumn.Text = "T. Minh";
+            this.foundPlayerMerchantColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerMerchantColumn.Width = 70;
             // 
-            // foundPlayerAutoMerchant
+            // foundPlayerAutoMerchantColumn
             // 
-            this.foundPlayerAutoMerchant.CheckBoxes = true;
-            this.foundPlayerAutoMerchant.MaximumWidth = 55;
-            this.foundPlayerAutoMerchant.MinimumWidth = 55;
-            this.foundPlayerAutoMerchant.Text = "Tự động";
-            this.foundPlayerAutoMerchant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.foundPlayerAutoMerchant.Width = 55;
+            this.foundPlayerAutoMerchantColumn.CheckBoxes = true;
+            this.foundPlayerAutoMerchantColumn.MaximumWidth = 55;
+            this.foundPlayerAutoMerchantColumn.MinimumWidth = 55;
+            this.foundPlayerAutoMerchantColumn.Text = "Tự động";
+            this.foundPlayerAutoMerchantColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.foundPlayerAutoMerchantColumn.Width = 55;
+            // 
+            // foundPlayerSendColumn
+            // 
+            this.foundPlayerSendColumn.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
+            this.foundPlayerSendColumn.IsButton = true;
+            this.foundPlayerSendColumn.MaximumWidth = 60;
+            this.foundPlayerSendColumn.MinimumWidth = 60;
+            this.foundPlayerSendColumn.Text = "Thao tác";
             // 
             // playerList
             // 
@@ -224,6 +233,15 @@
             this.playerSentColumn.Text = "Đã gửi";
             this.playerSentColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.playerSentColumn.Width = 70;
+            // 
+            // playerMerchantColumn
+            // 
+            this.playerMerchantColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.playerMerchantColumn.MaximumWidth = 70;
+            this.playerMerchantColumn.MinimumWidth = 70;
+            this.playerMerchantColumn.Text = "T. Minh";
+            this.playerMerchantColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.playerMerchantColumn.Width = 70;
             // 
             // playerMerchant0Column
             // 
@@ -369,23 +387,6 @@
             this.refreshPlayerButton.UseVisualStyleBackColor = true;
             this.refreshPlayerButton.Click += new System.EventHandler(this.refreshPlayerButton_Click);
             // 
-            // playerMerchantColumn
-            // 
-            this.playerMerchantColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.playerMerchantColumn.MaximumWidth = 70;
-            this.playerMerchantColumn.MinimumWidth = 70;
-            this.playerMerchantColumn.Text = "T. Minh";
-            this.playerMerchantColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.playerMerchantColumn.Width = 70;
-            // 
-            // foundPlayerSendColumn
-            // 
-            this.foundPlayerSendColumn.ButtonSizing = BrightIdeasSoftware.OLVColumn.ButtonSizingMode.CellBounds;
-            this.foundPlayerSendColumn.IsButton = true;
-            this.foundPlayerSendColumn.MaximumWidth = 60;
-            this.foundPlayerSendColumn.MinimumWidth = 60;
-            this.foundPlayerSendColumn.Text = "Thao tác";
-            // 
             // AutoMerchantView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -394,7 +395,7 @@
             this.Controls.Add(this.refreshPlayerButton);
             this.Controls.Add(this.playerList);
             this.Controls.Add(this.foundPlayerList);
-            this.Controls.Add(this.refreshTeamButton);
+            this.Controls.Add(this.searchButton);
             this.Name = "AutoMerchantView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AutoMerchantVIew";
@@ -406,13 +407,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Button refreshTeamButton;
+        private System.Windows.Forms.Button searchButton;
         private BrightIdeasSoftware.ObjectListView foundPlayerList;
-        private BrightIdeasSoftware.OLVColumn foundPlayerArea;
-        private BrightIdeasSoftware.OLVColumn foundPlayerScope;
-        private BrightIdeasSoftware.OLVColumn foundPlayerName;
-        private BrightIdeasSoftware.OLVColumn foundPlayerMerchant;
-        private BrightIdeasSoftware.OLVColumn foundPlayerAutoMerchant;
+        private BrightIdeasSoftware.OLVColumn foundPlayerAreaColumn;
+        private BrightIdeasSoftware.OLVColumn foundPlayerScopeColumn;
+        private BrightIdeasSoftware.OLVColumn foundPlayerNameColumn;
+        private BrightIdeasSoftware.OLVColumn foundPlayerMerchantColumn;
+        private BrightIdeasSoftware.OLVColumn foundPlayerAutoMerchantColumn;
         private BrightIdeasSoftware.ObjectListView playerList;
         private BrightIdeasSoftware.OLVColumn playerNameColumn;
         private BrightIdeasSoftware.OLVColumn playerReceivedColumn;

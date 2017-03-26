@@ -1,0 +1,27 @@
+﻿{
+  "operation": {
+    "mianzhan": 0,
+    "zhengfu": 0,
+    "shuchen": 0,
+    "qiangduo": 0,
+    "fangqi": 0,
+    "shangdui": 0,
+    "xinjian": 0,
+    "qihao": 0,
+    "zhanling": 0,
+    "gongji": 1,
+    "duli": 0,
+    "jinru": 0,
+    "liuyan": 0
+  },
+  "canSneakAttact": 1,
+  "protectcd": 0,
+  "openExtraBase": 1,
+  "owner": {
+    "playername": "con chó dại",
+    "playerid": 5564568
+  },
+  "protectype": 0,
+  "vassal": [],
+  "hostility": "Kẻ địch quốc gia"
+}

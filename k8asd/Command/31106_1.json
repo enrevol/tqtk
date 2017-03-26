@@ -1,0 +1,37 @@
+﻿{
+  "operation": {
+    "mianzhan": 0,
+    "zhengfu": 1,
+    "shuchen": 0,
+    "qiangduo": 0,
+    "fangqi": 0,
+    "shangdui": 1,
+    "xinjian": 1,
+    "qihao": 0,
+    "zhanling": 0,
+    "gongji": 0,
+    "duli": 0,
+    "jinru": 0,
+    "liuyan": 0
+  },
+  "canSneakAttact": 1,
+  "protectcd": 0,
+  "merchants": [
+    {
+      "addition": "Nhiều người dệt vải thì lợi nhuận tăng lên",
+      "cost": 60,
+      "id": 7,
+      "introduction": "Khi nhiều người cùng dệt vải thì lợi nhuận sẽ tăng lên",
+      "name": "Quan Đông "
+    }
+  ],
+  "autoPass": false,
+  "openExtraBase": 1,
+  "owner": {
+    "playername": "",
+    "playerid": 0
+  },
+  "protectype": 0,
+  "vassal": [],
+  "hostility": ""
+}
