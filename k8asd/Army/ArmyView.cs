@@ -214,14 +214,14 @@ namespace k8asd {
         private void Parse34108(Packet packet) {
             var token = JToken.Parse(packet.Message);
             var report = ArmyReport.Parse(token);
+            foreach (var detail in report.Reports) {
+                messageLogModel.LogInfo(detail);
+            }
             if (report.Gains.Length > 0) {
                 messageLogModel.LogInfo(String.Format("Tấn công quân đoàn nhận được: {0}", report.Gains));
             } else {
                 messageLogModel.LogInfo("Tấn công quân đoàn nhận thất bại.");
-            }
-            foreach (var detail in report.Reports) {
-                messageLogModel.LogInfo(detail);
-            }
+            }            
         }
 
         private async void ParseTeams(JToken token) {
