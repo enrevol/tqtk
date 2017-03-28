@@ -214,7 +214,7 @@ namespace k8asd {
                                   orderby infos[w].imposenum ascending
                                   select w).ToList();
 
-            if (orderedMembers.Count == 0)
+            if (orderedMembers.Count <= 1)
             {
                 return null;
             }
@@ -236,7 +236,7 @@ namespace k8asd {
             {
                 timerLocking = false;
                 isRefreshing = false;
-                weaveTimer.Interval = 200;
+                weaveTimer.Interval = 500;
             }
         }
 
