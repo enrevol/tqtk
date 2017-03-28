@@ -214,7 +214,7 @@ namespace k8asd {
                                   orderby infos[w].imposenum ascending
                                   select w).ToList();
 
-            if (orderedMembers.Count <= 1)
+            if (orderedMembers.Count == 0)
             {
                 return null;
             }
