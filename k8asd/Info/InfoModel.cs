@@ -9,6 +9,7 @@ namespace k8asd {
     public class InfoModel : IInfoModel {
         private IPacketWriter packetWriter;
 
+        private int playerId;
         private string playerName;
         private int playerLevel;
         private string legionName;
@@ -24,6 +25,7 @@ namespace k8asd {
         private int silver;
         private int maxSilver;
 
+        public event EventHandler<int> PlayerIdChanged;
         public event EventHandler<string> PlayerNameChanged;
         public event EventHandler<int> PlayerLevelChanged;
         public event EventHandler<string> LegionNameChanged;
@@ -36,6 +38,14 @@ namespace k8asd {
         public event EventHandler<int> MaxForceChanged;
         public event EventHandler<int> SilverChanged;
         public event EventHandler<int> MaxSilverChanged;
+
+        public int PlayerId {
+            get { return playerId; }
+            private set {
+                playerId = value;
+                PlayerIdChanged.Raise(this, value);
+            }
+        }
 
         public string PlayerName {
             get { return playerName; }
@@ -167,6 +177,7 @@ namespace k8asd {
                 var serverTime = DateTime.Parse(systime);
                 serverTimeOffset = serverTime - DateTime.Now;
 
+                PlayerId = Int32.Parse(packet.UserId);
                 PlayerName = (string) player["playername"];
                 PlayerLevel = (int) player["playerlevel"];
                 LegionName = (string) player["legionname"];

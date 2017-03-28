@@ -19,6 +19,7 @@ namespace k8asd {
         public void SetModel(IInfoModel model) {
             this.model = model;
             serverTimer.Start();
+            model.PlayerIdChanged += OnPlayerIdChanged;
             model.PlayerNameChanged += OnPlayerNameChanged;
             model.PlayerLevelChanged += OnPlayerLevelChanged;
             model.GoldChanged += OnGoldChanged;
@@ -32,13 +33,19 @@ namespace k8asd {
             model.MaxSilverChanged += OnMaxSilverChanged;
         }
 
+        private void OnPlayerIdChanged(object sender, int playerId) {
+            infoBox.Text = String.Format("{0} Lv. {1} - {2} - {3}",
+                model.PlayerName, model.PlayerLevel, playerId, Utils.FormatDuration(model.ServerTime));
+        }
+
         private void OnPlayerNameChanged(object sender, string playerName) {
-            infoBox.Text = String.Format("{0} Lv. {1}", playerName, model.PlayerLevel);
+            infoBox.Text = String.Format("{0} Lv. {1} - {2} - {3}",
+                playerName, model.PlayerLevel, model.PlayerId, Utils.FormatDuration(model.ServerTime));
         }
 
         private void OnPlayerLevelChanged(object sender, int playerLevel) {
-            infoBox.Text = String.Format("{0} Lv. {1} - {2}",
-                model.PlayerName, playerLevel, Utils.FormatDuration(model.ServerTime));
+            infoBox.Text = String.Format("{0} Lv. {1} - {2} - {0}",
+                model.PlayerName, playerLevel, model.PlayerId, Utils.FormatDuration(model.ServerTime));
         }
 
         private void OnGoldChanged(object sender, int gold) {
@@ -78,8 +85,8 @@ namespace k8asd {
         }
 
         private void serverTimer_Tick(object sender, EventArgs e) {
-            infoBox.Text = String.Format("{0} Lv. {1} - {2}",
-                model.PlayerName, model.PlayerLevel, Utils.FormatDuration(model.ServerTime));
+            infoBox.Text = String.Format("{0} Lv. {1} - {2} - {3}",
+                model.PlayerName, model.PlayerLevel, model.PlayerId, Utils.FormatDuration(model.ServerTime));
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public interface IInfoModel {
+        int PlayerId { get; }
+
         /// <summary>
         /// Gets the player's name.
         /// </summary>
@@ -68,6 +70,7 @@ namespace k8asd {
         /// </summary>
         int MaxSilver { get; }
 
+        event EventHandler<int> PlayerIdChanged;
         event EventHandler<string> PlayerNameChanged;
         event EventHandler<int> PlayerLevelChanged;
         event EventHandler<string> LegionNameChanged;
