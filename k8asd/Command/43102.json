@@ -1,0 +1,21 @@
+﻿{
+  "playerupdateinfo": {
+    "copper": 66853,
+    "caravanstate": 3
+  },
+  "caravandto": {
+    "addition": "",
+    "forcecost": 0,
+    "incopper": 819,
+    "max": 51,
+    "merchantId": 0,
+    "merchantName": "",
+    "passmax": 102,
+    "passnum": 0,
+    "remain": 38,
+    "sendnum": 0,
+    "targetplayername": ""
+  },
+  "merchant": 0,
+  "usenum": 13
+}

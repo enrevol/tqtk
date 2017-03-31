@@ -1,0 +1,22 @@
+﻿{
+  "businessName": null,
+  "playerupdateinfo": {
+    "copper": 39085,
+    "caravanstate": 4
+  },
+  "caravandto": {
+    "addition": "",
+    "forcecost": 0,
+    "incopper": 750,
+    "max": 51,
+    "merchantId": 0,
+    "merchantName": "",
+    "passmax": 102,
+    "passnum": 13,
+    "remain": 0,
+    "sendnum": 0,
+    "targetplayername": ""
+  },
+  "isAutoPass": 1,
+  "playercaravandto": []
+}
