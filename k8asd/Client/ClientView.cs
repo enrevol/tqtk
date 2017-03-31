@@ -116,7 +116,7 @@ namespace k8asd {
             return packet;
         }
 
-        public async Task LogIn() {
+        public async Task LogIn(bool blocking) {
             if (ConnectionStatus == ConnectionStatus.Connected) {
                 messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
                 return;
@@ -130,7 +130,7 @@ namespace k8asd {
                 return;
             }
             try {
-                await LogIn(Configuration.ServerId, Configuration.Username, Configuration.Password);
+                await LogIn(Configuration.ServerId, Configuration.Username, Configuration.Password, blocking);
             } catch (Exception ex) {
                 messageLogModel.LogInfo(ex.Message);
                 messageLogModel.LogInfo("Đăng nhập thất bại!");
@@ -185,7 +185,7 @@ namespace k8asd {
             ConnectionStatus = ConnectionStatus.Disconnected;
         }
 
-        private async Task<bool> Connect() {
+        private async Task<bool> Connect(bool blocking) {
             Debug.Assert(ConnectionStatus == ConnectionStatus.Connecting);
             await packetHandler.ConnectAsync();
 
@@ -194,10 +194,12 @@ namespace k8asd {
 
             ConnectionStatus = ConnectionStatus.Connected;
 
-            var p0 = await SendCommandAsync("10100");
-            if (p0 == null) {
-                await DisconnectedFromServer();
-                return false;
+            if (blocking) {
+                var p0 = await SendCommandAsync("10100");
+                if (p0 == null) {
+                    await DisconnectedFromServer();
+                    return false;
+                }
             }
 
             var p1 = await SendCommandAsync("11102");
@@ -213,7 +215,7 @@ namespace k8asd {
         /// <summary>
         /// Attempts to connect the client.
         /// </summary>
-        private async Task LogIn(int serverId, string username, string password) {
+        private async Task LogIn(int serverId, string username, string password, bool blocking) {
             Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
             ConnectionStatus = ConnectionStatus.Connecting;
 
@@ -253,7 +255,7 @@ namespace k8asd {
 
             packetHandler = new PacketHandler(loginHelper.Session);
             messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
-            if (await Connect()) {
+            if (await Connect(blocking)) {
                 messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
             }
         }

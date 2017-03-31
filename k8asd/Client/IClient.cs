@@ -48,7 +48,7 @@ namespace k8asd {
         /// </summary>
         string PlayerName { get; }
 
-        Task LogIn();
+        Task LogIn(bool blocking);
 
         Task LogOut();
     }

@@ -35,34 +35,39 @@ namespace k8asd {
             Text = DateTime.Now.ToString("hh:mm:ss");
         }
 
-        private async Task LogIn(List<IClient> clients) {
+        private List<IClient> FindSelectedClients() {
+            var selectedClients = new List<IClient>();
+            var items = clientList.SelectedItems;
+            foreach (var item in items) {
+                var client = (IClient) ((OLVListItem) item).RowObject;
+                selectedClients.Add(client);
+            }
+            return selectedClients;
+        }
+
+        private async Task LogIn(List<IClient> clients, bool blocking) {
             const int ThreadCount = 3;
             for (int i = 0; i < clients.Count; i += ThreadCount) {
                 var tasks = new List<Task>();
                 for (int j = 0; j < ThreadCount && i + j < clients.Count; ++j) {
-                    tasks.Add(clients[i + j].LogIn());
+                    tasks.Add(clients[i + j].LogIn(blocking));
                 }
                 await Task.WhenAll(tasks);
             }
         }
 
         private async void loginButton_Click(object sender, EventArgs e) {
-            var selectedClients = new List<IClient>();
-            var items = clientList.SelectedItems;
-            foreach (var item in items) {
-                var client = (IClient) ((OLVListItem) item).RowObject;
-                selectedClients.Add(client);
-            }
-            await LogIn(selectedClients);
+            var selectedClients = FindSelectedClients();
+            await LogIn(selectedClients, true);
+        }
+
+        private async void parallelLoginButton_Click(object sender, EventArgs e) {
+            var selectedClients = FindSelectedClients();
+            await LogIn(selectedClients, false);
         }
 
         private async void logoutButton_Click(object sender, EventArgs e) {
-            var selectedClients = new List<IClient>();
-            var items = clientList.SelectedItems;
-            foreach (var item in items) {
-                var client = (IClient) ((OLVListItem) item).RowObject;
-                selectedClients.Add(client);
-            }
+            var selectedClients = FindSelectedClients();
             foreach (var client in selectedClients) {
                 await client.LogOut();
             }
@@ -82,11 +87,7 @@ namespace k8asd {
         }
 
         private void removeButton_Click(object sender, EventArgs e) {
-            var selectedClients = new List<IClient>();
-            foreach (var item in clientList.SelectedItems) {
-                var client = (IClient) ((OLVListItem) item).RowObject;
-                selectedClients.Add(client);
-            }
+            var selectedClients = FindSelectedClients();
             foreach (var client in selectedClients) {
                 RemoveClient(client);
             }
@@ -145,7 +146,7 @@ namespace k8asd {
 
         private async void loginAllButton_Click(object sender, EventArgs e) {
             var clients = ClientManager.Instance.Clients;
-            await LogIn(clients);
+            await LogIn(clients, true);
         }
 
         private void autoWeaveButton_Click(object sender, EventArgs e) {
@@ -153,8 +154,7 @@ namespace k8asd {
             view.Show();
         }
 
-        private void autoSwapButton_Click(object sender, EventArgs e)
-        {
+        private void autoSwapButton_Click(object sender, EventArgs e) {
             var view = new AutoSwap();
             view.Show();
         }
