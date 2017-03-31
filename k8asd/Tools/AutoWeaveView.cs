@@ -241,31 +241,76 @@ namespace k8asd {
         }
 
         private List<int> FindWeaveMemberIds(List<int> memberIds) {
+            Debug.Assert(memberIds.Count > 0);
+
             var result = new List<int>();
-            if (memberIds.Count == 0) {
-                // Không có ai.
-                return result;
-            }
-
             if (memberIds.Count == 1) {
-                if (infos[memberIds[0]].Cooldown > 0) {
-                    return result;
+                // Chỉ còn 1 thành viên.
+                var id = memberIds[0];
+                if (infos[id].Cooldown == 0) {
+                    // OK.
+                    result.Add(id);
                 }
+                return result;
+            }
+            
+            // Còn >= 2 thành viên.
+            int totalTurns = 0;
+            foreach (int id in memberIds) {
+                totalTurns += infos[id].Turns;
+            }
 
-                // Chỉ có 1 người.
-                result.Add(memberIds[0]);
+            // Thành viên trong trạng thái phải ưu tiên dệt trước.
+            var hurryMemberIds = new List<int>();
+            var nonHurryMemberIds = new List<int>();
+            foreach (int id in memberIds) {
+                int turns = infos[id].Turns;
+                int otherTurns = totalTurns - turns;
+                if (turns + 1 >= otherTurns) {
+                    hurryMemberIds.Add(id);
+                } else {
+                    if (infos[id].Cooldown == 0 && infos[id].Turns > 0) {
+                        nonHurryMemberIds.Add(id);
+                    }
+                }
+            }
+
+            if (hurryMemberIds.Count >= 2) {
+                if (hurryMemberIds.Count == 3) {
+                    // Case: 1 1 1.
+                    // Select any two members.
+                } else {
+                    // Case: x x 1, e.g. 2 2 1, 3 3 1.
+                    // Select the two members.
+                }
+                hurryMemberIds = hurryMemberIds.Where(id => infos[id].Cooldown == 0).ToList();
+                if (hurryMemberIds.Count >= 2) {
+                    // Two hurry members.
+                    result.Add(hurryMemberIds[0]);
+                    result.Add(hurryMemberIds[1]);
+                }
                 return result;
             }
 
-            // Ưu tiên dệt người chơi có nhiều lượt nhất trước.
-            var orderedMembers = memberIds.OrderByDescending(id => infos[id].Turns).
-                ThenBy(id => infos[id].Cooldown).ToList();
-            if (infos[orderedMembers[0]].Cooldown > 0 || infos[orderedMembers[1]].Cooldown > 0) {
+            if (hurryMemberIds.Count == 1) {
+                var id = hurryMemberIds[0];
+                if (infos[id].Cooldown == 0) {
+                    if (nonHurryMemberIds.Count > 0) {
+                        // OK.
+                        // One hurry member and one non-hurry member.
+                        result.Add(id);
+                        result.Add(nonHurryMemberIds[0]);
+                    }
+                }
                 return result;
             }
-            result.Add(orderedMembers[0]);
-            if (infos[orderedMembers[1]].Turns > 0) {
-                result.Add(orderedMembers[1]);
+
+            Debug.Assert(hurryMemberIds.Count == 0);
+
+            if (nonHurryMemberIds.Count >= 2) {
+                // Two non-hurry members.
+                result.Add(nonHurryMemberIds[0]);
+                result.Add(nonHurryMemberIds[1]);
             }
             return result;
         }
