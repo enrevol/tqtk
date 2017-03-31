@@ -182,6 +182,17 @@ namespace k8asd {
                 host.PacketReceived -= OnPacketReceived;
             }
 
+            if (hostingTeamId == NoTeam) {
+                // Host is in parallel login mode.
+                var p = await host.RefreshWeaveAsync();
+                if (p == null) {
+                    return false;
+                }
+                var info = WeaveInfo.Parse(JToken.Parse(p.Message));
+                var hostingTeam = info.Teams.Find(team => team.Name == host.PlayerName);
+                hostingTeamId = hostingTeam.Id;
+            }
+
             try {
                 Debug.Assert(hostingTeamId != NoTeam);
                 var tasks = new List<Task<Packet>>();
@@ -362,7 +373,7 @@ namespace k8asd {
                     partyMemberIds.Add(hostId);
                 }
 
-                LogInfo(String.Format("Tiến hành dệt với: {0}", 
+                LogInfo(String.Format("Tiến hành dệt với: {0}",
                     String.Join(", ", partyMemberIds.Select(id => clients[id].PlayerName))));
                 await WeaveAsync(hostId, mode, weaveMemberIds.ToArray());
             } finally {
