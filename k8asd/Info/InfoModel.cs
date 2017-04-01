@@ -187,8 +187,9 @@ namespace k8asd {
                 ParseInfo1(limitvalue);
             }
             if (packet.CommandId == "11103"
+                || packet.CommandId == "11104" // Cập nhật từng phút.
                 || packet.CommandId == "14102" // Tuyển/đào tạo lính.
-                || packet.CommandId == "41102" // Cải tiến
+                || packet.CommandId == "41102" // Cải tiến.
                 ) {
                 var token = JToken.Parse(packet.Message);
                 var playerupdateinfo = token["playerupdateinfo"];
