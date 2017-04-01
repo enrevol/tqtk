@@ -88,6 +88,10 @@ namespace k8asd {
             return connectedClients;
         }
 
+        /// <summary>
+        /// Làm mới tất cả các tài khoản.
+        /// </summary>
+        /// <param name="connectedClients">Danh sách tài khoản để làm mới.</param>
         private async Task<bool> RefreshPlayersAsync(List<IClient> connectedClients) {
             if (isRefreshing) {
                 LogInfo("Đang làm mới, không thể làm mới!");
@@ -130,6 +134,10 @@ namespace k8asd {
             return true;
         }
 
+        /// <summary>
+        /// Làm mới một người chơi.
+        /// </summary>
+        /// <param name="playerId">ID của người chơi cần làm mới.</param>
         private async Task<bool> RefreshPlayerAsync(int playerId) {
             if (isRefreshing) {
                 return false;
@@ -253,7 +261,7 @@ namespace k8asd {
                 }
                 return result;
             }
-            
+
             // Còn >= 2 thành viên.
             int totalTurns = 0;
             foreach (int id in memberIds) {
@@ -376,6 +384,10 @@ namespace k8asd {
                     return;
                 }
 
+                if (infos[hostId].Cooldown > 0) {
+                    return;
+                }
+
                 var weaveMemberIds = FindWeaveMemberIds(memberIds);
                 if (weaveMemberIds.Count == 0) {
                     return;
@@ -420,7 +432,12 @@ namespace k8asd {
 
                 LogInfo(String.Format("Tiến hành dệt với: {0}",
                     String.Join(", ", partyMemberIds.Select(id => clients[id].PlayerName))));
-                await WeaveAsync(hostId, mode, weaveMemberIds.ToArray());
+                if (await WeaveAsync(hostId, mode, weaveMemberIds.ToArray())) {
+                    // Làm mới thành viên vừa dệt xong.
+                    foreach (var id in weaveMemberIds) {
+                        await RefreshPlayerAsync(id);
+                    }
+                }
             } finally {
                 timerLocking = false;
             }
