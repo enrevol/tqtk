@@ -59,6 +59,7 @@
             // logBox
             // 
             this.logBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(38)))));
+            this.logBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logBox.Location = new System.Drawing.Point(0, 20);
             this.logBox.Name = "logBox";
