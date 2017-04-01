@@ -39,17 +39,17 @@ namespace k8asd
             this.autoSwapButton = new System.Windows.Forms.ToolStripMenuItem();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this._ignore0 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.logoutButton = new System.Windows.Forms.Button();
+            this.parallelLoginButton = new System.Windows.Forms.Button();
+            this.loginButton = new System.Windows.Forms.Button();
+            this.logoutAllButton = new System.Windows.Forms.Button();
             this.loginAllButton = new System.Windows.Forms.Button();
             this.removeButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
-            this.logoutButton = new System.Windows.Forms.Button();
-            this.loginButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
-            this.parallelLoginButton = new System.Windows.Forms.Button();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -118,7 +118,7 @@ namespace k8asd
             this._ignore0.Controls.Add(this.logoutButton);
             this._ignore0.Controls.Add(this.parallelLoginButton);
             this._ignore0.Controls.Add(this.loginButton);
-            this._ignore0.Controls.Add(this.button1);
+            this._ignore0.Controls.Add(this.logoutAllButton);
             this._ignore0.Controls.Add(this.loginAllButton);
             this._ignore0.Controls.Add(this.removeButton);
             this._ignore0.Controls.Add(this.addButton);
@@ -128,17 +128,60 @@ namespace k8asd
             this._ignore0.Size = new System.Drawing.Size(1350, 70);
             this._ignore0.TabIndex = 1;
             // 
-            // button1
+            // logoutButton
             // 
-            this.button1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(190, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(70, 70);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Ngắt Kết Nối All";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.UseVisualStyleBackColor = true;
+            this.logoutButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.logoutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logoutButton.Image = global::k8asd.Properties.Resources.btn_Logout;
+            this.logoutButton.Location = new System.Drawing.Point(420, 0);
+            this.logoutButton.Name = "logoutButton";
+            this.logoutButton.Size = new System.Drawing.Size(80, 70);
+            this.logoutButton.TabIndex = 1;
+            this.logoutButton.Text = "Đăng xuất";
+            this.logoutButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.logoutButton.UseVisualStyleBackColor = true;
+            this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
+            // 
+            // parallelLoginButton
+            // 
+            this.parallelLoginButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.parallelLoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.parallelLoginButton.Image = global::k8asd.Properties.Resources.btn_Login;
+            this.parallelLoginButton.Location = new System.Drawing.Point(340, 0);
+            this.parallelLoginButton.Name = "parallelLoginButton";
+            this.parallelLoginButton.Size = new System.Drawing.Size(80, 70);
+            this.parallelLoginButton.TabIndex = 4;
+            this.parallelLoginButton.Text = "Đăng nhập song song";
+            this.parallelLoginButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.parallelLoginButton.UseVisualStyleBackColor = true;
+            this.parallelLoginButton.Click += new System.EventHandler(this.parallelLoginButton_Click);
+            // 
+            // loginButton
+            // 
+            this.loginButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loginButton.Image = global::k8asd.Properties.Resources.btn_Login;
+            this.loginButton.Location = new System.Drawing.Point(260, 0);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(80, 70);
+            this.loginButton.TabIndex = 3;
+            this.loginButton.Text = "Đăng nhập";
+            this.loginButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+            // 
+            // logoutAllButton
+            // 
+            this.logoutAllButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.logoutAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logoutAllButton.Location = new System.Drawing.Point(190, 0);
+            this.logoutAllButton.Name = "logoutAllButton";
+            this.logoutAllButton.Size = new System.Drawing.Size(70, 70);
+            this.logoutAllButton.TabIndex = 2;
+            this.logoutAllButton.Text = "Ngắt Kết Nối All";
+            this.logoutAllButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.logoutAllButton.UseVisualStyleBackColor = true;
+            this.logoutAllButton.Click += new System.EventHandler(this.logoutAllButton_Click);
             // 
             // loginAllButton
             // 
@@ -180,34 +223,6 @@ namespace k8asd
             this.addButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.addButton_Click);
-            // 
-            // logoutButton
-            // 
-            this.logoutButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.logoutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logoutButton.Image = global::k8asd.Properties.Resources.btn_Logout;
-            this.logoutButton.Location = new System.Drawing.Point(420, 0);
-            this.logoutButton.Name = "logoutButton";
-            this.logoutButton.Size = new System.Drawing.Size(80, 70);
-            this.logoutButton.TabIndex = 1;
-            this.logoutButton.Text = "Đăng xuất";
-            this.logoutButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.logoutButton.UseVisualStyleBackColor = true;
-            this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
-            // 
-            // loginButton
-            // 
-            this.loginButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loginButton.Image = global::k8asd.Properties.Resources.btn_Login;
-            this.loginButton.Location = new System.Drawing.Point(260, 0);
-            this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(80, 70);
-            this.loginButton.TabIndex = 3;
-            this.loginButton.Text = "Đăng nhập";
-            this.loginButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // imageList1
             // 
@@ -255,20 +270,6 @@ namespace k8asd
             this.clientList.View = System.Windows.Forms.View.Details;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
-            // parallelLoginButton
-            // 
-            this.parallelLoginButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.parallelLoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.parallelLoginButton.Image = global::k8asd.Properties.Resources.btn_Login;
-            this.parallelLoginButton.Location = new System.Drawing.Point(340, 0);
-            this.parallelLoginButton.Name = "parallelLoginButton";
-            this.parallelLoginButton.Size = new System.Drawing.Size(80, 70);
-            this.parallelLoginButton.TabIndex = 4;
-            this.parallelLoginButton.Text = "Đăng nhập song song";
-            this.parallelLoginButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.parallelLoginButton.UseVisualStyleBackColor = true;
-            this.parallelLoginButton.Click += new System.EventHandler(this.parallelLoginButton_Click);
-            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -300,7 +301,7 @@ namespace k8asd
         private Button addButton;
         private Button removeButton;
         private Button loginAllButton;
-        private Button button1;
+        private Button logoutAllButton;
         private ImageList imageList1;
         private ToolStripMenuItem autoWeaveButton;
         private BrightIdeasSoftware.OLVColumn statusColumn;

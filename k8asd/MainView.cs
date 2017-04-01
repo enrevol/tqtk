@@ -149,6 +149,13 @@ namespace k8asd {
             await LogIn(clients, true);
         }
 
+        private async void logoutAllButton_Click(object sender, EventArgs e) {
+            var clients = ClientManager.Instance.Clients;
+            foreach (var client in clients) {
+                await client.LogOut();
+            }
+        }
+
         private void autoWeaveButton_Click(object sender, EventArgs e) {
             var view = new AutoWeaveView();
             view.Show();
