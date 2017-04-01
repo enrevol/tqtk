@@ -37,13 +37,13 @@ namespace k8asd {
         private RichTextBox formatter;
         private int chatLogLengthLimit;
 
-        private enum ChatBoxMode {
+        private enum ChatBoxSize {
             Small,
             Medium,
             Large,
         }
 
-        private ChatBoxMode chatBoxMode;
+        private ChatBoxSize chatBoxSize;
 
         public ChatLogView() {
             InitializeComponent();
@@ -70,7 +70,7 @@ namespace k8asd {
             channelMessages.Add(ChatChannel.Campaign, emptyRtf);
 
             allMessages = emptyRtf;
-            chatBoxMode = ChatBoxMode.Small;
+            chatBoxSize = ChatBoxSize.Small;
             logTabList.SelectedIndex = 5;
         }
 
@@ -87,7 +87,9 @@ namespace k8asd {
             AddMessage(ref channelMessage, line, GetChannelColor(message.Channel));
             channelMessages[message.Channel] = channelMessage;
             AddMessage(ref allMessages, line, GetChannelColor(message.Channel));
-            UpdateLogBox();
+            if (autoScrollBox.Checked) {
+                UpdateLogBox();
+            }
         }
 
         private void AddMessage(ref string lines, string line, Color color) {
@@ -177,32 +179,34 @@ namespace k8asd {
             UpdateLogBox();
         }
 
-        private void modeButton_Click(object sender, EventArgs e) {
+        private void changeSizeButton_Click(object sender, EventArgs e) {
             const int AdditionalHeight = 200;
             const int AdditionalWidth = 800;
 
             int deltaWidth = 0;
             int deltaHeight = 0;
-            if (chatBoxMode == ChatBoxMode.Small) {
-                chatBoxMode = ChatBoxMode.Medium;
+            if (chatBoxSize == ChatBoxSize.Small) {
+                chatBoxSize = ChatBoxSize.Medium;
                 deltaHeight = AdditionalHeight;
-                modeButton.Text = "Vừa";
-            } else if (chatBoxMode == ChatBoxMode.Medium) {
-                chatBoxMode = ChatBoxMode.Large;
+                changeSizeButton.Text = "Vừa";
+            } else if (chatBoxSize == ChatBoxSize.Medium) {
+                chatBoxSize = ChatBoxSize.Large;
                 deltaWidth = AdditionalWidth;
-                modeButton.Text = "Lớn";
+                changeSizeButton.Text = "Lớn";
             } else {
-                chatBoxMode = ChatBoxMode.Small;
+                chatBoxSize = ChatBoxSize.Small;
                 deltaHeight = -AdditionalHeight;
                 deltaWidth = -AdditionalWidth;
-                modeButton.Text = "Nhỏ";
+                changeSizeButton.Text = "Nhỏ";
             }
 
             Width += deltaWidth;
             Height += deltaHeight;
             Location = new Point(Location.X, Location.Y - deltaHeight);
 
-            Utils.ScrollToBottom(logBox);
+            if (autoScrollBox.Checked) {
+                Utils.ScrollToBottom(logBox);
+            }
         }
     }
 }
