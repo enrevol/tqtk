@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.channelList = new System.Windows.Forms.ComboBox();
-            this.logBox = new System.Windows.Forms.RichTextBox();
+            this.logBox = new k8asd.FastRichTextBox();
             this.chatInput = new System.Windows.Forms.TextBox();
             this.changeSizeButton = new System.Windows.Forms.Button();
             this.logTabList = new System.Windows.Forms.TabControl();
@@ -61,7 +61,6 @@
             this.logBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(38)))));
             this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logBox.Location = new System.Drawing.Point(0, 20);
-            this.logBox.MaxLength = 10000;
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
             this.logBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
@@ -211,7 +210,7 @@
         #endregion
 
         private System.Windows.Forms.ComboBox channelList;
-        private System.Windows.Forms.RichTextBox logBox;
+        private k8asd.FastRichTextBox logBox;
         private System.Windows.Forms.TextBox chatInput;
         private System.Windows.Forms.Button changeSizeButton;
         private System.Windows.Forms.TabControl logTabList;

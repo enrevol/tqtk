@@ -30,12 +30,12 @@ namespace k8asd {
         /// </summary>
         private static readonly Color LegionChannelColor = Color.FromArgb(80, 140, 230);
 
-        private IChatLogModel model;
+        private IChatLogModel chatModel;
         private Dictionary<ChatChannel, string> channelMessages;
         private string allMessages;
 
-        private RichTextBox formatter;
-        private int chatLogLengthLimit;
+        private FastRichTextBox formatter;
+        private int lineLimit;
 
         private enum ChatBoxSize {
             Small,
@@ -48,7 +48,7 @@ namespace k8asd {
         public ChatLogView() {
             InitializeComponent();
 
-            chatLogLengthLimit = 10000;
+            lineLimit = 200;
 
             channelList.Items.Clear();
             channelList.Items.Add(ChatChannel.World);
@@ -58,8 +58,9 @@ namespace k8asd {
             channelList.Items.Add(ChatChannel.Campaign);
             channelList.SelectedIndex = 2;
 
-            formatter = new RichTextBox();
+            formatter = new FastRichTextBox();
             formatter.Text = String.Empty;
+            formatter.WordWrap = false;
             var emptyRtf = formatter.Rtf;
 
             channelMessages = new Dictionary<ChatChannel, string>();
@@ -70,13 +71,18 @@ namespace k8asd {
             channelMessages.Add(ChatChannel.Campaign, emptyRtf);
 
             allMessages = emptyRtf;
+
             chatBoxSize = ChatBoxSize.Small;
+            logBox.BackColor = Color.FromArgb(6, 40, 38);
             logTabList.SelectedIndex = 5;
         }
 
         public void SetModel(IChatLogModel model) {
-            this.model = model;
-            model.OnChatMessageAdded += OnChatMessageAdded;
+            if (chatModel != null) {
+                chatModel.OnChatMessageAdded -= OnChatMessageAdded;
+            }
+            chatModel = model;
+            chatModel.OnChatMessageAdded += OnChatMessageAdded;
         }
 
         private void OnChatMessageAdded(object sender, ChatMessage message) {
@@ -101,10 +107,24 @@ namespace k8asd {
             formatter.AppendText(line);
             formatter.Select(startIndex, formatter.Text.Length - startIndex);
             formatter.SelectionColor = color;
-            if (formatter.Text.Length > chatLogLengthLimit) {
-                formatter.Text = String.Empty;
+            if (formatter.Lines.Length > lineLimit) {
+                RemoveFirstLine(formatter);
             }
             lines = formatter.Rtf;
+        }
+
+        private void RemoveFirstLine(RichTextBox box) {
+            var isReadOnly = box.ReadOnly;
+            if (isReadOnly) {
+                box.ReadOnly = false;
+            }
+            var startIndex = box.GetFirstCharIndexFromLine(0);
+            var endIndex = box.GetFirstCharIndexFromLine(1);
+            formatter.Select(startIndex, endIndex - startIndex);
+            formatter.SelectedText = String.Empty;
+            if (isReadOnly) {
+                box.ReadOnly = true;
+            }
         }
 
         private Color GetChannelColor(ChatChannel channel) {
@@ -155,7 +175,7 @@ namespace k8asd {
             if (e.KeyCode == Keys.Enter && chatInput.Text.Trim().Length > 0) {
                 var item = channelList.SelectedItem;
                 var channel = (ChatChannel) item;
-                model.SendMessage(channel, chatInput.Text);
+                chatModel.SendMessage(channel, chatInput.Text);
                 chatInput.Text = String.Empty;
                 /*
                 int n = cbbChat.SelectedIndex - 1;
