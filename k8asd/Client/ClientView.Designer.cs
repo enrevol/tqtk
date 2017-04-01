@@ -40,6 +40,7 @@ namespace k8asd {
             this.campaignTab = new System.Windows.Forms.TabPage();
             this.campaignView = new k8asd.CampaignView();
             this.packetTab = new System.Windows.Forms.TabPage();
+            this.packetView = new k8asd.PacketView();
             this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
             this.chatLogView = new k8asd.ChatLogView();
@@ -47,7 +48,8 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.packetView = new k8asd.PacketView();
+            this.outsideTab = new System.Windows.Forms.TabPage();
+            this.outsideView = new k8asd.OutsideView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -57,6 +59,7 @@ namespace k8asd {
             this.arenaTab.SuspendLayout();
             this.campaignTab.SuspendLayout();
             this.packetTab.SuspendLayout();
+            this.outsideTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // barFoodBuy
@@ -93,6 +96,7 @@ namespace k8asd {
             this.tabControl.Controls.Add(this.weaveTab);
             this.tabControl.Controls.Add(this.arenaTab);
             this.tabControl.Controls.Add(this.campaignTab);
+            this.tabControl.Controls.Add(this.outsideTab);
             this.tabControl.Controls.Add(this.packetTab);
             this.tabControl.Location = new System.Drawing.Point(320, 0);
             this.tabControl.Name = "tabControl";
@@ -206,6 +210,14 @@ namespace k8asd {
             this.packetTab.Text = "Gói tin";
             this.packetTab.UseVisualStyleBackColor = true;
             // 
+            // packetView
+            // 
+            this.packetView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetView.Location = new System.Drawing.Point(0, 0);
+            this.packetView.Name = "packetView";
+            this.packetView.Size = new System.Drawing.Size(637, 532);
+            this.packetView.TabIndex = 0;
+            // 
             // dataTimer
             // 
             this.dataTimer.Interval = 50;
@@ -226,21 +238,21 @@ namespace k8asd {
             // 
             // messageLogView
             // 
-            this.messageLogView.Location = new System.Drawing.Point(0, 220);
+            this.messageLogView.Location = new System.Drawing.Point(0, 245);
             this.messageLogView.Name = "messageLogView";
-            this.messageLogView.Size = new System.Drawing.Size(315, 150);
+            this.messageLogView.Size = new System.Drawing.Size(315, 125);
             this.messageLogView.TabIndex = 31;
             // 
             // cooldownView
             // 
             this.cooldownView.Location = new System.Drawing.Point(0, 100);
             this.cooldownView.Name = "cooldownView";
-            this.cooldownView.Size = new System.Drawing.Size(310, 95);
+            this.cooldownView.Size = new System.Drawing.Size(310, 120);
             this.cooldownView.TabIndex = 30;
             // 
             // mcuView
             // 
-            this.mcuView.Location = new System.Drawing.Point(0, 195);
+            this.mcuView.Location = new System.Drawing.Point(0, 220);
             this.mcuView.Name = "mcuView";
             this.mcuView.Size = new System.Drawing.Size(310, 22);
             this.mcuView.TabIndex = 29;
@@ -252,13 +264,24 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
-            // packetView
+            // outsideTab
             // 
-            this.packetView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetView.Location = new System.Drawing.Point(0, 0);
-            this.packetView.Name = "packetView";
-            this.packetView.Size = new System.Drawing.Size(637, 532);
-            this.packetView.TabIndex = 0;
+            this.outsideTab.Controls.Add(this.outsideView);
+            this.outsideTab.Location = new System.Drawing.Point(4, 22);
+            this.outsideTab.Name = "outsideTab";
+            this.outsideTab.Padding = new System.Windows.Forms.Padding(3);
+            this.outsideTab.Size = new System.Drawing.Size(637, 532);
+            this.outsideTab.TabIndex = 6;
+            this.outsideTab.Text = "Ngoại thành";
+            this.outsideTab.UseVisualStyleBackColor = true;
+            // 
+            // outsideView
+            // 
+            this.outsideView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outsideView.Location = new System.Drawing.Point(3, 3);
+            this.outsideView.Name = "outsideView";
+            this.outsideView.Size = new System.Drawing.Size(631, 526);
+            this.outsideView.TabIndex = 0;
             // 
             // ClientView
             // 
@@ -282,6 +305,7 @@ namespace k8asd {
             this.arenaTab.ResumeLayout(false);
             this.campaignTab.ResumeLayout(false);
             this.packetTab.ResumeLayout(false);
+            this.outsideTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -309,6 +333,8 @@ namespace k8asd {
         private Timer testConnectionTimer;
         private TabPage packetTab;
         private PacketView packetView;
+        private TabPage outsideTab;
+        private OutsideView outsideView;
     }
 }
 

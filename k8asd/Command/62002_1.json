@@ -1,0 +1,100 @@
+{
+  "position": [],
+  "displayc": false,
+  "extraBaseInfo": [
+    {
+      "axeDtoList": [
+        {
+          "gold": 0,
+          "id": 1,
+          "lastUseTime": 1491047874684,
+          "name": "Khoan thường",
+          "rewardTime": 1491048172485,
+          "totalUseTime": -1,
+          "useNow": 1
+        },
+        {
+          "gold": 6,
+          "id": 2,
+          "lastUseTime": 0,
+          "name": "Khoan Bạc ",
+          "rewardTime": 0,
+          "totalUseTime": 3600,
+          "useNow": 0
+        },
+        {
+          "gold": 30,
+          "id": 3,
+          "lastUseTime": 0,
+          "name": "Khoan Vàng",
+          "rewardTime": 0,
+          "totalUseTime": 3600,
+          "useNow": 0
+        }
+      ],
+      "baseId": 3,
+      "cd": 120,
+      "desc": "Khoan sâu dưới lòng đất và đạt được những phần thưởng phong phú",
+      "equipmentId": 101,
+      "id": 2796,
+      "level": 1,
+      "name": "Dàn khoan",
+      "nextLevelCopper": -1,
+      "openLimit": 100,
+      "parm": "",
+      "position": 1,
+      "state": 0,
+      "type": 3
+    },
+    {
+      "axeDtoList": [],
+      "baseId": 4,
+      "cd": -1,
+      "desc": "Dựng đài chiêu mộ tướng tài.",
+      "equipmentId": 151,
+      "id": 2797,
+      "level": 1,
+      "name": "Điểm Tướng Đài",
+      "nextLevelCopper": -1,
+      "openLimit": 110,
+      "parm": "",
+      "position": 1,
+      "state": 0,
+      "type": 4
+    },
+    {
+      "axeDtoList": [],
+      "baseId": 5,
+      "cd": 726,
+      "desc": "Nghiên Cứu những kỹ năng cải tiến để gia tăng sức m���nh cho quân đội.",
+      "equipmentId": 201,
+      "id": 2798,
+      "level": 10,
+      "name": "Sở Nghiên Cứu",
+      "nextLevelCopper": -1,
+      "openLimit": 100,
+      "parm": "",
+      "position": 1,
+      "state": 0,
+      "type": 5
+    }
+  ],
+  "constructordto": [
+    {
+      "buildcdusable": 1,
+      "cid": "0",
+      "ctime": "0"
+    },
+    {
+      "buildcdusable": 1,
+      "cid": "1",
+      "ctime": "0"
+    },
+    {
+      "buildcdusable": 1,
+      "cid": "2",
+      "ctime": "0"
+    }
+  ],
+  "discount": 1
+}

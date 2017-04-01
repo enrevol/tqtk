@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 namespace k8asd {
     class CooldownModel : ICooldownModel {
+        private IInfoModel infoModel;
         private IPacketWriter packetWriter;
 
         private Cooldown imposeCooldown;
@@ -12,6 +13,7 @@ namespace k8asd {
         private Cooldown appointCooldown;
         private Cooldown techCooldown;
         private Cooldown weaveCooldown;
+        private Cooldown drillCooldown;
         private Timer oneSecondTimer;
 
         public event EventHandler<int> ImposeCooldownChanged;
@@ -20,6 +22,7 @@ namespace k8asd {
         public event EventHandler<int> AppointCooldownChanged;
         public event EventHandler<int> TechCooldownChanged;
         public event EventHandler<int> WeaveCooldownChanged;
+        public event EventHandler<int> DrillCooldownChanged;
 
         public CooldownModel() {
             imposeCooldown = new Cooldown();
@@ -28,6 +31,7 @@ namespace k8asd {
             appointCooldown = new Cooldown();
             techCooldown = new Cooldown();
             weaveCooldown = new Cooldown();
+            drillCooldown = new Cooldown();
 
             oneSecondTimer = new Timer();
             oneSecondTimer.Interval = 1000;
@@ -43,6 +47,10 @@ namespace k8asd {
             packetWriter.PacketReceived += OnPacketReceived;
         }
 
+        public void SetInfoModel(IInfoModel model) {
+            infoModel = model;
+        }
+
         private void OneSecondTimer_Tick(object sender, EventArgs e) {
             UpdateCooldowns();
         }
@@ -54,6 +62,7 @@ namespace k8asd {
             AppointCooldownChanged.Raise(this, AppointCooldown);
             TechCooldownChanged.Raise(this, TechCooldown);
             WeaveCooldownChanged.Raise(this, WeaveCooldown);
+            DrillCooldownChanged.Raise(this, DrillCooldown);
         }
 
         public int ImposeCooldown {
@@ -105,6 +114,14 @@ namespace k8asd {
             }
         }
 
+        public int DrillCooldown {
+            get { return drillCooldown.RemainingMilliseconds; }
+            private set {
+                drillCooldown.RemainingMilliseconds = value;
+                UpdateCooldowns();
+            }
+        }
+
         private void OnPacketReceived(object sender, Packet packet) {
             if (packet.CommandId == "11102") {
                 var token = JToken.Parse(packet.Message);
@@ -132,6 +149,17 @@ namespace k8asd {
                 if (token["message"] == null) {
                     var makecd = (int) token["makecd"];
                     WeaveCooldown = makecd;
+                }
+            }
+            if (packet.CommandId == "62002") {
+                var token = JToken.Parse(packet.Message);
+                var extraBaseInfo = (JArray) token["extraBaseInfo"];
+                if (extraBaseInfo.Count > 0) {
+                    var drillToken = extraBaseInfo[extraBaseInfo.Count - 3];
+                    var axeDtoList = (JArray) drillToken["axeDtoList"];
+                    var normalMining = axeDtoList[0];
+                    var rewardTime = (long) normalMining["rewardTime"];
+                    DrillCooldown = (int) (Utils.ConvertToLocalTime(infoModel.ServerTime, rewardTime) - DateTime.Now).TotalMilliseconds;
                 }
             }
         }

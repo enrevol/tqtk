@@ -69,6 +69,8 @@ namespace k8asd {
             messageLogModel = new MessageLogModel();
             chatLogModel = new ChatLogModel();
 
+            cooldownModel.SetInfoModel(infoModel);
+
             infoView.SetModel(infoModel);
             cooldownView.SetModel(cooldownModel);
             mcuView.SetModel(mcuModel);
@@ -81,10 +83,13 @@ namespace k8asd {
             armyView.SetMessageLogModel(messageLogModel);
             armyView.SetMcuModel(mcuModel);
             chatLogModel.SetInfoModel(infoModel);
+            outsideView.SetInfoModel(infoModel);
+            outsideView.SetCooldownModel(cooldownModel);
 
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
             arenaView.SetLogModel(messageLogModel);
+            outsideView.SetLogModel(messageLogModel);
 
             infoModel.SetPacketWriter(this);
             cooldownModel.SetPacketWriter(this);
@@ -98,6 +103,7 @@ namespace k8asd {
             arenaView.SetPacketWriter(this);
             campaignView.SetPacketWriter(this);
             packetView.SetPacketWriter(this);
+            outsideView.SetPacketWriter(this);
         }
 
         private void ClientView_Load(object sender, EventArgs e) {

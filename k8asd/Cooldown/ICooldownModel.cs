@@ -8,6 +8,7 @@ namespace k8asd {
         int AppointCooldown { get; }
         int TechCooldown { get; }
         int WeaveCooldown { get; }
+        int DrillCooldown { get; }
 
         event EventHandler<int> ImposeCooldownChanged;
         event EventHandler<int> GuideCooldownChanged;
@@ -15,5 +16,6 @@ namespace k8asd {
         event EventHandler<int> AppointCooldownChanged;
         event EventHandler<int> TechCooldownChanged;
         event EventHandler<int> WeaveCooldownChanged;
+        event EventHandler<int> DrillCooldownChanged;
     }
 }

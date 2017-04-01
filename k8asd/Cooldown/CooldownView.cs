@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace k8asd {
     public partial class CooldownView : UserControl {
@@ -16,6 +17,7 @@ namespace k8asd {
             model.AppointCooldownChanged += OnAppointCooldownChanged;
             model.TechCooldownChanged += OnTechCooldownChanged;
             model.WeaveCooldownChanged += OnWeaveCooldownChanged;
+            model.DrillCooldownChanged += OnDrillCooldownChanged;
         }
 
         private void OnImposeCooldownChange(object sender, int milliseconds) {
@@ -40,6 +42,10 @@ namespace k8asd {
 
         private void OnWeaveCooldownChanged(object sender, int milliseconds) {
             weaveCooldownLabel.Text = Utils.FormatDuration(milliseconds);
+        }
+
+        private void OnDrillCooldownChanged(object sender, int milliseconds) {
+            drillCooldownLabel.Text = Utils.FormatDuration(milliseconds);
         }
     }
 }
