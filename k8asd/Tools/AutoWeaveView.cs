@@ -272,12 +272,13 @@ namespace k8asd {
             var hurryMemberIds = new List<int>();
             var nonHurryMemberIds = new List<int>();
             foreach (int id in memberIds) {
+                Debug.Assert(infos[id].Turns > 0);
                 int turns = infos[id].Turns;
                 int otherTurns = totalTurns - turns;
                 if (turns + 1 >= otherTurns) {
                     hurryMemberIds.Add(id);
                 } else {
-                    if (infos[id].Cooldown == 0 && infos[id].Turns > 0) {
+                    if (infos[id].Cooldown == 0) {
                         nonHurryMemberIds.Add(id);
                     }
                 }
@@ -370,16 +371,15 @@ namespace k8asd {
                     return;
                 }
 
-                var memberIds = playerIds.Where(id => id != hostId).ToList();
-                if (memberIds.Count == 0) {
-                    LogInfo("Không có thành viên để dệt.");
+                if (infos[hostId].Turns == 0) {
+                    LogInfo("Chủ tổ đội đã hết lượt dệt!");
                     autoWeave.Checked = false;
                     return;
                 }
 
-                int maxTurns = memberIds.Max(id => infos[id].Turns);
-                if (maxTurns == 0) {
-                    LogInfo("Đã hết lượt dệt.");
+                var memberIds = playerIds.Where(id => id != hostId && infos[id].Turns > 0).ToList();
+                if (memberIds.Count == 0) {
+                    LogInfo("Không có thành viên để dệt.");
                     autoWeave.Checked = false;
                     return;
                 }
