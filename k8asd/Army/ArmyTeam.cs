@@ -43,10 +43,7 @@ namespace k8asd {
             result.PlayerCount = (int) token["currentnum"];
             result.MaxPlayerCount = (int) token["maxnum"];
             var endtime = (long) token["endtime"];
-            var serverTimeOffset = serverTime - DateTime.Now;
-            var endDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-                .ToLocalTime().AddMilliseconds(endtime).Add(-serverTimeOffset);
-            result.cooldown = new Cooldown((int) (endDateTime - DateTime.Now).TotalMilliseconds);
+            result.cooldown = new Cooldown(Utils.ConvertToLocalTime(serverTime, endtime));
             return result;
         }
     }

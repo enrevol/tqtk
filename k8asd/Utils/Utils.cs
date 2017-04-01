@@ -113,6 +113,13 @@ namespace k8asd {
             return String.Format("{0:00}:{1:00}:{2:00}", dateTime.Hour, dateTime.Minute, dateTime.Second);
         }
 
+        public static DateTime ConvertToLocalTime(DateTime serverTime, long time) {
+            var offset = serverTime - DateTime.Now;
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
+            var result = epoch.AddMilliseconds(time).Add(-offset);
+            return result;
+        }
+
         public static string GetMerchantName(this Merchant merchant) {
             switch (merchant) {
             case Merchant.LauLan: return "Lâu Lan";
@@ -135,7 +142,6 @@ namespace k8asd {
         public static void Raise<T>(this EventHandler<T> handler, object sender, T arg) {
             handler?.Invoke(sender, arg);
         }
-
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);

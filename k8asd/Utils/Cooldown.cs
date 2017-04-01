@@ -8,6 +8,10 @@ namespace k8asd {
             RemainingMilliseconds = 0;
         }
 
+        public Cooldown(DateTime dateTime) {
+            endDateTime = dateTime;
+        }
+
         public Cooldown(int milliseconds) {
             RemainingMilliseconds = milliseconds;
         }
