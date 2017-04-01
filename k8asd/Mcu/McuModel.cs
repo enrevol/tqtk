@@ -131,7 +131,8 @@ namespace k8asd {
         }
 
         private void OnPacketReceived(object sender, Packet packet) {
-            if (packet.CommandId == "11102") {
+            if (packet.CommandId == "11102" ||
+                packet.CommandId == "11104") {
                 var token = JToken.Parse(packet.Message);
                 var player = token["player"];
                 if (player != null) {
