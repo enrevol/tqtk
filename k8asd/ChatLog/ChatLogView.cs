@@ -31,10 +31,7 @@ namespace k8asd {
         private static readonly Color LegionChannelColor = Color.FromArgb(80, 140, 230);
 
         private IChatLogModel chatModel;
-        private Dictionary<ChatChannel, string> channelMessages;
-        private string allMessages;
 
-        private FastRichTextBox formatter;
         private int lineLimit;
 
         private enum ChatBoxSize {
@@ -42,6 +39,8 @@ namespace k8asd {
             Medium,
             Large,
         }
+
+        private List<RichTextBox> logBoxes;
 
         private ChatBoxSize chatBoxSize;
 
@@ -58,22 +57,25 @@ namespace k8asd {
             channelList.Items.Add(ChatChannel.Campaign);
             channelList.SelectedIndex = 2;
 
-            formatter = new FastRichTextBox();
-            formatter.Text = String.Empty;
-            formatter.WordWrap = false;
-            var emptyRtf = formatter.Rtf;
+            logBoxes = new List<RichTextBox>();
+            logBoxes.Add(logBox0);
+            logBoxes.Add(logBox1);
+            logBoxes.Add(logBox2);
+            logBoxes.Add(logBox3);
+            logBoxes.Add(logBox4);
+            logBoxes.Add(logAllBox);
 
-            channelMessages = new Dictionary<ChatChannel, string>();
-            channelMessages.Add(ChatChannel.World, emptyRtf);
-            channelMessages.Add(ChatChannel.Nation, emptyRtf);
-            channelMessages.Add(ChatChannel.Local, emptyRtf);
-            channelMessages.Add(ChatChannel.Legion, emptyRtf);
-            channelMessages.Add(ChatChannel.Campaign, emptyRtf);
+            foreach (var box in logBoxes) {
+                box.BackColor = Color.FromArgb(6, 40, 38);
+            }
 
-            allMessages = emptyRtf;
+            logBox0.ForeColor = GetChannelColor(ChatChannel.World);
+            logBox1.ForeColor = GetChannelColor(ChatChannel.Nation);
+            logBox2.ForeColor = GetChannelColor(ChatChannel.Local);
+            logBox3.ForeColor = GetChannelColor(ChatChannel.Legion);
+            logBox4.ForeColor = GetChannelColor(ChatChannel.Campaign);
 
             chatBoxSize = ChatBoxSize.Small;
-            logBox.BackColor = Color.FromArgb(6, 40, 38);
             logTabList.SelectedIndex = 5;
         }
 
@@ -89,28 +91,29 @@ namespace k8asd {
             var line = String.Format("[{0}] [{1}] {2}: {3}",
                 Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
 
-            var channelMessage = channelMessages[message.Channel];
-            AddMessage(ref channelMessage, line, GetChannelColor(message.Channel));
-            channelMessages[message.Channel] = channelMessage;
-            AddMessage(ref allMessages, line, GetChannelColor(message.Channel));
-            if (autoScrollBox.Checked) {
-                UpdateLogBox();
+            var logBox = GetLogBox(message.Channel);
+            if (logBox != null) {
+                if (logBox.Lines.Length > 0) {
+                    logBox.AppendText(Environment.NewLine);
+                }
+                logBox.AppendText(line);
             }
+
+            AddMessage(logAllBox, line, GetChannelColor(message.Channel));
+            TryScrollBoxes();
         }
 
-        private void AddMessage(ref string lines, string line, Color color) {
-            formatter.Rtf = lines;
-            if (formatter.Text.Length > 0) {
-                formatter.AppendText(Environment.NewLine);
+        private void AddMessage(RichTextBox box, string line, Color color) {
+            if (box.Text.Length > 0) {
+                box.AppendText(Environment.NewLine);
             }
-            var startIndex = formatter.Text.Length;
-            formatter.AppendText(line);
-            formatter.Select(startIndex, formatter.Text.Length - startIndex);
-            formatter.SelectionColor = color;
-            if (formatter.Lines.Length > lineLimit) {
-                RemoveFirstLine(formatter);
+            var startIndex = box.Text.Length;
+            box.AppendText(line);
+            box.Select(startIndex, box.Text.Length - startIndex);
+            box.SelectionColor = color;
+            if (box.Lines.Length > lineLimit) {
+                RemoveFirstLine(box);
             }
-            lines = formatter.Rtf;
         }
 
         private void RemoveFirstLine(RichTextBox box) {
@@ -120,8 +123,8 @@ namespace k8asd {
             }
             var startIndex = box.GetFirstCharIndexFromLine(0);
             var endIndex = box.GetFirstCharIndexFromLine(1);
-            formatter.Select(startIndex, endIndex - startIndex);
-            formatter.SelectedText = String.Empty;
+            box.Select(startIndex, endIndex - startIndex);
+            box.SelectedText = String.Empty;
             if (isReadOnly) {
                 box.ReadOnly = true;
             }
@@ -149,22 +152,26 @@ namespace k8asd {
             return Color.White;
         }
 
-        private string GetChannelMessage(int tabIndex) {
-            switch (tabIndex) {
-            case 0: return channelMessages[ChatChannel.World];
-            case 1: return channelMessages[ChatChannel.Nation];
-            case 2: return channelMessages[ChatChannel.Local];
-            case 3: return channelMessages[ChatChannel.Legion];
-            case 4: return channelMessages[ChatChannel.Campaign];
-            case 5: return allMessages;
+        private RichTextBox GetLogBox(ChatChannel channel) {
+            if (channel.Id == ChatChannel.Private.Id) {
+                return null;
             }
-            return String.Empty;
-        }
-
-        private void UpdateLogBox() {
-            var selectedIndex = logTabList.SelectedIndex;
-            logBox.Rtf = GetChannelMessage(selectedIndex);
-            Utils.ScrollToBottom(logBox);
+            if (channel.Id == ChatChannel.World.Id) {
+                return logBox0;
+            }
+            if (channel.Id == ChatChannel.Nation.Id) {
+                return logBox1;
+            }
+            if (channel.Id == ChatChannel.Local.Id) {
+                return logBox2;
+            }
+            if (channel.Id == ChatChannel.Legion.Id) {
+                return logBox3;
+            }
+            if (channel.Id == ChatChannel.Campaign.Id) {
+                return logBox4;
+            }
+            return null;
         }
 
         private void chatInput_KeyPress(object sender, KeyPressEventArgs e) {
@@ -196,7 +203,15 @@ namespace k8asd {
         }
 
         private void logTabList_SelectedIndexChanged(object sender, EventArgs e) {
-            UpdateLogBox();
+            //
+        }
+
+        private void TryScrollBoxes() {
+            if (autoScrollBox.Checked) {
+                foreach (var box in logBoxes) {
+                    Utils.ScrollToBottom(box);
+                }
+            }
         }
 
         private void changeSizeButton_Click(object sender, EventArgs e) {
@@ -224,9 +239,7 @@ namespace k8asd {
             Height += deltaHeight;
             Location = new Point(Location.X, Location.Y - deltaHeight);
 
-            if (autoScrollBox.Checked) {
-                Utils.ScrollToBottom(logBox);
-            }
+            TryScrollBoxes();
         }
     }
 }
