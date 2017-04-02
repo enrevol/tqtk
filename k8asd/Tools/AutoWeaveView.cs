@@ -248,38 +248,55 @@ namespace k8asd {
             }
         }
 
-        private List<int> FindWeaveMemberIds(List<int> memberIds) {
-            Debug.Assert(memberIds.Count > 0);
+        private class WeaveData {
+            public int Id { get; set; }
+            public int Turns { get; set; }
+            public int Cooldown { get; set; }
+        };
 
-            var result = new List<int>();
-            if (memberIds.Count == 1) {
-                // Chỉ còn 1 thành viên.
-                var id = memberIds[0];
-                if (infos[id].Cooldown == 0) {
-                    // OK.
-                    result.Add(id);
+        private WeaveData MakeData(int id) {
+            var data = new WeaveData();
+            data.Id = id;
+            data.Turns = infos[id].Turns;
+            data.Cooldown = infos[id].Cooldown;
+            return data;
+        }
+
+        private static List<int> FindWeaveMemberIds(List<WeaveData> memberData) {
+            var partyIds = new List<int>();
+            if (memberData.Count == 0) {
+                return partyIds;
+            }
+
+            if (memberData.Count <= 2) {
+                // Còn 1 hoặc 2 thành viên.
+                // Chờ hết đóng băng rồi dệt.
+                if (memberData.All(data => data.Cooldown == 0)) {
+                    // Nếu tất cả đều hết đóng băng.
+                    partyIds.AddRange(memberData.Select(data => data.Id));
                 }
-                return result;
+                return partyIds;
             }
 
-            // Còn >= 2 thành viên.
-            int totalTurns = 0;
-            foreach (int id in memberIds) {
-                totalTurns += infos[id].Turns;
-            }
+            // Còn > 2 thành viên.
+            // Tổng số lượt tất cả thành viên.
+            int totalTurns = memberData.Sum(data => data.Turns);
 
             // Thành viên trong trạng thái phải ưu tiên dệt trước.
             var hurryMemberIds = new List<int>();
+
+            // Thành viên trong trạng thái không ưu tiên.
             var nonHurryMemberIds = new List<int>();
-            foreach (int id in memberIds) {
-                Debug.Assert(infos[id].Turns > 0);
-                int turns = infos[id].Turns;
+
+            foreach (var data in memberData) {
+                Debug.Assert(data.Turns > 0);
+                int turns = data.Turns;
                 int otherTurns = totalTurns - turns;
                 if (turns + 1 >= otherTurns) {
-                    hurryMemberIds.Add(id);
+                    hurryMemberIds.Add(data.Id);
                 } else {
-                    if (infos[id].Cooldown == 0) {
-                        nonHurryMemberIds.Add(id);
+                    if (data.Cooldown == 0) {
+                        nonHurryMemberIds.Add(data.Id);
                     }
                 }
             }
@@ -292,34 +309,83 @@ namespace k8asd {
                     // Case: x x 1, e.g. 2 2 1, 3 3 1.
                     // Select the two members.
                 }
-                hurryMemberIds = hurryMemberIds.Where(id => infos[id].Cooldown == 0).ToList();
+                hurryMemberIds = hurryMemberIds.Where(id => memberData.Find(data => data.Id == id).Cooldown == 0).ToList();
                 if (hurryMemberIds.Count >= 2) {
                     // Two hurry members.
-                    result.Add(hurryMemberIds[0]);
-                    result.Add(hurryMemberIds[1]);
+                    partyIds.Add(hurryMemberIds[0]);
+                    partyIds.Add(hurryMemberIds[1]);
                 }
-                return result;
+                return partyIds;
             }
 
             if (hurryMemberIds.Count == 1) {
                 var id = hurryMemberIds[0];
-                if (infos[id].Cooldown == 0) {
+                if (memberData.Find(data => data.Id == id).Cooldown == 0) {
                     if (nonHurryMemberIds.Count > 0) {
                         // OK.
                         // One hurry member and one non-hurry member.
-                        result.Add(id);
-                        result.Add(nonHurryMemberIds[0]);
+                        partyIds.Add(id);
+                        partyIds.Add(nonHurryMemberIds[0]);
                     }
                 }
-                return result;
+                return partyIds;
             }
 
             Debug.Assert(hurryMemberIds.Count == 0);
 
             if (nonHurryMemberIds.Count >= 2) {
                 // Two non-hurry members.
-                result.Add(nonHurryMemberIds[0]);
-                result.Add(nonHurryMemberIds[1]);
+                partyIds.Add(nonHurryMemberIds[0]);
+                partyIds.Add(nonHurryMemberIds[1]);
+            }
+            return partyIds;
+        }
+
+        private static List<int> FindWeaveMemberIds(WeaveData hostData, List<WeaveData> memberData) {
+            Debug.Assert(memberData.Count > 0);
+            Debug.Assert(hostData.Cooldown == 0);
+            Debug.Assert(hostData.Turns > 1);
+
+            var partyIds = FindWeaveMemberIds(memberData);
+            if (partyIds.Count > 0) {
+                // Found.
+                // Check if host is in hurry state.
+                int hostTurns = hostData.Turns - 1;
+                var minMemberTurns = ComputeMimimumTurns(memberData.Select(data => data.Turns).ToList());
+
+                if (hostTurns >= minMemberTurns) {
+                    // Hurry.
+                    partyIds.Add(hostData.Id);
+                } else {
+                    // Not hurry.
+                    // Predict the next party.
+                    foreach (var id in partyIds) {
+                        var dt = memberData.Find(data => data.Id == id);
+                        --dt.Turns;
+                        dt.Cooldown = 1;
+                    }
+
+                    memberData = memberData.Where(data => data.Turns > 0).ToList();
+                    var nextPartyIds = FindWeaveMemberIds(memberData);
+                    if (nextPartyIds.Count == 0) {
+                        // Can not find the next party.
+                        // The host will be in the current party.
+                        partyIds.Add(hostData.Id);
+                    }
+                }
+            }
+            return partyIds;
+        }
+
+        private static int ComputeMimimumTurns(List<int> memberTurns) {
+            int totalTurns = memberTurns.Sum();
+            int result = totalTurns / 2;
+            foreach (var turn in memberTurns) {
+                var otherTurns = totalTurns - turn;
+                if (turn > otherTurns) {
+                    result = otherTurns;
+                    break;
+                }
             }
             return result;
         }
@@ -388,10 +454,25 @@ namespace k8asd {
                     return;
                 }
 
-                var weaveMemberIds = FindWeaveMemberIds(memberIds);
-                if (weaveMemberIds.Count == 0) {
+                var memberData = new List<WeaveData>();
+                foreach (var id in memberIds) {
+                    var data = MakeData(id);
+                    memberData.Add(data);
+                }
+
+                var findingMode = WeaveMode.PullLevel;
+                if (makeTogetherBox.Checked && infos[hostId].Turns > 1) {
+                    findingMode = WeaveMode.WeaveTogether;
+                }
+
+                var partyIds = (findingMode == WeaveMode.PullLevel ?
+                    FindWeaveMemberIds(memberData) :
+                    FindWeaveMemberIds(MakeData(hostId), memberData));
+                if (partyIds.Count == 0) {
                     return;
                 }
+
+                var partyMemberIds = partyIds.Where(id => id != hostId).ToList();
 
                 // Kiểm tra lại thời gian đóng băng của chủ tổ đội.
                 if (!await RefreshPlayerAsync(hostId)) {
@@ -403,14 +484,8 @@ namespace k8asd {
                     return;
                 }
 
-                if (infos[hostId].Turns == 0) {
-                    LogInfo("Chủ tổ đội đã hết lượt dệt.");
-                    autoWeave.Checked = false;
-                    return;
-                }
-
                 // Kiểm tra lại thời gian đóng băng của thành viên.
-                foreach (var memberId in weaveMemberIds) {
+                foreach (var memberId in partyMemberIds) {
                     if (!await RefreshPlayerAsync(memberId)) {
                         // Mất kết nối.
                         RemovePlayer(memberId);
@@ -421,20 +496,13 @@ namespace k8asd {
                     }
                 }
 
-                var partyMemberIds = new List<int>();
-                partyMemberIds.AddRange(weaveMemberIds);
+                var partyNames = partyIds.Select(id => clients[id].PlayerName).ToList();
+                LogInfo(String.Format("Tiến hành dệt với: {0}", String.Join(", ", partyNames)));
 
-                var mode = WeaveMode.PullLevel;
-                if (makeTogetherBox.Checked && infos[hostId].Turns > 1) {
-                    mode = WeaveMode.WeaveTogether;
-                    partyMemberIds.Add(hostId);
-                }
-
-                LogInfo(String.Format("Tiến hành dệt với: {0}",
-                    String.Join(", ", partyMemberIds.Select(id => clients[id].PlayerName))));
-                if (await WeaveAsync(hostId, mode, weaveMemberIds.ToArray())) {
+                var weavingMode = (partyIds.Contains(hostId) ? WeaveMode.WeaveTogether : WeaveMode.PullLevel);
+                if (await WeaveAsync(hostId, weavingMode, partyMemberIds.ToArray())) {
                     // Làm mới thành viên vừa dệt xong.
-                    foreach (var id in weaveMemberIds) {
+                    foreach (var id in partyIds) {
                         await RefreshPlayerAsync(id);
                     }
                 }
