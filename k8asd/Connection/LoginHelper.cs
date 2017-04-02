@@ -169,7 +169,7 @@ namespace k8asd {
             }
 
             // Wrong Username or Password.
-            const string Error = "Wrong Username or Password";
+            const string Error = "Sai th&ocirc;ng tin đăng nhập hoặc bị kh&oacute;a.";
             var index = htmlCode.IndexOf(Error);
             if (index != -1) {
                 return LoginStatus.WrongUsernameOrPassword;
