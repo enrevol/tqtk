@@ -30,26 +30,28 @@ namespace k8asd {
             this.barFoodSell = new System.Windows.Forms.TrackBar();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.heroTrainingTab = new System.Windows.Forms.TabPage();
+            this.heroTrainingView = new k8asd.HeroTrainingView();
             this.armyTab = new System.Windows.Forms.TabPage();
+            this.armyView = new k8asd.ArmyView();
             this.weaveTab = new System.Windows.Forms.TabPage();
+            this.weaveView = new k8asd.WeaveView();
             this.arenaTab = new System.Windows.Forms.TabPage();
+            this.arenaView = new k8asd.ArenaView();
             this.campaignTab = new System.Windows.Forms.TabPage();
+            this.campaignView = new k8asd.CampaignView();
             this.outsideTab = new System.Windows.Forms.TabPage();
+            this.outsideView = new k8asd.OutsideView();
             this.packetTab = new System.Windows.Forms.TabPage();
+            this.packetView = new k8asd.PacketView();
             this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
             this.messageLogView = new k8asd.MessageLogView();
             this.chatLogView = new k8asd.ChatLogView();
-            this.heroTrainingView = new k8asd.HeroTrainingView();
-            this.armyView = new k8asd.ArmyView();
-            this.weaveView = new k8asd.WeaveView();
-            this.arenaView = new k8asd.ArenaView();
-            this.campaignView = new k8asd.CampaignView();
-            this.outsideView = new k8asd.OutsideView();
-            this.packetView = new k8asd.PacketView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
+            this.raiseBirdTab = new System.Windows.Forms.TabPage();
+            this.raiseBirdView = new k8asd.RaiseBirdView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -60,6 +62,7 @@ namespace k8asd {
             this.campaignTab.SuspendLayout();
             this.outsideTab.SuspendLayout();
             this.packetTab.SuspendLayout();
+            this.raiseBirdTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // barFoodBuy
@@ -98,7 +101,8 @@ namespace k8asd {
             this.tabControl.Controls.Add(this.campaignTab);
             this.tabControl.Controls.Add(this.outsideTab);
             this.tabControl.Controls.Add(this.packetTab);
-            this.tabControl.Location = new System.Drawing.Point(320, 0);
+            this.tabControl.Controls.Add(this.raiseBirdTab);
+            this.tabControl.Location = new System.Drawing.Point(321, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(645, 558);
@@ -115,6 +119,15 @@ namespace k8asd {
             this.heroTrainingTab.Text = "Luyện";
             this.heroTrainingTab.UseVisualStyleBackColor = true;
             // 
+            // heroTrainingView
+            // 
+            this.heroTrainingView.BackColor = System.Drawing.SystemColors.Control;
+            this.heroTrainingView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.heroTrainingView.Location = new System.Drawing.Point(3, 3);
+            this.heroTrainingView.Name = "heroTrainingView";
+            this.heroTrainingView.Size = new System.Drawing.Size(631, 526);
+            this.heroTrainingView.TabIndex = 32;
+            // 
             // armyTab
             // 
             this.armyTab.Controls.Add(this.armyView);
@@ -125,6 +138,14 @@ namespace k8asd {
             this.armyTab.TabIndex = 1;
             this.armyTab.Text = "Quân đoàn";
             this.armyTab.UseVisualStyleBackColor = true;
+            // 
+            // armyView
+            // 
+            this.armyView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.armyView.Location = new System.Drawing.Point(3, 3);
+            this.armyView.Name = "armyView";
+            this.armyView.Size = new System.Drawing.Size(631, 526);
+            this.armyView.TabIndex = 0;
             // 
             // weaveTab
             // 
@@ -137,6 +158,14 @@ namespace k8asd {
             this.weaveTab.Text = "Dệt";
             this.weaveTab.UseVisualStyleBackColor = true;
             // 
+            // weaveView
+            // 
+            this.weaveView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.weaveView.Location = new System.Drawing.Point(3, 3);
+            this.weaveView.Name = "weaveView";
+            this.weaveView.Size = new System.Drawing.Size(631, 526);
+            this.weaveView.TabIndex = 0;
+            // 
             // arenaTab
             // 
             this.arenaTab.Controls.Add(this.arenaView);
@@ -147,6 +176,14 @@ namespace k8asd {
             this.arenaTab.TabIndex = 3;
             this.arenaTab.Text = "Võ đài";
             this.arenaTab.UseVisualStyleBackColor = true;
+            // 
+            // arenaView
+            // 
+            this.arenaView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.arenaView.Location = new System.Drawing.Point(3, 3);
+            this.arenaView.Name = "arenaView";
+            this.arenaView.Size = new System.Drawing.Size(631, 526);
+            this.arenaView.TabIndex = 0;
             // 
             // campaignTab
             // 
@@ -159,6 +196,14 @@ namespace k8asd {
             this.campaignTab.Text = "Chiến dịch";
             this.campaignTab.UseVisualStyleBackColor = true;
             // 
+            // campaignView
+            // 
+            this.campaignView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.campaignView.Location = new System.Drawing.Point(3, 3);
+            this.campaignView.Name = "campaignView";
+            this.campaignView.Size = new System.Drawing.Size(631, 526);
+            this.campaignView.TabIndex = 0;
+            // 
             // outsideTab
             // 
             this.outsideTab.Controls.Add(this.outsideView);
@@ -170,6 +215,14 @@ namespace k8asd {
             this.outsideTab.Text = "Ngoại thành";
             this.outsideTab.UseVisualStyleBackColor = true;
             // 
+            // outsideView
+            // 
+            this.outsideView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outsideView.Location = new System.Drawing.Point(3, 3);
+            this.outsideView.Name = "outsideView";
+            this.outsideView.Size = new System.Drawing.Size(631, 526);
+            this.outsideView.TabIndex = 0;
+            // 
             // packetTab
             // 
             this.packetTab.Controls.Add(this.packetView);
@@ -179,6 +232,14 @@ namespace k8asd {
             this.packetTab.TabIndex = 5;
             this.packetTab.Text = "Gói tin";
             this.packetTab.UseVisualStyleBackColor = true;
+            // 
+            // packetView
+            // 
+            this.packetView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetView.Location = new System.Drawing.Point(0, 0);
+            this.packetView.Name = "packetView";
+            this.packetView.Size = new System.Drawing.Size(637, 532);
+            this.packetView.TabIndex = 0;
             // 
             // dataTimer
             // 
@@ -205,63 +266,6 @@ namespace k8asd {
             this.chatLogView.Size = new System.Drawing.Size(315, 180);
             this.chatLogView.TabIndex = 34;
             // 
-            // heroTrainingView
-            // 
-            this.heroTrainingView.BackColor = System.Drawing.SystemColors.Control;
-            this.heroTrainingView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.heroTrainingView.Location = new System.Drawing.Point(3, 3);
-            this.heroTrainingView.Name = "heroTrainingView";
-            this.heroTrainingView.Size = new System.Drawing.Size(631, 526);
-            this.heroTrainingView.TabIndex = 32;
-            // 
-            // armyView
-            // 
-            this.armyView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.armyView.Location = new System.Drawing.Point(3, 3);
-            this.armyView.Name = "armyView";
-            this.armyView.Size = new System.Drawing.Size(631, 526);
-            this.armyView.TabIndex = 0;
-            // 
-            // weaveView
-            // 
-            this.weaveView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.weaveView.Location = new System.Drawing.Point(3, 3);
-            this.weaveView.Name = "weaveView";
-            this.weaveView.Size = new System.Drawing.Size(631, 526);
-            this.weaveView.TabIndex = 0;
-            // 
-            // arenaView
-            // 
-            this.arenaView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.arenaView.Location = new System.Drawing.Point(3, 3);
-            this.arenaView.Name = "arenaView";
-            this.arenaView.Size = new System.Drawing.Size(631, 526);
-            this.arenaView.TabIndex = 0;
-            // 
-            // campaignView
-            // 
-            this.campaignView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.campaignView.Location = new System.Drawing.Point(3, 3);
-            this.campaignView.Name = "campaignView";
-            this.campaignView.Size = new System.Drawing.Size(631, 526);
-            this.campaignView.TabIndex = 0;
-            // 
-            // outsideView
-            // 
-            this.outsideView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.outsideView.Location = new System.Drawing.Point(3, 3);
-            this.outsideView.Name = "outsideView";
-            this.outsideView.Size = new System.Drawing.Size(631, 526);
-            this.outsideView.TabIndex = 0;
-            // 
-            // packetView
-            // 
-            this.packetView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetView.Location = new System.Drawing.Point(0, 0);
-            this.packetView.Name = "packetView";
-            this.packetView.Size = new System.Drawing.Size(637, 532);
-            this.packetView.TabIndex = 0;
-            // 
             // cooldownView
             // 
             this.cooldownView.Location = new System.Drawing.Point(0, 100);
@@ -282,6 +286,24 @@ namespace k8asd {
             this.infoView.Name = "infoView";
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
+            // 
+            // raiseBirdTab
+            // 
+            this.raiseBirdTab.Controls.Add(this.raiseBirdView);
+            this.raiseBirdTab.Location = new System.Drawing.Point(4, 22);
+            this.raiseBirdTab.Name = "raiseBirdTab";
+            this.raiseBirdTab.Size = new System.Drawing.Size(637, 532);
+            this.raiseBirdTab.TabIndex = 7;
+            this.raiseBirdTab.Text = "Chim to dần";
+            this.raiseBirdTab.UseVisualStyleBackColor = true;
+            // 
+            // raiseBirdView
+            // 
+            this.raiseBirdView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.raiseBirdView.Location = new System.Drawing.Point(0, 0);
+            this.raiseBirdView.Name = "raiseBirdView";
+            this.raiseBirdView.Size = new System.Drawing.Size(637, 532);
+            this.raiseBirdView.TabIndex = 0;
             // 
             // ClientView
             // 
@@ -306,6 +328,7 @@ namespace k8asd {
             this.campaignTab.ResumeLayout(false);
             this.outsideTab.ResumeLayout(false);
             this.packetTab.ResumeLayout(false);
+            this.raiseBirdTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -335,6 +358,8 @@ namespace k8asd {
         private PacketView packetView;
         private TabPage outsideTab;
         private OutsideView outsideView;
+        private TabPage raiseBirdTab;
+        private RaiseBirdView raiseBirdView;
     }
 }
 
