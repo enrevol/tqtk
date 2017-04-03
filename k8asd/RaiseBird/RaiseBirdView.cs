@@ -101,7 +101,7 @@ namespace k8asd
             {
                 return false;
             }
-            if (infoModel.Silver > 20000)
+            if (infoModel.Silver > 20000 || infoModel.Gold > 20)
             {
                 return true;
             }

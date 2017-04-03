@@ -43,6 +43,9 @@ namespace k8asd {
             this.outsideView = new k8asd.OutsideView();
             this.packetTab = new System.Windows.Forms.TabPage();
             this.packetView = new k8asd.PacketView();
+            this.raiseBirdTab = new System.Windows.Forms.TabPage();
+            this.raiseBirdView = new k8asd.RaiseBirdView();
+            this.researchTab = new System.Windows.Forms.TabPage();
             this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
             this.messageLogView = new k8asd.MessageLogView();
@@ -50,8 +53,7 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.raiseBirdTab = new System.Windows.Forms.TabPage();
-            this.raiseBirdView = new k8asd.RaiseBirdView();
+            this.researchView = new k8asd.ResearchView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -63,6 +65,7 @@ namespace k8asd {
             this.outsideTab.SuspendLayout();
             this.packetTab.SuspendLayout();
             this.raiseBirdTab.SuspendLayout();
+            this.researchTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // barFoodBuy
@@ -102,6 +105,7 @@ namespace k8asd {
             this.tabControl.Controls.Add(this.outsideTab);
             this.tabControl.Controls.Add(this.packetTab);
             this.tabControl.Controls.Add(this.raiseBirdTab);
+            this.tabControl.Controls.Add(this.researchTab);
             this.tabControl.Location = new System.Drawing.Point(321, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -241,6 +245,33 @@ namespace k8asd {
             this.packetView.Size = new System.Drawing.Size(637, 532);
             this.packetView.TabIndex = 0;
             // 
+            // raiseBirdTab
+            // 
+            this.raiseBirdTab.Controls.Add(this.raiseBirdView);
+            this.raiseBirdTab.Location = new System.Drawing.Point(4, 22);
+            this.raiseBirdTab.Name = "raiseBirdTab";
+            this.raiseBirdTab.Size = new System.Drawing.Size(637, 532);
+            this.raiseBirdTab.TabIndex = 7;
+            this.raiseBirdTab.Text = "Chim to dần";
+            this.raiseBirdTab.UseVisualStyleBackColor = true;
+            // 
+            // raiseBirdView
+            // 
+            this.raiseBirdView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.raiseBirdView.Location = new System.Drawing.Point(0, 0);
+            this.raiseBirdView.Name = "raiseBirdView";
+            this.raiseBirdView.Size = new System.Drawing.Size(637, 532);
+            this.raiseBirdView.TabIndex = 0;
+            // 
+            // researchTab
+            // 
+            this.researchTab.Controls.Add(this.researchView);
+            this.researchTab.Location = new System.Drawing.Point(4, 22);
+            this.researchTab.Name = "researchTab";
+            this.researchTab.Size = new System.Drawing.Size(637, 532);
+            this.researchTab.TabIndex = 8;
+            this.researchTab.Text = "SNC";
+            // 
             // dataTimer
             // 
             this.dataTimer.Interval = 50;
@@ -287,23 +318,12 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
-            // raiseBirdTab
+            // researchView
             // 
-            this.raiseBirdTab.Controls.Add(this.raiseBirdView);
-            this.raiseBirdTab.Location = new System.Drawing.Point(4, 22);
-            this.raiseBirdTab.Name = "raiseBirdTab";
-            this.raiseBirdTab.Size = new System.Drawing.Size(637, 532);
-            this.raiseBirdTab.TabIndex = 7;
-            this.raiseBirdTab.Text = "Chim to dần";
-            this.raiseBirdTab.UseVisualStyleBackColor = true;
-            // 
-            // raiseBirdView
-            // 
-            this.raiseBirdView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.raiseBirdView.Location = new System.Drawing.Point(0, 0);
-            this.raiseBirdView.Name = "raiseBirdView";
-            this.raiseBirdView.Size = new System.Drawing.Size(637, 532);
-            this.raiseBirdView.TabIndex = 0;
+            this.researchView.Location = new System.Drawing.Point(0, 0);
+            this.researchView.Name = "researchView";
+            this.researchView.Size = new System.Drawing.Size(453, 287);
+            this.researchView.TabIndex = 0;
             // 
             // ClientView
             // 
@@ -329,6 +349,7 @@ namespace k8asd {
             this.outsideTab.ResumeLayout(false);
             this.packetTab.ResumeLayout(false);
             this.raiseBirdTab.ResumeLayout(false);
+            this.researchTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -360,6 +381,8 @@ namespace k8asd {
         private OutsideView outsideView;
         private TabPage raiseBirdTab;
         private RaiseBirdView raiseBirdView;
+        private TabPage researchTab;
+        private ResearchView researchView;
     }
 }
 
