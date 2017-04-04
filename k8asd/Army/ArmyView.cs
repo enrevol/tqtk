@@ -269,14 +269,31 @@ namespace k8asd {
             //auto kick
             if (this.chkKick.Checked)
             {
-                for (int i = 0; i < members.Count; i++)
+                for (int i = 1; i < members.Count; i++)
                 {
                     if (!findInList(members[i].Name))
                     {
-                        await packetWriter.KickArmyPlayerAsync(members[i].Id);
+                        var packet = await packetWriter.KickArmyPlayerAsync(members[i].Id);
+
+                        //nếu bị kick host thì giai tan lập lại
+                        if (!"".Equals(packet.Message))
+                        {
+                            string str = Parse34104(packet);
+                            if ("Thành viên không Quân đội không tồn tại".Equals(str))
+                            {
+                                await packetWriter.DisbandArmyAsync();
+                                createArmy();
+                            }
+                        }
                     }
                 }
             }
+        }
+
+        private string Parse34104(Packet packet)
+        {
+            var token = JToken.Parse(packet.Message);
+            return token["message"]!=null?token["message"].ToString().Replace("\\",""):"";
         }
 
         private void UpdateArmyPanel(JToken token) {
