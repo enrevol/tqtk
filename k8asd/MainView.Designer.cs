@@ -50,6 +50,7 @@ namespace k8asd
             this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
+            this.autoReherseButton = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +75,8 @@ namespace k8asd
             autoArenaButton,
             this.autoWeaveButton,
             this.autoMerchantButton,
-            this.autoSwapButton});
+            this.autoSwapButton,
+            this.autoReherseButton});
             menuItem0.Name = "menuItem0";
             menuItem0.Size = new System.Drawing.Size(58, 20);
             menuItem0.Text = "Phụ trợ";
@@ -270,6 +272,13 @@ namespace k8asd
             this.clientList.View = System.Windows.Forms.View.Details;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
+            // autoReherseButton
+            // 
+            this.autoReherseButton.Name = "autoReherseButton";
+            this.autoReherseButton.Size = new System.Drawing.Size(214, 22);
+            this.autoReherseButton.Text = "Tự động tập trận";
+            this.autoReherseButton.Click += new System.EventHandler(this.autoReherseButton_Click);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +319,7 @@ namespace k8asd
         private ToolStripMenuItem autoSwapButton;
         private ToolStripMenuItem autoMerchantButton;
         private Button parallelLoginButton;
+        private ToolStripMenuItem autoReherseButton;
     }
 }
 

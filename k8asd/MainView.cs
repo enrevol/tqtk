@@ -170,5 +170,11 @@ namespace k8asd {
             var view = new AutoMerchantView();
             view.Show();
         }
+
+        private void autoReherseButton_Click(object sender, EventArgs e)
+        {
+            var view = new AutoReherseView();
+            view.Show();
+        }
     }
 }
