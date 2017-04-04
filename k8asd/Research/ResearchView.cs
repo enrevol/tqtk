@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace k8asd
 {
@@ -170,6 +171,7 @@ namespace k8asd
                         {
                             this.rtbLogResearch.Text += "Chỉ số mới: " + newvalue + " < " + value + " ==> giu\n";
                         }
+                        Thread.Sleep(80);
                     }
                     checkBox1.Checked = false;
                     messageLogModel.LogInfo("Hết bạc.");

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace k8asd
 {
@@ -81,6 +82,7 @@ namespace k8asd
                             messageLogModel.LogInfo("Lỗi nuôi chim.");
                         }
                         Parse66004(packet);
+                        Thread.Sleep(80);
                     }
                     chkAutoRaiseBird.Checked = false;
                     messageLogModel.LogInfo("Hết bạc.");
