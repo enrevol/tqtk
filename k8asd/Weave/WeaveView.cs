@@ -433,6 +433,11 @@ namespace k8asd {
         private void autoMake_CheckedChanged(object sender, EventArgs e) {
             CheckAutoMake();
         }
+
+        private async void btBuyWeave_Click(object sender, EventArgs e)
+        {
+            var packets = await packetWriter.BuyWeaveAsync();
+        }
     }
 
 

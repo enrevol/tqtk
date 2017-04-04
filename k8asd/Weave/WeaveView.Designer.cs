@@ -67,6 +67,7 @@
             this.configTab = new System.Windows.Forms.TabPage();
             this.slot2PlayerInput = new System.Windows.Forms.TextBox();
             this.slot1PlayerInput = new System.Windows.Forms.TextBox();
+            this.btBuyWeave = new System.Windows.Forms.Button();
             noteLabel = new System.Windows.Forms.Label();
             interfaceTab = new System.Windows.Forms.TabPage();
             label4 = new System.Windows.Forms.Label();
@@ -99,6 +100,7 @@
             // 
             // interfaceTab
             // 
+            interfaceTab.Controls.Add(this.btBuyWeave);
             interfaceTab.Controls.Add(this.refreshTeamButton);
             interfaceTab.Controls.Add(this.memberBox);
             interfaceTab.Controls.Add(this.baseInfoBox);
@@ -241,7 +243,7 @@
             this.priceLabel.AutoSize = true;
             this.priceLabel.Location = new System.Drawing.Point(185, 20);
             this.priceLabel.Name = "priceLabel";
-            this.priceLabel.Size = new System.Drawing.Size(120, 13);
+            this.priceLabel.Size = new System.Drawing.Size(123, 13);
             this.priceLabel.TabIndex = 13;
             this.priceLabel.Text = "Giá bán: 999 ▲ (Xuống)";
             // 
@@ -401,7 +403,7 @@
             // 
             // refreshTeamInterval
             // 
-            this.refreshTeamInterval.Location = new System.Drawing.Point(285, 16);
+            this.refreshTeamInterval.Location = new System.Drawing.Point(269, 16);
             this.refreshTeamInterval.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -426,7 +428,7 @@
             // autoRefreshTeamBox
             // 
             this.autoRefreshTeamBox.AutoSize = true;
-            this.autoRefreshTeamBox.Location = new System.Drawing.Point(125, 17);
+            this.autoRefreshTeamBox.Location = new System.Drawing.Point(115, 17);
             this.autoRefreshTeamBox.Name = "autoRefreshTeamBox";
             this.autoRefreshTeamBox.Size = new System.Drawing.Size(157, 17);
             this.autoRefreshTeamBox.TabIndex = 30;
@@ -577,6 +579,16 @@
             this.slot1PlayerInput.Size = new System.Drawing.Size(280, 20);
             this.slot1PlayerInput.TabIndex = 38;
             // 
+            // btBuyWeave
+            // 
+            this.btBuyWeave.Location = new System.Drawing.Point(331, 16);
+            this.btBuyWeave.Name = "btBuyWeave";
+            this.btBuyWeave.Size = new System.Drawing.Size(68, 23);
+            this.btBuyWeave.TabIndex = 32;
+            this.btBuyWeave.Text = "Mua Lượt";
+            this.btBuyWeave.UseVisualStyleBackColor = true;
+            this.btBuyWeave.Click += new System.EventHandler(this.btBuyWeave_Click);
+            // 
             // WeaveView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -642,5 +654,6 @@
         private System.Windows.Forms.TextBox slot2PlayerInput;
         private System.Windows.Forms.Button quitAndMakeButton;
         private System.Windows.Forms.NumericUpDown textileLevelInput;
+        private System.Windows.Forms.Button btBuyWeave;
     }
 }

@@ -105,5 +105,13 @@ namespace k8asd {
             }
             return p1;
         }
+
+        /// <summary>
+        /// Mua lượt dệt.
+        /// </summary>
+        public static async Task<Packet> BuyWeaveAsync(this IPacketWriter writer)
+        {
+            return await writer.SendCommandAsync("43203", "1");
+        }
     }
 }
