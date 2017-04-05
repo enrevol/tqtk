@@ -73,7 +73,7 @@ namespace k8asd
             {
                 try
                 {
-                    while (await CheckConditionAsync())
+                    while (await CheckConditionAsync() && chkAutoRaiseBird.Checked)
                     {
                         int type = 1;
                         var packet = await packetWriter.RaiseBirdAsync(type);
@@ -82,7 +82,8 @@ namespace k8asd
                             messageLogModel.LogInfo("Lỗi nuôi chim.");
                         }
                         Parse66004(packet);
-                        Thread.Sleep(80);
+                        //Thread.Sleep(80);
+                        await Task.Delay(80);
                     }
                     chkAutoRaiseBird.Checked = false;
                     messageLogModel.LogInfo("Hết bạc.");

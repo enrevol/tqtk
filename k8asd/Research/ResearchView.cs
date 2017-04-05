@@ -129,7 +129,7 @@ namespace k8asd
             {
                 try
                 {
-                    while (await CheckConditionAsync())
+                    while (await CheckConditionAsync() && this.checkBox1.Checked)
                     {
                         //lam moi
                         var packet = await packetWriter.ChangeResearchAsync(indexCombo + 1, (int)numericUpDown1.Value);
@@ -171,7 +171,8 @@ namespace k8asd
                         {
                             this.rtbLogResearch.Text += "Chỉ số mới: " + newvalue + " < " + value + " ==> giu\n";
                         }
-                        Thread.Sleep(80);
+                        //Thread.Sleep(80);
+                        await Task.Delay(80);
                     }
                     checkBox1.Checked = false;
                     messageLogModel.LogInfo("Hết bạc.");
