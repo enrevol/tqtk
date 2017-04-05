@@ -49,12 +49,15 @@ namespace k8asd {
             var result = new PowerDetail();
 
             var armies = new List<Army>();
+            if (token["army"] == null)
+            {
+                return null;
+            }
             foreach (var subToken in token["army"]) {
                 armies.Add(Army.Parse(subToken));
             }
             result.Armies = armies;
-
-            var power = token["power"];
+            var power = token["power"];            
             result.Attackable = (bool) power["attackable"];
             result.Campaign = (string) power["campaign"];
             result.Id = (int) power["powerid"];

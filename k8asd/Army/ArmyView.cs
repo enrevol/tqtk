@@ -96,6 +96,10 @@ namespace k8asd {
 
                     var token = JToken.Parse(powerPacket.Message);
                     var power = PowerDetail.Parse(token);
+                    if (power == null)
+                    {
+                        return;
+                    }
                     var powerArmy = power.Armies.FirstOrDefault(army => army.Type == ArmyType.Army);
                     if (powerArmy != null) {
                         armies.Add(powerArmy);
