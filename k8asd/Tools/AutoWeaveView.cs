@@ -301,6 +301,10 @@ namespace k8asd {
                 }
             }
 
+            // Ưu tiên ai nhiều lượt dệt trước.
+            nonHurryMemberIds = nonHurryMemberIds.OrderByDescending(
+                id => memberData.Find(data => data.Id == id).Turns).ToList();
+
             if (hurryMemberIds.Count >= 2) {
                 if (hurryMemberIds.Count == 3) {
                     // Case: 1 1 1.
