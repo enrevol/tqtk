@@ -117,7 +117,6 @@ namespace k8asd {
             this.heroTrainingTab.Controls.Add(this.heroTrainingView);
             this.heroTrainingTab.Location = new System.Drawing.Point(4, 22);
             this.heroTrainingTab.Name = "heroTrainingTab";
-            this.heroTrainingTab.Padding = new System.Windows.Forms.Padding(3);
             this.heroTrainingTab.Size = new System.Drawing.Size(637, 532);
             this.heroTrainingTab.TabIndex = 0;
             this.heroTrainingTab.Text = "Luyện";
@@ -127,9 +126,9 @@ namespace k8asd {
             // 
             this.heroTrainingView.BackColor = System.Drawing.SystemColors.Control;
             this.heroTrainingView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.heroTrainingView.Location = new System.Drawing.Point(3, 3);
+            this.heroTrainingView.Location = new System.Drawing.Point(0, 0);
             this.heroTrainingView.Name = "heroTrainingView";
-            this.heroTrainingView.Size = new System.Drawing.Size(631, 526);
+            this.heroTrainingView.Size = new System.Drawing.Size(637, 532);
             this.heroTrainingView.TabIndex = 32;
             // 
             // armyTab
@@ -137,7 +136,6 @@ namespace k8asd {
             this.armyTab.Controls.Add(this.armyView);
             this.armyTab.Location = new System.Drawing.Point(4, 22);
             this.armyTab.Name = "armyTab";
-            this.armyTab.Padding = new System.Windows.Forms.Padding(3);
             this.armyTab.Size = new System.Drawing.Size(637, 532);
             this.armyTab.TabIndex = 1;
             this.armyTab.Text = "Quân đoàn";
@@ -146,9 +144,9 @@ namespace k8asd {
             // armyView
             // 
             this.armyView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.armyView.Location = new System.Drawing.Point(3, 3);
+            this.armyView.Location = new System.Drawing.Point(0, 0);
             this.armyView.Name = "armyView";
-            this.armyView.Size = new System.Drawing.Size(631, 526);
+            this.armyView.Size = new System.Drawing.Size(637, 532);
             this.armyView.TabIndex = 0;
             // 
             // weaveTab
@@ -156,7 +154,6 @@ namespace k8asd {
             this.weaveTab.Controls.Add(this.weaveView);
             this.weaveTab.Location = new System.Drawing.Point(4, 22);
             this.weaveTab.Name = "weaveTab";
-            this.weaveTab.Padding = new System.Windows.Forms.Padding(3);
             this.weaveTab.Size = new System.Drawing.Size(637, 532);
             this.weaveTab.TabIndex = 2;
             this.weaveTab.Text = "Dệt";
@@ -165,9 +162,9 @@ namespace k8asd {
             // weaveView
             // 
             this.weaveView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.weaveView.Location = new System.Drawing.Point(3, 3);
+            this.weaveView.Location = new System.Drawing.Point(0, 0);
             this.weaveView.Name = "weaveView";
-            this.weaveView.Size = new System.Drawing.Size(631, 526);
+            this.weaveView.Size = new System.Drawing.Size(637, 532);
             this.weaveView.TabIndex = 0;
             // 
             // arenaTab
@@ -175,7 +172,6 @@ namespace k8asd {
             this.arenaTab.Controls.Add(this.arenaView);
             this.arenaTab.Location = new System.Drawing.Point(4, 22);
             this.arenaTab.Name = "arenaTab";
-            this.arenaTab.Padding = new System.Windows.Forms.Padding(3);
             this.arenaTab.Size = new System.Drawing.Size(637, 532);
             this.arenaTab.TabIndex = 3;
             this.arenaTab.Text = "Võ đài";
@@ -184,9 +180,9 @@ namespace k8asd {
             // arenaView
             // 
             this.arenaView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.arenaView.Location = new System.Drawing.Point(3, 3);
+            this.arenaView.Location = new System.Drawing.Point(0, 0);
             this.arenaView.Name = "arenaView";
-            this.arenaView.Size = new System.Drawing.Size(631, 526);
+            this.arenaView.Size = new System.Drawing.Size(637, 532);
             this.arenaView.TabIndex = 0;
             // 
             // campaignTab
@@ -194,7 +190,6 @@ namespace k8asd {
             this.campaignTab.Controls.Add(this.campaignView);
             this.campaignTab.Location = new System.Drawing.Point(4, 22);
             this.campaignTab.Name = "campaignTab";
-            this.campaignTab.Padding = new System.Windows.Forms.Padding(3);
             this.campaignTab.Size = new System.Drawing.Size(637, 532);
             this.campaignTab.TabIndex = 4;
             this.campaignTab.Text = "Chiến dịch";
@@ -203,9 +198,9 @@ namespace k8asd {
             // campaignView
             // 
             this.campaignView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.campaignView.Location = new System.Drawing.Point(3, 3);
+            this.campaignView.Location = new System.Drawing.Point(0, 0);
             this.campaignView.Name = "campaignView";
-            this.campaignView.Size = new System.Drawing.Size(631, 526);
+            this.campaignView.Size = new System.Drawing.Size(637, 532);
             this.campaignView.TabIndex = 0;
             // 
             // outsideTab
@@ -213,7 +208,6 @@ namespace k8asd {
             this.outsideTab.Controls.Add(this.outsideView);
             this.outsideTab.Location = new System.Drawing.Point(4, 22);
             this.outsideTab.Name = "outsideTab";
-            this.outsideTab.Padding = new System.Windows.Forms.Padding(3);
             this.outsideTab.Size = new System.Drawing.Size(637, 532);
             this.outsideTab.TabIndex = 6;
             this.outsideTab.Text = "Ngoại thành";
@@ -222,9 +216,9 @@ namespace k8asd {
             // outsideView
             // 
             this.outsideView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.outsideView.Location = new System.Drawing.Point(3, 3);
+            this.outsideView.Location = new System.Drawing.Point(0, 0);
             this.outsideView.Name = "outsideView";
-            this.outsideView.Size = new System.Drawing.Size(631, 526);
+            this.outsideView.Size = new System.Drawing.Size(637, 532);
             this.outsideView.TabIndex = 0;
             // 
             // packetTab
@@ -271,12 +265,14 @@ namespace k8asd {
             this.instituteTab.Size = new System.Drawing.Size(637, 532);
             this.instituteTab.TabIndex = 8;
             this.instituteTab.Text = "SNC";
+            this.instituteTab.UseVisualStyleBackColor = true;
             // 
             // instituteView
             // 
+            this.instituteView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.instituteView.Location = new System.Drawing.Point(0, 0);
             this.instituteView.Name = "instituteView";
-            this.instituteView.Size = new System.Drawing.Size(453, 287);
+            this.instituteView.Size = new System.Drawing.Size(637, 532);
             this.instituteView.TabIndex = 0;
             // 
             // dataTimer
