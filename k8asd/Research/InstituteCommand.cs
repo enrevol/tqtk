@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 namespace k8asd {
-    public static class ResearchCommand
-    {
+    public static class ResearchCommand {
         /// <summary>
         /// Lấy danh sách các kỹ năng.
         /// </summary>
@@ -10,13 +9,11 @@ namespace k8asd {
             return await writer.SendCommandAsync("63601");
         }
 
-        public static async Task<Packet> ChangeResearchAsync(this IPacketWriter writer, int department, int type)
-        {
+        public static async Task<Packet> ChangeResearchAsync(this IPacketWriter writer, int department, int type) {
             return await writer.SendCommandAsync("63603", department.ToString(), type.ToString());
         }
 
-        public static async Task<Packet> UpdateResearchAsync(this IPacketWriter writer, int department)
-        {
+        public static async Task<Packet> UpdateResearchAsync(this IPacketWriter writer, int department) {
             return await writer.SendCommandAsync("63604", department.ToString());
         }
     }
