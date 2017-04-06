@@ -196,8 +196,9 @@
     <Compile Include="Reherse\ReherseCommand.cs" />
     <Compile Include="Reherse\ReherseInfo.cs" />
     <Compile Include="Research\ComboboxResearch.cs" />
+    <Compile Include="Research\InstituteTech.cs" />
     <Compile Include="Research\ResearchCommand.cs" />
-    <Compile Include="Research\ResearchInfo.cs" />
+    <Compile Include="Research\InstituteInfo.cs" />
     <Compile Include="Research\ResearchView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -449,7 +450,8 @@
     <None Include="Command\43201.json" />
     <None Include="Command\43200.json" />
     <None Include="Command\47007.json" />
-    <None Include="Command\63601.json" />
+    <None Include="Command\63601_1.json" />
+    <None Include="Command\63601_0.json" />
     <None Include="Command\64007.json" />
     <None Include="Command\64005.json" />
     <None Include="Command\34108.json" />
