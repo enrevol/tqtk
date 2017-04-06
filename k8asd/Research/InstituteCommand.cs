@@ -1,20 +1,51 @@
-﻿using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace k8asd {
-    public static class ResearchCommand {
+    public enum InstituteImproveType {
         /// <summary>
-        /// Lấy danh sách các kỹ năng.
+        /// Phổ thông: 10K bạc.
         /// </summary>
-        public static async Task<Packet> GetListResearchAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("63601");
+        PhoThong = 0,
+
+        /// <summary>
+        /// Bạch kim: 15 xu.
+        /// </summary>
+        BachKim = 1,
+
+        /// <summary>
+        /// Chí tôn: 60 xu.
+        /// </summary>
+        ChiTon = 2
+    }
+
+    public static class InstituteCommand {
+        /// <summary>
+        /// Làm mới sở nghiên cứu.
+        /// </summary>
+        public static async Task<InstituteInfo> RefreshInstituteAsync(this IPacketWriter writer) {
+            var packet = await writer.SendCommandAsync("63601");
+            if (packet == null) {
+                return null;
+            }
+            return InstituteInfo.Parse(JToken.Parse(packet.Message));
         }
 
-        public static async Task<Packet> ChangeResearchAsync(this IPacketWriter writer, int department, int type) {
-            return await writer.SendCommandAsync("63603", department.ToString(), type.ToString());
+        /// <summary>
+        /// Làm mới kỹ năng trong sở nghiên cứu.
+        /// </summary>
+        /// <param name="techId">ID của kỹ năng.</param>
+        /// <param name="type"></param>
+        public static async Task<Packet> ImproveInstituteTechAsync(this IPacketWriter writer, int techId, InstituteImproveType type) {
+            return await writer.SendCommandAsync("63603", techId.ToString(), ((int) type).ToString());
         }
 
-        public static async Task<Packet> UpdateResearchAsync(this IPacketWriter writer, int department) {
-            return await writer.SendCommandAsync("63604", department.ToString());
+        /// <summary>
+        /// Thay thế giá trị kỹ năng (sau khi làm mới).
+        /// </summary>
+        /// <param name="techId">ID của kỹ năng.</param>
+        public static async Task<Packet> ChangeInstituteTechAsync(this IPacketWriter writer, int techId) {
+            return await writer.SendCommandAsync("63604", techId.ToString());
         }
     }
 }

@@ -13,50 +13,34 @@ using System.Threading;
 
 namespace k8asd {
     public partial class InstituteView : UserControl {
-        private int indexCombo = 0;
+        private InstituteInfo instituteInfo;
 
         private IPacketWriter packetWriter;
         private IMessageLogModel messageLogModel;
         private IInfoModel infoModel;
 
+        bool isRefreshing;
+
         public InstituteView() {
             InitializeComponent();
 
-            List<ComboboxResearch> listRe = initListResearch();
+            isRefreshing = false;
+            instituteInfo = null;
 
-            for (int i = 0; i < listRe.Count; i++) {
-                this.comboBox1.Items.Add(listRe[i]);
-            }
-
-            //this.comboBox1.SelectedIndex = 0;
-        }
-
-        public List<ComboboxResearch> initListResearch() {
-            List<ComboboxResearch> listRe = new List<ComboboxResearch>();
-            ComboboxResearch re = new ComboboxResearch("1", "Công - 359");
-            listRe.Add(re);
-            re = new ComboboxResearch("2", "Phép - 833");
-            listRe.Add(re);
-            re = new ComboboxResearch("3", "Mưu - 183");
-            listRe.Add(re);
-            re = new ComboboxResearch("4", "Thủ công - 269");
-            listRe.Add(re);
-            re = new ComboboxResearch("5", "Thủ phép - 594");
-            listRe.Add(re);
-            re = new ComboboxResearch("6", "Thủ mưu - 153");
-            listRe.Add(re);
-            re = new ComboboxResearch("7", "Né - 20%");
-            listRe.Add(re);
-            re = new ComboboxResearch("8", "Bạo kích - 20%");
-            listRe.Add(re);
-            re = new ComboboxResearch("9", "Chính xác - 20%");
-            listRe.Add(re);
-            re = new ComboboxResearch("10", "Dẻo dai - 20%");
-            listRe.Add(re);
-            re = new ComboboxResearch("11", "Thống lĩnh - 507");
-            listRe.Add(re);
-
-            return listRe;
+            nameColumn.AspectGetter = obj => {
+                return instituteInfo.Techs.Find(tech => tech.Id == (int) obj).Name;
+            };
+            levelColumn.AspectGetter = obj => {
+                return instituteInfo.Techs.Find(tech => tech.Id == (int) obj).Level;
+            };
+            extraColumn.AspectGetter = obj => {
+                var tech = instituteInfo.Techs.Find(item => item.Id == (int) obj);
+                return String.Format("+{0}{1}", tech.Extra, tech.ValueUnit);
+            };
+            valueColumn.AspectGetter = obj => {
+                var tech = instituteInfo.Techs.Find(item => item.Id == (int) obj);
+                return String.Format("+{0}{1}", tech.Value, tech.ValueUnit);
+            };
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -71,24 +55,24 @@ namespace k8asd {
             infoModel = model;
         }
 
-        public async void GetListResearh() {
-            var packet = await packetWriter.GetListResearchAsync();
-            if (packet == null) {
+        private async Task RefreshInstitute() {
+            if (isRefreshing) {
                 return;
             }
-            Debug.Assert(packet.CommandId == "63601");
-            Parse63601(packet);
-        }
-
-        private void Parse63601(Packet packet) {
-            var token = JToken.Parse(packet.Message);
-            JArray array = (JArray) token["instityteDto"];
-
-            JObject objCur = (JObject) array[indexCombo];
-            string value = objCur["value"].ToString();
-            string newvalue = objCur["newvalue"].ToString();
-            this.lbCu.Text = value;
-            this.lbMoi.Text = newvalue;
+            try {
+                isRefreshing = true;
+                instituteInfo = await packetWriter.RefreshInstituteAsync();
+                if (instituteInfo == null) {
+                    return;
+                }
+                var techIds = new List<int>();
+                foreach (var tech in instituteInfo.Techs) {
+                    techIds.Add(tech.Id);
+                }
+                techList.SetObjects(techIds, true);
+            } finally {
+                isRefreshing = false;
+            }
         }
 
         private string Parse63603(Packet packet) {
@@ -99,16 +83,12 @@ namespace k8asd {
             return "";
         }
 
-        private void refreshButton_Click(object sender, EventArgs e) {
-            GetListResearh();
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
-            indexCombo = this.comboBox1.SelectedIndex;
-            GetListResearh();
+        private async void refreshButton_Click(object sender, EventArgs e) {
+            await RefreshInstitute();
         }
 
         private async void checkBox1_CheckedChanged(object sender, EventArgs e) {
+            /*
             if (this.checkBox1.Checked) {
                 try {
                     while (await CheckConditionAsync() && this.checkBox1.Checked) {
@@ -154,6 +134,7 @@ namespace k8asd {
                     messageLogModel.LogInfo(ee.Message.ToString());
                 }
             }
+            */
         }
 
         private async Task<bool> CheckConditionAsync() {
@@ -167,12 +148,13 @@ namespace k8asd {
             return false;
         }
 
-        private void rtbLogResearch_TextChanged(object sender, EventArgs e) {
-            this.rtbLogResearch.SelectionStart = this.rtbLogResearch.Text.Length;
-            this.rtbLogResearch.ScrollToCaret();
-            if (this.rtbLogResearch.Text.Length > 20000) {
-                this.rtbLogResearch.Clear();
+        private void techList_SelectedIndexChanged(object sender, EventArgs e) {
+            var selectedItem = techList.SelectedItem;
+            if (selectedItem == null) {
+                return;
             }
+            var id = (int) selectedItem.RowObject;
+            var selectedTech = instituteInfo.Techs.Find(tech => tech.Id == id);
         }
     }
 }

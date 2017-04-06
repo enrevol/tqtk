@@ -195,7 +195,6 @@
     </Compile>
     <Compile Include="Reherse\ReherseCommand.cs" />
     <Compile Include="Reherse\ReherseInfo.cs" />
-    <Compile Include="Research\ComboboxResearch.cs" />
     <Compile Include="Research\InstituteTech.cs" />
     <Compile Include="Research\InstituteCommand.cs" />
     <Compile Include="Research\InstituteInfo.cs" />
