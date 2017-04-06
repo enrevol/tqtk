@@ -87,8 +87,8 @@ namespace k8asd {
             outsideView.SetCooldownModel(cooldownModel);
             raiseBirdView.SetInfoModel(infoModel);
             raiseBirdView.SetMessageLogModel(messageLogModel);
-            researchView.SetInfoModel(infoModel);
-            researchView.SetMessageLogModel(messageLogModel);
+            instituteView.SetInfoModel(infoModel);
+            instituteView.SetMessageLogModel(messageLogModel);
 
             heroTrainingView.SetCooldownModel(cooldownModel);
             heroTrainingView.SetLogModel(messageLogModel);
@@ -109,7 +109,7 @@ namespace k8asd {
             packetView.SetPacketWriter(this);
             outsideView.SetPacketWriter(this);
             raiseBirdView.SetPacketWriter(this);
-            researchView.SetPacketWriter(this);
+            instituteView.SetPacketWriter(this);
         }
 
         private void ClientView_Load(object sender, EventArgs e) {

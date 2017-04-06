@@ -197,13 +197,13 @@
     <Compile Include="Reherse\ReherseInfo.cs" />
     <Compile Include="Research\ComboboxResearch.cs" />
     <Compile Include="Research\InstituteTech.cs" />
-    <Compile Include="Research\ResearchCommand.cs" />
+    <Compile Include="Research\InstituteCommand.cs" />
     <Compile Include="Research\InstituteInfo.cs" />
-    <Compile Include="Research\ResearchView.cs">
+    <Compile Include="Research\InstituteView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Research\ResearchView.Designer.cs">
-      <DependentUpon>ResearchView.cs</DependentUpon>
+    <Compile Include="Research\InstituteView.Designer.cs">
+      <DependentUpon>InstituteView.cs</DependentUpon>
     </Compile>
     <Compile Include="Swap\LegionInfo.cs" />
     <Compile Include="Swap\SwapCommand.cs" />
@@ -413,8 +413,8 @@
     <EmbeddedResource Include="RaiseBird\RaiseBirdView.resx">
       <DependentUpon>RaiseBirdView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Research\ResearchView.resx">
-      <DependentUpon>ResearchView.cs</DependentUpon>
+    <EmbeddedResource Include="Research\InstituteView.resx">
+      <DependentUpon>InstituteView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shop\ShopView.resx">
       <DependentUpon>ShopView.cs</DependentUpon>

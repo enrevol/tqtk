@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace k8asd
 {
-    public partial class ResearchView : UserControl
+    public partial class InstituteView : UserControl
     {
         private int indexCombo = 0;
 
@@ -21,7 +21,7 @@ namespace k8asd
         private IMessageLogModel messageLogModel;
         private IInfoModel infoModel;
 
-        public ResearchView()
+        public InstituteView()
         {
             InitializeComponent();
 

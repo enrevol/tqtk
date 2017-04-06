@@ -1,6 +1,6 @@
 ﻿namespace k8asd
 {
-    partial class ResearchView
+    partial class InstituteView
     {
         /// <summary> 
         /// Required designer variable.

@@ -45,7 +45,8 @@ namespace k8asd {
             this.packetView = new k8asd.PacketView();
             this.raiseBirdTab = new System.Windows.Forms.TabPage();
             this.raiseBirdView = new k8asd.RaiseBirdView();
-            this.researchTab = new System.Windows.Forms.TabPage();
+            this.instituteTab = new System.Windows.Forms.TabPage();
+            this.instituteView = new k8asd.InstituteView();
             this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
             this.messageLogView = new k8asd.MessageLogView();
@@ -53,7 +54,6 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.researchView = new k8asd.ResearchView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -65,7 +65,7 @@ namespace k8asd {
             this.outsideTab.SuspendLayout();
             this.packetTab.SuspendLayout();
             this.raiseBirdTab.SuspendLayout();
-            this.researchTab.SuspendLayout();
+            this.instituteTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // barFoodBuy
@@ -105,7 +105,7 @@ namespace k8asd {
             this.tabControl.Controls.Add(this.outsideTab);
             this.tabControl.Controls.Add(this.packetTab);
             this.tabControl.Controls.Add(this.raiseBirdTab);
-            this.tabControl.Controls.Add(this.researchTab);
+            this.tabControl.Controls.Add(this.instituteTab);
             this.tabControl.Location = new System.Drawing.Point(321, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -263,14 +263,21 @@ namespace k8asd {
             this.raiseBirdView.Size = new System.Drawing.Size(637, 532);
             this.raiseBirdView.TabIndex = 0;
             // 
-            // researchTab
+            // instituteTab
             // 
-            this.researchTab.Controls.Add(this.researchView);
-            this.researchTab.Location = new System.Drawing.Point(4, 22);
-            this.researchTab.Name = "researchTab";
-            this.researchTab.Size = new System.Drawing.Size(637, 532);
-            this.researchTab.TabIndex = 8;
-            this.researchTab.Text = "SNC";
+            this.instituteTab.Controls.Add(this.instituteView);
+            this.instituteTab.Location = new System.Drawing.Point(4, 22);
+            this.instituteTab.Name = "instituteTab";
+            this.instituteTab.Size = new System.Drawing.Size(637, 532);
+            this.instituteTab.TabIndex = 8;
+            this.instituteTab.Text = "SNC";
+            // 
+            // instituteView
+            // 
+            this.instituteView.Location = new System.Drawing.Point(0, 0);
+            this.instituteView.Name = "instituteView";
+            this.instituteView.Size = new System.Drawing.Size(453, 287);
+            this.instituteView.TabIndex = 0;
             // 
             // dataTimer
             // 
@@ -318,13 +325,6 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
-            // researchView
-            // 
-            this.researchView.Location = new System.Drawing.Point(0, 0);
-            this.researchView.Name = "researchView";
-            this.researchView.Size = new System.Drawing.Size(453, 287);
-            this.researchView.TabIndex = 0;
-            // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,7 +349,7 @@ namespace k8asd {
             this.outsideTab.ResumeLayout(false);
             this.packetTab.ResumeLayout(false);
             this.raiseBirdTab.ResumeLayout(false);
-            this.researchTab.ResumeLayout(false);
+            this.instituteTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -381,8 +381,8 @@ namespace k8asd {
         private OutsideView outsideView;
         private TabPage raiseBirdTab;
         private RaiseBirdView raiseBirdView;
-        private TabPage researchTab;
-        private ResearchView researchView;
+        private TabPage instituteTab;
+        private InstituteView instituteView;
     }
 }
 
