@@ -23,12 +23,22 @@ namespace k8asd {
     }
 
     static class WeaveCommand {
+        /// <summary>
+        /// Làm mới thương minh.
+        /// </summary>
         public static async Task<MerchantInfo> RefreshMerchantAsync(this IPacketWriter writer) {
             var packet = await writer.SendCommandAsync("43201");
             if (packet == null) {
                 return null;
             }
             return MerchantInfo.Parse(JToken.Parse(packet.Message));
+        }
+
+        /// <summary>
+        /// Mua lượt dệt.
+        /// </summary>
+        public static async Task<Packet> BuyWeaveAsync(this IPacketWriter writer) {
+            return await writer.SendCommandAsync("43203", "1");
         }
 
         /// <summary>
@@ -106,13 +116,6 @@ namespace k8asd {
                 return null;
             }
             return p1;
-        }
-
-        /// <summary>
-        /// Mua lượt dệt.
-        /// </summary>
-        public static async Task<Packet> BuyWeaveAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("43203", "1");
         }
     }
 }
