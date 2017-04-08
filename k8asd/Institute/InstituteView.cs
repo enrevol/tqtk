@@ -95,16 +95,6 @@ namespace k8asd {
             }
         }
 
-        private async Task<bool> ImproveAndRefresh(int techId) {
-            if (!await ImproveTech(techId)) {
-                return false;
-            }
-            if (!await RefreshInstitute()) {
-                return false;
-            }
-            return true;
-        }
-
         private async Task<bool> ChangeBetterStats(int techId) {
             if (asyncLock) {
                 return false;
@@ -121,9 +111,15 @@ namespace k8asd {
                 if (tech.NewValue <= tech.Value) {
                     return true;
                 }
-                messageLogModel.LogInfo(String.Format("[SNC] Làm mới {0} => {1}", tech.Value, tech.NewValue));
+                messageLogModel.LogInfo(String.Format("[SNC] {0}: {1} +{2}{3} => +{4}{5}",
+                    tech.Name, tech.Desc, tech.Value, tech.ValueUnit, tech.NewValue, tech.ValueUnit));
                 var p = await packetWriter.ChangeInstituteTechAsync(techId);
                 if (p == null) {
+                    return false;
+                }
+                var p1 = StatePacket.Parse(p.Message);
+                if (!p1.Ok) {
+                    messageLogModel.LogInfo(p1.Message);
                     return false;
                 }
                 return true;
@@ -165,7 +161,11 @@ namespace k8asd {
                     autoImproveBox.Checked = false;
                     return;
                 }
-                if (!await ImproveAndRefresh(id)) {
+                if (!await ImproveTech(id)) {
+                    autoImproveBox.Checked = false;
+                    return;
+                }
+                if (!await RefreshInstitute(id)) {
                     autoImproveBox.Checked = false;
                     return;
                 }
