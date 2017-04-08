@@ -162,26 +162,19 @@ namespace k8asd {
                 }
                 var id = (int) selectedItem.RowObject;
                 if (!await ChangeBetterStats(id)) {
+                    autoImproveBox.Checked = false;
                     return;
                 }
                 if (!await ImproveAndRefresh(id)) {
+                    autoImproveBox.Checked = false;
                     return;
                 }
                 if (!await ChangeBetterStats(id)) {
+                    autoImproveBox.Checked = false;
                     return;
                 }
             } finally {
                 timerLock = false;
-            }
-        }
-
-        private void autoImproveBox_CheckedChanged(object sender, EventArgs e) {
-            if (autoImproveBox.Checked) {
-                refreshButton.Enabled = false;
-                techList.Enabled = false;
-            } else {
-                refreshButton.Enabled = true;
-                techList.Enabled = true;
             }
         }
     }

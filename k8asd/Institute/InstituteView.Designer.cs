@@ -52,7 +52,6 @@
             this.autoImproveBox.TabIndex = 103;
             this.autoImproveBox.Text = "Tự động làm mới (10K bạc)";
             this.autoImproveBox.UseVisualStyleBackColor = true;
-            this.autoImproveBox.CheckedChanged += new System.EventHandler(this.autoImproveBox_CheckedChanged);
             // 
             // refreshButton
             // 
