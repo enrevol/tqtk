@@ -195,13 +195,13 @@
     </Compile>
     <Compile Include="Reherse\ReherseCommand.cs" />
     <Compile Include="Reherse\ReherseInfo.cs" />
-    <Compile Include="Research\InstituteTech.cs" />
-    <Compile Include="Research\InstituteCommand.cs" />
-    <Compile Include="Research\InstituteInfo.cs" />
-    <Compile Include="Research\InstituteView.cs">
+    <Compile Include="Institute\InstituteTech.cs" />
+    <Compile Include="Institute\InstituteCommand.cs" />
+    <Compile Include="Institute\InstituteInfo.cs" />
+    <Compile Include="Institute\InstituteView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Research\InstituteView.Designer.cs">
+    <Compile Include="Institute\InstituteView.Designer.cs">
       <DependentUpon>InstituteView.cs</DependentUpon>
     </Compile>
     <Compile Include="Swap\LegionInfo.cs" />
@@ -412,7 +412,7 @@
     <EmbeddedResource Include="RaiseBird\RaiseBirdView.resx">
       <DependentUpon>RaiseBirdView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Research\InstituteView.resx">
+    <EmbeddedResource Include="Institute\InstituteView.resx">
       <DependentUpon>InstituteView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shop\ShopView.resx">
