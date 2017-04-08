@@ -17,12 +17,14 @@ namespace k8asd {
 
         private bool asyncLock;
         private bool timerLock;
+        private bool newValueChecked;
 
         public InstituteView() {
             InitializeComponent();
 
             asyncLock = false;
             timerLock = false;
+            newValueChecked = false;
             instituteInfo = null;
 
             nameColumn.AspectGetter = obj => {
@@ -86,7 +88,6 @@ namespace k8asd {
                 }
                 var p1 = StatePacket.Parse(p.Message);
                 if (!p1.Ok) {
-                    messageLogModel.LogInfo(p1.Message);
                     return false;
                 }
                 return true;
@@ -119,7 +120,6 @@ namespace k8asd {
                 }
                 var p1 = StatePacket.Parse(p.Message);
                 if (!p1.Ok) {
-                    messageLogModel.LogInfo(p1.Message);
                     return false;
                 }
                 return true;
@@ -157,24 +157,41 @@ namespace k8asd {
                     return;
                 }
                 var id = (int) selectedItem.RowObject;
-                if (!await ChangeBetterStats(id)) {
-                    autoImproveBox.Checked = false;
-                    return;
+
+                // Kiểm tra xem đã có làm mới từ trước chưa.
+                if (!newValueChecked) {
+                    newValueChecked = true;
+                    if (!await ChangeBetterStats(id)) {
+                        autoImproveBox.Checked = false;
+                        return;
+                    }
                 }
+
+                // Làm mới (cải tiến).
                 if (!await ImproveTech(id)) {
                     autoImproveBox.Checked = false;
                     return;
                 }
-                if (!await RefreshInstitute(id)) {
+
+                // Làm mới sở nghiên cứu để biết giá trị mới.
+                if (!await RefreshInstitute()) {
                     autoImproveBox.Checked = false;
                     return;
                 }
+
+                // Kiểm tra để giữ/thay thế.
                 if (!await ChangeBetterStats(id)) {
                     autoImproveBox.Checked = false;
                     return;
                 }
             } finally {
                 timerLock = false;
+            }
+        }
+
+        private void autoImproveBox_CheckedChanged(object sender, EventArgs e) {
+            if (autoImproveBox.Checked) {
+                newValueChecked = false;
             }
         }
     }
