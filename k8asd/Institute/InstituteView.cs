@@ -83,11 +83,7 @@ namespace k8asd {
             try {
                 asyncLock = true;
                 var p = await packetWriter.ImproveInstituteTechAsync(techId, InstituteImproveType.PhoThong);
-                if (p == null) {
-                    return false;
-                }
-                var p1 = StatePacket.Parse(p.Message);
-                if (!p1.Ok) {
+                if (p == null || !p.Ok) {
                     return false;
                 }
                 return true;
@@ -115,11 +111,7 @@ namespace k8asd {
                 messageLogModel.LogInfo(String.Format("[SNC] {0}: {1} +{2}{3} => +{4}{5}",
                     tech.Name, tech.Desc, tech.Value, tech.ValueUnit, tech.NewValue, tech.ValueUnit));
                 var p = await packetWriter.ChangeInstituteTechAsync(techId);
-                if (p == null) {
-                    return false;
-                }
-                var p1 = StatePacket.Parse(p.Message);
-                if (!p1.Ok) {
+                if (p == null || !p.Ok) {
                     return false;
                 }
                 return true;

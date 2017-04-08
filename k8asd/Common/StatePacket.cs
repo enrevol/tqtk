@@ -2,11 +2,14 @@
 using System;
 
 namespace k8asd {
-    class StatePacket {
+    public class StatePacket {
         public bool Ok { get; private set; }
         public string Message { get; private set; }
 
         public static StatePacket Parse(Packet packet) {
+            if (packet == null) {
+                return null;
+            }
             return Parse(JToken.Parse(packet.Message));
         }
 

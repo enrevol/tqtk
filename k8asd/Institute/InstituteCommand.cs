@@ -36,16 +36,18 @@ namespace k8asd {
         /// </summary>
         /// <param name="techId">ID của kỹ năng.</param>
         /// <param name="type"></param>
-        public static async Task<Packet> ImproveInstituteTechAsync(this IPacketWriter writer, int techId, InstituteImproveType type) {
-            return await writer.SendCommandAsync("63603", techId.ToString(), ((int) type).ToString());
+        public static async Task<StatePacket> ImproveInstituteTechAsync(this IPacketWriter writer, int techId, InstituteImproveType type) {
+            var packet = await writer.SendCommandAsync("63603", techId.ToString(), ((int) type).ToString());
+            return StatePacket.Parse(packet);
         }
 
         /// <summary>
         /// Thay thế giá trị kỹ năng (sau khi làm mới).
         /// </summary>
         /// <param name="techId">ID của kỹ năng.</param>
-        public static async Task<Packet> ChangeInstituteTechAsync(this IPacketWriter writer, int techId) {
-            return await writer.SendCommandAsync("63604", techId.ToString());
+        public static async Task<StatePacket> ChangeInstituteTechAsync(this IPacketWriter writer, int techId) {
+            var packet = await writer.SendCommandAsync("63604", techId.ToString());
+            return StatePacket.Parse(packet);
         }
     }
 }
