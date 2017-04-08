@@ -43,8 +43,9 @@ namespace k8asd {
         /// </summary>
         /// <param name="productId">ID vải.</param>
         /// <param name="limit">Giới hạn.</param>
-        public static async Task<Packet> CreateWeaveAsync(this IPacketWriter writer, int productId, WeaveTeamLimit limit) {
-            return await writer.SendCommandAsync("45202", productId.ToString(), "0", ((int) limit).ToString());
+        public static async Task<StatePacket> CreateWeaveAsync(this IPacketWriter writer, int productId, WeaveTeamLimit limit) {
+            var packet = await writer.SendCommandAsync("45202", productId.ToString(), "0", ((int) limit).ToString());
+            return StatePacket.Parse(packet);
         }
 
         /// <summary>
@@ -76,8 +77,9 @@ namespace k8asd {
         /// Gia nhập tổ đội dệt.
         /// </summary>
         /// <param name="teamId">ID tổ đội.</param>
-        public static async Task<Packet> JoinWeaveAsync(this IPacketWriter writer, int teamId) {
-            return await writer.SendCommandAsync("45209", teamId.ToString());
+        public static async Task<StatePacket> JoinWeaveAsync(this IPacketWriter writer, int teamId) {
+            var packet = await writer.SendCommandAsync("45209", teamId.ToString());
+            return StatePacket.Parse(packet);
         }
 
         /// <summary>
@@ -109,8 +111,7 @@ namespace k8asd {
         /// <summary>
         /// Mua lượt dệt.
         /// </summary>
-        public static async Task<Packet> BuyWeaveAsync(this IPacketWriter writer)
-        {
+        public static async Task<Packet> BuyWeaveAsync(this IPacketWriter writer) {
             return await writer.SendCommandAsync("43203", "1");
         }
     }

@@ -177,13 +177,12 @@ namespace k8asd {
             try {
                 host.PacketReceived += OnPacketReceived;
                 var limit = (hostLegionButton.Checked ? WeaveTeamLimit.Legion : WeaveTeamLimit.None);
-                var p0 = await host.CreateWeaveAsync(textileLevel, limit);
-                if (p0 == null) {
+                var p = await host.CreateWeaveAsync(textileLevel, limit);
+                if (p == null) {
                     return false;
                 }
-                var state = StatePacket.Parse(p0);
-                if (!state.Ok) {
-                    LogInfo(String.Format("{0}: {1}", host.PlayerName, state.Message));
+                if (!p.Ok) {
+                    LogInfo(String.Format("{0}: {1}", host.PlayerName, p.Message));
                     return false;
                 }
             } finally {
@@ -203,7 +202,7 @@ namespace k8asd {
 
             try {
                 Debug.Assert(hostingTeamId != NoTeam);
-                var tasks = new List<Task<Packet>>();
+                var tasks = new List<Task<StatePacket>>();
                 foreach (var member in members) {
                     tasks.Add(member.JoinWeaveAsync(hostingTeamId));
                 }
@@ -219,10 +218,9 @@ namespace k8asd {
                         return false;
                     }
 
-                    var state = StatePacket.Parse(p);
-                    if (!state.Ok) {
+                    if (!p.Ok) {
                         // Lỗi gia nhập.
-                        LogInfo(String.Format("{0}: {1}", members[memberIndex].PlayerName, state.Message));
+                        LogInfo(String.Format("{0}: {1}", members[memberIndex].PlayerName, p.Message));
                         // Huỷ tổ đội.
                         await host.DisbandWeaveAsync(hostingTeamId);
                         return false;
