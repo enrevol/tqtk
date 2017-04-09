@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class OutsideView : UserControl {
+    public partial class OutsideView : UserControl, IConfigHandler {
         private IPacketWriter packetWriter;
         private IInfoModel infoModel;
         private ICooldownModel cooldownModel;
@@ -21,6 +21,16 @@ namespace k8asd {
             miningLocking = false;
 
             miningTimer.Start();
+        }
+
+        public bool LoadConfig(IConfig config) {
+            autoDrillBox.Checked = Boolean.Parse(
+                config.Get("outside_auto_drill_enabled") ?? Boolean.FalseString);
+            return true;
+        }
+
+        public void SaveConfig(IConfig config) {
+            config.Put("outside_auto_drill_enabled", autoDrillBox.Checked);
         }
 
         public void SetPacketWriter(IPacketWriter writer) {

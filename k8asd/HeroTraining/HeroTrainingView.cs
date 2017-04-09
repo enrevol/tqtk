@@ -62,11 +62,12 @@ namespace k8asd {
         }
 
         public bool LoadConfig(IConfig config) {
-            autoTrainCheck.Checked = Convert.ToBoolean(config.Get("barracks_auto_enabled"));
+            autoTrainCheck.Checked = Boolean.Parse(
+                config.Get("barracks_auto_enabled") ?? Boolean.FalseString);
             autoTrainStates = config.GetArray("barracks_auto_train_hero_ids")
-                .ToDictionary(item => Convert.ToInt32(item), item => true);
+                .ToDictionary(item => Int32.Parse(item), item => true);
             autoGuideStates = config.GetArray("barracks_auto_guide_hero_ids")
-                .ToDictionary(item => Convert.ToInt32(item), item => true);
+                .ToDictionary(item => Int32.Parse(item), item => true);
             return true;
         }
 

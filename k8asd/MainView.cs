@@ -107,7 +107,7 @@ namespace k8asd {
             }
         }
 
-        private void MainView_Load(object sender, EventArgs e) {            
+        private void MainView_Load(object sender, EventArgs e) {
             SuspendLayout();
             foreach (var config in ConfigManager.Instance.Configs) {
                 AddClient(config);
@@ -193,8 +193,8 @@ namespace k8asd {
         private void LoadSize() {
             var array = ConfigManager.Instance.GetArray("main_window_size");
             if (array.Count > 0) {
-                var width = Convert.ToInt32(array[0]);
-                var height = Convert.ToInt32(array[1]);
+                var width = Int32.Parse(array[0]);
+                var height = Int32.Parse(array[1]);
                 Size = new Size(width, height);
             }
         }
@@ -202,8 +202,8 @@ namespace k8asd {
         private void LoadLocation() {
             var array = ConfigManager.Instance.GetArray("main_window_location");
             if (array.Count > 0) {
-                var x = Convert.ToInt32(array[0]);
-                var y = Convert.ToInt32(array[1]);
+                var x = Int32.Parse(array[0]);
+                var y = Int32.Parse(array[1]);
                 Location = new Point(x, y);
             }
         }

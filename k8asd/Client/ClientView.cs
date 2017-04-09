@@ -31,11 +31,13 @@ namespace k8asd {
         public ClientConfig Config {
             get {
                 heroTrainingView.SaveConfig(config);
+                outsideView.SaveConfig(config);
                 return config;
             }
             set {
                 config = value;
                 heroTrainingView.LoadConfig(config);
+                outsideView.LoadConfig(config);
             }
         }
 
