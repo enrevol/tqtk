@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Nito.AsyncEx;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
 
 namespace k8asd {
     /// <summary>
@@ -126,6 +127,9 @@ namespace k8asd {
 
             var blocks = GetQueue(commandId);
             var result = await blocks.TakeAsync();
+            if (result != null) {
+                Debug.Assert(result.CommandId == commandId);
+            }
             return result;
         }
 
