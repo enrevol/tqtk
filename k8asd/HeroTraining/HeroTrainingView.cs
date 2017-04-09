@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
 namespace k8asd {
-    public partial class HeroTrainingView : UserControl, IConfigLoader, IConfigSaver {
+    public partial class HeroTrainingView : UserControl, IConfigHandler {
         private Barracks barracks;
         private List<HeroDetail> heroDetails;
         private Dictionary<int, bool> autoTrainStates;
@@ -62,14 +62,16 @@ namespace k8asd {
         }
 
         public bool LoadConfig(IConfig config) {
+            autoTrainCheck.Checked = Convert.ToBoolean(config.Get("barracks_auto_enabled"));
             autoTrainStates = config.GetArray("barracks_auto_train_hero_ids")
-                .ToDictionary(item => Convert.ToInt32(item), item => false);
+                .ToDictionary(item => Convert.ToInt32(item), item => true);
             autoGuideStates = config.GetArray("barracks_auto_guide_hero_ids")
-                .ToDictionary(item => Convert.ToInt32(item), item => false);
+                .ToDictionary(item => Convert.ToInt32(item), item => true);
             return true;
         }
 
         public void SaveConfig(IConfig config) {
+            config.Put("barracks_auto_enabled", autoTrainCheck.Checked);
             config.PutArray("barracks_auto_train_hero_ids",
                 autoTrainStates
                     .Where(item => item.Value)

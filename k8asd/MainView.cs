@@ -96,6 +96,13 @@ namespace k8asd {
             clientList.SelectedObjects = null;
         }
 
+        private void saveButton_Click(object sender, EventArgs e) {
+            var selectedClients = FindSelectedClients();
+            foreach (var client in selectedClients) {
+                ConfigManager.Instance.SaveConfig(client.Config);
+            }
+        }
+
         private void MainView_Load(object sender, EventArgs e) {
             ConfigManager.Instance.LoadConfigs();
             SuspendLayout();

@@ -29,7 +29,10 @@ namespace k8asd {
         private ClientConfig config;
 
         public ClientConfig Config {
-            get { return config; }
+            get {
+                heroTrainingView.SaveConfig(config);
+                return config;
+            }
             set {
                 config = value;
                 heroTrainingView.LoadConfig(config);

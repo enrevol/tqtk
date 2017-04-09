@@ -68,6 +68,8 @@
             this.heroList.AllColumns.Add(this.shiftLevelColumn);
             this.heroList.AllColumns.Add(this.autoTrainColumn);
             this.heroList.AllColumns.Add(this.autoGuideColumn);
+            this.heroList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.heroList.CellEditUseWholeCell = false;
             this.heroList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.nameColumn,

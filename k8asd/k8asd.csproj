@@ -158,8 +158,7 @@
     <Compile Include="Campaign\CampaignCommand.cs" />
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Client\IConfig.cs" />
-    <Compile Include="Client\IConfigLoader.cs" />
-    <Compile Include="Client\IConfigSaver.cs" />
+    <Compile Include="Client\IConfigHandler.cs" />
     <Compile Include="Common\StatePacket.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="HeroTraining\Hero.cs" />

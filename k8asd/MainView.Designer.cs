@@ -37,6 +37,7 @@ namespace k8asd
             this.autoWeaveButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoMerchantButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoSwapButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoReherseButton = new System.Windows.Forms.ToolStripMenuItem();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this._ignore0 = new System.Windows.Forms.Panel();
             this.logoutButton = new System.Windows.Forms.Button();
@@ -50,7 +51,7 @@ namespace k8asd
             this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
-            this.autoReherseButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveButton = new System.Windows.Forms.Button();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,6 +110,13 @@ namespace k8asd
             this.autoSwapButton.Text = "Tự động chuyển bang chủ";
             this.autoSwapButton.Click += new System.EventHandler(this.autoSwapButton_Click);
             // 
+            // autoReherseButton
+            // 
+            this.autoReherseButton.Name = "autoReherseButton";
+            this.autoReherseButton.Size = new System.Drawing.Size(214, 22);
+            this.autoReherseButton.Text = "Tự động tập trận";
+            this.autoReherseButton.Click += new System.EventHandler(this.autoReherseButton_Click);
+            // 
             // oneSecondTimer
             // 
             this.oneSecondTimer.Enabled = true;
@@ -117,6 +125,7 @@ namespace k8asd
             // 
             // _ignore0
             // 
+            this._ignore0.Controls.Add(this.saveButton);
             this._ignore0.Controls.Add(this.logoutButton);
             this._ignore0.Controls.Add(this.parallelLoginButton);
             this._ignore0.Controls.Add(this.loginButton);
@@ -272,12 +281,18 @@ namespace k8asd
             this.clientList.View = System.Windows.Forms.View.Details;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
-            // autoReherseButton
+            // saveButton
             // 
-            this.autoReherseButton.Name = "autoReherseButton";
-            this.autoReherseButton.Size = new System.Drawing.Size(214, 22);
-            this.autoReherseButton.Text = "Tự động tập trận";
-            this.autoReherseButton.Click += new System.EventHandler(this.autoReherseButton_Click);
+            this.saveButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.saveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveButton.Location = new System.Drawing.Point(500, 0);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(80, 70);
+            this.saveButton.TabIndex = 5;
+            this.saveButton.Text = "Lưu cấu hình";
+            this.saveButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // MainView
             // 
@@ -320,6 +335,7 @@ namespace k8asd
         private ToolStripMenuItem autoMerchantButton;
         private Button parallelLoginButton;
         private ToolStripMenuItem autoReherseButton;
+        private Button saveButton;
     }
 }
 
