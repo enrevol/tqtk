@@ -33,7 +33,9 @@ namespace k8asd {
         /// <summary>
         /// Thời gian đóng băng mãnh tiến (mi-li-giây).
         /// </summary>
-        public int GuideCooldown { get; private set; }
+        public int GuideCooldown {
+            get { return guideCooldown.RemainingMilliseconds; }
+        }
 
         public static Barracks Parse(JToken token) {
             var result = new Barracks();
