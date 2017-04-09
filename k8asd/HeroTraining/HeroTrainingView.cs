@@ -7,17 +7,13 @@ using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
 namespace k8asd {
-    public partial class HeroTrainingView : UserControl {
+    public partial class HeroTrainingView : UserControl, IConfigLoader, IConfigSaver {
         private Barracks barracks;
         private List<HeroDetail> heroDetails;
         private Dictionary<int, bool> autoTrainStates;
         private Dictionary<int, bool> autoGuideStates;
 
-        /// <summary>
-        /// Dùng cho tự động luyện.
-        /// </summary>
         private int guidingIndex;
-
         private int trainingIndex;
 
         private bool asyncLock;
@@ -63,6 +59,25 @@ namespace k8asd {
             autoGuideColumn.AspectPutter = (obj, value) => {
                 autoGuideStates[(int) obj] = (bool) value;
             };
+        }
+
+        public bool LoadConfig(IConfig config) {
+            autoTrainStates = config.GetArray("barracks_auto_train_hero_ids")
+                .ToDictionary(item => Convert.ToInt32(item), item => false);
+            autoGuideStates = config.GetArray("barracks_auto_guide_hero_ids")
+                .ToDictionary(item => Convert.ToInt32(item), item => false);
+            return true;
+        }
+
+        public void SaveConfig(IConfig config) {
+            config.PutArray("barracks_auto_train_hero_ids",
+                autoTrainStates
+                    .Where(item => item.Value)
+                    .Select(item => item.Key).ToList());
+            config.PutArray("barracks_auto_guide_hero_ids",
+                autoGuideStates
+                    .Where(item => item.Value)
+                    .Select(item => item.Key).ToList());
         }
 
         public void SetPacketWriter(IPacketWriter writer) {

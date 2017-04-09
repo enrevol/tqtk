@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public class ClientConfig {
+    public class ClientConfig : IConfig {
         private static readonly string ServerIdKey = "server_id";
         private static readonly string UsernameKey = "username";
         private static readonly string PasswordKey = "password";
@@ -49,14 +49,13 @@ namespace k8asd {
             set { Put(PasswordKey, value); }
         }
 
-        public ClientConfig Put<T>(string key, T value) {
+        public void Put<T>(string key, T value) {
             Data[key] = JToken.FromObject(value);
-            return this;
         }
 
-        public ClientConfig PutArray<T>(string key, List<T> values) {
+        public void PutArray<T>(string key, List<T> values) {
             var value = String.Join(",", values);
-            return Put(key, value);
+            Put(key, value);
         }
 
         public string Get(string key) {
@@ -70,7 +69,7 @@ namespace k8asd {
         public List<string> GetArray(string key) {
             var values = Get(key);
             if (values == null) {
-                return null;
+                return Enumerable.Empty<string>().ToList();
             }
             return values.Split(',').ToList();
         }

@@ -30,7 +30,10 @@ namespace k8asd {
 
         public ClientConfig Config {
             get { return config; }
-            set { config = value; }
+            set {
+                config = value;
+                heroTrainingView.LoadConfig(config);
+            }
         }
 
         public event EventHandler<Packet> PacketReceived;

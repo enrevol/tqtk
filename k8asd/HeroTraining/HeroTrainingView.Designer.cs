@@ -39,7 +39,7 @@
             // autoTrainCheck
             // 
             this.autoTrainCheck.AutoSize = true;
-            this.autoTrainCheck.Location = new System.Drawing.Point(100, 12);
+            this.autoTrainCheck.Location = new System.Drawing.Point(90, 12);
             this.autoTrainCheck.Name = "autoTrainCheck";
             this.autoTrainCheck.Size = new System.Drawing.Size(159, 17);
             this.autoTrainCheck.TabIndex = 1;
@@ -84,7 +84,7 @@
             this.heroList.SelectColumnsOnRightClick = false;
             this.heroList.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.None;
             this.heroList.ShowGroups = false;
-            this.heroList.Size = new System.Drawing.Size(473, 184);
+            this.heroList.Size = new System.Drawing.Size(420, 150);
             this.heroList.TabIndex = 32;
             this.heroList.UseCompatibleStateImageBehavior = false;
             this.heroList.View = System.Windows.Forms.View.Details;
@@ -93,10 +93,10 @@
             // 
             this.nameColumn.AspectName = "";
             this.nameColumn.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nameColumn.MaximumWidth = 100;
-            this.nameColumn.MinimumWidth = 100;
+            this.nameColumn.MaximumWidth = 150;
+            this.nameColumn.MinimumWidth = 150;
             this.nameColumn.Text = "Tên";
-            this.nameColumn.Width = 100;
+            this.nameColumn.Width = 150;
             // 
             // levelColumn
             // 
@@ -143,7 +143,7 @@
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.autoTrainCheck);
             this.Name = "HeroTrainingView";
-            this.Size = new System.Drawing.Size(489, 233);
+            this.Size = new System.Drawing.Size(430, 195);
             this.Load += new System.EventHandler(this.HeroTrainingView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.heroList)).EndInit();
             this.ResumeLayout(false);
