@@ -110,14 +110,14 @@ namespace k8asd {
             client.Config = config;
             client.Dock = DockStyle.Fill;
             Controls.Add(client);
-            ClientManager.Instance.Add(client);
+            ClientManager.Instance.AddClient(client);
             client.BringToFront();
             clientList.SetObjects(ClientManager.Instance.Clients);
             client.ConnectionStatusChanged += OnConnectionStatusChanged;
         }
 
         private void RemoveClient(IClient client) {
-            ClientManager.Instance.Remove(client);
+            ClientManager.Instance.RemoveClient(client);
             Controls.Remove((ClientView) client);
             clientList.SetObjects(ClientManager.Instance.Clients);
         }

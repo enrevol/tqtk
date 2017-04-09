@@ -26,10 +26,16 @@ namespace k8asd {
             configs = new List<ClientConfig>();
         }
 
+        /// <summary>
+        /// Cấu hình tất cả người chơi.
+        /// </summary>
         public List<ClientConfig> Configs {
             get { return configs; }
         }
 
+        /// <summary>
+        /// Cập nhật lại cấu hình tất cả người chơi từ tệp tin.
+        /// </summary>
         public void LoadConfigs() {
             var path = ConfigPath;
             var content = ReadFileContent(path);
@@ -44,17 +50,56 @@ namespace k8asd {
             }
         }
 
+        /// <summary>
+        /// Thêm hoặc thay đổi cấu hình.
+        /// </summary>
+        /// <param name="config">Cấu hình được thêm hoặc thay đổi.</param>
         public void SaveConfig(ClientConfig config) {
-            configs.Remove(config);
-            configs.Add(config);
+            var index = configs.IndexOf(config);
+            if (index != -1) {
+                // Thay thế cấu hình cũ.
+                configs[index] = config;
+            } else {
+                // Thêm cấu hình vào cuối.
+                configs.Add(config);
+            }
             Flush();
         }
 
+        /// <summary>
+        /// Xoá cấu hình.
+        /// </summary>
+        /// <param name="config">Cấu hình bị xoá.</param>
         public void DeleteConfig(ClientConfig config) {
             configs.Remove(config);
             Flush();
         }
 
+        /// <summary>
+        /// Di chuyển cấu hình lên trước.
+        /// </summary>
+        /// <param name="config">Cấu hình được di chuyển.</param>
+        public void MoveUpConfig(ClientConfig config) {
+            var index = configs.IndexOf(config);
+            var temp = configs[index - 1];
+            configs[index - 1] = config;
+            configs[index] = temp;
+        }
+
+        /// <summary>
+        /// Di chuyển cấu hình ra sau.
+        /// </summary>
+        /// <param name="config">Cấu hình được di chuyển.</param>
+        public void MoveDownConfig(ClientConfig config) {
+            var index = configs.IndexOf(config);
+            var temp = configs[index + 1];
+            configs[index + 1] = config;
+            configs[index] = temp;
+        }
+
+        /// <summary>
+        /// Lưu cấu hình hiện tại vào tệp tin.
+        /// </summary>
         public void Flush() {
             var array = new JArray();
             foreach (var config in configs) {
