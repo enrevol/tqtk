@@ -6,26 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public class ClientConfig : IConfig {
+    public class ClientConfig : BaseConfig {
         private static readonly string ServerIdKey = "server_id";
         private static readonly string UsernameKey = "username";
         private static readonly string PasswordKey = "password";
-
-        private JObject data;
 
         public static ClientConfig Parse(JObject data) {
             var result = new ClientConfig();
             result.data = (JObject) data.DeepClone();
             return result;
-        }
-
-        public JObject Data {
-            get {
-                if (data == null) {
-                    data = new JObject();
-                }
-                return data;
-            }
         }
 
         public int ServerId {
@@ -47,31 +36,6 @@ namespace k8asd {
         public string Password {
             get { return Get(PasswordKey); }
             set { Put(PasswordKey, value); }
-        }
-
-        public void Put<T>(string key, T value) {
-            Data[key] = JToken.FromObject(value);
-        }
-
-        public void PutArray<T>(string key, List<T> values) {
-            var value = String.Join(",", values);
-            Put(key, value);
-        }
-
-        public string Get(string key) {
-            var value = Data[key];
-            if (value == null) {
-                return null;
-            }
-            return (string) value;
-        }
-
-        public List<string> GetArray(string key) {
-            var values = Get(key);
-            if (values == null) {
-                return Enumerable.Empty<string>().ToList();
-            }
-            return values.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         public override bool Equals(object obj) {

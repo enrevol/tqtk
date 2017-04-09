@@ -9,11 +9,15 @@ using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using BrightIdeasSoftware;
+using System.Drawing;
 
 namespace k8asd {
     public partial class MainView : Form {
         public MainView() {
             InitializeComponent();
+
+            ConfigManager.Instance.LoadConfigs();
+            LoadConfigs();
 
             descriptionColumn.AspectGetter = (obj) => {
                 var client = (IClient) obj;
@@ -103,8 +107,7 @@ namespace k8asd {
             }
         }
 
-        private void MainView_Load(object sender, EventArgs e) {
-            ConfigManager.Instance.LoadConfigs();
+        private void MainView_Load(object sender, EventArgs e) {            
             SuspendLayout();
             foreach (var config in ConfigManager.Instance.Configs) {
                 AddClient(config);
@@ -180,6 +183,47 @@ namespace k8asd {
         private void autoReherseButton_Click(object sender, EventArgs e) {
             var view = new AutoReherseView();
             view.Show();
+        }
+
+        private void LoadConfigs() {
+            LoadSize();
+            LoadLocation();
+        }
+
+        private void LoadSize() {
+            var array = ConfigManager.Instance.GetArray("main_window_size");
+            if (array.Count > 0) {
+                var width = Convert.ToInt32(array[0]);
+                var height = Convert.ToInt32(array[1]);
+                Size = new Size(width, height);
+            }
+        }
+
+        private void LoadLocation() {
+            var array = ConfigManager.Instance.GetArray("main_window_location");
+            if (array.Count > 0) {
+                var x = Convert.ToInt32(array[0]);
+                var y = Convert.ToInt32(array[1]);
+                Location = new Point(x, y);
+            }
+        }
+
+        private void MainView_SizeChanged(object sender, EventArgs e) {
+            var array = new List<int>();
+            array.Add(Size.Width);
+            array.Add(Size.Height);
+            ConfigManager.Instance.PutArray("main_window_size", array);
+        }
+
+        private void MainView_LocationChanged(object sender, EventArgs e) {
+            var array = new List<int>();
+            array.Add(Location.X);
+            array.Add(Location.Y);
+            ConfigManager.Instance.PutArray("main_window_location", array);
+        }
+
+        private void MainView_FormClosed(object sender, FormClosedEventArgs e) {
+            ConfigManager.Instance.Flush();
         }
     }
 }

@@ -305,9 +305,12 @@ namespace k8asd
             this.Location = new System.Drawing.Point(640, 0);
             this.MainMenuStrip = menuStrip1;
             this.Name = "MainView";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "test";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainView_FormClosed);
             this.Load += new System.EventHandler(this.MainView_Load);
+            this.LocationChanged += new System.EventHandler(this.MainView_LocationChanged);
+            this.SizeChanged += new System.EventHandler(this.MainView_SizeChanged);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             this._ignore0.ResumeLayout(false);

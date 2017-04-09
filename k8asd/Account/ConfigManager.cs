@@ -8,7 +8,7 @@ namespace k8asd {
     /// <summary>
     /// Quản lý cấu hình tất cả người chơi và phần mềm.
     /// </summary>
-    public class ConfigManager {
+    public class ConfigManager : BaseConfig {
         private static ConfigManager sharedInstance;
 
         private List<ClientConfig> configs;
@@ -41,6 +41,10 @@ namespace k8asd {
             var content = ReadFileContent(path);
             if (content.Length > 0) {
                 var token = JToken.Parse(content);
+                var settings = token["settings"];
+                if (settings != null) {
+                    data = (JObject) settings.DeepClone();
+                }
                 var array = (JArray) token["accounts"];
                 configs = new List<ClientConfig>();
                 foreach (var item in array) {
@@ -101,13 +105,14 @@ namespace k8asd {
         /// Lưu cấu hình hiện tại vào tệp tin.
         /// </summary>
         public void Flush() {
-            var array = new JArray();
+            var accounts = new JArray();
             foreach (var config in configs) {
-                array.Add(config.Data);
+                accounts.Add(config.Data);
             }
             var path = ConfigPath;
             var token = new JObject();
-            token["accounts"] = array;
+            token["accounts"] = accounts;
+            token["settings"] = Data;
             WriteFileContent(path, token.ToString());
         }
 
