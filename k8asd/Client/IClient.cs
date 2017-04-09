@@ -39,6 +39,11 @@ namespace k8asd {
         ClientState State { get; }
 
         /// <summary>
+        /// Cấu hình của người chơi.
+        /// </summary>
+        ClientConfig Config { get; }
+
+        /// <summary>
         /// ID của người chơi.
         /// </summary>
         int PlayerId { get; }

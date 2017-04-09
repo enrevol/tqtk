@@ -16,16 +16,17 @@ namespace k8asd {
             InitializeComponent();
 
             descriptionColumn.AspectGetter = (obj) => {
-                var client = (ClientView) obj;
-                return client.Configuration.ToString();
+                var client = (IClient) obj;
+                var config = client.Config;
+                return String.Format("{0}_{1}", config.ServerId, config.Username);
             };
             statusColumn.ImageGetter = (obj) => {
                 var client = (IClient) obj;
-                switch (client.ConnectionStatus) {
-                case ConnectionStatus.Connected: return "connected";
-                case ConnectionStatus.Connecting: return "disconnected";
-                case ConnectionStatus.Disconnected: return "disconnected";
-                case ConnectionStatus.Disconnecting: return "disconnected";
+                switch (client.State) {
+                case ClientState.Connected: return "connected";
+                case ClientState.Connecting: return "disconnected";
+                case ClientState.Disconnected: return "disconnected";
+                case ClientState.Disconnecting: return "disconnected";
                 }
                 return String.Empty;
             };
@@ -77,12 +78,12 @@ namespace k8asd {
             var dialog = new AccountView();
             var result = dialog.ShowDialog();
             if (result == DialogResult.OK) {
-                var config = new Configuration();
+                var config = new ClientConfig();
                 config.ServerId = dialog.ServerId;
                 config.Username = dialog.Username;
                 config.Password = dialog.Password;
-                AccountManager.Instance.SaveConfiguration(config);
                 AddClient(config);
+                ConfigManager.Instance.SaveConfig(config);
             }
         }
 
@@ -90,22 +91,23 @@ namespace k8asd {
             var selectedClients = FindSelectedClients();
             foreach (var client in selectedClients) {
                 RemoveClient(client);
+                ConfigManager.Instance.DeleteConfig(client.Config);
             }
             clientList.SelectedObjects = null;
         }
 
         private void MainView_Load(object sender, EventArgs e) {
-            var configs = AccountManager.Instance.LoadConfigurations();
+            ConfigManager.Instance.LoadConfigs();
             SuspendLayout();
-            foreach (var config in configs) {
+            foreach (var config in ConfigManager.Instance.Configs) {
                 AddClient(config);
             }
             ResumeLayout();
         }
 
-        private void AddClient(Configuration config) {
+        private void AddClient(ClientConfig config) {
             var client = new ClientView();
-            client.Configuration = config;
+            client.Config = config;
             client.Dock = DockStyle.Fill;
             Controls.Add(client);
             ClientManager.Instance.Add(client);
@@ -116,14 +118,11 @@ namespace k8asd {
 
         private void RemoveClient(IClient client) {
             ClientManager.Instance.Remove(client);
-            AccountManager.Instance.DeleteConfiguration(
-              ((ClientView) client).Configuration.ServerId,
-              ((ClientView) client).Configuration.Username);
             Controls.Remove((ClientView) client);
             clientList.SetObjects(ClientManager.Instance.Clients);
         }
 
-        private void OnConnectionStatusChanged(object sender, ConnectionStatus status) {
+        private void OnConnectionStatusChanged(object sender, ClientState status) {
             clientList.RefreshObject(sender);
         }
 
@@ -171,8 +170,7 @@ namespace k8asd {
             view.Show();
         }
 
-        private void autoReherseButton_Click(object sender, EventArgs e)
-        {
+        private void autoReherseButton_Click(object sender, EventArgs e) {
             var view = new AutoReherseView();
             view.Show();
         }

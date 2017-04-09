@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,8 @@ namespace k8asd {
             clients.Remove(client);
         }
 
-        public List<IClient> Clients { get { return clients; } }
+        public List<IClient> Clients {
+            get { return clients; }
+        }       
     }
 }

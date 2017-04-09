@@ -26,9 +26,9 @@ namespace k8asd {
 
         private bool disconnectedLocking;
 
-        private Configuration config;
+        private ClientConfig config;
 
-        public Configuration Configuration {
+        public ClientConfig Config {
             get { return config; }
             set { config = value; }
         }

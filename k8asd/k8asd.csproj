@@ -131,7 +131,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\AccountManager.cs" />
     <Compile Include="Account\AccountView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,6 +138,7 @@
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
     <Compile Include="Account\ClientManager.cs" />
+    <Compile Include="Account\ConfigManager.cs" />
     <Compile Include="Arena\ArenaCommand.cs" />
     <Compile Include="Arena\ArenaInfo.cs" />
     <Compile Include="Arena\ArenaPlayer.cs" />
@@ -231,7 +231,7 @@
     <Compile Include="ChatLog\ChatLogView.Designer.cs">
       <DependentUpon>ChatLogView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Account\Configuration.cs" />
+    <Compile Include="Client\ClientConfig.cs" />
     <Compile Include="ChatLog\IChatLogModel.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
