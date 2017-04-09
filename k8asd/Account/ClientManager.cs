@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
+    /// <summary>
+    /// Quản lý tất cả người chơi.
+    /// </summary>
     class ClientManager {
         private static ClientManager sharedInstance;
 
@@ -24,16 +27,27 @@ namespace k8asd {
             clients = new List<IClient>();
         }
 
-        public void Add(IClient client) {
+        /// <summary>
+        /// Thêm người chơi vào danh sách.
+        /// </summary>
+        /// <param name="client">Người chơi được thêm.</param>
+        public void AddClient(IClient client) {
             clients.Add(client);
         }
 
-        public void Remove(IClient client) {
+        /// <summary>
+        /// Xoá người chơi khỏi danh sách.
+        /// </summary>
+        /// <param name="client">Người chơi bị xoá.</param>
+        public void RemoveClient(IClient client) {
             clients.Remove(client);
         }
 
+        /// <summary>
+        /// Danh sách người chơi.
+        /// </summary>
         public List<IClient> Clients {
             get { return clients; }
-        }       
+        }
     }
 }
