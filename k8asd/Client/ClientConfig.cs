@@ -71,7 +71,7 @@ namespace k8asd {
             if (values == null) {
                 return Enumerable.Empty<string>().ToList();
             }
-            return values.Split(',').ToList();
+            return values.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         public override bool Equals(object obj) {
