@@ -123,7 +123,7 @@ namespace k8asd {
             ClientManager.Instance.AddClient(client);
             client.BringToFront();
             clientList.SetObjects(ClientManager.Instance.Clients);
-            client.ConnectionStatusChanged += OnConnectionStatusChanged;
+            client.StateChanged += OnClientStateChanged;
         }
 
         private void RemoveClient(IClient client) {
@@ -132,7 +132,7 @@ namespace k8asd {
             clientList.SetObjects(ClientManager.Instance.Clients);
         }
 
-        private void OnConnectionStatusChanged(object sender, ClientState status) {
+        private void OnClientStateChanged(object sender, ClientState status) {
             clientList.RefreshObject(sender);
         }
 

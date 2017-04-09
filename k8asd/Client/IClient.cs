@@ -31,7 +31,7 @@ namespace k8asd {
     };
 
     interface IClient : IPacketWriter {
-        event EventHandler<ClientState> ConnectionStatusChanged;
+        event EventHandler<ClientState> StateChanged;
 
         /// <summary>
         /// Trạng thái kết nối hiện tại.

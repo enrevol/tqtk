@@ -22,7 +22,7 @@ namespace k8asd {
         private LoginHelper loginHelper;
         private PacketHandler packetHandler;
 
-        private ClientState connectionStatus;
+        private ClientState state;
 
         private bool disconnectedLocking;
 
@@ -42,13 +42,13 @@ namespace k8asd {
         }
 
         public event EventHandler<Packet> PacketReceived;
-        public event EventHandler<ClientState> ConnectionStatusChanged;
+        public event EventHandler<ClientState> StateChanged;
 
         public ClientState State {
-            get { return connectionStatus; }
+            get { return state; }
             set {
-                connectionStatus = value;
-                ConnectionStatusChanged.Raise(this, value);
+                state = value;
+                StateChanged.Raise(this, value);
             }
         }
 
@@ -69,7 +69,7 @@ namespace k8asd {
             InitializeComponent();
 
             disconnectedLocking = false;
-            connectionStatus = ClientState.Disconnected;
+            state = ClientState.Disconnected;
 
             infoModel = new InfoModel();
             cooldownModel = new CooldownModel();
@@ -236,7 +236,7 @@ namespace k8asd {
         /// Attempts to connect the client.
         /// </summary>
         private async Task LogIn(int serverId, string username, string password, bool blocking) {
-            Debug.Assert(connectionStatus == ClientState.Disconnected);
+            Debug.Assert(state == ClientState.Disconnected);
             State = ClientState.Connecting;
 
             loginHelper = new LoginHelper(username, password);
