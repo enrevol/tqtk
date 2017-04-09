@@ -109,7 +109,7 @@ namespace k8asd {
             var clients = ClientManager.Instance.Clients;
             var connectedClients = new List<IClient>();
             foreach (var client in clients) {
-                if (client.ConnectionStatus == ConnectionStatus.Connected) {
+                if (client.State == ClientState.Connected) {
                     connectedClients.Add(client);
                 }
             }
@@ -361,7 +361,7 @@ namespace k8asd {
 
             foreach (var id in playerIds) {
                 var client = clients[id];
-                if (client.ConnectionStatus == ConnectionStatus.Disconnected) {
+                if (client.State == ClientState.Disconnected) {
                     LogInfo(String.Format("Tài khoản {0} mất kết nối!", client.PlayerName));
                     RemovePlayer(id);
                     return;

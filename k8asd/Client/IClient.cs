@@ -8,7 +8,7 @@ namespace k8asd {
     /// <summary>
     /// Trạng thái của người chơi.
     /// </summary>
-    public enum ConnectionStatus {
+    public enum ClientState {
         /// <summary>
         /// Đang kết nối.
         /// </summary>
@@ -31,12 +31,12 @@ namespace k8asd {
     };
 
     interface IClient : IPacketWriter {
-        event EventHandler<ConnectionStatus> ConnectionStatusChanged;
+        event EventHandler<ClientState> ConnectionStatusChanged;
 
         /// <summary>
         /// Trạng thái kết nối hiện tại.
         /// </summary>
-        ConnectionStatus ConnectionStatus { get; }
+        ClientState State { get; }
 
         /// <summary>
         /// ID của người chơi.

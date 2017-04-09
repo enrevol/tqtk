@@ -52,7 +52,7 @@ namespace k8asd {
             var clients = ClientManager.Instance.Clients;
             var connectedClients = new List<IClient>();
             foreach (var client in clients) {
-                if (client.ConnectionStatus == ConnectionStatus.Connected) {
+                if (client.State == ClientState.Connected) {
                     connectedClients.Add(client);
                 }
             }

@@ -22,7 +22,7 @@ namespace k8asd {
         private LoginHelper loginHelper;
         private PacketHandler packetHandler;
 
-        private ConnectionStatus connectionStatus;
+        private ClientState connectionStatus;
 
         private bool disconnectedLocking;
 
@@ -34,9 +34,9 @@ namespace k8asd {
         }
 
         public event EventHandler<Packet> PacketReceived;
-        public event EventHandler<ConnectionStatus> ConnectionStatusChanged;
+        public event EventHandler<ClientState> ConnectionStatusChanged;
 
-        public ConnectionStatus ConnectionStatus {
+        public ClientState State {
             get { return connectionStatus; }
             set {
                 connectionStatus = value;
@@ -61,7 +61,7 @@ namespace k8asd {
             InitializeComponent();
 
             disconnectedLocking = false;
-            connectionStatus = ConnectionStatus.Disconnected;
+            connectionStatus = ClientState.Disconnected;
 
             infoModel = new InfoModel();
             cooldownModel = new CooldownModel();
@@ -117,7 +117,7 @@ namespace k8asd {
         }
 
         public async Task<Packet> SendCommandAsync(string command, params string[] parameters) {
-            if (ConnectionStatus != ConnectionStatus.Connected) {
+            if (State != ClientState.Connected) {
                 // Chưa kết nối.
                 return null;
             }
@@ -129,35 +129,35 @@ namespace k8asd {
         }
 
         public async Task LogIn(bool blocking) {
-            if (ConnectionStatus == ConnectionStatus.Connected) {
+            if (State == ClientState.Connected) {
                 messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
                 return;
             }
-            if (ConnectionStatus == ConnectionStatus.Connecting) {
+            if (State == ClientState.Connecting) {
                 messageLogModel.LogInfo("Đang đang nhập, không cần đăng nhập lại!");
                 return;
             }
-            if (ConnectionStatus == ConnectionStatus.Disconnecting) {
+            if (State == ClientState.Disconnecting) {
                 messageLogModel.LogInfo("Đang đang xuất, không thể đăng nhập!");
                 return;
             }
             try {
-                await LogIn(Configuration.ServerId, Configuration.Username, Configuration.Password, blocking);
+                await LogIn(Config.ServerId, Config.Username, Config.Password, blocking);
             } catch (Exception ex) {
                 messageLogModel.LogInfo(ex.Message);
                 messageLogModel.LogInfo("Đăng nhập thất bại!");
-                ConnectionStatus = ConnectionStatus.Disconnected;
+                State = ClientState.Disconnected;
             }
         }
 
         public async Task LogOut() {
-            if (ConnectionStatus == ConnectionStatus.Disconnected) {
+            if (State == ClientState.Disconnected) {
                 return;
             }
-            if (ConnectionStatus == ConnectionStatus.Disconnecting) {
+            if (State == ClientState.Disconnecting) {
                 return;
             }
-            if (ConnectionStatus == ConnectionStatus.Connecting) {
+            if (State == ClientState.Connecting) {
                 messageLogModel.LogInfo("Đang đang nhập, không thể đăng xuất!");
                 return;
             }
@@ -175,7 +175,7 @@ namespace k8asd {
                 return;
             }
             disconnectedLocking = true;
-            if (ConnectionStatus == ConnectionStatus.Connected) {
+            if (State == ClientState.Connected) {
                 messageLogModel.LogInfo("Mất kết nối với máy chủ.");
                 await Disconnect();
             }
@@ -186,25 +186,25 @@ namespace k8asd {
         /// Manually disconnects the client.
         /// </summary>
         private async Task Disconnect() {
-            Debug.Assert(ConnectionStatus == ConnectionStatus.Connected);
-            ConnectionStatus = ConnectionStatus.Disconnecting;
+            Debug.Assert(State == ClientState.Connected);
+            State = ClientState.Disconnecting;
 
             dataTimer.Stop();
             packetHandler.PacketReceived -= OnPacketReceived;
 
             await packetHandler.Disconnect();
 
-            ConnectionStatus = ConnectionStatus.Disconnected;
+            State = ClientState.Disconnected;
         }
 
         private async Task<bool> Connect(bool blocking) {
-            Debug.Assert(ConnectionStatus == ConnectionStatus.Connecting);
+            Debug.Assert(State == ClientState.Connecting);
             await packetHandler.ConnectAsync();
 
             packetHandler.PacketReceived += OnPacketReceived;
             dataTimer.Start();
 
-            ConnectionStatus = ConnectionStatus.Connected;
+            State = ClientState.Connected;
 
             if (blocking) {
                 var p0 = await SendCommandAsync("10100");
@@ -228,8 +228,8 @@ namespace k8asd {
         /// Attempts to connect the client.
         /// </summary>
         private async Task LogIn(int serverId, string username, string password, bool blocking) {
-            Debug.Assert(connectionStatus == ConnectionStatus.Disconnected);
-            ConnectionStatus = ConnectionStatus.Connecting;
+            Debug.Assert(connectionStatus == ClientState.Disconnected);
+            State = ClientState.Connecting;
 
             loginHelper = new LoginHelper(username, password);
 
@@ -238,15 +238,15 @@ namespace k8asd {
             switch (loginAccountStatus) {
             case LoginStatus.NoConnection:
                 messageLogModel.LogInfo("Không có kết nối mạng.");
-                ConnectionStatus = ConnectionStatus.Disconnected;
+                State = ClientState.Disconnected;
                 return;
             case LoginStatus.WrongUsernameOrPassword:
                 messageLogModel.LogInfo("Sai tên người dùng hoặc mật khẩu.");
-                ConnectionStatus = ConnectionStatus.Disconnected;
+                State = ClientState.Disconnected;
                 return;
             case LoginStatus.UnknownError:
                 messageLogModel.LogInfo("Có lỗi xảy ra.");
-                ConnectionStatus = ConnectionStatus.Disconnected;
+                State = ClientState.Disconnected;
                 return;
             }
             messageLogModel.LogInfo("Đăng nhập tài khoản thành công.");
@@ -256,11 +256,11 @@ namespace k8asd {
             switch (loginServerStatus) {
             case LoginStatus.NoConnection:
                 messageLogModel.LogInfo("Không có kết nối mạng.");
-                ConnectionStatus = ConnectionStatus.Disconnected;
+                State = ClientState.Disconnected;
                 return;
             case LoginStatus.UnknownError:
                 messageLogModel.LogInfo("Có lỗi xảy ra.");
-                ConnectionStatus = ConnectionStatus.Disconnected;
+                State = ClientState.Disconnected;
                 return;
             }
             messageLogModel.LogInfo("Lấy thông tin thành công.");
@@ -292,7 +292,7 @@ namespace k8asd {
         }
 
         private async void testConnectionTimer_Tick(object sender, EventArgs e) {
-            if (ConnectionStatus == ConnectionStatus.Connected) {
+            if (State == ClientState.Connected) {
                 if (!packetHandler.Connected) {
                     await DisconnectedFromServer();
                 }
