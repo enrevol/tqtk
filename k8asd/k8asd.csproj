@@ -159,6 +159,11 @@
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Common\StatePacket.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
+    <Compile Include="HeroTraining\Hero.cs" />
+    <Compile Include="HeroTraining\HeroDetail.cs" />
+    <Compile Include="HeroTraining\Barracks.cs" />
+    <Compile Include="HeroTraining\HeroTrainingCommand.cs" />
+    <Compile Include="HeroTraining\TrainTimeModel.cs" />
     <Compile Include="Map\Area.cs" />
     <Compile Include="Map\City.cs" />
     <Compile Include="Map\CityDetail.cs" />
@@ -441,6 +446,7 @@
     <None Include="Command\31106_2.json" />
     <None Include="Command\31106_1.json" />
     <None Include="Command\31102.json" />
+    <None Include="Command\41100_1.json" />
     <None Include="Command\62002_1.json" />
     <None Include="Command\62002_0.json" />
     <None Include="Command\41203.json" />
@@ -465,7 +471,7 @@
     <None Include="Command\33100_8.json" />
     <None Include="Command\33201.json" />
     <None Include="Command\11102.json" />
-    <None Include="Command\41100.json" />
+    <None Include="Command\41100_0.json" />
     <None Include="Command\41101_0.json" />
     <None Include="Command\41101_1.json" />
     <None Include="Command\41102_0.json" />

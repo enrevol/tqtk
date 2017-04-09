@@ -138,7 +138,7 @@ namespace k8asd {
                 packet.CommandId == "41101" ||
                 packet.CommandId == "41102") {
                 var token = JToken.Parse(packet.Message);
-                if (token["message"] == null) {
+                if (token["message"] == null && token["errmessage"] == null) {
                     var cd = (int) token["cd"];
                     GuideCooldown = cd;
                 }

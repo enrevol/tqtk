@@ -1,0 +1,127 @@
+// 41100 1
+
+{
+  "generaldto": null,
+  "tufeiTokenCount": 0,
+  "maxnum": 3,
+  "currentnum": 0,
+  "goldguide": -1,
+  "trainmodel": [
+    {
+      "times": 1.2,
+      "name": "Cao Cấp",
+      "cost": ""
+    },
+    {
+      "times": 1.5,
+      "name": "Đặc Cấp",
+      "cost": ""
+    },
+    {
+      "times": 2,
+      "name": "Bạch Kim",
+      "cost": ""
+    },
+    {
+      "times": 2.5,
+      "name": "Kim Cương",
+      "cost": ""
+    },
+    {
+      "times": 3,
+      "name": "Chí Tôn",
+      "cost": ""
+    }
+  ],
+  "timemodel": [
+    {
+      "id": 1,
+      "time": 20,
+      "timeunit": " Phút",
+      "cost": "Cao Cấp"
+    },
+    {
+      "id": 2,
+      "time": 2,
+      "timeunit": " Giờ",
+      "cost": "300 Bạc"
+    },
+    {
+      "id": 3,
+      "time": 8,
+      "timeunit": " Giờ",
+      "cost": "3250 Bạc"
+    }
+  ],
+  "cost": -1,
+  "general": [
+    {
+      "gmId": 1200,
+      "generalname": "Y Tịch ",
+      "generalid": 9565,
+      "generalexp": 172827,
+      "generallevel": 74,
+      "pic": "yiji",
+      "nextlevelexp": 234000,
+      "onformation": 1,
+      "trainflag": 0
+    },
+    {
+      "gmId": 1177,
+      "generalname": "Lưu Biểu ",
+      "generalid": 11018,
+      "generalexp": 1,
+      "generallevel": 100,
+      "pic": "liubiao",
+      "nextlevelexp": 864000,
+      "onformation": 1,
+      "trainflag": 0
+    },
+    {
+      "gmId": 1257,
+      "generalname": "Dương Tu ",
+      "generalid": 13627,
+      "generalexp": 134225,
+      "generallevel": 66,
+      "pic": "yangxiu",
+      "nextlevelexp": 162000,
+      "onformation": 0,
+      "trainflag": 0
+    },
+    {
+      "gmId": 1262,
+      "generalname": "Hoa Hâm ",
+      "generalid": 13846,
+      "generalexp": 1,
+      "generallevel": 100,
+      "pic": "huaxin",
+      "nextlevelexp": 864000,
+      "onformation": 1,
+      "trainflag": 0
+    },
+    {
+      "gmId": 1281,
+      "generalname": "Chân Cơ ",
+      "generalid": 16852,
+      "generalexp": 1,
+      "generallevel": 100,
+      "pic": "husanniang",
+      "nextlevelexp": 864000,
+      "onformation": 1,
+      "trainflag": 0
+    },
+    {
+      "gmId": 1334,
+      "generalname": "Tư Mã Chiêu ",
+      "generalid": 20029,
+      "generalexp": 177674,
+      "generallevel": 83,
+      "pic": "lujunyi",
+      "nextlevelexp": 405000,
+      "onformation": 1,
+      "trainflag": 0
+    }
+  ],
+  "guidecdusable": 1,
+  "cd": 0
+}
