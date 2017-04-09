@@ -8,10 +8,10 @@ using System.Diagnostics;
 
 namespace k8asd {
     public partial class HeroTrainingView : UserControl {
-        Barracks barracks;
-        List<HeroDetail> heroDetails;
-        Dictionary<int, bool> autoTrainStates;
-        Dictionary<int, bool> autoGuideStates;
+        private Barracks barracks;
+        private List<HeroDetail> heroDetails;
+        private Dictionary<int, bool> autoTrainStates;
+        private Dictionary<int, bool> autoGuideStates;
 
         /// <summary>
         /// Dùng cho tự động luyện.
@@ -109,8 +109,7 @@ namespace k8asd {
                 }
 
                 barracks = Barracks.Parse(JToken.Parse(packet.Message));
-                heroDetails = new List<HeroDetail>();
-                heroList.Items.Clear();
+                var details = new List<HeroDetail>();
                 var heroIds = new List<int>();
                 foreach (var hero in barracks.Heroes) {
                     heroIds.Add(hero.Id);
@@ -119,9 +118,10 @@ namespace k8asd {
                         return false;
                     }
                     var detail = HeroDetail.Parse(JToken.Parse(p1.Message));
-                    heroDetails.Add(detail);
+                    details.Add(detail);
                 }
 
+                heroDetails = details;
                 heroList.SetObjects(heroIds, true);
                 return true;
             } finally {
