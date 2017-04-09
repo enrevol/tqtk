@@ -78,7 +78,7 @@ namespace k8asd {
             var clients = ClientManager.Instance.Clients;
             var connectedClients = new List<IClient>();
             foreach (var client in clients) {
-                if (client.ConnectionStatus == ConnectionStatus.Connected) {
+                if (client.State == ClientState.Connected) {
                     connectedClients.Add(client);
                 }
             }
@@ -108,7 +108,7 @@ namespace k8asd {
             Packet packet = new Packet();
             foreach (var client in listClient)
             {
-                if (client.ConnectionStatus == ConnectionStatus.Connected)
+                if (client.State == ClientState.Connected)
                 {
                     packet = await client.RefreshListMemberAsync((int)numericUpDown1.Value);
                     break;
@@ -163,7 +163,7 @@ namespace k8asd {
                     this.lbState.Text = "Đang tập trận";
                     foreach (var client in clients)
                     {
-                        if (client.ConnectionStatus == ConnectionStatus.Connected)
+                        if (client.State == ClientState.Connected)
                         {
                             await client.ReherseAsync(playerid);
                         }
