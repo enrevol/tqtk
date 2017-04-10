@@ -218,6 +218,12 @@ namespace k8asd {
                 return;
             }
 
+            var detail = heroDetails.Find(item => item.Id == hero.Id);
+            if (hero.Level >= detail.ShiftLevel) {
+                // Đã đạt đến cấp chuyển sinh.
+                return;
+            }
+
             logModel.LogInfo(String.Format("Mãnh tiến tướng {0} Lv. {1} Exp {2}/{3}",
                 hero.Name, hero.Level, hero.Exp, hero.NextExp));
             await packetWriter.SendCommandAsync("41102", hero.Id.ToString(), "1", "1");
