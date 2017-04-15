@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace k8asd {
     public partial class ClientView : UserControl, IClient {
@@ -152,7 +153,7 @@ namespace k8asd {
             }
             try {
                 await LogIn(Config.ServerId, Config.Username, Config.Password, blocking);
-            } catch (Exception ex) {
+            } catch (WebException ex) {
                 messageLogModel.LogInfo(ex.Message);
                 messageLogModel.LogInfo("Đăng nhập thất bại!");
                 State = ClientState.Disconnected;
