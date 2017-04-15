@@ -137,8 +137,8 @@
     <Compile Include="Account\AccountView.Designer.cs">
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Account\ClientManager.cs" />
-    <Compile Include="Account\ConfigManager.cs" />
+    <Compile Include="Client\ClientManager.cs" />
+    <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Arena\ArenaCommand.cs" />
     <Compile Include="Arena\ArenaInfo.cs" />
     <Compile Include="Arena\ArenaPlayer.cs" />
@@ -156,10 +156,10 @@
     <Compile Include="Army\Power.cs" />
     <Compile Include="Army\PowerDetail.cs" />
     <Compile Include="Campaign\CampaignCommand.cs" />
-    <Compile Include="Client\BaseConfig.cs" />
+    <Compile Include="Config\BaseConfig.cs" />
     <Compile Include="Client\IClient.cs" />
-    <Compile Include="Client\IConfig.cs" />
-    <Compile Include="Client\IConfigHandler.cs" />
+    <Compile Include="Config\IConfig.cs" />
+    <Compile Include="Config\IConfigHandler.cs" />
     <Compile Include="Common\StatePacket.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="HeroTraining\Hero.cs" />
@@ -242,7 +242,7 @@
     <Compile Include="ChatLog\ChatLogView.Designer.cs">
       <DependentUpon>ChatLogView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Client\ClientConfig.cs" />
+    <Compile Include="Config\ClientConfig.cs" />
     <Compile Include="ChatLog\IChatLogModel.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
