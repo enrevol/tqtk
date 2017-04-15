@@ -56,5 +56,8 @@ namespace k8asd {
         Task LogIn(bool blocking);
 
         Task LogOut();
+
+        void EnableAutoQuest();
+        void ReportAutoQuest();
     }
 }

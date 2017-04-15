@@ -118,6 +118,7 @@ namespace k8asd {
             outsideView.SetPacketWriter(this);
             raiseBirdView.SetPacketWriter(this);
             instituteView.SetPacketWriter(this);
+            questView1.SetPacketWriter(this);
         }
 
         private void ClientView_Load(object sender, EventArgs e) {
@@ -305,6 +306,16 @@ namespace k8asd {
                     await DisconnectedFromServer();
                 }
             }
+        }
+
+        public void EnableAutoQuest()
+        {
+            questView1.EnableAutoQuest();
+        }
+
+        public void ReportAutoQuest()
+        {
+            questView1.ReportQuest(Config.Username, PlayerName);
         }
     }
 }

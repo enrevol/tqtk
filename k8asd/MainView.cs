@@ -225,5 +225,25 @@ namespace k8asd {
         private void MainView_FormClosed(object sender, FormClosedEventArgs e) {
             ConfigManager.Instance.Flush();
         }
+
+        private void autoQuestButton_Click(object sender, EventArgs e)
+        {
+            var selectedClients = ClientManager.Instance.Clients;
+            foreach (var client in selectedClients)
+            {
+                client.EnableAutoQuest();
+                Task.Delay(1000);
+            }
+        }
+
+        private void autoReportQuestButton_Click(object sender, EventArgs e)
+        {
+            var selectedClients = ClientManager.Instance.Clients;
+            foreach (var client in selectedClients)
+            {
+                client.ReportAutoQuest();
+                Task.Delay(1000);
+            }
+        }
     }
 }

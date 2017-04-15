@@ -47,6 +47,7 @@ namespace k8asd {
             this.raiseBirdView = new k8asd.RaiseBirdView();
             this.instituteTab = new System.Windows.Forms.TabPage();
             this.instituteView = new k8asd.InstituteView();
+            this.questTab = new System.Windows.Forms.TabPage();
             this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
             this.messageLogView = new k8asd.MessageLogView();
@@ -54,6 +55,7 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
+            this.questView1 = new k8asd.QuestView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -66,6 +68,7 @@ namespace k8asd {
             this.packetTab.SuspendLayout();
             this.raiseBirdTab.SuspendLayout();
             this.instituteTab.SuspendLayout();
+            this.questTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // barFoodBuy
@@ -106,6 +109,7 @@ namespace k8asd {
             this.tabControl.Controls.Add(this.packetTab);
             this.tabControl.Controls.Add(this.raiseBirdTab);
             this.tabControl.Controls.Add(this.instituteTab);
+            this.tabControl.Controls.Add(this.questTab);
             this.tabControl.Location = new System.Drawing.Point(321, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -275,6 +279,16 @@ namespace k8asd {
             this.instituteView.Size = new System.Drawing.Size(637, 532);
             this.instituteView.TabIndex = 0;
             // 
+            // questTab
+            // 
+            this.questTab.Controls.Add(this.questView1);
+            this.questTab.Location = new System.Drawing.Point(4, 22);
+            this.questTab.Name = "questTab";
+            this.questTab.Size = new System.Drawing.Size(637, 532);
+            this.questTab.TabIndex = 9;
+            this.questTab.Text = "NVHN";
+            this.questTab.UseVisualStyleBackColor = true;
+            // 
             // dataTimer
             // 
             this.dataTimer.Interval = 50;
@@ -321,6 +335,13 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
+            // questView1
+            // 
+            this.questView1.Location = new System.Drawing.Point(3, 3);
+            this.questView1.Name = "questView1";
+            this.questView1.Size = new System.Drawing.Size(285, 151);
+            this.questView1.TabIndex = 0;
+            // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -346,6 +367,7 @@ namespace k8asd {
             this.packetTab.ResumeLayout(false);
             this.raiseBirdTab.ResumeLayout(false);
             this.instituteTab.ResumeLayout(false);
+            this.questTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -379,6 +401,8 @@ namespace k8asd {
         private RaiseBirdView raiseBirdView;
         private TabPage instituteTab;
         private InstituteView instituteView;
+        private TabPage questTab;
+        private QuestView questView1;
     }
 }
 
