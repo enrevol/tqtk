@@ -128,33 +128,45 @@ namespace k8asd {
                 LogInfo("Đang khiêu chiến, không thể làm mới!");
                 return false;
             }
-            LogInfo("Bắt đầu làm mới...");
-            isRefreshing = true;
+            try {
+                isRefreshing = true;
+                LogInfo("Bắt đầu làm mới...");
 
-            clients.Clear();
-            infos.Clear();
-            playerIds.Clear();
-            playerList.Items.Clear();
+                clients.Clear();
+                infos.Clear();
+                playerIds.Clear();
+                playerList.Items.Clear();
 
-            foreach (var client in connectedClients) {
-                var packet = await client.RefreshArenaAsync();
-                if (packet == null) {
-                    continue;
-                }
-                Debug.Assert(packet.CommandId == "64005");
-                var token = JToken.Parse(packet.Message);
-
-                var errmessage = token["errmessage"];
-                if (errmessage != null) {
-                    // { "errmessage": "A system error occurred! code:64005" }
-                    continue;
+                var tasks = new List<Task<Packet>>();
+                foreach (var client in connectedClients) {
+                    var task = client.RefreshArenaAsync();
+                    tasks.Add(task);
                 }
 
-                var info = ArenaInfo.Parse(token);
-                var playerId = client.PlayerId;
-                playerIds.Add(playerId);
-                clients.Add(playerId, client);
-                infos.Add(playerId, info);
+                var packets = await Task.WhenAll(tasks);
+
+                Debug.Assert(packets.Length == connectedClients.Count);
+                for (int i = 0; i < packets.Length; ++i) {
+                    var packet = packets[i];
+                    if (packet == null) {
+                        continue;
+                    }
+                    Debug.Assert(packet.CommandId == "64005");
+                    var token = JToken.Parse(packet.Message);
+
+                    var errmessage = token["errmessage"];
+                    if (errmessage != null) {
+                        // { "errmessage": "A system error occurred! code:64005" }
+                        continue;
+                    }
+
+                    var client = connectedClients[i];
+                    var info = ArenaInfo.Parse(token);
+                    var playerId = client.PlayerId;
+                    playerIds.Add(playerId);
+                    clients.Add(playerId, client);
+                    infos.Add(playerId, info);
+                }
 
                 playerIds.Sort((lhs, rhs) => {
                     var lhsRank = infos[lhs].CurrentPlayer.Rank;
@@ -163,10 +175,10 @@ namespace k8asd {
                 });
 
                 playerList.SetObjects(playerIds, true);
+            } finally {
+                LogInfo("Làm mới hoàn thành!");
+                isRefreshing = false;
             }
-
-            LogInfo("Làm mới hoàn thành!");
-            isRefreshing = false;
             return true;
         }
 
