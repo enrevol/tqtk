@@ -64,6 +64,8 @@ namespace k8asd {
                     if (loggingInTasks.Count == ThreadCount) {
                         var loggedInTask = await Task.WhenAny(loggingInTasks);
                         loggingInTasks.Remove(loggedInTask);
+                    } else {
+                        await Task.Delay(500);
                     }
                     loggingInTasks.Add(client.LogIn(blocking));
                 }
