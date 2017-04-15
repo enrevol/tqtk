@@ -10,11 +10,16 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using BrightIdeasSoftware;
 using System.Drawing;
+using Nito.AsyncEx;
 
 namespace k8asd {
     public partial class MainView : Form {
+        private AsyncLock loginLock;
+
         public MainView() {
             InitializeComponent();
+
+            loginLock = new AsyncLock();
 
             ConfigManager.Instance.LoadConfigs();
             LoadConfigs();
@@ -51,13 +56,17 @@ namespace k8asd {
         }
 
         private async Task LogIn(List<IClient> clients, bool blocking) {
-            const int ThreadCount = 3;
-            for (int i = 0; i < clients.Count; i += ThreadCount) {
-                var tasks = new List<Task>();
-                for (int j = 0; j < ThreadCount && i + j < clients.Count; ++j) {
-                    tasks.Add(clients[i + j].LogIn(blocking));
+            using (await loginLock.LockAsync()) {
+                const int ThreadCount = 5;
+                var loggingInTasks = new List<Task>();
+                foreach (var client in clients) {
+                    Debug.Assert(loggingInTasks.Count <= ThreadCount);
+                    if (loggingInTasks.Count == ThreadCount) {
+                        var loggedInTask = await Task.WhenAny(loggingInTasks);
+                        loggingInTasks.Remove(loggedInTask);
+                    }
+                    loggingInTasks.Add(client.LogIn(blocking));
                 }
-                await Task.WhenAll(tasks);
             }
         }
 
