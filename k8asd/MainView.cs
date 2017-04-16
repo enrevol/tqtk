@@ -255,7 +255,7 @@ namespace k8asd {
                 return;
             }
             foreach (var index in selectedIndices) {
-                if (index > 0) {
+                if (index - 1 >= 0) {
                     ConfigManager.Instance.MoveConfigUp(index);
                     ClientManager.Instance.MoveClientUp(index);
                 }
@@ -269,8 +269,9 @@ namespace k8asd {
             if (selectedIndices.Count == 0) {
                 return;
             }
+            selectedIndices.Reverse();
             foreach (var index in selectedIndices) {
-                if (index > 0) {
+                if (index + 1 < ClientManager.Instance.Clients.Count) {
                     ConfigManager.Instance.MoveConfigDown(index);
                     ClientManager.Instance.MoveClientDown(index);
                 }
