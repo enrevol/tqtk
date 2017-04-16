@@ -70,6 +70,11 @@ namespace k8asd {
             }
         }
 
+        private async Task LogOut(List<IClient> clients) {
+            var logoutTasks = clients.Select(item => item.LogOut());
+            await Task.WhenAll(logoutTasks);
+        }
+
         private async void loginButton_Click(object sender, EventArgs e) {
             var selectedClients = FindSelectedClients();
             await LogIn(selectedClients, true);
@@ -82,9 +87,17 @@ namespace k8asd {
 
         private async void logoutButton_Click(object sender, EventArgs e) {
             var selectedClients = FindSelectedClients();
-            foreach (var client in selectedClients) {
-                await client.LogOut();
-            }
+            await LogOut(selectedClients);
+        }
+
+        private async void loginAllButton_Click(object sender, EventArgs e) {
+            var clients = ClientManager.Instance.Clients;
+            await LogIn(clients, true);
+        }
+
+        private async void logoutAllButton_Click(object sender, EventArgs e) {
+            var clients = ClientManager.Instance.Clients;
+            await LogOut(clients);
         }
 
         private void addButton_Click(object sender, EventArgs e) {
@@ -210,18 +223,6 @@ namespace k8asd {
         private void autoArenaButton_Click(object sender, EventArgs e) {
             var view = new AutoArenaView();
             view.Show();
-        }
-
-        private async void loginAllButton_Click(object sender, EventArgs e) {
-            var clients = ClientManager.Instance.Clients;
-            await LogIn(clients, true);
-        }
-
-        private async void logoutAllButton_Click(object sender, EventArgs e) {
-            var clients = ClientManager.Instance.Clients;
-            foreach (var client in clients) {
-                await client.LogOut();
-            }
         }
 
         private void autoWeaveButton_Click(object sender, EventArgs e) {
