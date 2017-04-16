@@ -49,9 +49,11 @@ namespace k8asd {
         }
 
         private void Save() {
+            int serverId;
             if (serverInput.Text.Length > 0 &&
-                            usernameInput.Text.Length > 0 &&
-                            passwordInput.Text.Length > 0) {
+                Int32.TryParse(serverInput.Text, out serverId) &&
+                usernameInput.Text.Length > 0 &&
+                passwordInput.Text.Length > 0) {
                 DialogResult = DialogResult.OK;
             }
         }
