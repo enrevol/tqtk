@@ -137,12 +137,7 @@ namespace k8asd {
                 playerIds.Clear();
                 playerList.Items.Clear();
 
-                var tasks = new List<Task<Packet>>();
-                foreach (var client in connectedClients) {
-                    var task = client.RefreshArenaAsync();
-                    tasks.Add(task);
-                }
-
+                var tasks = connectedClients.Select(client => client.RefreshArenaAsync());
                 var packets = await Task.WhenAll(tasks);
 
                 Debug.Assert(packets.Length == connectedClients.Count);
