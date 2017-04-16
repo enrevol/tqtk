@@ -13,9 +13,9 @@ namespace k8asd.Quest {
         public bool CanReceived { get; private set; }
 
         /// <summary>
-        /// Số lần làm nhiệm vụ.
+        /// Số sao.
         /// </summary>
-        public int Quantity { get; private set; }
+        public int Quality { get; private set; }
 
         public int Type { get; private set; }
 
@@ -29,7 +29,7 @@ namespace k8asd.Quest {
             result.CanReceived = (bool) token["canrecive"];
 
             var taskdto = token["taskdto"];
-            result.Quantity = (int) taskdto["quality"];
+            result.Quality = (int) taskdto["quality"];
             result.Type = (int) taskdto["type"];
             result.Name = (string) taskdto["name"];
             return result;
