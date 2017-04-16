@@ -69,6 +69,7 @@ namespace k8asd {
                     }
                     loggingInTasks.Add(client.LogIn(blocking));
                 }
+                await Task.WhenAll(loggingInTasks);
             }
         }
 
