@@ -14,16 +14,19 @@ namespace k8asd {
             InitializeComponent();
         }
 
-        public int ServerId {
-            get { return Int32.Parse(serverInput.Text); }
+        public string ServerId {
+            get { return serverInput.Text; }
+            set { serverInput.Text = value.ToString(); }
         }
 
         public string Username {
             get { return usernameInput.Text; }
+            set { usernameInput.Text = value; }
         }
 
         public string Password {
             get { return passwordInput.Text; }
+            set { passwordInput.Text = value; }
         }
 
         private void okButton_Click(object sender, EventArgs e) {

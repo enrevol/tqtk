@@ -91,7 +91,7 @@ namespace k8asd {
             var result = dialog.ShowDialog();
             if (result == DialogResult.OK) {
                 var config = new ClientConfig();
-                config.ServerId = dialog.ServerId;
+                config.ServerId = Convert.ToInt32(dialog.ServerId);
                 config.Username = dialog.Username;
                 config.Password = dialog.Password;
                 AddClient(config);
@@ -110,16 +110,55 @@ namespace k8asd {
 
         private void changeButton_Click(object sender, EventArgs e) {
             var selectedClients = FindSelectedClients();
-            if (selectedClients.Count > 0) {
-                var client = selectedClients[0];
-                var config = client.Config;
-                var dialog = new AccountView();
-                dialog.ServerId = config.ServerId;
-                dialog.Username = config.Username;
-                dialog.Password = config.Password;
-                var result = dialog.ShowDialog();
-                if (result == DialogResult.OK) {
+            if (selectedClients.Count == 0) {
+                return;
+            }
 
+            const string MultipleValues = "<Nhiều giá trị>";
+            var serverIds = new HashSet<int>();
+            var usernames = new HashSet<string>();
+            var passwords = new HashSet<string>();
+            var configs = selectedClients.Select(item => item.Config);
+            foreach (var config in configs) {
+                serverIds.Add(config.ServerId);
+                usernames.Add(config.Username);
+                passwords.Add(config.Password);
+            }
+
+            var serverId = (serverIds.Count == 1 ? serverIds.First().ToString() : MultipleValues);
+            var username = (usernames.Count == 1 ? usernames.First() : MultipleValues);
+            var password = (passwords.Count == 1 ? passwords.First() : MultipleValues);
+
+            var dialog = new AccountView();
+            dialog.ServerId = serverId;
+            dialog.Username = username;
+            dialog.Password = password;
+            var result = dialog.ShowDialog();
+            if (result == DialogResult.OK) {
+                bool changed = false;
+                if (!dialog.ServerId.Equals(MultipleValues)) {
+                    foreach (var config in configs) {
+                        config.ServerId = Convert.ToInt32(dialog.ServerId);
+                    }
+                    changed = true;
+                }
+                if (!dialog.Username.Equals(MultipleValues)) {
+                    foreach (var config in configs) {
+                        config.Username = dialog.Username;
+                    }
+                    changed = true;
+                }
+                if (!dialog.Password.Equals(MultipleValues)) {
+                    foreach (var config in configs) {
+                        config.Password = dialog.Password;
+                    }
+                    changed = true;
+                }
+                if (changed) {
+                    foreach (var config in configs) {
+                        ConfigManager.Instance.SaveConfig(config);
+                    }
+                    clientList.RefreshSelectedObjects();
                 }
             }
         }

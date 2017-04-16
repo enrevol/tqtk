@@ -38,6 +38,8 @@ namespace k8asd
             this.autoMerchantButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoSwapButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoReherseButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoQuestButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoReportQuestButton = new System.Windows.Forms.ToolStripMenuItem();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this._ignore0 = new System.Windows.Forms.Panel();
             this.saveButton = new System.Windows.Forms.Button();
@@ -52,8 +54,7 @@ namespace k8asd
             this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
-            this.autoQuestButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoReportQuestButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeButton = new System.Windows.Forms.Button();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,6 +122,20 @@ namespace k8asd
             this.autoReherseButton.Text = "Tự động tập trận";
             this.autoReherseButton.Click += new System.EventHandler(this.autoReherseButton_Click);
             // 
+            // autoQuestButton
+            // 
+            this.autoQuestButton.Name = "autoQuestButton";
+            this.autoQuestButton.Size = new System.Drawing.Size(214, 22);
+            this.autoQuestButton.Text = "Bật tự động NVHN";
+            this.autoQuestButton.Click += new System.EventHandler(this.autoQuestButton_Click);
+            // 
+            // autoReportQuestButton
+            // 
+            this.autoReportQuestButton.Name = "autoReportQuestButton";
+            this.autoReportQuestButton.Size = new System.Drawing.Size(214, 22);
+            this.autoReportQuestButton.Text = "Báo cáo NVHN";
+            this.autoReportQuestButton.Click += new System.EventHandler(this.autoReportQuestButton_Click);
+            // 
             // oneSecondTimer
             // 
             this.oneSecondTimer.Enabled = true;
@@ -135,6 +150,7 @@ namespace k8asd
             this._ignore0.Controls.Add(this.loginButton);
             this._ignore0.Controls.Add(this.logoutAllButton);
             this._ignore0.Controls.Add(this.loginAllButton);
+            this._ignore0.Controls.Add(this.changeButton);
             this._ignore0.Controls.Add(this.removeButton);
             this._ignore0.Controls.Add(this.addButton);
             this._ignore0.Dock = System.Windows.Forms.DockStyle.Top;
@@ -147,7 +163,7 @@ namespace k8asd
             // 
             this.saveButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.saveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveButton.Location = new System.Drawing.Point(500, 0);
+            this.saveButton.Location = new System.Drawing.Point(570, 0);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(80, 70);
             this.saveButton.TabIndex = 5;
@@ -161,7 +177,7 @@ namespace k8asd
             this.logoutButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.logoutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logoutButton.Image = global::k8asd.Properties.Resources.btn_Logout;
-            this.logoutButton.Location = new System.Drawing.Point(420, 0);
+            this.logoutButton.Location = new System.Drawing.Point(490, 0);
             this.logoutButton.Name = "logoutButton";
             this.logoutButton.Size = new System.Drawing.Size(80, 70);
             this.logoutButton.TabIndex = 1;
@@ -175,7 +191,7 @@ namespace k8asd
             this.parallelLoginButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.parallelLoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.parallelLoginButton.Image = global::k8asd.Properties.Resources.btn_Login;
-            this.parallelLoginButton.Location = new System.Drawing.Point(340, 0);
+            this.parallelLoginButton.Location = new System.Drawing.Point(410, 0);
             this.parallelLoginButton.Name = "parallelLoginButton";
             this.parallelLoginButton.Size = new System.Drawing.Size(80, 70);
             this.parallelLoginButton.TabIndex = 4;
@@ -189,7 +205,7 @@ namespace k8asd
             this.loginButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginButton.Image = global::k8asd.Properties.Resources.btn_Login;
-            this.loginButton.Location = new System.Drawing.Point(260, 0);
+            this.loginButton.Location = new System.Drawing.Point(330, 0);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(80, 70);
             this.loginButton.TabIndex = 3;
@@ -202,7 +218,7 @@ namespace k8asd
             // 
             this.logoutAllButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.logoutAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logoutAllButton.Location = new System.Drawing.Point(190, 0);
+            this.logoutAllButton.Location = new System.Drawing.Point(260, 0);
             this.logoutAllButton.Name = "logoutAllButton";
             this.logoutAllButton.Size = new System.Drawing.Size(70, 70);
             this.logoutAllButton.TabIndex = 2;
@@ -215,7 +231,7 @@ namespace k8asd
             // 
             this.loginAllButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.loginAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loginAllButton.Location = new System.Drawing.Point(120, 0);
+            this.loginAllButton.Location = new System.Drawing.Point(190, 0);
             this.loginAllButton.Name = "loginAllButton";
             this.loginAllButton.Size = new System.Drawing.Size(70, 70);
             this.loginAllButton.TabIndex = 1;
@@ -298,19 +314,18 @@ namespace k8asd
             this.clientList.View = System.Windows.Forms.View.Details;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
-            // autoQuestButton
+            // changeButton
             // 
-            this.autoQuestButton.Name = "autoQuestButton";
-            this.autoQuestButton.Size = new System.Drawing.Size(214, 22);
-            this.autoQuestButton.Text = "Bật tự động NVHN";
-            this.autoQuestButton.Click += new System.EventHandler(this.autoQuestButton_Click);
-            // 
-            // autoReportQuestButton
-            // 
-            this.autoReportQuestButton.Name = "autoReportQuestButton";
-            this.autoReportQuestButton.Size = new System.Drawing.Size(214, 22);
-            this.autoReportQuestButton.Text = "Báo cáo NVHN";
-            this.autoReportQuestButton.Click += new System.EventHandler(this.autoReportQuestButton_Click);
+            this.changeButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.changeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeButton.Location = new System.Drawing.Point(120, 0);
+            this.changeButton.Name = "changeButton";
+            this.changeButton.Size = new System.Drawing.Size(70, 70);
+            this.changeButton.TabIndex = 6;
+            this.changeButton.Text = "Thay đổi thông tin đăng nhập";
+            this.changeButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.changeButton.UseVisualStyleBackColor = true;
+            this.changeButton.Click += new System.EventHandler(this.changeButton_Click);
             // 
             // MainView
             // 
@@ -359,6 +374,7 @@ namespace k8asd
         private Button saveButton;
         private ToolStripMenuItem autoQuestButton;
         private ToolStripMenuItem autoReportQuestButton;
+        private Button changeButton;
     }
 }
 
