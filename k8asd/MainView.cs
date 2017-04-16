@@ -22,9 +22,6 @@ namespace k8asd {
 
             loginLock = new AsyncLock();
 
-            ConfigManager.Instance.LoadConfigs();
-            LoadConfigs();
-
             descriptionColumn.AspectGetter = (obj) => {
                 var client = (IClient) obj;
                 var config = client.Config;
@@ -40,6 +37,10 @@ namespace k8asd {
                 }
                 return String.Empty;
             };
+
+            ConfigManager.Instance.LoadConfigs();
+            LoadConfigs();
+            LoadClients();
         }
 
         private void oneSecondTimer_Tick(object sender, EventArgs e) {
@@ -171,11 +172,6 @@ namespace k8asd {
         }
 
         private void MainView_Load(object sender, EventArgs e) {
-            SuspendLayout();
-            foreach (var config in ConfigManager.Instance.Configs) {
-                AddClient(config);
-            }
-            ResumeLayout();
         }
 
         private void AddClient(ClientConfig config) {
@@ -251,6 +247,14 @@ namespace k8asd {
         private void LoadConfigs() {
             LoadSize();
             LoadLocation();
+        }
+
+        private void LoadClients() {
+            SuspendLayout();
+            foreach (var config in ConfigManager.Instance.Configs) {
+                AddClient(config);
+            }
+            ResumeLayout();
         }
 
         private void LoadSize() {
