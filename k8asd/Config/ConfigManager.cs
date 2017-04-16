@@ -35,6 +35,9 @@ namespace k8asd {
             get { return configs; }
         }
 
+        /// <summary>
+        /// Cấu hình tuỳ chọn.
+        /// </summary>
         public BaseConfig Settings {
             get { return settings; }
         }
@@ -44,7 +47,7 @@ namespace k8asd {
         /// </summary>
         public void LoadConfigs() {
             var path = ConfigPath;
-            var content = ReadFileContent(path);
+            var content = FileUtils.ReadFileContent(path);
             if (content.Length > 0) {
                 var token = JToken.Parse(content);
                 var settings = token["settings"];
@@ -119,7 +122,7 @@ namespace k8asd {
             var token = new JObject();
             token["accounts"] = accounts;
             token["settings"] = settings.Data;
-            WriteFileContent(path, token.ToString());
+            FileUtils.WriteFileContent(path, token.ToString());
         }
 
         /// <summary>
@@ -127,38 +130,6 @@ namespace k8asd {
         /// </summary>
         private string ConfigPath {
             get { return Path.Combine(Environment.CurrentDirectory, "configs.json"); }
-        }
-
-        /// <summary>
-        /// Attempts to read the content of the specified file.
-        /// </summary>
-        /// <param name="path">The path of the file</param>
-        /// <returns></returns>
-        private string ReadFileContent(string path) {
-            var content = String.Empty;
-            if (File.Exists(path)) {
-                using (var reader = new StreamReader(path)) {
-                    content = reader.ReadToEnd();
-                }
-            }
-            return content;
-        }
-
-        /// <summary>
-        /// Attempts to write the specified content to the specified file.
-        /// </summary>
-        /// <param name="path">The path of the file</param>
-        /// <param name="content">The content to be written</param>
-        private void WriteFileContent(string path, string content) {
-            if (!File.Exists(path)) {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                using (var fs = File.Create(path)) {
-                    //
-                }
-            }
-            using (var streamWriter = new StreamWriter(path)) {
-                streamWriter.Write(content);
-            }
         }
     }
 }

@@ -347,6 +347,7 @@
     <Compile Include="Utils\FastRichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\ScopeGuard.cs" />
     <Compile Include="Weave\MerchantInfo.cs" />
     <Compile Include="Weave\WeaveCommand.cs" />
