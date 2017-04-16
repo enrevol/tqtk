@@ -204,7 +204,7 @@ namespace k8asd {
             clientList.SetObjects(ClientManager.Instance.Clients);
         }
 
-        private void OnClientStateChanged(object sender, ClientState status) {
+        private void OnClientStateChanged(object sender, ClientState state) {
             clientList.RefreshObject(sender);
         }
 
