@@ -11,11 +11,9 @@ namespace k8asd {
         private static readonly string UsernameKey = "username";
         private static readonly string PasswordKey = "password";
 
-        public static ClientConfig Parse(JObject data) {
-            var result = new ClientConfig();
-            result.data = (JObject) data.DeepClone();
-            return result;
-        }
+        public ClientConfig() { }
+
+        public ClientConfig(JObject data) : base(data) { }
 
         public int ServerId {
             get {

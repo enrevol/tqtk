@@ -9,6 +9,12 @@ namespace k8asd {
     public class BaseConfig : IConfig {
         protected JObject data;
 
+        public BaseConfig() { }
+
+        public BaseConfig(JObject data) {
+            this.data = (JObject) data.DeepClone();
+        }
+
         public JObject Data {
             get {
                 if (data == null) {

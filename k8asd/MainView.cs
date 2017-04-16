@@ -254,7 +254,7 @@ namespace k8asd {
         }
 
         private void LoadSize() {
-            var array = ConfigManager.Instance.GetArray("main_window_size");
+            var array = ConfigManager.Instance.Settings.GetArray("main_window_size");
             if (array.Count > 0) {
                 var width = Int32.Parse(array[0]);
                 var height = Int32.Parse(array[1]);
@@ -263,7 +263,7 @@ namespace k8asd {
         }
 
         private void LoadLocation() {
-            var array = ConfigManager.Instance.GetArray("main_window_location");
+            var array = ConfigManager.Instance.Settings.GetArray("main_window_location");
             if (array.Count > 0) {
                 var x = Int32.Parse(array[0]);
                 var y = Int32.Parse(array[1]);
@@ -275,14 +275,14 @@ namespace k8asd {
             var array = new List<int>();
             array.Add(Size.Width);
             array.Add(Size.Height);
-            ConfigManager.Instance.PutArray("main_window_size", array);
+            ConfigManager.Instance.Settings.PutArray("main_window_size", array);
         }
 
         private void MainView_LocationChanged(object sender, EventArgs e) {
             var array = new List<int>();
             array.Add(Location.X);
             array.Add(Location.Y);
-            ConfigManager.Instance.PutArray("main_window_location", array);
+            ConfigManager.Instance.Settings.PutArray("main_window_location", array);
         }
 
         private void MainView_FormClosed(object sender, FormClosedEventArgs e) {
