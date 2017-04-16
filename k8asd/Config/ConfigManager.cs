@@ -128,6 +128,20 @@ namespace k8asd {
             configs.RemoveAt(index);
         }
 
+        public void MoveConfig(int index, int newIndex) {
+            if (newIndex < index) {
+                while (index > newIndex) {
+                    MoveConfigUp(index);
+                    --index;
+                }
+            } else if (newIndex > index) {
+                while (index < newIndex) {
+                    MoveConfigDown(index);
+                    ++index;
+                }
+            }
+        }
+
         /// <summary>
         /// Di chuyển cấu hình lên trước.
         /// </summary>
