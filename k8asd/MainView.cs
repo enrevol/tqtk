@@ -52,6 +52,11 @@ namespace k8asd {
             return items.Cast<OLVListItem>().Select(item => (IClient) item.RowObject).ToList();
         }
 
+        private List<int> FindSelectedIndices() {
+            var items = clientList.SelectedIndices;
+            return items.Cast<int>().ToList();
+        }
+
         private async Task LogIn(List<IClient> clients, bool blocking) {
             using (await loginLock.LockAsync()) {
                 const int ThreadCount = 5;
@@ -103,28 +108,30 @@ namespace k8asd {
         private void addButton_Click(object sender, EventArgs e) {
             var dialog = new AccountView();
             var result = dialog.ShowDialog();
-            if (result == DialogResult.OK) {
-                var config = new ClientConfig();
-                config.ServerId = Convert.ToInt32(dialog.ServerId);
-                config.Username = dialog.Username;
-                config.Password = dialog.Password;
-                AddClient(config);
-                ConfigManager.Instance.SaveConfig(config);
+            if (result != DialogResult.OK) {
+                return;
             }
+
+            var config = new ClientConfig();
+            config.ServerId = Convert.ToInt32(dialog.ServerId);
+            config.Username = dialog.Username;
+            config.Password = dialog.Password;
+
+            AddConfig(config);
         }
 
         private void removeButton_Click(object sender, EventArgs e) {
-            var selectedClients = FindSelectedClients();
-            foreach (var client in selectedClients) {
-                RemoveClient(client);
-                ConfigManager.Instance.DeleteConfig(client.Config);
+            var selectedIndices = FindSelectedIndices();
+            selectedIndices.Reverse();
+            foreach (var index in selectedIndices) {
+                RemoveConfig(index);
             }
             clientList.SelectedObjects = null;
         }
 
         private void changeButton_Click(object sender, EventArgs e) {
-            var selectedClients = FindSelectedClients();
-            if (selectedClients.Count == 0) {
+            var selectedIndices = FindSelectedIndices();
+            if (selectedIndices.Count == 0) {
                 return;
             }
 
@@ -132,8 +139,8 @@ namespace k8asd {
             var serverIds = new HashSet<int>();
             var usernames = new HashSet<string>();
             var passwords = new HashSet<string>();
-            var configs = selectedClients.Select(item => item.Config);
-            foreach (var config in configs) {
+            foreach (var index in selectedIndices) {
+                var config = ConfigManager.Instance.Configs[index];
                 serverIds.Add(config.ServerId);
                 usernames.Add(config.Username);
                 passwords.Add(config.Password);
@@ -148,59 +155,97 @@ namespace k8asd {
             dialog.Username = username;
             dialog.Password = password;
             var result = dialog.ShowDialog();
-            if (result == DialogResult.OK) {
-                bool changed = false;
-                if (!dialog.ServerId.Equals(MultipleValues)) {
-                    foreach (var config in configs) {
-                        config.ServerId = Convert.ToInt32(dialog.ServerId);
-                    }
+            if (result != DialogResult.OK) {
+                return;
+            }
+
+            var newServerId = dialog.ServerId;
+            var newUsername = dialog.Username;
+            var newPassword = dialog.Password;
+
+            bool changed = false;
+            foreach (var index in selectedIndices) {
+                var config = ConfigManager.Instance.Configs[index];
+                var clientConfig = ClientManager.Instance.Clients[index].Config;
+                if (!newServerId.Equals(MultipleValues)) {
+                    config.ServerId = clientConfig.ServerId = Convert.ToInt32(newServerId);
                     changed = true;
                 }
-                if (!dialog.Username.Equals(MultipleValues)) {
-                    foreach (var config in configs) {
-                        config.Username = dialog.Username;
-                    }
+                if (!newUsername.Equals(MultipleValues)) {
+                    config.Username = clientConfig.Username = newUsername;
                     changed = true;
                 }
-                if (!dialog.Password.Equals(MultipleValues)) {
-                    foreach (var config in configs) {
-                        config.Password = dialog.Password;
-                    }
+                if (!newPassword.Equals(MultipleValues)) {
+                    config.Password = clientConfig.Password = newPassword;
                     changed = true;
                 }
-                if (changed) {
-                    foreach (var config in configs) {
-                        ConfigManager.Instance.SaveConfig(config);
-                    }
-                    clientList.RefreshSelectedObjects();
-                }
+            }
+            if (changed) {
+                ConfigManager.Instance.Flush();
             }
         }
 
         private void saveButton_Click(object sender, EventArgs e) {
-            var selectedClients = FindSelectedClients();
-            foreach (var client in selectedClients) {
-                ConfigManager.Instance.SaveConfig(client.Config);
+            var selectedIndices = FindSelectedIndices();
+            foreach (var index in selectedIndices) {
+                var client = ClientManager.Instance.Clients[index];
+                ConfigManager.Instance.ReplaceConfig(index, client.Config);
             }
+            ConfigManager.Instance.Flush();
         }
 
         private void MainView_Load(object sender, EventArgs e) {
+
         }
 
+        private void AddConfig(ClientConfig config) {
+            AddClient(config);
+            ConfigManager.Instance.AddConfig(config);
+            ConfigManager.Instance.Flush();
+        }
+
+        /// <summary>
+        /// Adds a new client with the specified config.
+        /// </summary>
+        /// <param name="config">The config of the client.</param>
         private void AddClient(ClientConfig config) {
             var client = new ClientView();
             client.Config = config;
-            client.Dock = DockStyle.Fill;
-            Controls.Add(client);
+
             ClientManager.Instance.AddClient(client);
-            client.BringToFront();
-            clientList.SetObjects(ClientManager.Instance.Clients);
-            client.StateChanged += OnClientStateChanged;
+            AddClient(client);
         }
 
-        private void RemoveClient(IClient client) {
+        /// <summary>
+        /// Adds the specified client to the view.
+        /// </summary>
+        /// <param name="client">The client to be added.</param>
+        private void AddClient(ClientView client) {
+            Controls.Add(client);
+            client.Dock = DockStyle.Fill;
+            client.BringToFront();
+            client.StateChanged += OnClientStateChanged;
+            clientList.SetObjects(ClientManager.Instance.Clients);
+        }
+
+        private void RemoveConfig(int index) {
+            RemoveClient(index);
+            ConfigManager.Instance.RemoveConfig(index);
+            ConfigManager.Instance.Flush();
+        }
+
+        private void RemoveClient(int index) {
+            var client = ClientManager.Instance.Clients[index];
             ClientManager.Instance.RemoveClient(client);
-            Controls.Remove((ClientView) client);
+            RemoveClient((ClientView) client);
+        }
+
+        /// <summary>
+        /// Remove the specified client from the view.
+        /// </summary>
+        /// <param name="client">The client to be removed.</param>
+        private void RemoveClient(ClientView client) {
+            Controls.Remove(client);
             clientList.SetObjects(ClientManager.Instance.Clients);
         }
 
