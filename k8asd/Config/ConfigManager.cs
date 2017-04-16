@@ -50,16 +50,26 @@ namespace k8asd {
             var content = FileUtils.ReadFileContent(path);
             if (content.Length > 0) {
                 var token = JToken.Parse(content);
-                var settings = token["settings"];
-                if (settings != null) {
-                    this.settings = new BaseConfig((JObject) settings);
-                }
-                var array = (JArray) token["accounts"];
-                configs = new List<ClientConfig>();
-                foreach (var item in array) {
-                    var config = new ClientConfig((JObject) item);
-                    configs.Add(config);
-                }
+                LoadSettings(token["settings"]);
+                LoadAccounts(token["accounts"]);
+            }
+        }
+
+        private void LoadSettings(JToken token) {
+            if (token == null) {
+                return;
+            }
+            settings = new BaseConfig((JObject) token);
+        }
+
+        private void LoadAccounts(JToken token) {
+            if (token == null) {
+                return;
+            }
+            configs = new List<ClientConfig>();
+            foreach (var item in (JArray) token) {
+                var config = new ClientConfig((JObject) item);
+                configs.Add(config);
             }
         }
 
