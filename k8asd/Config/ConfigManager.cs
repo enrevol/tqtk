@@ -29,6 +29,13 @@ namespace k8asd {
         }
 
         /// <summary>
+        /// Đường dẫn đến tệp tin cấu hình mặc định.
+        /// </summary>
+        public string ConfigPath {
+            get { return Path.Combine(Environment.CurrentDirectory, "configs.json"); }
+        }
+
+        /// <summary>
         /// Cấu hình tất cả người chơi.
         /// </summary>
         public List<ClientConfig> Configs {
@@ -43,18 +50,37 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Cập nhật lại cấu hình tất cả người chơi từ tệp tin.
+        /// Tải cấu hình từ tệp tin mặc định.
         /// </summary>
         public void LoadConfigs() {
-            var path = ConfigPath;
+            LoadConfigs(ConfigPath);
+        }
+
+        /// <summary>
+        /// Tải cấu hình từ tệp tin được chỉ định.
+        /// </summary>
+        /// <param name="path">Đường dẫn đến tệp tin.</param>
+        public void LoadConfigs(string path) {
             var content = FileUtils.ReadFileContent(path);
             if (content.Length > 0) {
                 var token = JToken.Parse(content);
-                LoadSettings(token["settings"]);
-                LoadAccounts(token["accounts"]);
+                LoadConfigs(token);
             }
         }
 
+        /// <summary>
+        /// Tải cấu hình từ JSON.
+        /// </summary>
+        /// <param name="token">JSON</param>
+        public void LoadConfigs(JToken token) {
+            LoadSettings(token["settings"]);
+            LoadAccounts(token["accounts"]);
+        }
+
+        /// <summary>
+        /// Tải cấu hình tuỳ chọn từ JSON.
+        /// </summary>
+        /// <param name="token">JSON</param>
         private void LoadSettings(JToken token) {
             if (token == null) {
                 return;
@@ -62,6 +88,10 @@ namespace k8asd {
             settings = new BaseConfig((JObject) token);
         }
 
+        /// <summary>
+        /// Tải cấu hình người chơi từ JSON.
+        /// </summary>
+        /// <param name="token">JSON</param>
         private void LoadAccounts(JToken token) {
             if (token == null) {
                 return;
@@ -74,38 +104,37 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Thêm hoặc thay đổi cấu hình.
+        /// Thêm cấu hình người chơi vào cuối.
         /// </summary>
-        /// <param name="config">Cấu hình được thêm hoặc thay đổi.</param>
-        public void SaveConfig(ClientConfig config) {
-            var index = configs.IndexOf(config);
-            if (index != -1) {
-                // Thay thế cấu hình cũ.
-                configs[index] = config;
-            } else {
-                // Thêm cấu hình vào cuối.
-                configs.Add(config);
-            }
-            Flush();
+        /// <param name="config"></param>
+        public void AddConfig(ClientConfig config) {
+            configs.Add(new ClientConfig(config.Data));
         }
 
         /// <summary>
-        /// Xoá cấu hình.
+        /// Thay đổi cấu hình người chơi.
+        /// </summary>
+        /// <param name="index">Vị trí của cấu hình.</param>
+        /// <param name="config">Cấu hình được thay đổi.</param>
+        public void ReplaceConfig(int index, ClientConfig config) {
+            configs[index] = new ClientConfig(config.Data);
+        }
+
+        /// <summary>
+        /// Xoá cấu hình người chơi.
         /// </summary>
         /// <param name="config">Cấu hình bị xoá.</param>
-        public void DeleteConfig(ClientConfig config) {
-            configs.Remove(config);
-            Flush();
+        public void RemoveConfig(int index) {
+            configs.RemoveAt(index);
         }
 
         /// <summary>
         /// Di chuyển cấu hình lên trước.
         /// </summary>
         /// <param name="config">Cấu hình được di chuyển.</param>
-        public void MoveUpConfig(ClientConfig config) {
-            var index = configs.IndexOf(config);
+        public void MoveConfigUp(int index) {
             var temp = configs[index - 1];
-            configs[index - 1] = config;
+            configs[index - 1] = configs[index];
             configs[index] = temp;
         }
 
@@ -113,10 +142,9 @@ namespace k8asd {
         /// Di chuyển cấu hình ra sau.
         /// </summary>
         /// <param name="config">Cấu hình được di chuyển.</param>
-        public void MoveDownConfig(ClientConfig config) {
-            var index = configs.IndexOf(config);
+        public void MoveConfigDown(int index) {
             var temp = configs[index + 1];
-            configs[index + 1] = config;
+            configs[index + 1] = configs[index];
             configs[index] = temp;
         }
 
@@ -124,22 +152,18 @@ namespace k8asd {
         /// Lưu cấu hình hiện tại vào tệp tin.
         /// </summary>
         public void Flush() {
-            var accounts = new JArray();
-            foreach (var config in configs) {
-                accounts.Add(config.Data);
-            }
-            var path = ConfigPath;
             var token = new JObject();
-            token["accounts"] = accounts;
+            token["accounts"] = JArray.FromObject(configs.Select(item => item.Data));
             token["settings"] = settings.Data;
-            FileUtils.WriteFileContent(path, token.ToString());
+            Flush(token);
         }
 
         /// <summary>
-        /// Đường dẫn đến tệp tin cấu hình.
+        /// Lưu cấu hình JSON vào tệp tin.
         /// </summary>
-        private string ConfigPath {
-            get { return Path.Combine(Environment.CurrentDirectory, "configs.json"); }
+        /// <param name="token">JSON</param>
+        public void Flush(JToken token) {
+            FileUtils.WriteFileContent(ConfigPath, token.ToString());
         }
     }
 }
