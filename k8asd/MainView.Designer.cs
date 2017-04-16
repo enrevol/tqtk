@@ -48,19 +48,24 @@ namespace k8asd
             this.loginButton = new System.Windows.Forms.Button();
             this.logoutAllButton = new System.Windows.Forms.Button();
             this.loginAllButton = new System.Windows.Forms.Button();
+            this.changeButton = new System.Windows.Forms.Button();
             this.removeButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.connectionStateimages = new System.Windows.Forms.ImageList(this.components);
             this.statusColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
-            this.changeButton = new System.Windows.Forms.Button();
+            this.navigatorPanel = new System.Windows.Forms.Panel();
+            this.moveUpButton = new System.Windows.Forms.Button();
+            this.arrowImages = new System.Windows.Forms.ImageList(this.components);
+            this.moveDownButton = new System.Windows.Forms.Button();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             this._ignore0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.clientList)).BeginInit();
+            this.navigatorPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -240,6 +245,19 @@ namespace k8asd
             this.loginAllButton.UseVisualStyleBackColor = true;
             this.loginAllButton.Click += new System.EventHandler(this.loginAllButton_Click);
             // 
+            // changeButton
+            // 
+            this.changeButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.changeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeButton.Location = new System.Drawing.Point(120, 0);
+            this.changeButton.Name = "changeButton";
+            this.changeButton.Size = new System.Drawing.Size(70, 70);
+            this.changeButton.TabIndex = 6;
+            this.changeButton.Text = "Thay đổi thông tin đăng nhập";
+            this.changeButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.changeButton.UseVisualStyleBackColor = true;
+            this.changeButton.Click += new System.EventHandler(this.changeButton_Click);
+            // 
             // removeButton
             // 
             this.removeButton.Dock = System.Windows.Forms.DockStyle.Left;
@@ -268,12 +286,12 @@ namespace k8asd
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.addButton_Click);
             // 
-            // imageList1
+            // connectionStateimages
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "connected");
-            this.imageList1.Images.SetKeyName(1, "disconnected");
+            this.connectionStateimages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("connectionStateimages.ImageStream")));
+            this.connectionStateimages.TransparentColor = System.Drawing.Color.Transparent;
+            this.connectionStateimages.Images.SetKeyName(0, "connected");
+            this.connectionStateimages.Images.SetKeyName(1, "disconnected");
             // 
             // statusColumn
             // 
@@ -308,30 +326,59 @@ namespace k8asd
             this.clientList.Name = "clientList";
             this.clientList.ShowGroups = false;
             this.clientList.Size = new System.Drawing.Size(250, 587);
-            this.clientList.SmallImageList = this.imageList1;
+            this.clientList.SmallImageList = this.connectionStateimages;
             this.clientList.TabIndex = 32;
             this.clientList.UseCompatibleStateImageBehavior = false;
             this.clientList.View = System.Windows.Forms.View.Details;
             this.clientList.SelectedIndexChanged += new System.EventHandler(this.clientList_SelectedIndexChanged);
             // 
-            // changeButton
+            // navigatorPanel
             // 
-            this.changeButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.changeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeButton.Location = new System.Drawing.Point(120, 0);
-            this.changeButton.Name = "changeButton";
-            this.changeButton.Size = new System.Drawing.Size(70, 70);
-            this.changeButton.TabIndex = 6;
-            this.changeButton.Text = "Thay đổi thông tin đăng nhập";
-            this.changeButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.changeButton.UseVisualStyleBackColor = true;
-            this.changeButton.Click += new System.EventHandler(this.changeButton_Click);
+            this.navigatorPanel.Controls.Add(this.moveDownButton);
+            this.navigatorPanel.Controls.Add(this.moveUpButton);
+            this.navigatorPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.navigatorPanel.Location = new System.Drawing.Point(250, 94);
+            this.navigatorPanel.Name = "navigatorPanel";
+            this.navigatorPanel.Size = new System.Drawing.Size(40, 587);
+            this.navigatorPanel.TabIndex = 33;
+            // 
+            // moveUpButton
+            // 
+            this.moveUpButton.ImageKey = "arrow_up";
+            this.moveUpButton.ImageList = this.arrowImages;
+            this.moveUpButton.Location = new System.Drawing.Point(0, 120);
+            this.moveUpButton.Name = "moveUpButton";
+            this.moveUpButton.Size = new System.Drawing.Size(40, 40);
+            this.moveUpButton.TabIndex = 0;
+            this.moveUpButton.Tag = "";
+            this.moveUpButton.UseVisualStyleBackColor = true;
+            this.moveUpButton.Click += new System.EventHandler(this.moveUpButton_Click);
+            // 
+            // arrowImages
+            // 
+            this.arrowImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("arrowImages.ImageStream")));
+            this.arrowImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.arrowImages.Images.SetKeyName(0, "arrow_down");
+            this.arrowImages.Images.SetKeyName(1, "arrow_up");
+            // 
+            // moveDownButton
+            // 
+            this.moveDownButton.ImageKey = "arrow_down";
+            this.moveDownButton.ImageList = this.arrowImages;
+            this.moveDownButton.Location = new System.Drawing.Point(0, 170);
+            this.moveDownButton.Name = "moveDownButton";
+            this.moveDownButton.Size = new System.Drawing.Size(40, 40);
+            this.moveDownButton.TabIndex = 1;
+            this.moveDownButton.Tag = "";
+            this.moveDownButton.UseVisualStyleBackColor = true;
+            this.moveDownButton.Click += new System.EventHandler(this.moveDownButton_Click);
             // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1350, 681);
+            this.Controls.Add(this.navigatorPanel);
             this.Controls.Add(this.clientList);
             this.Controls.Add(this._ignore0);
             this.Controls.Add(menuStrip1);
@@ -348,6 +395,7 @@ namespace k8asd
             menuStrip1.PerformLayout();
             this._ignore0.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.clientList)).EndInit();
+            this.navigatorPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -362,7 +410,7 @@ namespace k8asd
         private Button removeButton;
         private Button loginAllButton;
         private Button logoutAllButton;
-        private ImageList imageList1;
+        private ImageList connectionStateimages;
         private ToolStripMenuItem autoWeaveButton;
         private BrightIdeasSoftware.OLVColumn statusColumn;
         private BrightIdeasSoftware.OLVColumn descriptionColumn;
@@ -375,6 +423,10 @@ namespace k8asd
         private ToolStripMenuItem autoQuestButton;
         private ToolStripMenuItem autoReportQuestButton;
         private Button changeButton;
+        private Panel navigatorPanel;
+        private Button moveUpButton;
+        private ImageList arrowImages;
+        private Button moveDownButton;
     }
 }
 

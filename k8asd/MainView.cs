@@ -225,7 +225,7 @@ namespace k8asd {
             client.Dock = DockStyle.Fill;
             client.BringToFront();
             client.StateChanged += OnClientStateChanged;
-            clientList.SetObjects(ClientManager.Instance.Clients);
+            clientList.SetObjects(ClientManager.Instance.Clients, true);
         }
 
         private void RemoveConfig(int index) {
@@ -246,7 +246,37 @@ namespace k8asd {
         /// <param name="client">The client to be removed.</param>
         private void RemoveClient(ClientView client) {
             Controls.Remove(client);
-            clientList.SetObjects(ClientManager.Instance.Clients);
+            clientList.SetObjects(ClientManager.Instance.Clients, true);
+        }
+
+        private void moveUpButton_Click(object sender, EventArgs e) {
+            var selectedIndices = FindSelectedIndices();
+            if (selectedIndices.Count == 0) {
+                return;
+            }
+            foreach (var index in selectedIndices) {
+                if (index > 0) {
+                    ConfigManager.Instance.MoveConfigUp(index);
+                    ClientManager.Instance.MoveClientUp(index);
+                }
+            }
+            clientList.SetObjects(ClientManager.Instance.Clients, true);
+            ConfigManager.Instance.Flush();
+        }
+
+        private void moveDownButton_Click(object sender, EventArgs e) {
+            var selectedIndices = FindSelectedIndices();
+            if (selectedIndices.Count == 0) {
+                return;
+            }
+            foreach (var index in selectedIndices) {
+                if (index > 0) {
+                    ConfigManager.Instance.MoveConfigDown(index);
+                    ClientManager.Instance.MoveClientDown(index);
+                }
+            }
+            clientList.SetObjects(ClientManager.Instance.Clients, true);
+            ConfigManager.Instance.Flush();
         }
 
         private void OnClientStateChanged(object sender, ClientState state) {

@@ -28,6 +28,13 @@ namespace k8asd {
         }
 
         /// <summary>
+        /// Danh sách người chơi.
+        /// </summary>
+        public List<IClient> Clients {
+            get { return clients; }
+        }
+
+        /// <summary>
         /// Thêm người chơi vào danh sách.
         /// </summary>
         /// <param name="client">Người chơi được thêm.</param>
@@ -43,11 +50,16 @@ namespace k8asd {
             clients.Remove(client);
         }
 
-        /// <summary>
-        /// Danh sách người chơi.
-        /// </summary>
-        public List<IClient> Clients {
-            get { return clients; }
+        public void MoveClientUp(int index) {
+            var temp = clients[index - 1];
+            clients[index - 1] = clients[index];
+            clients[index] = temp;
+        }
+
+        public void MoveClientDown(int index) {
+            var temp = clients[index + 1];
+            clients[index + 1] = clients[index];
+            clients[index] = temp;
         }
     }
 }
