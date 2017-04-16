@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Linq;
 using System.ComponentModel;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -46,13 +47,8 @@ namespace k8asd {
         }
 
         private List<IClient> FindSelectedClients() {
-            var selectedClients = new List<IClient>();
             var items = clientList.SelectedItems;
-            foreach (var item in items) {
-                var client = (IClient) ((OLVListItem) item).RowObject;
-                selectedClients.Add(client);
-            }
-            return selectedClients;
+            return items.Cast<OLVListItem>().Select(item => (IClient) item.RowObject).ToList();
         }
 
         private async Task LogIn(List<IClient> clients, bool blocking) {
@@ -110,6 +106,22 @@ namespace k8asd {
                 ConfigManager.Instance.DeleteConfig(client.Config);
             }
             clientList.SelectedObjects = null;
+        }
+
+        private void changeButton_Click(object sender, EventArgs e) {
+            var selectedClients = FindSelectedClients();
+            if (selectedClients.Count > 0) {
+                var client = selectedClients[0];
+                var config = client.Config;
+                var dialog = new AccountView();
+                dialog.ServerId = config.ServerId;
+                dialog.Username = config.Username;
+                dialog.Password = config.Password;
+                var result = dialog.ShowDialog();
+                if (result == DialogResult.OK) {
+
+                }
+            }
         }
 
         private void saveButton_Click(object sender, EventArgs e) {
