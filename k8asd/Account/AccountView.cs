@@ -40,6 +40,8 @@ namespace k8asd {
         private void AccountView_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter) {
                 Save();
+            } else if (e.KeyCode == Keys.Escape) {
+                DialogResult = DialogResult.Cancel;
             }
         }
 
