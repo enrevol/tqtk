@@ -370,21 +370,17 @@ namespace k8asd {
             ConfigManager.Instance.Flush();
         }
 
-        private void autoQuestButton_Click(object sender, EventArgs e)
-        {
+        private void autoQuestButton_Click(object sender, EventArgs e) {
             var selectedClients = ClientManager.Instance.Clients;
-            foreach (var client in selectedClients)
-            {
+            foreach (var client in selectedClients) {
                 client.EnableAutoQuest();
                 Task.Delay(1000);
             }
         }
 
-        private void autoReportQuestButton_Click(object sender, EventArgs e)
-        {
+        private void autoReportQuestButton_Click(object sender, EventArgs e) {
             var selectedClients = ClientManager.Instance.Clients;
-            foreach (var client in selectedClients)
-            {
+            foreach (var client in selectedClients) {
                 client.ReportAutoQuest();
                 Task.Delay(1000);
             }

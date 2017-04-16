@@ -309,13 +309,11 @@ namespace k8asd {
             }
         }
 
-        public void EnableAutoQuest()
-        {
+        public void EnableAutoQuest() {
             questView1.EnableAutoQuest();
         }
 
-        public void ReportAutoQuest()
-        {
+        public void ReportAutoQuest() {
             questView1.ReportQuest(Config.Username, PlayerName);
         }
     }
