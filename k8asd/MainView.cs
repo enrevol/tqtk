@@ -167,15 +167,15 @@ namespace k8asd {
             foreach (var index in selectedIndices) {
                 var config = ConfigManager.Instance.Configs[index];
                 var clientConfig = ClientManager.Instance.Clients[index].Config;
-                if (!newServerId.Equals(MultipleValues)) {
+                if (!newServerId.Equals(serverId)) {
                     config.ServerId = clientConfig.ServerId = Convert.ToInt32(newServerId);
                     changed = true;
                 }
-                if (!newUsername.Equals(MultipleValues)) {
+                if (!newUsername.Equals(username)) {
                     config.Username = clientConfig.Username = newUsername;
                     changed = true;
                 }
-                if (!newPassword.Equals(MultipleValues)) {
+                if (!newPassword.Equals(password)) {
                     config.Password = clientConfig.Password = newPassword;
                     changed = true;
                 }
