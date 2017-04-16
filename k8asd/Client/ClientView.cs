@@ -36,7 +36,7 @@ namespace k8asd {
                 return config;
             }
             set {
-                config = value;
+                config = ClientConfig.Parse(value.Data);
                 heroTrainingView.LoadConfig(config);
                 outsideView.LoadConfig(config);
             }
