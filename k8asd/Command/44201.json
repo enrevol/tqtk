@@ -1,0 +1,18 @@
+{
+  "button": 0,
+  "imdonegold": -1,
+  "canrecive": true,
+  "taskdto": {
+    "copper": 0,
+    "intro": "Nhiệm vụ hàng ngày",
+    "itemname": "",
+    "itemquality": 0,
+    "jungong": 1000,
+    "name": "Nâng cấp trang bị",
+    "num": 0,
+    "quality": 3,
+    "request": "",
+    "requestintro": "Tiến hành 3 lần nâng cấp trang bị thành công",
+    "type": 2
+  }
+}

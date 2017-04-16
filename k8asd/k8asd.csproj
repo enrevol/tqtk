@@ -201,6 +201,7 @@
     <Compile Include="Quest\QuestView.designer.cs">
       <DependentUpon>QuestView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Quest\TaskDetail.cs" />
     <Compile Include="RaiseBird\RaiseBirdCommand.cs" />
     <Compile Include="RaiseBird\RaiseBirdInfo.cs" />
     <Compile Include="RaiseBird\RaiseBirdView.cs">
@@ -462,6 +463,8 @@
     <None Include="Command\31106_1.json" />
     <None Include="Command\31102.json" />
     <None Include="Command\41100_1.json" />
+    <None Include="Command\44201.json" />
+    <None Include="Command\44301.json" />
     <None Include="Command\62002_1.json" />
     <None Include="Command\62002_0.json" />
     <None Include="Command\41203.json" />

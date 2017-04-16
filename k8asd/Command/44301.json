@@ -1,0 +1,56 @@
+{
+  "todayFreeRefreshDailyTask": 0,
+  "button": 0,
+  "taskbasedto": [
+    {
+      "id": 1033,
+      "name": "Chiếm lĩnh Mỏ Bạc",
+      "status": 0
+    },
+    {
+      "id": 1025,
+      "name": "Thu Thuế",
+      "status": 0
+    },
+    {
+      "id": 1022,
+      "name": "Chiếm lĩnh Ruộng",
+      "status": 0
+    },
+    {
+      "id": 1023,
+      "name": "Chiếm lĩnh Mỏ Bạc",
+      "status": 0
+    },
+    {
+      "id": 1024,
+      "name": "Chinh chiến",
+      "status": 0
+    },
+    {
+      "id": 1028,
+      "name": "Nâng cấp trang bị",
+      "status": 0
+    }
+  ],
+  "imdonegold": -1,
+  "donenum": 6,
+  "maxdonenum": 6,
+  "canrecive": true,
+  "refreshNextLevelGold": 120,
+  "flashgold": -1,
+  "maxquality": 3,
+  "taskdto": {
+    "copper": 0,
+    "intro": "Nhiệm vụ hàng ngày",
+    "itemname": "Lưu Tử",
+    "itemquality": 1,
+    "jungong": 1200,
+    "name": "Chiếm lĩnh Mỏ Bạc",
+    "num": 0,
+    "quality": 4,
+    "request": "",
+    "requestintro": "Tiến hành 4 lần chiếm lĩnh Mỏ Bạc",
+    "type": 2
+  }
+}
