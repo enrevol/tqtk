@@ -5,7 +5,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace k8asd.Quest {
+namespace k8asd {
+    public enum TaskType {
+        /// <summary>
+        /// Mua bán lúa.
+        /// </summary>
+        Food,
+
+        /// <summary>
+        /// Cải tiến.
+        /// </summary>
+        Improve,
+
+        /// <summary>
+        /// Thu thuế.
+        /// </summary>
+        Impose,
+
+        /// <summary>
+        /// Sử dụng xu.
+        /// </summary>
+        Gold,
+
+        /// <summary>
+        /// Loại khác không cần quan tâm.
+        /// </summary>
+        Other,
+    }
+
     /// <summary>
     /// Dịch gói 44201.
     /// </summary>
@@ -17,12 +44,12 @@ namespace k8asd.Quest {
         /// </summary>
         public int Quality { get; private set; }
 
-        public int Type { get; private set; }
-
         /// <summary>
         /// Tên nhiệm vụ.
         /// </summary>
         public string Name { get; private set; }
+
+        public TaskType Type { get; private set; }
 
         public static TaskDetail Parse(JToken token) {
             var result = new TaskDetail();
@@ -30,8 +57,21 @@ namespace k8asd.Quest {
 
             var taskdto = token["taskdto"];
             result.Quality = (int) taskdto["quality"];
-            result.Type = (int) taskdto["type"];
+            // result.Type = (int) taskdto["type"]; ???
             result.Name = (string) taskdto["name"];
+
+            var type = TaskType.Other;
+            if (result.Name == "Mua bán lúa") {
+                type = TaskType.Food;
+            } else if (result.Name == "Cải tạo") {
+                type = TaskType.Improve;
+            } else if (result.Name == "Thu Thuế") {
+                type = TaskType.Impose;
+            } else if (result.Name == "Sử dụng Xu") {
+                type = TaskType.Gold;
+            }
+            result.Type = type;
+
             return result;
         }
     }
