@@ -10,10 +10,10 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 
 namespace k8asd {
-    public partial class QuestView : UserControl {
+    public partial class TaskView : UserControl {
         private IPacketWriter packetWriter;
 
-        public QuestView() {
+        public TaskView() {
             InitializeComponent();
         }
 

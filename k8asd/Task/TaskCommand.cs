@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public static class QuestCommand {
+    public static class TaskCommand {
         /// <summary>
         /// Lấy danh sách nhiệm vụ.
         /// </summary>

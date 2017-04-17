@@ -55,7 +55,7 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.questView1 = new k8asd.QuestView();
+            this.questView1 = new k8asd.TaskView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -402,7 +402,7 @@ namespace k8asd {
         private TabPage instituteTab;
         private InstituteView instituteView;
         private TabPage questTab;
-        private QuestView questView1;
+        private TaskView questView1;
     }
 }
 

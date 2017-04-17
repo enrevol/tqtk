@@ -1,6 +1,6 @@
 ﻿namespace k8asd
 {
-    partial class QuestView
+    partial class TaskView
     {
         /// <summary> 
         /// Required designer variable.
