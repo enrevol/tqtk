@@ -193,15 +193,15 @@
     <Compile Include="Packet\PacketView.Designer.cs">
       <DependentUpon>PacketView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Quest\QuestCommand.cs" />
-    <Compile Include="Quest\TaskBoard.cs" />
-    <Compile Include="Quest\TaskView.cs">
+    <Compile Include="Task\TaskCommand.cs" />
+    <Compile Include="Task\TaskBoard.cs" />
+    <Compile Include="Task\TaskView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Quest\TaskView.designer.cs">
+    <Compile Include="Task\TaskView.designer.cs">
       <DependentUpon>TaskView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Quest\TaskDetail.cs" />
+    <Compile Include="Task\TaskDetail.cs" />
     <Compile Include="RaiseBird\RaiseBirdCommand.cs" />
     <Compile Include="RaiseBird\RaiseBirdInfo.cs" />
     <Compile Include="RaiseBird\RaiseBirdView.cs">
@@ -427,7 +427,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Quest\TaskView.resx">
+    <EmbeddedResource Include="Task\TaskView.resx">
       <DependentUpon>TaskView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RaiseBird\RaiseBirdView.resx">
