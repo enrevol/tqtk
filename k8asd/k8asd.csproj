@@ -223,8 +223,15 @@
       <DependentUpon>InstituteView.cs</DependentUpon>
     </Compile>
     <Compile Include="Swap\LegionInfo.cs" />
+    <Compile Include="Snout\SnoutCommand.cs" />
     <Compile Include="Swap\SwapCommand.cs" />
     <Compile Include="Swap\SwapInfo.cs" />
+    <Compile Include="Tools\AutoSnoutView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\AutoSnoutView.Designer.cs">
+      <DependentUpon>AutoSnoutView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\AutoArenaView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -441,6 +448,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Shop\ShopView.resx">
       <DependentUpon>ShopView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\AutoSnoutView.resx">
+      <DependentUpon>AutoSnoutView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\AutoArenaView.resx">
       <DependentUpon>AutoArenaView.cs</DependentUpon>

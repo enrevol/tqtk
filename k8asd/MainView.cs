@@ -393,5 +393,11 @@ namespace k8asd {
                 Task.Delay(1000);
             }
         }
+
+        private void autoSwapSnoutButton_Click(object sender, EventArgs e)
+        {
+            var view = new AutoSnoutView();
+            view.Show();
+        }
     }
 }
