@@ -59,6 +59,7 @@ namespace k8asd
         }
 
         private bool checkAutoReady = false;
+        private int removeQuest = -1; //kiem tra nhiem vu nao da loai ko hoan thanh dc
         public async void Auto()
         {
             //lay danh sach nhiem vu hang ngay
@@ -67,7 +68,9 @@ namespace k8asd
             {
                 return;
             }
+
             JToken tokenn = JToken.Parse(packet.Message);
+
             if (tokenn["message"] != null && tokenn["message"].ToString() != "")
             {
                 return;
@@ -99,11 +102,16 @@ namespace k8asd
                     return;
                 }
 
-                int check = FindQuest(qInfo.listQuest, qInfo.listQuest[qInfo.listQuest.Count-1].quality);
+                int check = FindQuest1(qInfo.listQuest, qInfo.listQuest[qInfo.listQuest.Count-1].quality, removeQuest);
+                removeQuest = -1;
+
                 if (check == -2)
                 {
+                    this.timerQuest.Stop();
+                    this.chkQuest.Checked = false;
                     return;
                 }
+
                 if (check != -1) //tim duoc nhiem vu mua ban lua
                 {
                     if (qInfo.listQuest[check].name == "Mua bán lúa")
@@ -143,7 +151,6 @@ namespace k8asd
 
                         //hoan thanh nhiem vu
                         packet = await packetWriter.CompleteQuestAsync(qInfo.listQuest[check].id);
-                        Console.WriteLine("aa");
                     }
 
                     if (qInfo.listQuest[check].name == "Cải tạo")
@@ -184,8 +191,135 @@ namespace k8asd
 
                         //hoan thanh nhiem vu
                         packet = await packetWriter.CompleteQuestAsync(qInfo.listQuest[check].id);
-                        Console.WriteLine("aa");
                     }
+
+                    if (qInfo.listQuest[check].name == "Chinh chiến")
+                    {
+                        //nhan nhiem vu chinh chiến
+                        packet = await packetWriter.AcceptQuestAsync(qInfo.listQuest[check].id);
+                        if (packet == null) //gui packet that bai
+                        {
+                            return;
+                        }
+                        checkAutoReady = true;
+
+                        for (int i = 0; i < qInfo.listQuest[check].quality; i++)
+                        {
+                            //chinh chien nguy tuc - lu bo
+                            packet = await packetWriter.BattleNguyTucAsync();
+                            if (packet == null) //gui packet that bai
+                            {
+                                return;
+                            }
+
+                            JToken token = JToken.Parse(packet.Message);
+                            //if (token["message"] != null && token["message"].ToString() == "Không đủ lượt")
+                            //{
+                            //    removeQuest = check;
+                            //    return;
+                            //}
+                            if (token["message"] != null)
+                            {
+                                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                                removeQuest = check;
+                                return;
+                            }
+
+                            //xu ly chinh chien that bai (chua lam)
+                            //if (token["battlereport"]["message"].ToString() == "Ngài đã thất bại .....")
+                            //{
+                            //    //phai danh lai cho du so sao (chua lam)
+                            //}
+                        }
+
+                        //hoan thanh nhiem vu
+                        packet = await packetWriter.CompleteQuestAsync(qInfo.listQuest[check].id);
+                    }
+
+                    if (qInfo.listQuest[check].name == "Nâng cấp trang bị")
+                    {
+                        //nhan nhiem vu chinh chiến
+                        packet = await packetWriter.AcceptQuestAsync(qInfo.listQuest[check].id);
+                        if (packet == null) //gui packet that bai
+                        {
+                            return;
+                        }
+                        checkAutoReady = true;
+
+                        //lay id vu khi trang dau tien
+                        //lay danh sach vu khi
+                        packet = await packetWriter.GetListWeaponsAsync();
+                        if (packet == null) //gui packet that bai
+                        {
+                            return;
+                        }
+
+                        JToken token = JToken.Parse(packet.Message);
+                        JArray arrequip = (JArray)tokenn["equip"];
+
+                        string magic = tokenn["magic"].ToString();
+                        string storeid = "";
+                        for (int i = 0; i < arrequip.Count; i++)
+                        {
+                            JObject objCur = (JObject)arrequip[i];
+                            if (objCur["quality"].ToString() == "1")
+                            {
+                                storeid = objCur["storeid"].ToString();
+                                break;
+                            }
+                        }
+
+                        //xu ly neu co vu khi
+                        if (storeid != "")
+                        {
+                            //ha cap trang bi
+                            packet = await packetWriter.DownGradeWeaponsAsync(storeid);
+                            if (packet == null) //gui packet that bai
+                            {
+                                return;
+                            }
+
+                            //nang cap trang bi
+                            for (int i = 0; i < qInfo.listQuest[check].quality;)
+                            {
+                                //nang cap trang bi
+                                packet = await packetWriter.UpGradeWeaponsAsync(storeid, magic);
+                                if (packet == null) //gui packet that bai
+                                {
+                                    return;
+                                }
+
+
+                                token = JToken.Parse(packet.Message);
+
+                                //xu ly khong du bac de nang cap (chua chinh xac)
+                                if (token["message"] != null && token["message"].ToString().Contains("đủ"))
+                                {
+                                    packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                                    removeQuest = check;
+                                    return;
+                                }
+
+                                if (token["message"] != null && token["message"].ToString() == "Thất bại! Chúc may mắn lần sau!")
+                                {
+                                    //xu ly nhan nhiem vu khac (chua lam)
+                                }
+                                else
+                                {
+                                    i++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                            removeQuest = check;
+                            return;
+                        }
+                        //hoan thanh nhiem vu
+                        packet = await packetWriter.CompleteQuestAsync(qInfo.listQuest[check].id);
+                    }
+
                     if (qInfo.listQuest[check].name == "Thu Thuế")
                     {
                         //nhan nhiem vu thu thue
@@ -220,7 +354,6 @@ namespace k8asd
 
                         //hoan thanh nhiem vu
                         packet = await packetWriter.CompleteQuestAsync(qInfo.listQuest[check].id);
-                        Console.WriteLine("aa");
                     }
                     if (qInfo.listQuest[check].name == "Sử dụng Xu")
                     {
@@ -234,26 +367,62 @@ namespace k8asd
 
                         for (int i = 0; i < qInfo.listQuest[check].quality; i++)
                         {
-                            //thu thue
-                            packet = await packetWriter.IncreaseTaxAsync();
+                            ////thu thue
+                            //packet = await packetWriter.IncreaseTaxAsync();
+                            //if (packet == null) //gui packet that bai
+                            //{
+                            //    return;
+                            //}
+
+                            ////xu ly het xu tang cuong, dang le cho nhan nhiem vu khac nhung cho ngung han
+                            //JToken token = JToken.Parse(packet.Message);
+                            //if (token["message"] != null && token["message"].ToString() != "")
+                            //{
+                            //    this.timerQuest.Stop();
+                            //    this.chkQuest.Checked = false;
+                            //    break;
+                            //}
+
+                            //uy phai ngua lv1
+                            packet = await packetWriter.CommissionAsync();
                             if (packet == null) //gui packet that bai
                             {
                                 return;
                             }
 
-                            //xu ly het xu tang cuong
                             JToken token = JToken.Parse(packet.Message);
-                            if (token["message"] != null && token["message"].ToString() != "")
+                            //xu ly khong du bac (chua chinh xac)
+                            if (token["message"] != null && (token["message"].ToString().Contains("đủ")))
                             {
-                                this.timerQuest.Stop();
-                                this.chkQuest.Checked = false;
-                                break;
+                                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                                removeQuest = check;
+                                return;
+                            }
+
+                            //nhan vat pham
+                            packet = await packetWriter.AcceptCommissionAsync();
+                            if (packet == null) //gui packet that bai
+                            {
+                                return;
+                            }
+
+                            //pha bang
+                            packet = await packetWriter.BreakIceCommissionAsync();
+                            if (packet == null) //gui packet that bai
+                            {
+                                return;
+                            }
+                            //xu ly khong du xu (chua chinh xac)
+                            if (token["message"] != null && (token["message"].ToString().Contains("đủ")))
+                            {
+                                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                                removeQuest = check;
+                                return;
                             }
                         }
 
                         //hoan thanh nhiem vu
                         packet = await packetWriter.CompleteQuestAsync(qInfo.listQuest[check].id);
-                        Console.WriteLine("aa");
                     }
                     //khong co nhiem vu nao
                     if (!checkAutoReady)
@@ -279,6 +448,7 @@ namespace k8asd
             }
         }
 
+        //khong dung de qui tim nhiem vu de lam nhat (tam thoi khong cai tien)
         private int FindQuest(List<QuestInfo> listQuest, int quality)
         {
             if (quality == 4)
@@ -318,6 +488,13 @@ namespace k8asd
                 }
             }
 
+            //co the lam them nhiem vu chinh phuc clone
+            //co the lam them nhiem vu chinh chien
+
+            //co the lam them nhiem vu nang cap do
+
+            //co the lam them nhiem vu tan cong
+
             for (int i = listQuest.Count - 1; i >= 0; i--)
             {
                 if (listQuest[i].name == "Thu Thuế" && listQuest[i].quality == quality)
@@ -327,17 +504,11 @@ namespace k8asd
             }
             for (int i = listQuest.Count - 1; i >= 0; i--)
             {
-                if (listQuest[i].name == "Thu Thuế" && listQuest[i].quality == (quality+1))
+                if (listQuest[i].name == "Thu Thuế" && listQuest[i].quality == (quality + 1))
                 {
                     return i;
                 }
             }
-
-            //co the lam them nhiem vu chinh phuc clone
-            //co the lam them nhiem vu chinh chien
-            //co the lam them nhiem vu nang cap do
-            //co the lam them nhiem vu tan cong
-
 
             for (int i = listQuest.Count - 1; i >= 0; i--)
             {
@@ -361,6 +532,77 @@ namespace k8asd
             //quality = quality + 1;
             //return FindQuest(listQuest, quality);
             return -1;
+        }
+
+        //dung de qui de toi uu so sao it nhat
+        private int FindQuest1(List<QuestInfo> listQuest, int quality, int removeQuest)
+        {
+            if (quality == 3)
+            {
+                return -1;
+            }
+
+            //tim dung so sao
+            for (int i = listQuest.Count - 1; i >= 0; i--)
+            {
+                if (listQuest[i].name == "Mua bán lúa" && listQuest[i].quality == quality && i != removeQuest) 
+                {
+                    return i;
+                }
+            }
+
+            for (int i = listQuest.Count - 1; i >= 0; i--)
+            {
+                if (listQuest[i].name == "Cải tạo" && listQuest[i].quality == quality && i != removeQuest)
+                {
+                    return i;
+                }
+            }
+
+            //co the lam them nhiem vu chinh phuc clone
+
+            //co the lam them nhiem vu chinh chien
+            for (int i = listQuest.Count - 1; i >= 0; i--)
+            {
+                if (listQuest[i].name == "Chinh chiến" && listQuest[i].quality == quality && i != removeQuest)
+                {
+                    return i;
+                }
+            }
+
+            //co the lam them nhiem vu nang cap do
+            for (int i = listQuest.Count - 1; i >= 0; i--)
+            {
+                if (listQuest[i].name == "Nâng cấp trang bị" && listQuest[i].quality == quality && i != removeQuest)
+                {
+                    return i;
+                }
+            }
+
+            //co the lam them nhiem vu tan cong
+
+            for (int i = listQuest.Count - 1; i >= 0; i--)
+            {
+                if (listQuest[i].name == "Thu Thuế" && listQuest[i].quality == quality && i != removeQuest)
+                {
+                    return i;
+                }
+            }
+
+            for (int i = listQuest.Count - 1; i >= 0; i--)
+            {
+                if (listQuest[i].name == "Sử dụng Xu" && listQuest[i].quality == quality && i != removeQuest)
+                {
+                    return i;
+                }
+            }
+
+            if (listQuest == null || quality == 0)
+            {
+                return -2;
+            }
+            quality = quality + 1;
+            return FindQuest1(listQuest, quality, removeQuest);
         }
 
         public async void ReportQuest(string username, string name)
