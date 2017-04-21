@@ -385,5 +385,13 @@ namespace k8asd {
                 Task.Delay(1000);
             }
         }
+
+        private void autoGoldDailyButton_Click(object sender, EventArgs e){
+            var selectedClients = ClientManager.Instance.Clients;
+            foreach (var client in selectedClients) {
+                client.UseGoldDaily();
+                Task.Delay(1000);
+            }
+        }
     }
 }

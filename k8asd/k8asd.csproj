@@ -137,6 +137,7 @@
     <Compile Include="Account\AccountView.Designer.cs">
       <DependentUpon>AccountView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bug\BugCommand.cs" />
     <Compile Include="Client\ClientManager.cs" />
     <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Arena\ArenaCommand.cs" />

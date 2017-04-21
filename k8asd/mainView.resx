@@ -126,12 +126,6 @@
   <metadata name="menuItem0.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
-  <metadata name="menuItem0.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <metadata name="autoArenaButton.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
   <metadata name="autoArenaButton.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
@@ -146,7 +140,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACa
-        BwAAAk1TRnQBSQFMAgEBAgEAAQgBAAEIAQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        BwAAAk1TRnQBSQFMAgEBAgEAARABAAEQAQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABEAMAAQEBAAEYBgABDBgAA/EDAAPqA/ED6gHWAucBzAH/AcwD8QPjBuoD8RIAA+oD8QPdA+oBxgHW
         Ae8B1gLnA+MG6gPxbwAD6gP/AZkB/wHMAQAB/wHMAQAB/wHMAQAB/wHMAQAB/wHMAQAB/wLMAv8D8QPj
         DwAD6gP/AWYBmQH/AQABMwH/AQABMwH/AQABMwH/AQABMwH/AjMB/wHGAdYB7wPxA+NpAAbxAcwC/wEz
@@ -189,7 +183,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAU
-        JQAAAk1TRnQBSQFMAgEBAgEAAQgBAAEIAQABIAEAASABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAGA
+        JQAAAk1TRnQBSQFMAgEBAgEAARABAAEQAQABIAEAASABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAGA
         AwABIAMAAQEBAAEYBgABMDMAAVgBYQE5AVMBXAE1AVMBXAE1AVMBXAE1AVMBXAE1AVMBXAE1AVMBXAE1
         AVMBXAE1AVMBXAE1AVMBXAE1AYsBjgF9PwABQQHLAQcBPQHKAQABPQHKAQABPQHKAQABPQHKAQABPQHK
         AQABPQHKAQABMQGiAQABMQGiAQABMQGiAQABgAHCAWX2AAP+AVMBXAE1AVMBXAE1AVMBXAE1AVMBXAE1

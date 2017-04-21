@@ -59,5 +59,6 @@ namespace k8asd {
 
         void EnableAutoQuest();
         void ReportAutoQuest();
+        void UseGoldDaily();
     }
 }
