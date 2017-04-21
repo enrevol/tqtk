@@ -338,7 +338,9 @@
     <Compile Include="Tools\AutoSwap.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\AutoSwap.Designer.cs" />
+    <Compile Include="Tools\AutoSwap.designer.cs">
+      <DependentUpon>AutoSwap.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\AutoWeaveView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -449,7 +451,9 @@
     <EmbeddedResource Include="Tools\AutoReherseView.resx">
       <DependentUpon>AutoReherseView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\AutoSwap.resx" />
+    <EmbeddedResource Include="Tools\AutoSwap.resx">
+      <DependentUpon>AutoSwap.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\AutoWeaveView.resx">
       <DependentUpon>AutoWeaveView.cs</DependentUpon>
     </EmbeddedResource>
