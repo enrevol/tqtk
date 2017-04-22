@@ -11,7 +11,7 @@ namespace k8asd {
         /// Nhận nhiệm vụ.
         /// </summary>
         /// <param name="taskId">ID nhiêm vụ.</param>
-        public static async Task<Packet> AcceptQuestAsync(this IPacketWriter writer, int taskId) {
+        public static async Task<Packet> AcceptTaskAsync(this IPacketWriter writer, int taskId) {
             return await writer.SendCommandAsync(44101, taskId.ToString());
         }
 
@@ -19,7 +19,7 @@ namespace k8asd {
         /// Hủy nhiệm vụ.
         /// </summary>
         /// <param name="taskId">ID nhiêm vụ.</param>
-        public static async Task<Packet> CancelQuestAsync(this IPacketWriter writer, int taskId) {
+        public static async Task<Packet> CancelTaskAsync(this IPacketWriter writer, int taskId) {
             return await writer.SendCommandAsync(44102, taskId.ToString());
         }
 
@@ -27,7 +27,7 @@ namespace k8asd {
         /// Hoàn thành nhiệm vụ.
         /// </summary>
         /// <param name="taskId">ID nhiêm vụ.</param>
-        public static async Task<Packet> CompleteQuestAsync(this IPacketWriter writer, int taskId) {
+        public static async Task<Packet> CompleteTaskAsync(this IPacketWriter writer, int taskId) {
             return await writer.SendCommandAsync(44103, taskId.ToString());
         }
 

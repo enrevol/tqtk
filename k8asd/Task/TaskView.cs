@@ -93,10 +93,10 @@ namespace k8asd {
                 return;
             }
 
-            var taskId = taskBoard.TaskIds[taskDetails.IndexOf(task)];
+            var taskId = taskBoard.Tasks[taskDetails.IndexOf(task)];
 
             // Nhận nhiêm vụ.
-            var p0 = await packetWriter.AcceptQuestAsync(taskId);
+            var p0 = await packetWriter.AcceptTaskAsync(taskId.Id);
             if (p0 == null) {
                 return;
             }
@@ -197,7 +197,7 @@ namespace k8asd {
                 */
             }
 
-            var p2 = await packetWriter.CompleteQuestAsync(taskId);
+            var p2 = await packetWriter.CompleteTaskAsync(taskId.Id);
             if (p2 == null) {
                 /// FIXME.
             }
