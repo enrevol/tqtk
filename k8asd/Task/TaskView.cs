@@ -117,7 +117,7 @@ namespace k8asd {
             var heroId = barracks.Heroes[0].Id;
 
             // Giữ chỉ số cũ (trường hợp đã cải tiến trước).
-            // //  "Võ tướng có thuộc tính mới chưa thay"
+            // Tránh lỗi: "Võ tướng có thuộc tính mới chưa thay"
             var p0 = await packetWriter.NotUpdateHeroImproveAsync(heroId);
             if (p0 == null) {
                 return false;
