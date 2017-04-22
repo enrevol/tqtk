@@ -12,6 +12,11 @@ using System.Windows.Forms;
 
 namespace k8asd {
     public static class Utils {
+        [Obsolete]
+        public static async Task<Packet> SendCommandAsync(this IPacketWriter writer, string commandId, params string[] parameters) {
+            return await writer.SendCommandAsync(Int32.Parse(commandId), parameters);
+        }
+
         /// <summary>
         /// Compute the hash of the specified input string with the specified hasher.
         /// </summary>

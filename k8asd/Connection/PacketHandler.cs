@@ -52,9 +52,9 @@ namespace k8asd {
         /// <summary>
         /// Packet queues.
         /// </summary>
-        private Dictionary<string, AsyncCollection<Packet>> queues;
+        private Dictionary<int, AsyncCollection<Packet>> queues;
 
-        private Dictionary<string, int> messageDelta;
+        private Dictionary<int, int> messageDelta;
 
         private TaskCompletionSource readingTaskSignal;
 
@@ -65,8 +65,8 @@ namespace k8asd {
             tcpClient = null;
             buffer = new byte[BufferSize];
             hasher = MD5.Create();
-            queues = new Dictionary<string, AsyncCollection<Packet>>();
-            messageDelta = new Dictionary<string, int>();
+            queues = new Dictionary<int, AsyncCollection<Packet>>();
+            messageDelta = new Dictionary<int, int>();
             streamData = String.Empty;
             isReading = false;
         }
@@ -110,13 +110,13 @@ namespace k8asd {
             ClearData();
         }
 
-        public async Task<Packet> SendCommandAsync(string commandId, params string[] parameters) {
-            var msg = Utils.EncodeMessage(hasher, Session.UserId, Session.SessionKey, commandId, parameters);
+        public async Task<Packet> SendCommandAsync(int id, params string[] parameters) {
+            var msg = Utils.EncodeMessage(hasher, Session.UserId, Session.SessionKey, id.ToString(), parameters);
             var bytes = Encoding.UTF8.GetBytes(msg);
             var stream = tcpClient.GetStream();
             try {
                 await stream.WriteAsync(bytes, 0, bytes.Length);
-                PushDelta(commandId);
+                PushDelta(id);
             } catch (SocketException ex) {
                 Console.WriteLine(ex.Message);
                 return null;
@@ -125,10 +125,10 @@ namespace k8asd {
                 return null;
             }
 
-            var blocks = GetQueue(commandId);
+            var blocks = GetQueue(id);
             var result = await blocks.TakeAsync();
             if (result != null) {
-                Debug.Assert(result.CommandId == commandId);
+                Debug.Assert(result.Id == id);
             }
             return result;
         }
@@ -139,7 +139,7 @@ namespace k8asd {
             }
             isReading = true;
             try {
-                while (tcpClient != null) {                    
+                while (tcpClient != null) {
                     try {
                         var stream = tcpClient.GetStream();
                         var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
@@ -163,7 +163,7 @@ namespace k8asd {
                             break;
                         }
                         PacketReceived.Raise(this, packet);
-                        var id = packet.CommandId;
+                        var id = packet.Id;
                         if (PopDelta(id)) {
                             PushPacket(packet);
                         }
@@ -200,19 +200,19 @@ namespace k8asd {
         /// Adds the specified packet to its corresponding queue.
         /// </summary>
         private void PushPacket(Packet packet) {
-            var id = packet.CommandId;
+            var id = packet.Id;
             var queue = GetQueue(id);
             queue.Add(packet);
         }
 
-        private AsyncCollection<Packet> GetQueue(string id) {
+        private AsyncCollection<Packet> GetQueue(int id) {
             if (!queues.ContainsKey(id)) {
                 queues.Add(id, new AsyncCollection<Packet>());
             }
             return queues[id];
         }
 
-        private void EnsureDelta(string id) {
+        private void EnsureDelta(int id) {
             if (!messageDelta.ContainsKey(id)) {
                 messageDelta.Add(id, 0);
             }
@@ -232,17 +232,17 @@ namespace k8asd {
             messageDelta.Clear();
         }
 
-        private int GetDelta(string id) {
+        private int GetDelta(int id) {
             EnsureDelta(id);
             return messageDelta[id];
         }
 
-        private void PushDelta(string id) {
+        private void PushDelta(int id) {
             EnsureDelta(id);
             ++messageDelta[id];
         }
 
-        private bool PopDelta(string id) {
+        private bool PopDelta(int id) {
             EnsureDelta(id);
             if (messageDelta[id] == 0) {
                 return false;

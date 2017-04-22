@@ -126,12 +126,12 @@ namespace k8asd {
             //
         }
 
-        public async Task<Packet> SendCommandAsync(string command, params string[] parameters) {
+        public async Task<Packet> SendCommandAsync(int id, params string[] parameters) {
             if (State != ClientState.Connected) {
                 // Chưa kết nối.
                 return null;
             }
-            var packet = await packetHandler.SendCommandAsync(command, parameters);
+            var packet = await packetHandler.SendCommandAsync(id, parameters);
             if (packet == null) {
                 await DisconnectedFromServer();
             }
@@ -217,14 +217,14 @@ namespace k8asd {
             State = ClientState.Connected;
 
             if (blocking) {
-                var p0 = await SendCommandAsync("10100");
+                var p0 = await SendCommandAsync(10100);
                 if (p0 == null) {
                     await DisconnectedFromServer();
                     return false;
                 }
             }
 
-            var p1 = await SendCommandAsync("11102");
+            var p1 = await SendCommandAsync(11102);
             if (p1 == null) {
                 await DisconnectedFromServer();
                 return false;
@@ -288,7 +288,7 @@ namespace k8asd {
 
         private async void OneSecondTimer_Tick(object sender, EventArgs e) {
             if (packetHandler != null) {
-                await SendCommandAsync("14102", "3", "0");
+                await SendCommandAsync(14102, "3", "0");
                 if (infoModel.Force >= infoModel.MaxForce - 3) {
                     // oneSecondTimer.Stop();
                 }
