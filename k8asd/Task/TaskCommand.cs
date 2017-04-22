@@ -34,7 +34,7 @@ namespace k8asd {
         /// <summary>
         /// Làm mới danh sách nhiệm vụ.
         /// </summary>
-        public static async Task<TaskBoard> RefreshListQuestAsync(this IPacketWriter writer) {
+        public static async Task<TaskBoard> RefreshTaskBoardAsync(this IPacketWriter writer) {
             var packet = await writer.SendCommandAsync(44301);
             if (packet == null) {
                 return null;

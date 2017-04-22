@@ -57,8 +57,265 @@ namespace k8asd {
             return taskDetails;
         }
 
+        public async Task<bool> DoTask(TaskType type, int times) {
+            if (type == TaskType.Food) {
+                return await DoFoodTask(times);
+            }
+            return false;
+        }
+
+        public async Task<bool> DoFoodTask(int times) {
+            for (int i = 0; i < times; ++i) {
+                var p1 = await packetWriter.SalePaddyAsync();
+                if (p1 == null) {
+                    return false;
+                }
+
+                /*
+                JToken token = JToken.Parse(packet.Message);
+                //xu ly mua ban khong thanh cong do da ban het lua
+                if (token["message"] != null && token["message"].ToString() == "Hôm nay không có đủ lượng giao dịch") {
+                    //neu da ban het lua thi mua cho den
+                    packet = await packetWriter.BuyPaddyInMaketAsync();
+                    if (packet == null) //gui packet that bai
+                    {
+                        return;
+                    }
+                    //xu ly khong the mua lua cho den (chua co acc test) co the huy nhiem vu nay nhan nhiem vu ke
+                    //...
+                }
+                */
+            }
+            return true;
+        }
+
+        private async Task<bool> DoImproveTask(int times) {
+            for (int i = 0; i < times; ++i) {
+                // Cải tiến.
+                // var p2 = await packetWriter.GetListHeroAsync();
+                //lay danh sach tuong
+                /*
+                packet = await packetWriter.GetListHeroAsync();
+                if (packet == null) {
+                    return;
+                }
+
+                Barracks barracks = Barracks.Parse(JToken.Parse(packet.Message));
+                //lay id tuong dau tien
+                int id = barracks.Heroes[0].Id;
+
+                for (int i = 0; i < qInfo.listQuest[check].quality; i++) {
+                    //cai tien tuong
+                    packet = await packetWriter.HeroImproveAsync(id);
+                    if (packet == null) //gui packet that bai
+                    {
+                        return;
+                    }
+
+                    //xu ly khong du chien tich (chua lam)
+
+                    //cai tien thanh cong xu ly giu chi so
+                    packet = await packetWriter.NotUpdateHeroImproveAsync(id);
+                }
+                */
+            }
+            return true;
+        }
+
+        private async Task<bool> DoAttackNpcTask(int times) {
+            for (int i = 0; i < times; ++i) {
+                /*
+                 //chinh chien nguy tuc - lu bo
+                            packet = await packetWriter.BattleNguyTucAsync();
+                            if (packet == null) //gui packet that bai
+                            {
+                                return;
+                            }
+
+                            JToken token = JToken.Parse(packet.Message);
+                            //if (token["message"] != null && token["message"].ToString() == "Không đủ lượt")
+                            //{
+                            //    removeQuest = check;
+                            //    return;
+                            //}
+                            if (token["message"] != null)
+                            {
+                                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                                removeQuest = check;
+                                return;
+                            }
+
+                            //xu ly chinh chien that bai (chua lam)
+                            //if (token["battlereport"]["message"].ToString() == "Ngài đã thất bại .....")
+                            //{
+                            //    //phai danh lai cho du so sao (chua lam)
+                            //}
+                            */
+            }
+            return true;
+        }
+
+        private async Task<bool> DoUpgradeTask(int times) {
+            /*
+             //lay id vu khi trang dau tien
+                        //lay danh sach vu khi
+                        packet = await packetWriter.GetListWeaponsAsync();
+                        if (packet == null) //gui packet that bai
+                        {
+                            return;
+                        }
+
+                        JToken token = JToken.Parse(packet.Message);
+                        JArray arrequip = (JArray)tokenn["equip"];
+
+                        string magic = tokenn["magic"].ToString();
+                        string storeid = "";
+                        for (int i = 0; i < arrequip.Count; i++)
+                        {
+                            JObject objCur = (JObject)arrequip[i];
+                            if (objCur["quality"].ToString() == "1")
+                            {
+                                storeid = objCur["storeid"].ToString();
+                                break;
+                            }
+                        }
+
+                        //xu ly neu co vu khi
+                        if (storeid != "")
+                        {
+                            //ha cap trang bi
+                            packet = await packetWriter.DownGradeWeaponsAsync(storeid);
+                            if (packet == null) //gui packet that bai
+                            {
+                                return;
+                            }
+
+                            //nang cap trang bi
+                            for (int i = 0; i < qInfo.listQuest[check].quality;)
+                            {
+                                //nang cap trang bi
+                                packet = await packetWriter.UpGradeWeaponsAsync(storeid, magic);
+                                if (packet == null) //gui packet that bai
+                                {
+                                    return;
+                                }
+
+
+                                token = JToken.Parse(packet.Message);
+
+                                //xu ly khong du bac de nang cap (chua chinh xac)
+                                if (token["message"] != null && token["message"].ToString().Contains("đủ"))
+                                {
+                                    packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                                    removeQuest = check;
+                                    return;
+                                }
+
+                                if (token["message"] != null && token["message"].ToString() == "Thất bại! Chúc may mắn lần sau!")
+                                {
+                                    //xu ly nhan nhiem vu khac (chua lam)
+                                }
+                                else
+                                {
+                                    i++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                            removeQuest = check;
+                            return;
+                        }
+                        */
+            return true;
+        }
+
+        private async Task<bool> DoImposeTask(int times) {
+
+            /*
+             * 
+             *  //thu thue
+                            packet = await packetWriter.CollectTaxAsync();
+                            if (packet == null) //gui packet that bai
+                            {
+                                return;
+                            }
+                            JToken token = JToken.Parse(packet.Message);
+                            if (token["message"] != null && (token["message"].ToString() == "Không thể tiếp tục tăng cường thu thuế trong hôm nay" || token["message"].ToString() == "Thao tác này đang đóng băng"))
+                            {
+                                //neu da het so lan thu thue thi tang cuong thue
+                                packet = await packetWriter.IncreaseTaxAsync();
+                                if (packet == null) //gui packet that bai
+                                {
+                                    return;
+                                }
+                                //xu ly het xu tang cuong (chua lam)
+                                //...
+                            }
+                            */
+            return true;
+        }
+
+        private async Task<bool> DoGoldTask(int times) {
+            ////thu thue
+            //packet = await packetWriter.IncreaseTaxAsync();
+            //if (packet == null) //gui packet that bai
+            //{
+            //    return;
+            //}
+
+            ////xu ly het xu tang cuong, dang le cho nhan nhiem vu khac nhung cho ngung han
+            //JToken token = JToken.Parse(packet.Message);
+            //if (token["message"] != null && token["message"].ToString() != "")
+            //{
+            //    this.timerQuest.Stop();
+            //    this.chkQuest.Checked = false;
+            //    break;
+            //}
+
+
+            /*
+            //uy phai ngua lv1
+            packet = await packetWriter.CommissionAsync();
+            if (packet == null) //gui packet that bai
+            {
+                return;
+            }
+
+            JToken token = JToken.Parse(packet.Message);
+            //xu ly khong du bac (chua chinh xac)
+            if (token["message"] != null && (token["message"].ToString().Contains("đủ"))) {
+                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                removeQuest = check;
+                return;
+            }
+
+            //nhan vat pham
+            packet = await packetWriter.AcceptCommissionAsync();
+            if (packet == null) //gui packet that bai
+            {
+                return;
+            }
+
+            //pha bang
+            packet = await packetWriter.BreakIceCommissionAsync();
+            if (packet == null) //gui packet that bai
+            {
+                return;
+            }
+            //xu ly khong du xu (chua chinh xac)
+            if (token["message"] != null && (token["message"].ToString().Contains("đủ"))) {
+                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
+                removeQuest = check;
+                return;
+            }
+            */
+            return true;
+        }
+
         public async Task Auto() {
-            var taskBoard = await packetWriter.RefreshListQuestAsync();
+            var taskBoard = await packetWriter.RefreshTaskBoardAsync();
             if (taskBoard == null) {
                 return;
             }
@@ -101,101 +358,7 @@ namespace k8asd {
                 return;
             }
 
-            if (task.Type == TaskType.Food) {
-                for (int i = 0; i < task.Quality; ++i) {
-                    var p1 = await packetWriter.SalePaddyAsync();
-                    if (p1 == null) {
-                        return;
-                    }
 
-                    /*
-                    JToken token = JToken.Parse(packet.Message);
-                    //xu ly mua ban khong thanh cong do da ban het lua
-                    if (token["message"] != null && token["message"].ToString() == "Hôm nay không có đủ lượng giao dịch") {
-                        //neu da ban het lua thi mua cho den
-                        packet = await packetWriter.BuyPaddyInMaketAsync();
-                        if (packet == null) //gui packet that bai
-                        {
-                            return;
-                        }
-                        //xu ly khong the mua lua cho den (chua co acc test) co the huy nhiem vu nay nhan nhiem vu ke
-                        //...
-                    }
-                    */
-                }
-            }
-            if (task.Type == TaskType.Improve) {
-                // Cải tiến.
-                // var p2 = await packetWriter.GetListHeroAsync();
-                //lay danh sach tuong
-                /*
-                packet = await packetWriter.GetListHeroAsync();
-                if (packet == null) {
-                    return;
-                }
-
-                Barracks barracks = Barracks.Parse(JToken.Parse(packet.Message));
-                //lay id tuong dau tien
-                int id = barracks.Heroes[0].Id;
-
-                for (int i = 0; i < qInfo.listQuest[check].quality; i++) {
-                    //cai tien tuong
-                    packet = await packetWriter.HeroImproveAsync(id);
-                    if (packet == null) //gui packet that bai
-                    {
-                        return;
-                    }
-
-                    //xu ly khong du chien tich (chua lam)
-
-                    //cai tien thanh cong xu ly giu chi so
-                    packet = await packetWriter.NotUpdateHeroImproveAsync(id);
-                }
-                */
-            }
-            if (task.Type == TaskType.Impose) {
-                /*
-                for (int i = 0; i < qInfo.listQuest[check].quality; i++) {
-                    //thu thue
-                    packet = await packetWriter.CollectTaxAsync();
-                    if (packet == null) //gui packet that bai
-                    {
-                        return;
-                    }
-                    JToken token = JToken.Parse(packet.Message);
-                    if (token["message"] != null && (token["message"].ToString() == "Không thể tiếp tục tăng cường thu thuế trong hôm nay" || token["message"].ToString() == "Thao tác này đang đóng băng")) {
-                        //neu da het so lan thu thue thi tang cuong thue
-                        packet = await packetWriter.IncreaseTaxAsync();
-                        if (packet == null) //gui packet that bai
-                        {
-                            return;
-                        }
-                        //xu ly het xu tang cuong (chua lam)
-                        //...
-                    }
-                }
-                */
-            }
-            if (task.Type == TaskType.Gold) {
-                /*
-                for (int i = 0; i < qInfo.listQuest[check].quality; i++) {
-                    //thu thue
-                    packet = await packetWriter.IncreaseTaxAsync();
-                    if (packet == null) //gui packet that bai
-                    {
-                        return;
-                    }
-
-                    //xu ly het xu tang cuong
-                    JToken token = JToken.Parse(packet.Message);
-                    if (token["message"] != null && token["message"].ToString() != "") {
-                        this.timerQuest.Stop();
-                        this.chkQuest.Checked = false;
-                        break;
-                    }
-                }
-                */
-            }
 
             var p2 = await packetWriter.CompleteTaskAsync(taskId.Id);
             if (p2 == null) {
