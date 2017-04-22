@@ -58,6 +58,10 @@ namespace k8asd {
             return await writer.SendCommandAsync("33100", powerId.ToString());
         }
 
+        public static async Task<Packet> AttackNpcAsync(this IPacketWriter writer, int npcId, PartyType type) {
+            return await writer.SendCommandAsync(33101, npcId.ToString(), ((int) type).ToString());
+        }
+
         /// <summary>
         /// Cập nhật thông tin thế lực.
         /// </summary>
