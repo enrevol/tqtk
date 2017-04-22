@@ -179,6 +179,8 @@
     </Compile>
     <Compile Include="Map\Scope.cs" />
     <Compile Include="Map\World.cs" />
+    <Compile Include="Market\MarketCommand.cs" />
+    <Compile Include="Market\MarketInfo.cs" />
     <Compile Include="Outside\DrillReward.cs" />
     <Compile Include="Outside\OutsideCommand.cs" />
     <Compile Include="Outside\OutsideView.cs">

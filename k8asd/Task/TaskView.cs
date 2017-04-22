@@ -65,6 +65,11 @@ namespace k8asd {
         }
 
         private async Task<bool> DoFoodTask(int times) {
+            var market = await packetWriter.RefreshMarketAsync();
+            if (market == null) {
+                return false;
+            }
+
             for (int i = 0; i < times; ++i) {
                 if (!await DoFoodSubtask()) {
                     return false;

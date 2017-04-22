@@ -55,30 +55,6 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Mua lúa.
-        /// </summary>
-        /// <param name="amount">Số lượng.</param>
-        public static async Task<Packet> BuyPaddyAsync(this IPacketWriter writer, int amount) {
-            return await writer.SendCommandAsync(13101, "0", amount.ToString());
-        }
-
-        /// <summary>
-        /// Bán lúa.
-        /// </summary>
-        /// <param name="amount">Số lượng.</param>
-        public static async Task<Packet> SalePaddyAsync(this IPacketWriter writer, int amount) {
-            return await writer.SendCommandAsync(13101, "1", amount.ToString());
-        }
-
-        /// <summary>
-        /// Mua lúa chợ đen.
-        /// </summary>
-        /// <param name="amount">Số lượng.</param>
-        public static async Task<Packet> BuyPaddyInMaketAsync(this IPacketWriter writer, int amount) {
-            return await writer.SendCommandAsync(13101, "2", amount.ToString());
-        }
-
-        /// <summary>
         /// Thu thuế.
         /// </summary>s
         public static async Task<Packet> CollectTaxAsync(this IPacketWriter writer) {
