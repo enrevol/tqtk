@@ -61,6 +61,7 @@ namespace k8asd {
             var helpers = new Dictionary<TaskType, ITaskHelper>();
             helpers.Add(TaskType.Food, new FoodTaskHelper());
             helpers.Add(TaskType.Improve, new ImproveTaskHelper());
+            helpers.Add(TaskType.Impose, new ImposeTaskHelper());
 
             if (!helpers.ContainsKey(type)) {
                 return false;
@@ -181,32 +182,6 @@ namespace k8asd {
                             return;
                         }
                         */
-            return true;
-        }
-
-        private async Task<bool> DoImposeTask(int times) {
-
-            /*
-             * 
-             *  //thu thue
-                            packet = await packetWriter.CollectTaxAsync();
-                            if (packet == null) //gui packet that bai
-                            {
-                                return;
-                            }
-                            JToken token = JToken.Parse(packet.Message);
-                            if (token["message"] != null && (token["message"].ToString() == "Không thể tiếp tục tăng cường thu thuế trong hôm nay" || token["message"].ToString() == "Thao tác này đang đóng băng"))
-                            {
-                                //neu da het so lan thu thue thi tang cuong thue
-                                packet = await packetWriter.IncreaseTaxAsync();
-                                if (packet == null) //gui packet that bai
-                                {
-                                    return;
-                                }
-                                //xu ly het xu tang cuong (chua lam)
-                                //...
-                            }
-                            */
             return true;
         }
 

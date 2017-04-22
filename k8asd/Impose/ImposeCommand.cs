@@ -14,14 +14,14 @@ namespace k8asd {
         /// <summary>
         /// Thu thuế.
         /// </summary>
-        public static async Task<Packet> CollectTaxAsync(this IPacketWriter writer) {
+        public static async Task<Packet> ImposeAsync(this IPacketWriter writer) {
             return await writer.SendCommandAsync(12401, "0", "0");
         }
 
         /// <summary>
         /// Tăng cường thu thuế.
         /// </summary>
-        public static async Task<Packet> IncreaseTaxAsync(this IPacketWriter writer) {
+        public static async Task<Packet> ForceImposeAsync(this IPacketWriter writer) {
             return await writer.SendCommandAsync(12401, "1", "1");
         }
     }
