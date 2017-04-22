@@ -9,12 +9,11 @@ namespace k8asd {
         event EventHandler<Packet> PacketReceived;
 
         /// <summary>
-        /// Attempts to send the specified command and parameters to the server with a callback.
+        /// Asynchronously send the specified command and parameters to the server.
         /// </summary>
-        /// <param name="callback">Will be called when the corresponding reply from the server is received</param>
-        /// <param name="command">The command id</param>
-        /// <param name="parameters">The additional parameters</param>
-        /// <returns>Whether the attemption was successful</returns>
+        /// <param name="command">The command id.</param>
+        /// <param name="parameters">The additional parameters.</param>
+        /// <returns>Whether the attemption was successful.</returns>
         Task<Packet> SendCommandAsync(int commandId, params string[] parameters);
     }
 }
