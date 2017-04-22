@@ -310,7 +310,7 @@ namespace k8asd {
         /// <param name="lowerRank">Thứ hạng của người chơi thứ hạng cao.</param>
         /// <returns>True nếu khiêu chiến thành công.</returns>
         private async Task<bool> DuelAsync(IPacketWriter lower, IPacketWriter upper, int lowerId, int lowerRank) {
-            // Chọn trận ngư lân.
+            // Chọn trận trường xà.
             var p0 = await lower.SetDefaultFormationAsync(10);
             if (p0 == null) {
                 return false;

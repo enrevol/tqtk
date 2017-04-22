@@ -316,6 +316,10 @@ namespace k8asd {
         public void ReportAutoQuest() {
             questView1.ReportQuest(Config.Username, PlayerName);
         }
+
+        public void UseGoldDaily() {
+            this.UseGoldDailyAsync();
+        }
     }
 }
 

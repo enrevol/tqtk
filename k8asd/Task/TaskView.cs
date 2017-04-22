@@ -120,6 +120,8 @@ namespace k8asd {
                 }
             }
             if (task.Type == TaskType.Improve) {
+                // Cải tiến.
+                // var p2 = await packetWriter.GetListHeroAsync();
                 //lay danh sach tuong
                 /*
                 packet = await packetWriter.GetListHeroAsync();
@@ -263,6 +265,10 @@ namespace k8asd {
                 w.Close();
             }
             */
+        }
+
+        private async Task DoTask(TaskDetail task) {
+
         }
 
         private async void timerQuest_Tick(object sender, EventArgs e) {

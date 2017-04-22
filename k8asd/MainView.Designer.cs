@@ -40,6 +40,7 @@ namespace k8asd
             this.autoReherseButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoQuestButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoReportQuestButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoGoldDailyButton = new System.Windows.Forms.ToolStripMenuItem();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this._ignore0 = new System.Windows.Forms.Panel();
             this.saveButton = new System.Windows.Forms.Button();
@@ -56,9 +57,10 @@ namespace k8asd
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.clientList = new BrightIdeasSoftware.ObjectListView();
             this.navigatorPanel = new System.Windows.Forms.Panel();
-            this.moveUpButton = new System.Windows.Forms.Button();
-            this.arrowImages = new System.Windows.Forms.ImageList(this.components);
             this.moveDownButton = new System.Windows.Forms.Button();
+            this.arrowImages = new System.Windows.Forms.ImageList(this.components);
+            this.moveUpButton = new System.Windows.Forms.Button();
+            this.autoSwapSnoutButton = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,7 +89,9 @@ namespace k8asd
             this.autoSwapButton,
             this.autoReherseButton,
             this.autoQuestButton,
-            this.autoReportQuestButton});
+            this.autoReportQuestButton,
+            this.autoGoldDailyButton,
+            this.autoSwapSnoutButton});
             menuItem0.Name = "menuItem0";
             menuItem0.Size = new System.Drawing.Size(58, 20);
             menuItem0.Text = "Phụ trợ";
@@ -140,6 +144,13 @@ namespace k8asd
             this.autoReportQuestButton.Size = new System.Drawing.Size(214, 22);
             this.autoReportQuestButton.Text = "Báo cáo NVHN";
             this.autoReportQuestButton.Click += new System.EventHandler(this.autoReportQuestButton_Click);
+            // 
+            // autoGoldDailyButton
+            // 
+            this.autoGoldDailyButton.Name = "autoGoldDailyButton";
+            this.autoGoldDailyButton.Size = new System.Drawing.Size(214, 22);
+            this.autoGoldDailyButton.Text = "Bug Tiêu Xu Hằng Ngày";
+            this.autoGoldDailyButton.Click += new System.EventHandler(this.autoGoldDailyButton_Click);
             // 
             // oneSecondTimer
             // 
@@ -342,6 +353,25 @@ namespace k8asd
             this.navigatorPanel.Size = new System.Drawing.Size(40, 587);
             this.navigatorPanel.TabIndex = 33;
             // 
+            // moveDownButton
+            // 
+            this.moveDownButton.ImageKey = "arrow_down";
+            this.moveDownButton.ImageList = this.arrowImages;
+            this.moveDownButton.Location = new System.Drawing.Point(0, 170);
+            this.moveDownButton.Name = "moveDownButton";
+            this.moveDownButton.Size = new System.Drawing.Size(40, 40);
+            this.moveDownButton.TabIndex = 1;
+            this.moveDownButton.Tag = "";
+            this.moveDownButton.UseVisualStyleBackColor = true;
+            this.moveDownButton.Click += new System.EventHandler(this.moveDownButton_Click);
+            // 
+            // arrowImages
+            // 
+            this.arrowImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("arrowImages.ImageStream")));
+            this.arrowImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.arrowImages.Images.SetKeyName(0, "arrow_down");
+            this.arrowImages.Images.SetKeyName(1, "arrow_up");
+            // 
             // moveUpButton
             // 
             this.moveUpButton.ImageKey = "arrow_up";
@@ -354,24 +384,12 @@ namespace k8asd
             this.moveUpButton.UseVisualStyleBackColor = true;
             this.moveUpButton.Click += new System.EventHandler(this.moveUpButton_Click);
             // 
-            // arrowImages
+            // autoSwapSnoutButton
             // 
-            this.arrowImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("arrowImages.ImageStream")));
-            this.arrowImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.arrowImages.Images.SetKeyName(0, "arrow_down");
-            this.arrowImages.Images.SetKeyName(1, "arrow_up");
-            // 
-            // moveDownButton
-            // 
-            this.moveDownButton.ImageKey = "arrow_down";
-            this.moveDownButton.ImageList = this.arrowImages;
-            this.moveDownButton.Location = new System.Drawing.Point(0, 170);
-            this.moveDownButton.Name = "moveDownButton";
-            this.moveDownButton.Size = new System.Drawing.Size(40, 40);
-            this.moveDownButton.TabIndex = 1;
-            this.moveDownButton.Tag = "";
-            this.moveDownButton.UseVisualStyleBackColor = true;
-            this.moveDownButton.Click += new System.EventHandler(this.moveDownButton_Click);
+            this.autoSwapSnoutButton.Name = "autoSwapSnoutButton";
+            this.autoSwapSnoutButton.Size = new System.Drawing.Size(214, 22);
+            this.autoSwapSnoutButton.Text = "Tự động chuyển mỏ";
+            this.autoSwapSnoutButton.Click += new System.EventHandler(this.autoSwapSnoutButton_Click);
             // 
             // MainView
             // 
@@ -427,6 +445,8 @@ namespace k8asd
         private Button moveUpButton;
         private ImageList arrowImages;
         private Button moveDownButton;
+        private ToolStripMenuItem autoGoldDailyButton;
+        private ToolStripMenuItem autoSwapSnoutButton;
     }
 }
 
