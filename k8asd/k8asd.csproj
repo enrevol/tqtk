@@ -198,6 +198,7 @@
       <DependentUpon>PacketView.cs</DependentUpon>
     </Compile>
     <Compile Include="Shop\StoreCommand.cs" />
+    <Compile Include="Shop\StoreInfo.cs" />
     <Compile Include="Task\AttackNpcTaskHelper.cs" />
     <Compile Include="Task\FoodTaskHelper.cs" />
     <Compile Include="Task\ImposeTaskHelper.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Snout\SnoutCommand.cs" />
     <Compile Include="Swap\SwapCommand.cs" />
     <Compile Include="Swap\SwapInfo.cs" />
+    <Compile Include="Task\UpgradeTaskHelper.cs" />
     <Compile Include="Tools\AutoSnoutView.cs">
       <SubType>Form</SubType>
     </Compile>

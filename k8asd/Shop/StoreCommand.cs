@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace k8asd {
     public static class StoreCommand {
@@ -7,8 +8,12 @@ namespace k8asd {
         /// </summary>
         /// <param name="index">Thứ tự của trang.</param>
         /// <param name="size">Kích thước của mỗi trang.</param>
-        public static async Task<Packet> RefreshStoreAsync(this IPacketWriter writer, int index, int size) {
-            return await writer.SendCommandAsync(39100, index.ToString(), size.ToString());
+        public static async Task<StoreInfo> RefreshStoreAsync(this IPacketWriter writer, int index, int size) {
+            var packet = await writer.SendCommandAsync(39100, index.ToString(), size.ToString());
+            if (packet == null) {
+                return null;
+            }
+            return StoreInfo.Parse(JToken.Parse(packet.Message));
         }
 
         /// <summary>
