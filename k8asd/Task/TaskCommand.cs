@@ -73,28 +73,7 @@ namespace k8asd {
         /// </summary>s
         public static async Task<Packet> NotUpdateHeroImproveAsync(this IPacketWriter writer, int idHero) {
             return await writer.SendCommandAsync("41303", idHero.ToString(), "0");
-        }
-
-        /// <summary>
-        /// Lấy danh sách vũ khí trắng.
-        /// </summary>s
-        public static async Task<Packet> GetListWeaponsAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("39301", "1", "0", "10");
-        }
-
-        /// <summary>
-        /// Hạ cấp vũ khí.
-        /// </summary>s
-        public static async Task<Packet> DownGradeWeaponsAsync(this IPacketWriter writer, string idWeapon) {
-            return await writer.SendCommandAsync("39402", idWeapon);
-        }
-
-        /// <summary>
-        /// Nâng cấp vũ khí.
-        /// </summary>s
-        public static async Task<Packet> UpGradeWeaponsAsync(this IPacketWriter writer, string idWeapon, string magic) {
-            return await writer.SendCommandAsync("39302", idWeapon, "0", magic);
-        }
+        }       
 
         /// <summary>
         /// Ủy phái ngựa 1.
