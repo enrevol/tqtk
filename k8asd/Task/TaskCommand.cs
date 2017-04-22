@@ -8,10 +8,34 @@ using System.Threading.Tasks;
 namespace k8asd {
     public static class TaskCommand {
         /// <summary>
-        /// Lấy danh sách nhiệm vụ.
+        /// Nhận nhiệm vụ.
+        /// </summary>
+        /// <param name="taskId">ID nhiêm vụ.</param>
+        public static async Task<Packet> AcceptQuestAsync(this IPacketWriter writer, int taskId) {
+            return await writer.SendCommandAsync(44101, taskId.ToString());
+        }
+
+        /// <summary>
+        /// Hủy nhiệm vụ.
+        /// </summary>
+        /// <param name="taskId">ID nhiêm vụ.</param>
+        public static async Task<Packet> CancelQuestAsync(this IPacketWriter writer, int taskId) {
+            return await writer.SendCommandAsync(44102, taskId.ToString());
+        }
+
+        /// <summary>
+        /// Hoàn thành nhiệm vụ.
+        /// </summary>
+        /// <param name="taskId">ID nhiêm vụ.</param>
+        public static async Task<Packet> CompleteQuestAsync(this IPacketWriter writer, int taskId) {
+            return await writer.SendCommandAsync(44103, taskId.ToString());
+        }
+
+        /// <summary>
+        /// Làm mới danh sách nhiệm vụ.
         /// </summary>
         public static async Task<TaskBoard> RefreshListQuestAsync(this IPacketWriter writer) {
-            var packet = await writer.SendCommandAsync("44301");
+            var packet = await writer.SendCommandAsync(44301);
             if (packet == null) {
                 return null;
             }
@@ -19,39 +43,15 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Lấy số sao của nhiệm vụ.
+        /// Lấy thông tin của nhiêm vụ.
         /// </summary>
-        /// <param name="idQuest">ID nhiêm vụ.</param>
-        public static async Task<TaskDetail> GetStartOfQuestAsync(this IPacketWriter writer, int idQuest) {
-            var packet = await writer.SendCommandAsync("44201", idQuest.ToString());
+        /// <param name="taskId">ID nhiêm vụ.</param>
+        public static async Task<TaskDetail> GetStartOfQuestAsync(this IPacketWriter writer, int taskId) {
+            var packet = await writer.SendCommandAsync(44201, taskId.ToString());
             if (packet == null) {
                 return null;
             }
             return TaskDetail.Parse(JToken.Parse(packet.Message));
-        }
-
-        /// <summary>
-        /// Nhận nhiệm vụ.
-        /// </summary>
-        /// <param name="idQuest">ID nhiêm vụ.</param>
-        public static async Task<Packet> AcceptQuestAsync(this IPacketWriter writer, int idQuest) {
-            return await writer.SendCommandAsync("44101", idQuest.ToString());
-        }
-
-        /// <summary>
-        /// Hoàn thành nhiệm vụ.
-        /// </summary>
-        /// <param name="idQuest">ID nhiêm vụ.</param>
-        public static async Task<Packet> CompleteQuestAsync(this IPacketWriter writer, int idQuest) {
-            return await writer.SendCommandAsync("44103", idQuest.ToString());
-        }
-
-        /// <summary>
-        /// Hủy nhiệm vụ.
-        /// </summary>
-        /// <param name="idQuest">ID nhiêm vụ.</param>
-        public static async Task<Packet> CancelQuestAsync(this IPacketWriter writer, int idQuest) {
-            return await writer.SendCommandAsync("44102", idQuest.ToString());
         }
 
         /// <summary>

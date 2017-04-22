@@ -196,6 +196,7 @@
     </Compile>
     <Compile Include="Task\TaskCommand.cs" />
     <Compile Include="Task\TaskBoard.cs" />
+    <Compile Include="Task\TaskInfo.cs" />
     <Compile Include="Task\TaskView.cs">
       <SubType>UserControl</SubType>
     </Compile>

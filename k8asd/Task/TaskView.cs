@@ -45,6 +45,18 @@ namespace k8asd {
             }
         }
 
+        public async Task<List<TaskDetail>> RefreshTaskDetails(TaskBoard board) {
+            var taskDetails = new List<TaskDetail>();
+            foreach (var task in board.Tasks) {
+                var detail = await packetWriter.GetStartOfQuestAsync(task.Id);
+                if (detail == null) {
+                    return null;
+                }
+                taskDetails.Add(detail);
+            }
+            return taskDetails;
+        }
+
         public async Task Auto() {
             var taskBoard = await packetWriter.RefreshListQuestAsync();
             if (taskBoard == null) {
@@ -57,14 +69,7 @@ namespace k8asd {
                 return;
             }
 
-            var taskDetails = new List<TaskDetail>();
-            foreach (var id in taskBoard.TaskIds) {
-                var detail = await packetWriter.GetStartOfQuestAsync(id);
-                if (detail == null) {
-                    return;
-                }
-                taskDetails.Add(detail);
-            }
+            var taskDetails = await RefreshTaskDetails(taskBoard);
 
             /*
             ???
