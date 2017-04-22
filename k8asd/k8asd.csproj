@@ -493,6 +493,10 @@
     <None Include="Command\31106_2.json" />
     <None Include="Command\31106_1.json" />
     <None Include="Command\31102.json" />
+    <None Include="Command\39302_2.json" />
+    <None Include="Command\39302_0.json" />
+    <None Include="Command\39302_1.json" />
+    <None Include="Command\39103.json" />
     <None Include="Command\41100_1.json" />
     <None Include="Command\44201.json" />
     <None Include="Command\44301.json" />

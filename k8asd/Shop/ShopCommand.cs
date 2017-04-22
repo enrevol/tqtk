@@ -26,6 +26,15 @@ namespace k8asd {
         }
 
         /// <summary>
+        /// Hạ cấp trang bị (ma lực không ảnh hưởng).
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="equipmentId">ID của trang bị.</param>
+        public static async Task<Packet> DegradeEquipmentAsync(this IPacketWriter writer, int equipmentId) {
+            return await writer.DegradeEquipmentAsync(equipmentId, 0);
+        }
+
+        /// <summary>
         /// Giao diện nâng.
         /// </summary>
         /// <param name="type">Loại trang: 0 = Tất cả, 1 = Vũ khí, etc...</param>
@@ -61,7 +70,7 @@ namespace k8asd {
         /// Hạ cấp hàng loạt.
         /// </summary>
         /// <param name="equipmentId">ID của trang bị.</param>
-        public static async Task<Packet> DegradeEquipmentAsync(this IPacketWriter writer, int equipmentId) {
+        public static async Task<Packet> DegradeEquipmentAllAsync(this IPacketWriter writer, int equipmentId) {
             return await writer.SendCommandAsync(39402, equipmentId.ToString());
         }
     }

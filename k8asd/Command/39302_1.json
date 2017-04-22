@@ -1,0 +1,16 @@
+﻿{
+  "message": "Thất bại! Chúc may mắn lần sau!",
+  "baoji": 0,
+  "playerupdateinfo": {
+    "sys_gold": 120,
+    "user_gold": 0,
+    "copper": 119856
+  },
+  "magic": 60,
+  "canusegold": 0,
+  "flag": 3,
+  "magicstate": 1,
+  "upgradecdusable": 1,
+  "replaySilver": 720,
+  "cd": 299998
+}
