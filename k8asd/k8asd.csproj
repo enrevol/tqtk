@@ -200,6 +200,7 @@
     </Compile>
     <Compile Include="Shop\ShopCommand.cs" />
     <Compile Include="Shop\StoreInfo.cs" />
+    <Compile Include="Shop\UpgradeInfo.cs" />
     <Compile Include="Task\AttackNpcTaskHelper.cs" />
     <Compile Include="Task\FoodTaskHelper.cs" />
     <Compile Include="Task\ImposeTaskHelper.cs" />

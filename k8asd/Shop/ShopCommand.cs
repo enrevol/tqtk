@@ -32,8 +32,12 @@ namespace k8asd {
         /// <param name="index">Thứ tự trang.</param>
         /// <param name="size">Kích thước trang.</param>
         /// <returns></returns>
-        public static async Task<Packet> RefreshUpgradeAsync(this IPacketWriter writer, int type, int index, int size) {
-            return await writer.SendCommandAsync(39301, type.ToString(), index.ToString(), size.ToString());
+        public static async Task<UpgradeInfo> RefreshUpgradeAsync(this IPacketWriter writer, int type, int index, int size) {
+            var packet = await writer.SendCommandAsync(39301, type.ToString(), index.ToString(), size.ToString());
+            if (packet == null) {
+                return null;
+            }
+            return UpgradeInfo.Parse(JToken.Parse(packet.Message));
         }
 
         /// <summary>

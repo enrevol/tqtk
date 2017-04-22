@@ -63,6 +63,7 @@ namespace k8asd {
             helpers.Add(TaskType.Improve, new ImproveTaskHelper());
             helpers.Add(TaskType.Impose, new ImposeTaskHelper());
             helpers.Add(TaskType.AttackNpc, new AttackNpcTaskHelper());
+            helpers.Add(TaskType.Upgrade, new UpgradeTaskHelper());
 
             if (!helpers.ContainsKey(type)) {
                 return false;
@@ -77,11 +78,6 @@ namespace k8asd {
                 return false;
             }
             return false;
-        }
-
-        private async Task<bool> DoUpgradeTask(int times) {
-           
-            return true;
         }
 
         private async Task<bool> DoGoldTask(int times) {
@@ -260,10 +256,6 @@ namespace k8asd {
                 w.Close();
             }
             */
-        }
-
-        private async Task DoTask(TaskDetail task) {
-
         }
 
         private async void timerQuest_Tick(object sender, EventArgs e) {
