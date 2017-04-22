@@ -64,61 +64,90 @@ namespace k8asd {
             return false;
         }
 
-        public async Task<bool> DoFoodTask(int times) {
+        private async Task<bool> DoFoodTask(int times) {
             for (int i = 0; i < times; ++i) {
-                var p1 = await packetWriter.SalePaddyAsync();
-                if (p1 == null) {
+                if (!await DoFoodSubtask()) {
                     return false;
                 }
+            }
+            return true;
+        }
 
-                /*
-                JToken token = JToken.Parse(packet.Message);
-                //xu ly mua ban khong thanh cong do da ban het lua
-                if (token["message"] != null && token["message"].ToString() == "Hôm nay không có đủ lượng giao dịch") {
-                    //neu da ban het lua thi mua cho den
-                    packet = await packetWriter.BuyPaddyInMaketAsync();
-                    if (packet == null) //gui packet that bai
-                    {
-                        return;
-                    }
-                    //xu ly khong the mua lua cho den (chua co acc test) co the huy nhiem vu nay nhan nhiem vu ke
-                    //...
+        /// <summary>
+        /// Làm nhiệm vụ mua bán lúa 1 lần.
+        /// </summary>
+        private async Task<bool> DoFoodSubtask() {
+            const int amount = 1;
+            var p = await packetWriter.SalePaddyAsync(amount);
+            if (p == null) {
+                return false;
+            }
+            if (p.HasError) {
+                // Hết số lượng giao dịch.
+                // Số bạc tràn kho.
+
+                var p0 = await packetWriter.BuyPaddyAsync(amount);
+                if (p0 == null) {
+                    return false;
                 }
-                */
+                if (p0.HasError) {
+                    // Hết số lượng giao dịch.
+                    // Lúa tràn kho.
+
+                    var p1 = await packetWriter.BuyPaddyInMaketAsync(amount);
+                    if (p1 == null || p1.HasError) {
+                        return false;
+                    }
+                    return true;
+                }
+                return false;
             }
             return true;
         }
 
         private async Task<bool> DoImproveTask(int times) {
-            for (int i = 0; i < times; ++i) {
-                // Cải tiến.
-                // var p2 = await packetWriter.GetListHeroAsync();
-                //lay danh sach tuong
-                /*
-                packet = await packetWriter.GetListHeroAsync();
-                if (packet == null) {
-                    return;
-                }
-
-                Barracks barracks = Barracks.Parse(JToken.Parse(packet.Message));
-                //lay id tuong dau tien
-                int id = barracks.Heroes[0].Id;
-
-                for (int i = 0; i < qInfo.listQuest[check].quality; i++) {
-                    //cai tien tuong
-                    packet = await packetWriter.HeroImproveAsync(id);
-                    if (packet == null) //gui packet that bai
-                    {
-                        return;
-                    }
-
-                    //xu ly khong du chien tich (chua lam)
-
-                    //cai tien thanh cong xu ly giu chi so
-                    packet = await packetWriter.NotUpdateHeroImproveAsync(id);
-                }
-                */
+            var p = await packetWriter.GetListHeroAsync();
+            if (p == null) {
+                return false;
             }
+
+            var barracks = Barracks.Parse(JToken.Parse(p.Message));
+
+            // Cải tiến tướng đầu tiên.
+            var heroId = barracks.Heroes[0].Id;
+
+            // Giữ chỉ số cũ (trường hợp đã cải tiến trước).
+            // //  "Võ tướng có thuộc tính mới chưa thay"
+            var p0 = await packetWriter.NotUpdateHeroImproveAsync(heroId);
+            if (p0 == null) {
+                return false;
+            }
+
+            for (int i = 0; i < times; ++i) {
+                if (!await DoImproveSubtask(heroId)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private async Task<bool> DoImproveSubtask(int heroId) {
+            var p1 = await packetWriter.HeroImproveAsync(heroId);
+            if (p1 == null) {
+                return false;
+            }
+
+            if (p1.HasError) {
+                // Không đủ chiến tích.
+                return false;
+            }
+
+            // Giữ chỉ số.
+            var p2 = packetWriter.NotUpdateHeroImproveAsync(heroId);
+            if (p2 == null) {
+                return false;
+            }
+
             return true;
         }
 

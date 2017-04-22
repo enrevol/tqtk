@@ -55,24 +55,27 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Bán lúa.
+        /// Mua lúa.
         /// </summary>
-        public static async Task<Packet> SalePaddyAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("13101", "1", "1");
+        /// <param name="amount">Số lượng.</param>
+        public static async Task<Packet> BuyPaddyAsync(this IPacketWriter writer, int amount) {
+            return await writer.SendCommandAsync(13101, "0", amount.ToString());
         }
 
         /// <summary>
-        /// Mua lúa.
-        /// </summary>s
-        public static async Task<Packet> BuyPaddyAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("13101", "0", "1");
+        /// Bán lúa.
+        /// </summary>
+        /// <param name="amount">Số lượng.</param>
+        public static async Task<Packet> SalePaddyAsync(this IPacketWriter writer, int amount) {
+            return await writer.SendCommandAsync(13101, "1", amount.ToString());
         }
 
         /// <summary>
         /// Mua lúa chợ đen.
-        /// </summary>s
-        public static async Task<Packet> BuyPaddyInMaketAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("13101", "2", "1");
+        /// </summary>
+        /// <param name="amount">Số lượng.</param>
+        public static async Task<Packet> BuyPaddyInMaketAsync(this IPacketWriter writer, int amount) {
+            return await writer.SendCommandAsync(13101, "2", amount.ToString());
         }
 
         /// <summary>
