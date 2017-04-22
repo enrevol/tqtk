@@ -28,6 +28,16 @@ namespace k8asd {
         Gold,
 
         /// <summary>
+        /// Chinh chiến.
+        /// </summary>
+        AttackNpc,
+
+        /// <summary>
+        /// Nâng cấp trang bị.
+        /// </summary>
+        Upgrade,
+
+        /// <summary>
         /// Loại khác không cần quan tâm.
         /// </summary>
         Other,
@@ -69,6 +79,10 @@ namespace k8asd {
                 type = TaskType.Impose;
             } else if (result.Name == "Sử dụng Xu") {
                 type = TaskType.Gold;
+            } else if (result.Name == "Chinh chiến") {
+                type = TaskType.AttackNpc;
+            } else if (result.Name == "Nâng cấp trang bị") {
+                type = TaskType.Upgrade;
             }
             result.Type = type;
 

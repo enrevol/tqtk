@@ -16,6 +16,9 @@ namespace k8asd {
         /// </summary>
         public int MaxDoneNum { get; private set; }
 
+        /// <summary>
+        /// Danh sách nhiệm vụ.
+        /// </summary>
         public List<TaskInfo> Tasks { get; private set; }
 
         public static TaskBoard Parse(JToken token) {
