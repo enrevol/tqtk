@@ -62,20 +62,6 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Cải tiến.
-        /// </summary>s
-        public static async Task<Packet> HeroImproveAsync(this IPacketWriter writer, int idHero) {
-            return await writer.SendCommandAsync("41301", idHero.ToString(), "0");
-        }
-
-        /// <summary>
-        /// Giữ gải tiến.
-        /// </summary>s
-        public static async Task<Packet> NotUpdateHeroImproveAsync(this IPacketWriter writer, int idHero) {
-            return await writer.SendCommandAsync("41303", idHero.ToString(), "0");
-        }       
-
-        /// <summary>
         /// Ủy phái ngựa 1.
         /// </summary>s
         public static async Task<Packet> CommissionAsync(this IPacketWriter writer) {
