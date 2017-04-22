@@ -55,16 +55,16 @@ namespace k8asd {
             ErrorMessage = null;
             if (m.HasValues && ((JObject) m).Count == 1) {
                 do {
-                    if (token["message"] != null) {
-                        ErrorMessage = (string) token["message"];
+                    if (m["message"] != null) {
+                        ErrorMessage = (string) m["message"];
                         break;
                     }
-                    if (token["errmessage"] != null) {
-                        ErrorMessage = (string) token["errmessage"];
+                    if (m["errmessage"] != null) {
+                        ErrorMessage = (string) m["errmessage"];
                         break;
                     }
-                    if (token["msg"] != null) {
-                        ErrorMessage = (string) token["msg"];
+                    if (m["msg"] != null) {
+                        ErrorMessage = (string) m["msg"];
                         break;
                     }
                 } while (false);
