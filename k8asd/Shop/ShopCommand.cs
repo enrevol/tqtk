@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public static class StoreCommand {
+    public static class ShopCommand {
         /// <summary>
         /// Giao diện túi đồ.
         /// </summary>
