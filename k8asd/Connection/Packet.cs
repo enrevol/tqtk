@@ -7,6 +7,9 @@ namespace k8asd {
     public class Packet {
         // Example packet header: {"u":5542014,"r":0,"m":1479487733780,"h":10100}
 
+        /// <summary>
+        /// Gets the ID of the packet.
+        /// </summary>
         public int Id { get; private set; }
 
         /// <summary>
