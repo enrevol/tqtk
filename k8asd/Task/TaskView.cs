@@ -58,145 +58,53 @@ namespace k8asd {
         }
 
         public async Task<bool> DoTask(TaskType type, int times) {
-            if (type == TaskType.Food) {
-                return await DoFoodTask(times);
+            var helpers = new Dictionary<TaskType, ITaskHelper>();
+            helpers.Add(TaskType.Food, new FoodTaskHelper());
+            helpers.Add(TaskType.Improve, new ImproveTaskHelper());
+
+            if (!helpers.ContainsKey(type)) {
+                return false;
+            }
+
+            var helper = helpers[type];
+            if (!await helper.CanDo(packetWriter, times)) {
+                return false;
+            }
+
+            if (!await helper.Do(packetWriter, times)) {
+                return false;
             }
             return false;
         }
 
-        private async Task<bool> DoFoodTask(int times) {
-            var market = await packetWriter.RefreshMarketAsync();
-            if (market == null) {
-                return false;
-            }
-
-            int remainTrades = market.MaxTradeAmount - market.TradeAmount;
-            for (int i = 0; i < times; ++i) {
-                if (!await DoFoodSubtask(remainTrades > 0)) {
-                    return false;
-                }
-                --remainTrades;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Làm nhiệm vụ mua bán lúa 1 lần.
-        /// </summary>
-        private async Task<bool> DoFoodSubtask(bool buyBlackMarket) {
-            const int amount = 1;
-
-            if (buyBlackMarket) {
-                var p1 = await packetWriter.BuyPaddyInMaketAsync(amount);
-                if (p1 == null) {
-                    return false;
-                }
-                if (p1.HasError) {
-                    // Lúa tràn kho???
-                    return false;
-                }
-                return true;
-            }
-
-            var p = await packetWriter.SalePaddyAsync(amount);
-            if (p == null) {
-                return false;
-            }
-            if (p.HasError) {
-                // Hết số lượng giao dịch.
-                // Số bạc tràn kho.
-
-                var p0 = await packetWriter.BuyPaddyAsync(amount);
-                if (p0 == null) {
-                    return false;
-                }
-                if (p0.HasError) {
-                    // Hết số lượng giao dịch.
-                    // Lúa tràn kho.
-
-                    return await DoFoodSubtask(true);
-                }
-                return false;
-            }
-            return true;
-        }
-
-        private async Task<bool> DoImproveTask(int times) {
-            var p = await packetWriter.GetListHeroAsync();
-            if (p == null) {
-                return false;
-            }
-
-            var barracks = Barracks.Parse(JToken.Parse(p.Message));
-
-            // Cải tiến tướng đầu tiên.
-            var heroId = barracks.Heroes[0].Id;
-
-            // Giữ chỉ số cũ (trường hợp đã cải tiến trước).
-            // Tránh lỗi: "Võ tướng có thuộc tính mới chưa thay"
-            var p0 = await packetWriter.NotUpdateHeroImproveAsync(heroId);
-            if (p0 == null) {
-                return false;
-            }
-
-            for (int i = 0; i < times; ++i) {
-                if (!await DoImproveSubtask(heroId)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private async Task<bool> DoImproveSubtask(int heroId) {
-            var p1 = await packetWriter.HeroImproveAsync(heroId);
-            if (p1 == null) {
-                return false;
-            }
-
-            if (p1.HasError) {
-                // Không đủ chiến tích.
-                return false;
-            }
-
-            // Giữ chỉ số.
-            var p2 = packetWriter.NotUpdateHeroImproveAsync(heroId);
-            if (p2 == null) {
-                return false;
-            }
-
-            return true;
-        }
-
         private async Task<bool> DoAttackNpcTask(int times) {
+            // Nguỵ Tục - Lữ Bố.
+            const int NpcId = 2214;
+
             for (int i = 0; i < times; ++i) {
-                /*
-                 //chinh chien nguy tuc - lu bo
-                            packet = await packetWriter.BattleNguyTucAsync();
-                            if (packet == null) //gui packet that bai
-                            {
-                                return;
-                            }
-
-                            JToken token = JToken.Parse(packet.Message);
-                            //if (token["message"] != null && token["message"].ToString() == "Không đủ lượt")
-                            //{
-                            //    removeQuest = check;
-                            //    return;
-                            //}
-                            if (token["message"] != null)
-                            {
-                                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
-                                removeQuest = check;
-                                return;
-                            }
-
-                            //xu ly chinh chien that bai (chua lam)
-                            //if (token["battlereport"]["message"].ToString() == "Ngài đã thất bại .....")
-                            //{
-                            //    //phai danh lai cho du so sao (chua lam)
-                            //}
-                            */
+                if (!await DoAttackNpcSubtask(NpcId)) {
+                    return false;
+                }
             }
+            return true;
+        }
+
+        private async Task<bool> DoAttackNpcSubtask(int npcId) {
+            var p = await packetWriter.AttackNpcAsync(npcId, PartyType.Normal);
+            if (p == null) {
+                return false;
+            }
+
+            if (p.HasError) {
+                return false;
+            }
+
+            /// FIXME.
+            //xu ly chinh chien that bai (chua lam)
+            //if (token["battlereport"]["message"].ToString() == "Ngài đã thất bại .....")
+            //{
+            //    //phai danh lai cho du so sao (chua lam)
+            //}
             return true;
         }
 

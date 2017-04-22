@@ -197,6 +197,9 @@
     <Compile Include="Packet\PacketView.Designer.cs">
       <DependentUpon>PacketView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Task\FoodTaskHelper.cs" />
+    <Compile Include="Task\ImproveTaskHelper.cs" />
+    <Compile Include="Task\ITaskHelper.cs" />
     <Compile Include="Task\TaskCommand.cs" />
     <Compile Include="Task\TaskBoard.cs" />
     <Compile Include="Task\TaskInfo.cs" />
