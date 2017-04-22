@@ -52,21 +52,7 @@ namespace k8asd {
                 return null;
             }
             return TaskDetail.Parse(JToken.Parse(packet.Message));
-        }
-
-        /// <summary>
-        /// Thu thuế.
-        /// </summary>s
-        public static async Task<Packet> CollectTaxAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("12401", "0", "0");
-        }
-
-        /// <summary>
-        /// Tăng cường Thu thuế.
-        /// </summary>s
-        public static async Task<Packet> IncreaseTaxAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("12401", "1", "1");
-        }
+        }       
 
         /// <summary>
         /// Lấy danh sách tướng quân để chọn ID tướng quân cải tiến.

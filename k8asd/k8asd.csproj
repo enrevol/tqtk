@@ -167,6 +167,8 @@
     <Compile Include="HeroTraining\Barracks.cs" />
     <Compile Include="HeroTraining\HeroTrainingCommand.cs" />
     <Compile Include="HeroTraining\TrainTimeModel.cs" />
+    <Compile Include="Impose\ImposeCommand.cs" />
+    <Compile Include="Impose\ImposeInfo.cs" />
     <Compile Include="Map\Area.cs" />
     <Compile Include="Map\City.cs" />
     <Compile Include="Map\CityDetail.cs" />
@@ -473,6 +475,7 @@
       <DependentUpon>WeaveView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Command\12400.json" />
     <None Include="Command\11103_0.json" />
     <None Include="Command\30100.json" />
     <None Include="Command\31101.json" />
