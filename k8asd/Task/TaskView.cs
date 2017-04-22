@@ -70,10 +70,12 @@ namespace k8asd {
                 return false;
             }
 
+            int remainTrades = market.MaxTradeAmount - market.TradeAmount;
             for (int i = 0; i < times; ++i) {
-                if (!await DoFoodSubtask()) {
+                if (!await DoFoodSubtask(remainTrades > 0)) {
                     return false;
                 }
+                --remainTrades;
             }
             return true;
         }
@@ -81,8 +83,21 @@ namespace k8asd {
         /// <summary>
         /// Làm nhiệm vụ mua bán lúa 1 lần.
         /// </summary>
-        private async Task<bool> DoFoodSubtask() {
+        private async Task<bool> DoFoodSubtask(bool buyBlackMarket) {
             const int amount = 1;
+
+            if (buyBlackMarket) {
+                var p1 = await packetWriter.BuyPaddyInMaketAsync(amount);
+                if (p1 == null) {
+                    return false;
+                }
+                if (p1.HasError) {
+                    // Lúa tràn kho???
+                    return false;
+                }
+                return true;
+            }
+
             var p = await packetWriter.SalePaddyAsync(amount);
             if (p == null) {
                 return false;
@@ -99,11 +114,7 @@ namespace k8asd {
                     // Hết số lượng giao dịch.
                     // Lúa tràn kho.
 
-                    var p1 = await packetWriter.BuyPaddyInMaketAsync(amount);
-                    if (p1 == null || p1.HasError) {
-                        return false;
-                    }
-                    return true;
+                    return await DoFoodSubtask(true);
                 }
                 return false;
             }
