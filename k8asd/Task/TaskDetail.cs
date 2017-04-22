@@ -55,6 +55,11 @@ namespace k8asd {
         public int Quality { get; private set; }
 
         /// <summary>
+        /// Số lần đã hoàn thành.
+        /// </summary>
+        public int DoneNum { get; private set; }
+
+        /// <summary>
         /// Tên nhiệm vụ.
         /// </summary>
         public string Name { get; private set; }
@@ -69,6 +74,7 @@ namespace k8asd {
             result.Quality = (int) taskdto["quality"];
             // result.Type = (int) taskdto["type"]; ???
             result.Name = (string) taskdto["name"];
+            result.DoneNum = (int) taskdto["num"];
 
             var type = TaskType.Other;
             if (result.Name == "Mua bán lúa") {
