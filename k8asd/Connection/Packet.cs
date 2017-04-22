@@ -7,39 +7,35 @@ namespace k8asd {
     public class Packet {
         // Example packet header: {"u":5542014,"r":0,"m":1479487733780,"h":10100}
 
-        private string u; /// User id.
-        private string r; /// ???
-        private string m; /// Message.
-        private string h; /// Command id.
-        private string raw;
+        public int Id { get; private set; }
 
         /// <summary>
         /// Gets the associated user id.
         /// </summary>
-        public string UserId { get { return u; } }
+        public int UserId { get; private set; }
 
         /// <summary>
         /// Gets the main message.
         /// </summary>
-        public string Message { get { return m; } }
+        public string Message { get; private set; }
 
         /// <summary>
         /// Gets the original command id.
         /// </summary>
-        public string CommandId { get { return h; } }
+        [System.Obsolete("Use Id instead.")]
+        public string CommandId { get { return Id.ToString(); } }
 
         /// <summary>
         /// Gets the raw message.
         /// </summary>
-        public string Raw { get { return raw; } }
+        public string Raw { get; private set; }
 
         public bool Parse(string data) {
             var token = JToken.Parse(data);
-            u = (string) token["u"];
-            r = (string) token["r"];
-            m = token["m"].ToString(); // m is still in JSON format.
-            h = (string) token["h"];
-            raw = data;
+            Id = (int) token["h"];
+            UserId = (int) token["u"];
+            Message = token["m"].ToString(); // m is still in JSON format.
+            Raw = data;
             return true;
         }
     }

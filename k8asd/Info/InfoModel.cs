@@ -177,7 +177,7 @@ namespace k8asd {
                 var serverTime = DateTime.Parse(systime);
                 serverTimeOffset = serverTime - DateTime.Now;
 
-                PlayerId = Int32.Parse(packet.UserId);
+                PlayerId =packet.UserId;
                 PlayerName = (string) player["playername"];
                 PlayerLevel = (int) player["playerlevel"];
                 LegionName = (string) player["legionname"];
