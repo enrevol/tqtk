@@ -198,6 +198,7 @@
     <Compile Include="Packet\PacketView.Designer.cs">
       <DependentUpon>PacketView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shop\Equipment.cs" />
     <Compile Include="Shop\ShopCommand.cs" />
     <Compile Include="Shop\StoreInfo.cs" />
     <Compile Include="Shop\UpgradeInfo.cs" />

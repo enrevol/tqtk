@@ -23,6 +23,11 @@ namespace k8asd {
         public int Count { get; private set; }
 
         /// <summary>
+        /// Danh sách trang bị.
+        /// </summary>
+        public List<Equipment> Equipments { get; private set; }
+
+        /// <summary>
         /// Có thể dùng xu để làm ma lực 100% không? (VIP 4)
         /// </summary>
         public bool CanUseGold { get; private set; }
@@ -51,6 +56,13 @@ namespace k8asd {
                 // Cập nhật thứ tự trang=0 thì mới có token này.
                 result.Count = (int) token["numCount"];
             }
+
+            var equipments = new List<Equipment>();
+            var equip = token["equip"];
+            foreach (var subToken in equip) {
+                equipments.Add(Equipment.Parse(subToken));
+            }
+            result.Equipments = equipments;
 
             result.CanUseGold = (bool) token["canusegold"];
             result.Magic = (int) token["magic"];
