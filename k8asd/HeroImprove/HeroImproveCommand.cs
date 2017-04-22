@@ -11,7 +11,7 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Giữ gải tiến.
+        /// Giữ cải tiến.
         /// </summary>
         /// <param name="heroId">ID của tướng</param>
         public static async Task<Packet> KeepStatsAsync(this IPacketWriter writer, int heroId) {
