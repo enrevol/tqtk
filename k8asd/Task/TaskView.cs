@@ -62,6 +62,7 @@ namespace k8asd {
             helpers.Add(TaskType.Food, new FoodTaskHelper());
             helpers.Add(TaskType.Improve, new ImproveTaskHelper());
             helpers.Add(TaskType.Impose, new ImposeTaskHelper());
+            helpers.Add(TaskType.AttackNpc, new AttackNpcTaskHelper());
 
             if (!helpers.ContainsKey(type)) {
                 return false;
@@ -76,37 +77,6 @@ namespace k8asd {
                 return false;
             }
             return false;
-        }
-
-        private async Task<bool> DoAttackNpcTask(int times) {
-            // Nguỵ Tục - Lữ Bố.
-            const int NpcId = 2214;
-
-            for (int i = 0; i < times; ++i) {
-                if (!await DoAttackNpcSubtask(NpcId)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private async Task<bool> DoAttackNpcSubtask(int npcId) {
-            var p = await packetWriter.AttackNpcAsync(npcId, PartyType.Normal);
-            if (p == null) {
-                return false;
-            }
-
-            if (p.HasError) {
-                return false;
-            }
-
-            /// FIXME.
-            //xu ly chinh chien that bai (chua lam)
-            //if (token["battlereport"]["message"].ToString() == "Ngài đã thất bại .....")
-            //{
-            //    //phai danh lai cho du so sao (chua lam)
-            //}
-            return true;
         }
 
         private async Task<bool> DoUpgradeTask(int times) {

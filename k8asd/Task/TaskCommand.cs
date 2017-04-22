@@ -97,13 +97,6 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Chinh chiến Ngụy Tục - Lữ Bố.
-        /// </summary>s
-        public static async Task<Packet> BattleNguyTucAsync(this IPacketWriter writer) {
-            return await writer.SendCommandAsync("33101", "2214", "0");
-        }
-
-        /// <summary>
         /// Ủy phái ngựa 1.
         /// </summary>s
         public static async Task<Packet> CommissionAsync(this IPacketWriter writer) {
