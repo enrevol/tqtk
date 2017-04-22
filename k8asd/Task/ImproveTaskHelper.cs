@@ -20,7 +20,7 @@ namespace k8asd {
 
             // Giữ chỉ số cũ (trường hợp đã cải tiến trước).
             // Tránh lỗi: "Võ tướng có thuộc tính mới chưa thay"
-            var p0 = await writer.NotUpdateHeroImproveAsync(heroId);
+            var p0 = await writer.KeepStatsAsync(heroId);
             if (p0 == null) {
                 return false;
             }
@@ -34,7 +34,7 @@ namespace k8asd {
         }
 
         private async Task<bool> DoSingle(IPacketWriter writer, int heroId) {
-            var p1 = await writer.HeroImproveAsync(heroId);
+            var p1 = await writer.ImproveHeroAsync(heroId);
             if (p1 == null) {
                 return false;
             }
@@ -45,7 +45,7 @@ namespace k8asd {
             }
 
             // Giữ chỉ số.
-            var p2 = writer.NotUpdateHeroImproveAsync(heroId);
+            var p2 = writer.KeepStatsAsync(heroId);
             if (p2 == null) {
                 return false;
             }
