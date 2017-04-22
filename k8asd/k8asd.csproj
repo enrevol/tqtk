@@ -161,7 +161,6 @@
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Config\IConfig.cs" />
     <Compile Include="Config\IConfigHandler.cs" />
-    <Compile Include="Common\StatePacket.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="HeroTraining\Hero.cs" />
     <Compile Include="HeroTraining\HeroDetail.cs" />
@@ -566,7 +565,9 @@
   <ItemGroup>
     <None Include="Resources\disconnected.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

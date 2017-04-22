@@ -23,6 +23,16 @@ namespace k8asd {
         public string Message { get; private set; }
 
         /// <summary>
+        /// Whether this packet contains an error message.
+        /// </summary>
+        public bool HasError { get { return ErrorMessage != null; } }
+
+        /// <summary>
+        /// Gets the error message (if available).
+        /// </summary>
+        public string ErrorMessage { get; private set; }
+
+        /// <summary>
         /// Gets the original command id.
         /// </summary>
         [System.Obsolete("Use Id instead.")]
@@ -37,8 +47,29 @@ namespace k8asd {
             var token = JToken.Parse(data);
             Id = (int) token["h"];
             UserId = (int) token["u"];
-            Message = token["m"].ToString(); // m is still in JSON format.
             Raw = data;
+
+            var m = token["m"];
+            Message = m.ToString(); // m is still in JSON format.
+
+            ErrorMessage = null;
+            if (m.HasValues && ((JObject) m).Count == 1) {
+                do {
+                    if (token["message"] != null) {
+                        ErrorMessage = (string) token["message"];
+                        break;
+                    }
+                    if (token["errmessage"] != null) {
+                        ErrorMessage = (string) token["errmessage"];
+                        break;
+                    }
+                    if (token["msg"] != null) {
+                        ErrorMessage = (string) token["msg"];
+                        break;
+                    }
+                } while (false);
+            }
+
             return true;
         }
     }

@@ -181,7 +181,7 @@ namespace k8asd {
                 if (p == null) {
                     return false;
                 }
-                if (!p.Ok) {
+                if (p.HasError) {
                     LogInfo(String.Format("{0}: {1}", host.PlayerName, p.Message));
                     return false;
                 }
@@ -202,7 +202,7 @@ namespace k8asd {
 
             try {
                 Debug.Assert(hostingTeamId != NoTeam);
-                var tasks = new List<Task<StatePacket>>();
+                var tasks = new List<Task<Packet>>();
                 foreach (var member in members) {
                     tasks.Add(member.JoinWeaveAsync(hostingTeamId));
                 }
@@ -218,9 +218,9 @@ namespace k8asd {
                         return false;
                     }
 
-                    if (!p.Ok) {
+                    if (p.HasError) {
                         // Lỗi gia nhập.
-                        LogInfo(String.Format("{0}: {1}", members[memberIndex].PlayerName, p.Message));
+                        LogInfo(String.Format("{0}: {1}", members[memberIndex].PlayerName, p.ErrorMessage));
                         // Huỷ tổ đội.
                         await host.DisbandWeaveAsync(hostingTeamId);
                         return false;
