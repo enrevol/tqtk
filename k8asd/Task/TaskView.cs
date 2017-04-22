@@ -48,7 +48,7 @@ namespace k8asd {
         public async Task<List<TaskDetail>> RefreshTaskDetails(TaskBoard board) {
             var taskDetails = new List<TaskDetail>();
             foreach (var task in board.Tasks) {
-                var detail = await packetWriter.GetStartOfQuestAsync(task.Id);
+                var detail = await packetWriter.RefreshTaskAsync(task.Id);
                 if (detail == null) {
                     return null;
                 }

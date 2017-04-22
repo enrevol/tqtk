@@ -46,13 +46,13 @@ namespace k8asd {
         /// Lấy thông tin của nhiêm vụ.
         /// </summary>
         /// <param name="taskId">ID nhiêm vụ.</param>
-        public static async Task<TaskDetail> GetStartOfQuestAsync(this IPacketWriter writer, int taskId) {
+        public static async Task<TaskDetail> RefreshTaskAsync(this IPacketWriter writer, int taskId) {
             var packet = await writer.SendCommandAsync(44201, taskId.ToString());
             if (packet == null) {
                 return null;
             }
             return TaskDetail.Parse(JToken.Parse(packet.Message));
-        }       
+        }
 
         /// <summary>
         /// Lấy danh sách tướng quân để chọn ID tướng quân cải tiến.
