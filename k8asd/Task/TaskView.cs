@@ -265,11 +265,9 @@ namespace k8asd {
 
 
             // Xét nhiệm vụ nhiều sao hơn.
-            var harderTask = tasks
-                .Where(item => item.Quality == minQuality + 1)
-                .MinBy(item => item.Difficulty);
-
-            if (harderTask != null) {
+            var harderTasks = tasks.Where(item => item.Quality == minQuality + 1).ToList();
+            if (harderTasks.Count > 0) {
+                var harderTask = harderTasks.MinBy(item => item.Difficulty);
                 return await Process(doingTask, harderTask);
             }
 
