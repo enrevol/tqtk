@@ -43,6 +43,7 @@ namespace k8asd {
 
             if (p.HasError) {
                 // Giá trị ma lực đã đổi.
+                // Đóng băng.
                 // Không đủ bạc.
                 return TaskResult.CanBeDone;
             }
