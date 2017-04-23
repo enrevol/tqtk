@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public class TaskDifficulty {
+        public const int CanNotBeDone = 100;
+
+        public static bool CanDo(int difficulty) {
+            return difficulty < CanNotBeDone;
+        }
+
         /// <summary>
         /// Có thể làm được nhiệm vụ mua bán lúa.
         /// </summary>
@@ -62,7 +68,7 @@ namespace k8asd {
         /// - Hết số lần thu thuế.
         /// </summary>
         public static int ImposeNotOk() {
-            return 100;
+            return 101;
         }
 
         /// <summary>

@@ -1,15 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    class UpgradeTaskHelper : ITaskHelper {
+    /*
+    public class UpgradeTaskHelper : ITaskHelper {
+        private IPacketWriter writer;
+        private IInfoModel info;
+        private UpgradeInfo upgrade;
+
+        public UpgradeTaskHelper(IPacketWriter writer, IInfoModel info, UpgradeInfo upgrade) {
+            this.writer = writer;
+            this.info = info;
+            this.upgrade = upgrade;
+        }
+
+        public int PredictDifficulty(int times) {
+            const int UpgradeCost = 1000;
+            if (info.Silver )
+        }
+
         public async Task<TaskResult> Do(IPacketWriter writer, int times) {
-            const int max_weapon_count = 20;
-            var info = await writer.RefreshUpgradeAsync(1, 0, max_weapon_count);
+            const int MaxWeaponCount = 20;
+            var info = await writer.RefreshUpgradeAsync(1, 0, MaxWeaponCount);
             if (info == null) {
                 return TaskResult.LostConnection;
             }
@@ -56,4 +68,5 @@ namespace k8asd {
             return TaskResult.Done;
         }
     }
+    */
 }

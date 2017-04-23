@@ -8,13 +8,25 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Diagnostics;
+using MoreLinq;
 
 namespace k8asd {
     public partial class TaskView : UserControl {
         private IPacketWriter packetWriter;
+        private IInfoModel infoModel;
+        private IMcuModel mcuModel;
+
+        private bool timerLocking;
+        private bool asyncLocking;
 
         public TaskView() {
             InitializeComponent();
+
+            timerLocking = false;
+            asyncLocking = false;
+
+            taskTimer.Start();
         }
 
         public void SetPacketWriter(IPacketWriter writer) {
@@ -25,24 +37,28 @@ namespace k8asd {
             packetWriter.PacketReceived += OnPacketReceived;
         }
 
+        public void SetInfoModel(IInfoModel model) {
+            infoModel = model;
+        }
+
+        public void SetMcuModel(IMcuModel model) {
+            mcuModel = model;
+        }
+
         private void OnPacketReceived(object sender, Packet packet) {
             //
         }
 
         public void EnableAutoQuest() {
-            this.chkQuest.Checked = true;
+            dailyTaskCheck.Checked = true;
         }
 
         public void DisableAutoQuest() {
-            this.chkQuest.Checked = false;
+            dailyTaskCheck.Checked = false;
         }
 
         private void chkQuest_CheckedChanged(object sender, EventArgs e) {
-            if (chkQuest.Checked) {
-                timerQuest.Start();
-            } else {
-                timerQuest.Stop();
-            }
+
         }
 
         public async Task<List<TaskDetail>> RefreshTaskDetails(TaskBoard board) {
@@ -57,178 +73,204 @@ namespace k8asd {
             return taskDetails;
         }
 
-        public async Task<TaskResult> DoTask(TaskType type, int times) {
+        /// <summary>
+        /// Kiểm tra xem có nhiệm vụ nào hoàn thành chưa?
+        /// </summary>
+        /// <param name="taskBoard">Danh sách nhiệm vụ.</param>
+        private async Task<bool> EnsureNoCompletedTask(TaskBoard taskBoard) {
+            Debug.Assert(asyncLocking);
+            foreach (var task in taskBoard.Tasks) {
+                if (task.State == TaskState.Completed) {
+                    // Hoàn thành nhiệm vụ.
+                    await packetWriter.CompleteTaskAsync(task.Id);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Kiểm tra xem có nhận nhiều nhiệm vụ một lúc không?
+        /// </summary>
+        private async Task<bool> EnsureNoMultipleAcceptedTask(TaskBoard taskBoard) {
+            Debug.Assert(asyncLocking);
+            int acceptedTaskCount = 0;
+            foreach (var task in taskBoard.Tasks) {
+                if (task.State == TaskState.Received) {
+                    ++acceptedTaskCount;
+                }
+            }
+
+            if (acceptedTaskCount > 1) {
+                // Huỷ hết.
+                foreach (var task in taskBoard.Tasks) {
+                    if (task.State == TaskState.Received) {
+                        await packetWriter.CancelTaskAsync(task.Id);
+                    }
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        private async Task<bool> Process() {
+            if (asyncLocking) {
+                return false;
+            }
+
+            try {
+                asyncLocking = true;
+
+                var taskBoard = await packetWriter.RefreshTaskBoardAsync();
+                if (taskBoard == null) {
+                    return false;
+                }
+
+                if (taskBoard.DoneNum == taskBoard.MaxDoneNum) {
+                    // Làm hết nhiệm vụ rồi.
+                    dailyTaskCheck.Checked = false;
+                    return false;
+                }
+
+                if (await EnsureNoCompletedTask(taskBoard)) {
+                    return true;
+                }
+
+                if (await EnsureNoMultipleAcceptedTask(taskBoard)) {
+                    return true;
+                }
+
+                await Process(taskBoard);
+                return true;
+            } finally {
+                asyncLocking = false;
+            }
+        }
+
+        private class DailyTask {
+            private ITaskHelper helper;
+            private TaskInfo info;
+            private TaskDetail detail;
+
+            public int Id { get { return info.Id; } }
+            public TaskState State { get { return info.State; } }
+            public int Quality { get { return detail.Quality; } }
+            public int Difficulty { get; private set; }
+
+            public DailyTask(TaskInfo info, TaskDetail detail, ITaskHelper helper) {
+                this.info = info;
+                this.detail = detail;
+                this.helper = helper;
+
+                var times = detail.Quality - detail.DoneNum;
+                Debug.Assert(times > 0);
+                Difficulty = helper.PredictDifficulty(times);
+            }
+
+            public async Task<TaskResult> Do() {
+                return await helper.Do(detail.Quality - detail.DoneNum);
+            }
+        }
+
+        private async Task<TaskResult> Process(TaskBoard taskBoard) {
+            Debug.Assert(asyncLocking);
+            var tasks = await RefreshTaskDetails(taskBoard);
+            if (tasks == null) {
+                return TaskResult.LostConnection;
+            }
+            return await Process(taskBoard, tasks);
+        }
+
+        private async Task<TaskResult> Process(TaskBoard taskBoard, List<TaskDetail> tasks) {
+            Debug.Assert(asyncLocking);
+            var market = await packetWriter.RefreshMarketAsync();
+            if (market == null) {
+                return TaskResult.LostConnection;
+            }
+            var impose = await packetWriter.RefreshImposeAsync();
+            if (impose == null) {
+                return TaskResult.LostConnection;
+            }
+
             var helpers = new Dictionary<TaskType, ITaskHelper>();
-            helpers.Add(TaskType.Food, new FoodTaskHelper());
-            helpers.Add(TaskType.Improve, new ImproveTaskHelper());
-            helpers.Add(TaskType.Impose, new ImposeTaskHelper());
-            helpers.Add(TaskType.AttackNpc, new AttackNpcTaskHelper());
-            helpers.Add(TaskType.Upgrade, new UpgradeTaskHelper());
+            helpers.Add(TaskType.Food, new FoodTaskHelper(packetWriter, infoModel, market));
+            helpers.Add(TaskType.Improve, new ImproveTaskHelper(packetWriter, infoModel));
+            helpers.Add(TaskType.Impose, new ImposeTaskHelper(packetWriter, infoModel, impose));
+            helpers.Add(TaskType.AttackNpc, new AttackNpcTaskHelper(packetWriter, mcuModel));
 
-            if (!helpers.ContainsKey(type)) {
-                return TaskResult.CanNotBeDone;
-            }
-
-            var helper = helpers[type];
-            var result = await helper.Do(packetWriter, times);
-            return result;
+            return await Process(taskBoard, tasks, helpers);
         }
 
-        private async Task<bool> DoGoldTask(int times) {
-            ////thu thue
-            //packet = await packetWriter.IncreaseTaxAsync();
-            //if (packet == null) //gui packet that bai
-            //{
-            //    return;
-            //}
+        private async Task<TaskResult> Process(TaskBoard taskBoard, List<TaskDetail> tasks, Dictionary<TaskType, ITaskHelper> helpers) {
+            Debug.Assert(asyncLocking);
+            Debug.Assert(taskBoard.Tasks.Count == tasks.Count);
+            var dailyTasks = new List<DailyTask>();
+            for (int i = 0; i < tasks.Count; ++i) {
+                var detail = tasks[i];
+                var type = detail.Type;
+                if (!helpers.ContainsKey(type)) {
+                    continue;
+                }
 
-            ////xu ly het xu tang cuong, dang le cho nhan nhiem vu khac nhung cho ngung han
-            //JToken token = JToken.Parse(packet.Message);
-            //if (token["message"] != null && token["message"].ToString() != "")
-            //{
-            //    this.timerQuest.Stop();
-            //    this.chkQuest.Checked = false;
-            //    break;
-            //}
-
-
-            /*
-            //uy phai ngua lv1
-            packet = await packetWriter.CommissionAsync();
-            if (packet == null) //gui packet that bai
-            {
-                return;
+                var info = taskBoard.Tasks[i];
+                var helper = helpers[type];
+                dailyTasks.Add(new DailyTask(taskBoard.Tasks[i], tasks[i], helper));
             }
-
-            JToken token = JToken.Parse(packet.Message);
-            //xu ly khong du bac (chua chinh xac)
-            if (token["message"] != null && (token["message"].ToString().Contains("đủ"))) {
-                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
-                removeQuest = check;
-                return;
-            }
-
-            //nhan vat pham
-            packet = await packetWriter.AcceptCommissionAsync();
-            if (packet == null) //gui packet that bai
-            {
-                return;
-            }
-
-            //pha bang
-            packet = await packetWriter.BreakIceCommissionAsync();
-            if (packet == null) //gui packet that bai
-            {
-                return;
-            }
-            //xu ly khong du xu (chua chinh xac)
-            if (token["message"] != null && (token["message"].ToString().Contains("đủ"))) {
-                packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
-                removeQuest = check;
-                return;
-            }
-            */
-            return true;
+            return await Process(dailyTasks);
         }
 
-        public async Task Auto() {
-            var taskBoard = await packetWriter.RefreshTaskBoardAsync();
-            if (taskBoard == null) {
-                return;
+        private async Task<TaskResult> Process(List<DailyTask> tasks) {
+            // Nhiệm vụ đang làm.
+            var doingTask = tasks.First(item => item.State == TaskState.Received);
+
+            // Số sao ít nhất.
+            var minQuality = tasks.Min(item => item.Quality);
+
+            // Xét nhiệm vụ với số sao ít nhất và dễ nhất.
+            var task = tasks
+                .Where(item => item.Quality == minQuality)
+                .MinBy(item => item.Difficulty);
+
+            if (TaskDifficulty.CanDo(task.Difficulty)) {
+                return await Process(doingTask, task);
             }
 
-            if (taskBoard.DoneNum == taskBoard.MaxDoneNum) {
-                timerQuest.Stop();
-                chkQuest.Checked = false;
-                return;
+
+            // Xét nhiệm vụ nhiều sao hơn.
+            var harderTask = tasks
+                .Where(item => item.Quality == minQuality + 1)
+                .MinBy(item => item.Difficulty);
+
+            if (harderTask != null) {
+                return await Process(doingTask, harderTask);
             }
 
-            var taskDetails = await RefreshTaskDetails(taskBoard);
+            return TaskResult.CanNotBeDone;
+        }
 
-            /*
-            ???
-            if (qInfo.listQuest == null || qInfo.listQuest[qInfo.listQuest.Count - 1].quality == 0) {
-                return;
-            }
-            */
-
-            /*
-             * ???
-            int check = FindQuest(qInfo.listQuest, qInfo.listQuest[qInfo.listQuest.Count - 1].quality);
-            if (check == -2) {
-                return;
-            }
-            */
-
-            var task = FindQuest(taskDetails);
-            if (task == null) {
-                timerQuest.Stop();
-                chkQuest.Checked = false;
-                return;
+        private async Task<TaskResult> Process(DailyTask acceptedTask, DailyTask bestTask) {
+            if (acceptedTask != bestTask) {
+                // Khác nhiệm vụ.
+                // Huỷ cái cũ.
+                await packetWriter.CancelTaskAsync(acceptedTask.Id);
             }
 
-            var taskId = taskBoard.Tasks[taskDetails.IndexOf(task)];
-
-            // Nhận nhiêm vụ.
-            var p0 = await packetWriter.AcceptTaskAsync(taskId.Id);
+            var p0 = await packetWriter.AcceptTaskAsync(bestTask.Id);
             if (p0 == null) {
-                return;
+                return TaskResult.LostConnection;
             }
 
-
-
-            var p2 = await packetWriter.CompleteTaskAsync(taskId.Id);
-            if (p2 == null) {
-                /// FIXME.
-            }
-        }
-
-        private TaskDetail FindQuest(List<TaskDetail> taskDetails) {
-            int minQuality = taskDetails.Min(item => item.Quality);
-            if (minQuality == 4) {
-                return null;
-            }
-
-            var reversedList = taskDetails.Reverse<TaskDetail>();
-            foreach (var task in reversedList) {
-                if (task.Type == TaskType.Food && task.Quality == minQuality) {
-                    return task;
+            var result = await bestTask.Do();
+            if (result == TaskResult.Done) {
+                var p1 = await packetWriter.CompleteTaskAsync(bestTask.Id);
+                if (p1 == null) {
+                    return TaskResult.LostConnection;
                 }
+                return TaskResult.Done;
             }
 
-            foreach (var task in reversedList) {
-                if (task.Type == TaskType.Improve && task.Quality == minQuality) {
-                    return task;
-                }
-            }
-
-            foreach (var task in reversedList) {
-                if (task.Type == TaskType.Impose && task.Quality == minQuality) {
-                    return task;
-                }
-            }
-
-            //co the lam them nhiem vu chinh phuc clone
-            //co the lam them nhiem vu chinh chien
-            //co the lam them nhiem vu nang cap do
-            //co the lam them nhiem vu tan cong
-
-            foreach (var task in reversedList) {
-                if (task.Type == TaskType.Gold && task.Quality == minQuality) {
-                    return task;
-                }
-            }
-
-            return null;
-
-            /*
-            if (listQuest == null || quality == 0) {
-                return -2;
-            }
-            //quality = quality + 1;
-            //return FindQuest(listQuest, quality);
-            return -1;
-            */
+            return result;
         }
 
         public async void ReportQuest(string username, string name) {
@@ -252,8 +294,18 @@ namespace k8asd {
             */
         }
 
-        private async void timerQuest_Tick(object sender, EventArgs e) {
-            await Auto();
+        private async void taskTimer_Tick(object sender, EventArgs e) {
+            if (timerLocking) {
+                return;
+            }
+
+            try {
+                timerLocking = true;
+                await Process();
+
+            } finally {
+                timerLocking = false;
+            }
         }
     }
 }

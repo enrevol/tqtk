@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.chkQuest = new System.Windows.Forms.CheckBox();
-            this.timerQuest = new System.Windows.Forms.Timer(this.components);
+            this.dailyTaskCheck = new System.Windows.Forms.CheckBox();
+            this.taskTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // chkQuest
+            // dailyTaskCheck
             // 
-            this.chkQuest.AutoSize = true;
-            this.chkQuest.Location = new System.Drawing.Point(17, 13);
-            this.chkQuest.Name = "chkQuest";
-            this.chkQuest.Size = new System.Drawing.Size(157, 17);
-            this.chkQuest.TabIndex = 0;
-            this.chkQuest.Text = "Tự làm nhiệm vụ hằng ngày";
-            this.chkQuest.UseVisualStyleBackColor = true;
-            this.chkQuest.CheckedChanged += new System.EventHandler(this.chkQuest_CheckedChanged);
+            this.dailyTaskCheck.AutoSize = true;
+            this.dailyTaskCheck.Location = new System.Drawing.Point(17, 13);
+            this.dailyTaskCheck.Name = "dailyTaskCheck";
+            this.dailyTaskCheck.Size = new System.Drawing.Size(157, 17);
+            this.dailyTaskCheck.TabIndex = 0;
+            this.dailyTaskCheck.Text = "Tự làm nhiệm vụ hằng ngày";
+            this.dailyTaskCheck.UseVisualStyleBackColor = true;
+            this.dailyTaskCheck.CheckedChanged += new System.EventHandler(this.chkQuest_CheckedChanged);
             // 
-            // timerQuest
+            // taskTimer
             // 
-            this.timerQuest.Interval = 5000;
-            this.timerQuest.Tick += new System.EventHandler(this.timerQuest_Tick);
+            this.taskTimer.Interval = 5000;
+            this.taskTimer.Tick += new System.EventHandler(this.taskTimer_Tick);
             // 
-            // QuestView
+            // TaskView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.chkQuest);
-            this.Name = "QuestView";
+            this.Controls.Add(this.dailyTaskCheck);
+            this.Name = "TaskView";
             this.Size = new System.Drawing.Size(285, 151);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -63,7 +63,7 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox chkQuest;
-        private System.Windows.Forms.Timer timerQuest;
+        private System.Windows.Forms.CheckBox dailyTaskCheck;
+        private System.Windows.Forms.Timer taskTimer;
     }
 }
