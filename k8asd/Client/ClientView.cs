@@ -79,10 +79,14 @@ namespace k8asd {
             chatLogModel = new ChatLogModel();
 
             cooldownModel.SetInfoModel(infoModel);
+            taskView.SetInfoModel(infoModel);
 
             infoView.SetModel(infoModel);
             cooldownView.SetModel(cooldownModel);
+
             mcuView.SetModel(mcuModel);
+            taskView.SetMcuModel(mcuModel);
+
             messageLogView.SetModel(messageLogModel);
             chatLogView.SetModel(chatLogModel);
             weaveView.SetCooldownModel(cooldownModel);
@@ -119,7 +123,7 @@ namespace k8asd {
             outsideView.SetPacketWriter(this);
             raiseBirdView.SetPacketWriter(this);
             instituteView.SetPacketWriter(this);
-            questView1.SetPacketWriter(this);
+            taskView.SetPacketWriter(this);
         }
 
         private void ClientView_Load(object sender, EventArgs e) {
@@ -310,11 +314,11 @@ namespace k8asd {
         }
 
         public void EnableAutoQuest() {
-            questView1.EnableAutoQuest();
+            taskView.EnableAutoQuest();
         }
 
         public void ReportAutoQuest() {
-            questView1.ReportQuest(Config.Username, PlayerName);
+            taskView.ReportQuest(Config.Username, PlayerName);
         }
 
         public void UseGoldDaily() {

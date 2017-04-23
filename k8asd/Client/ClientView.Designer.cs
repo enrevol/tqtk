@@ -55,7 +55,7 @@ namespace k8asd {
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.questView1 = new k8asd.TaskView();
+            this.taskView = new k8asd.TaskView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -281,7 +281,7 @@ namespace k8asd {
             // 
             // questTab
             // 
-            this.questTab.Controls.Add(this.questView1);
+            this.questTab.Controls.Add(this.taskView);
             this.questTab.Location = new System.Drawing.Point(4, 22);
             this.questTab.Name = "questTab";
             this.questTab.Size = new System.Drawing.Size(637, 532);
@@ -337,10 +337,10 @@ namespace k8asd {
             // 
             // questView1
             // 
-            this.questView1.Location = new System.Drawing.Point(3, 3);
-            this.questView1.Name = "questView1";
-            this.questView1.Size = new System.Drawing.Size(285, 151);
-            this.questView1.TabIndex = 0;
+            this.taskView.Location = new System.Drawing.Point(3, 3);
+            this.taskView.Name = "questView1";
+            this.taskView.Size = new System.Drawing.Size(285, 151);
+            this.taskView.TabIndex = 0;
             // 
             // ClientView
             // 
@@ -402,7 +402,7 @@ namespace k8asd {
         private TabPage instituteTab;
         private InstituteView instituteView;
         private TabPage questTab;
-        private TaskView questView1;
+        private TaskView taskView;
     }
 }
 
