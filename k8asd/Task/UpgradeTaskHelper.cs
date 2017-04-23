@@ -1,98 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
     class UpgradeTaskHelper : ITaskHelper {
-        public Task<bool> CanDo(IPacketWriter writer, int times) {
-            return Task.FromResult(true);
+        public async Task<TaskResult> Do(IPacketWriter writer, int times) {
+            const int max_weapon_count = 20;
+            var info = await writer.RefreshUpgradeAsync(1, 0, max_weapon_count);
+            if (info == null) {
+                return TaskResult.LostConnection;
+            }
+
+            var weapon = info.Equipments.FirstOrDefault(item => item.Quality == EquipmentQuality.Trang);
+            if (weapon == null) {
+                // Không có vũ khí trắng.
+                return TaskResult.CanNotBeDone;
+            }
+
+            // Hạ cấp hàng loạt.
+            var p0 = await writer.DegradeEquipmentAllAsync(weapon.Id);
+            if (p0 == null) {
+                return TaskResult.LostConnection;
+            }
+
+            for (int i = 0; i < times; ++i) {
+                var result = await DoSingle(writer, weapon.Id, info.Magic);
+                if (result != TaskResult.Done) {
+                    return result;
+                }
+            }
+            return TaskResult.Done;
         }
 
-        public async Task<bool> Do(IPacketWriter writer, int times) {
+        private async Task<TaskResult> DoSingle(IPacketWriter writer, int equipmentId, int magic) {
+            var p = await writer.UpgradeEquipmentAsync(equipmentId, magic);
+            if (p == null) {
+                return TaskResult.LostConnection;
+            }
 
-            /*
-            //lay id vu khi trang dau tien
-                       //lay danh sach vu khi
-                       packet = await packetWriter.GetListWeaponsAsync();
-                       if (packet == null) //gui packet that bai
-                       {
-                           return;
-                       }
+            if (p.HasError) {
+                // Giá trị ma lực đã đổi.
+                // Không đủ bạc.
+                return TaskResult.CanBeDone;
+            }
 
-                       JToken token = JToken.Parse(packet.Message);
-                       JArray arrequip = (JArray)tokenn["equip"];
+            if (!p.Successful) {
+                // Thất bại, làm lại.
+                return await DoSingle(writer, equipmentId, magic);
+            }
 
-                       string magic = tokenn["magic"].ToString();
-                       string storeid = "";
-                       for (int i = 0; i < arrequip.Count; i++)
-                       {
-                           JObject objCur = (JObject)arrequip[i];
-                           if (objCur["quality"].ToString() == "1")
-                           {
-                               storeid = objCur["storeid"].ToString();
-                               break;
-                           }
-                       }
-
-                       //xu ly neu co vu khi
-                       if (storeid != "")
-                       {
-                           //ha cap trang bi
-                           packet = await packetWriter.DownGradeWeaponsAsync(storeid);
-                           if (packet == null) //gui packet that bai
-                           {
-                               return;
-                           }
-
-                           //nang cap trang bi
-                           for (int i = 0; i < qInfo.listQuest[check].quality;)
-                           {
-                               //nang cap trang bi
-                               packet = await packetWriter.UpGradeWeaponsAsync(storeid, magic);
-                               if (packet == null) //gui packet that bai
-                               {
-                                   return;
-                               }
-
-
-                               token = JToken.Parse(packet.Message);
-
-                               //xu ly khong du bac de nang cap (chua chinh xac)
-                               if (token["message"] != null && token["message"].ToString().Contains("đủ"))
-                               {
-                                   packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
-                                   removeQuest = check;
-                                   return;
-                               }
-
-                               if (token["message"] != null && token["message"].ToString() == "Thất bại! Chúc may mắn lần sau!")
-                               {
-                                   //xu ly nhan nhiem vu khac (chua lam)
-                               }
-                               else
-                               {
-                                   i++;
-                               }
-                           }
-                       }
-                       else
-                       {
-                           packet = await packetWriter.CancelQuestAsync(qInfo.listQuest[check].id);
-                           removeQuest = check;
-                           return;
-                       }
-                       */
-
-            return true;
-        }
-
-        private async Task<bool> DoSingle(IPacketWriter writer, int equipmentId) {
-
-
-
-            return true;
+            return TaskResult.Done;
         }
     }
 }

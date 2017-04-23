@@ -54,8 +54,12 @@ namespace k8asd {
         /// </summary>
         /// <param name="equipmentId">ID của trang bị.</param>
         /// <param name="magic">Ma lực hiện tại.</param>
-        public static async Task<Packet> UpgradeEquipmentAsync(this IPacketWriter writer, int equipmentId, int magic) {
-            return await writer.SendCommandAsync(39302, equipmentId.ToString(), "0", magic.ToString());
+        public static async Task<UpgradeResult> UpgradeEquipmentAsync(this IPacketWriter writer, int equipmentId, int magic) {
+            var packet = await writer.SendCommandAsync(39302, equipmentId.ToString(), "0", magic.ToString());
+            if (packet == null) {
+                return null;
+            }
+            return UpgradeResult.Parse(packet);
         }
 
         /// <summary>

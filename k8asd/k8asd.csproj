@@ -202,6 +202,7 @@
     <Compile Include="Shop\ShopCommand.cs" />
     <Compile Include="Shop\StoreInfo.cs" />
     <Compile Include="Shop\UpgradeInfo.cs" />
+    <Compile Include="Shop\UpgradeResult.cs" />
     <Compile Include="Task\AttackNpcTaskHelper.cs" />
     <Compile Include="Task\FoodTaskHelper.cs" />
     <Compile Include="Task\ImposeTaskHelper.cs" />
@@ -493,6 +494,7 @@
     <None Include="Command\31106_2.json" />
     <None Include="Command\31106_1.json" />
     <None Include="Command\31102.json" />
+    <None Include="Command\39301.json" />
     <None Include="Command\39302_2.json" />
     <None Include="Command\39302_0.json" />
     <None Include="Command\39302_1.json" />
