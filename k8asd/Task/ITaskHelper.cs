@@ -24,6 +24,8 @@ namespace k8asd {
     }
 
     public interface ITaskHelper {
-        Task<TaskResult> Do(IPacketWriter writer, int times);
+        double PredictDifficulty(int times);
+
+        Task<TaskResult> Do(int times);
     }
 }

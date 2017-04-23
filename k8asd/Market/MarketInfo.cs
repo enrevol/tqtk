@@ -15,7 +15,7 @@ namespace k8asd {
         /// <summary>
         /// Giá lúa.
         /// </summary>
-        public float Price { get; private set; }
+        public double Price { get; private set; }
 
         /// <summary>
         /// Số lượng giao dịch tối đa.
@@ -30,7 +30,7 @@ namespace k8asd {
         public static MarketInfo Parse(JToken token) {
             var result = new MarketInfo();
             result.IsUp = (bool) token["isup"];
-            result.Price = (float) token["price"];
+            result.Price = (double) token["price"];
             result.MaxTradeAmount = (int) token["maxtrade"];
             result.TradeAmount = (int) token["crutrade"];
             return result;
