@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public class TaskDifficulty {
+    public static class TaskDifficulty {
         public const int CanNotBeDone = 100;
 
         public static bool CanDo(int difficulty) {
@@ -88,6 +88,15 @@ namespace k8asd {
         public static int AttackNpcLackTurns(int times, int lackTurns) {
             var arr = new int[] { 0, 11, 16, 21, 26, 31, 36 };
             return AttackNpcOk(times - lackTurns) + arr[lackTurns];
+        }
+
+        public static int UpgradeOk(int times) {
+            var arr = new int[] { 0, 2, 4, 7, 11, 16 };
+            return arr[times];
+        }
+
+        public static int UpgradeNotOk(int times, int lackTurns) {
+            return UpgradeOk(times) + UpgradeOk(lackTurns) * 2;
         }
     }
 }

@@ -188,8 +188,15 @@ namespace k8asd {
             if (market == null) {
                 return TaskResult.LostConnection;
             }
+
             var impose = await packetWriter.RefreshImposeAsync();
             if (impose == null) {
+                return TaskResult.LostConnection;
+            }
+
+            const int MaxWeaponCount = 20;
+            var upgrade = await packetWriter.RefreshUpgradeAsync(1, 0, MaxWeaponCount);
+            if (upgrade == null) {
                 return TaskResult.LostConnection;
             }
 
@@ -198,6 +205,7 @@ namespace k8asd {
             helpers.Add(TaskType.Improve, new ImproveTaskHelper(packetWriter, infoModel));
             helpers.Add(TaskType.Impose, new ImposeTaskHelper(packetWriter, infoModel, impose));
             helpers.Add(TaskType.AttackNpc, new AttackNpcTaskHelper(packetWriter, mcuModel));
+            helpers.Add(TaskType.Upgrade, new UpgradeTaskHelper(packetWriter, infoModel, upgrade));
 
             return await Process(taskBoard, tasks, helpers);
         }

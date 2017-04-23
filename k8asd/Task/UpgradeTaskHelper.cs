@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    /*
     public class UpgradeTaskHelper : ITaskHelper {
         private IPacketWriter writer;
         private IInfoModel info;
@@ -15,20 +15,29 @@ namespace k8asd {
         }
 
         public int PredictDifficulty(int times) {
-            const int UpgradeCost = 1000;
-            if (info.Silver )
-        }
-
-        public async Task<TaskResult> Do(IPacketWriter writer, int times) {
-            const int MaxWeaponCount = 20;
-            var info = await writer.RefreshUpgradeAsync(1, 0, MaxWeaponCount);
-            if (info == null) {
-                return TaskResult.LostConnection;
-            }
-
-            var weapon = info.Equipments.FirstOrDefault(item => item.Quality == EquipmentQuality.Trang);
+            var weapon = upgrade.Equipments.FirstOrDefault(item => item.Quality == EquipmentQuality.Trang);
             if (weapon == null) {
                 // Không có vũ khí trắng.
+                return TaskDifficulty.CanNotBeDone;
+            }
+
+            const int UpgradeCost = 1000;
+            int okTimes = 0;
+            var silver = info.Silver;
+            while (okTimes < times && silver > UpgradeCost) {
+                ++okTimes;
+            }
+            if (okTimes == times) {
+                return TaskDifficulty.UpgradeOk(times);
+            }
+            return TaskDifficulty.UpgradeNotOk(okTimes, times - okTimes);
+        }
+
+        public async Task<TaskResult> Do(int times) {
+            var weapon = upgrade.Equipments.FirstOrDefault(item => item.Quality == EquipmentQuality.Trang);
+            if (weapon == null) {
+                // Không có vũ khí trắng.
+                Debug.Assert(false);
                 return TaskResult.CanNotBeDone;
             }
 
@@ -39,7 +48,7 @@ namespace k8asd {
             }
 
             for (int i = 0; i < times; ++i) {
-                var result = await DoSingle(writer, weapon.Id, info.Magic);
+                var result = await DoSingle(weapon.Id, upgrade.Magic);
                 if (result != TaskResult.Done) {
                     return result;
                 }
@@ -47,7 +56,7 @@ namespace k8asd {
             return TaskResult.Done;
         }
 
-        private async Task<TaskResult> DoSingle(IPacketWriter writer, int equipmentId, int magic) {
+        private async Task<TaskResult> DoSingle(int equipmentId, int magic) {
             var p = await writer.UpgradeEquipmentAsync(equipmentId, magic);
             if (p == null) {
                 return TaskResult.LostConnection;
@@ -62,11 +71,10 @@ namespace k8asd {
 
             if (!p.Successful) {
                 // Thất bại, làm lại.
-                return await DoSingle(writer, equipmentId, magic);
+                return await DoSingle(equipmentId, magic);
             }
 
             return TaskResult.Done;
         }
     }
-    */
 }

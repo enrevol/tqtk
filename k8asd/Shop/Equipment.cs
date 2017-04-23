@@ -56,7 +56,7 @@ namespace k8asd {
         public static Equipment Parse(JToken token) {
             var result = new Equipment();
             result.Id = (int) token["storeid"];
-            result.Quality = (EquipmentQuality) (int) token["equality"];
+            result.Quality = (EquipmentQuality) (int) token["quality"];
             return result;
         }
     }
