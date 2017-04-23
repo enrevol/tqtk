@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace k8asd {
     public class TaskDifficulty {
         /// <summary>
-        /// Độ khó khi có thể làm được nhiệm vụ mua bán lúa.
+        /// Có thể làm được nhiệm vụ mua bán lúa.
         /// </summary>
         public static int FoodOk() {
             return 0;
         }
 
         /// <summary>
-        /// Độ khó khi không thể làm được nhiệm vụ mua bán lúa.
+        /// Không thể làm được nhiệm vụ mua bán lúa.
         /// - Bạc tràn kho.
         /// - Lúa tràn kho.
         /// - Hết lượng giao dịch.
@@ -25,14 +25,14 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Độ khó khi có thể làm được nhiệm vụ cải tạo.
+        /// Có thể làm được nhiệm vụ cải tạo.
         /// </summary>
         public static int ImproveOk() {
             return 1;
         }
 
         /// <summary>
-        /// Độ khó khi không thể làm được nhiêm vụ cải tạo.
+        /// Không thể làm được nhiêm vụ cải tạo.
         /// - Không đủ chiến tích.
         /// </summary>
         public static int ImproveNotOk() {
@@ -40,7 +40,7 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Độ khó khi có thể làm được nhiệm vụ thu thuế.
+        /// Có thể làm được nhiệm vụ thu thuế.
         /// </summary>
         /// <param name="times">Số lần làm.</param>
         public static int ImposeOk(int times) {
@@ -50,7 +50,7 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Độ khó khi làm nhiệm vụ thu thuế mà bị tràn bạc.
+        /// Làm nhiệm vụ thu thuế mà bị tràn bạc.
         /// </summary>
         /// <param name="times">Số làn làm.</param>
         public static int ImposeOverSilver(int times) {
@@ -58,11 +58,30 @@ namespace k8asd {
         }
 
         /// <summary>
-        /// Độ khó khi không thể làm nhiệm vụ thu thuế.
+        /// Không thể làm nhiệm vụ thu thuế.
         /// - Hết số lần thu thuế.
         /// </summary>
         public static int ImposeNotOk() {
             return 100;
+        }
+
+        /// <summary>
+        /// Tấn công NPC.
+        /// </summary>
+        /// <param name="times">Số lần làm.</param>
+        public static int AttackNpcOk(int times) {
+            var arr = new int[] { 0, 5, 10, 15, 20, 25, 30 };
+            return arr[times];
+        }
+
+        /// <summary>
+        /// Tấn công NPC mà thiếu lượt.
+        /// </summary>
+        /// <param name="times">Số lần làm.</param>
+        /// <param name="lackTurns">Số lượt bị thiếu.</param>
+        public static int AttackNpcLackTurns(int times, int lackTurns) {
+            var arr = new int[] { 0, 11, 16, 21, 26, 31, 36 };
+            return AttackNpcOk(times - lackTurns) + arr[lackTurns];
         }
     }
 }
