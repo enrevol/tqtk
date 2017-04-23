@@ -163,6 +163,7 @@
     <Compile Include="Config\IConfigHandler.cs" />
     <Compile Include="Formation\FormationCommand.cs" />
     <Compile Include="HeroImprove\HeroImproveCommand.cs" />
+    <Compile Include="HeroImprove\ImproveModel.cs" />
     <Compile Include="HeroTraining\Hero.cs" />
     <Compile Include="HeroTraining\HeroDetail.cs" />
     <Compile Include="HeroTraining\Barracks.cs" />
