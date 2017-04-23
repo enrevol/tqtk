@@ -2,43 +2,39 @@
 
 namespace k8asd {
     class ImposeTaskHelper : ITaskHelper {
-        public async Task<bool> CanDo(IPacketWriter writer, int times) {
+        public async Task<TaskResult> Do(IPacketWriter writer, int times) {
             var imposeInfo = await writer.RefreshImposeAsync();
             if (imposeInfo == null) {
-                // Mất kết nối không tính là không làm được.
-                return true;
+                return TaskResult.LostConnection;
             }
 
             var remainImposes = imposeInfo.ImposeNum;
             if (remainImposes < times) {
-                return false;
+                return TaskResult.CanNotBeDone;
             }
 
-            // Không tính tăng cường thu thuế.
-            return true;
-        }
-
-        public async Task<bool> Do(IPacketWriter writer, int times) {
             for (int i = 0; i < times; ++i) {
-                if (!await DoSingle(writer)) {
-                    return false;
+                var result = await DoSingle(writer);
+                if (result != TaskResult.Done) {
+                    return result;
                 }
             }
-            return true;
+            return TaskResult.Done;
         }
 
-        private async Task<bool> DoSingle(IPacketWriter writer) {
+        private async Task<TaskResult> DoSingle(IPacketWriter writer) {
             var p = await writer.ImposeAsync();
             if (p == null) {
-                return false;
+                return TaskResult.LostConnection;
             }
 
             if (p.HasError) {
-                return false;
+                // Đóng băng.
+                return TaskResult.CanBeDone;
             }
 
             // Không làm tăng cường thu thuế.
-            return true;
+            return TaskResult.Done;
         }
     }
 }

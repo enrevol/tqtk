@@ -1,13 +1,29 @@
 ﻿using System.Threading.Tasks;
 
 namespace k8asd {
-    interface ITaskHelper {
+    public enum TaskResult {
         /// <summary>
-        /// Kiếm tra xem có hoàn thành được nhiệm vụ này không?
+        /// Mất kết nối.
         /// </summary>
-        /// <param name="times">Số lần làm.</param>
-        Task<bool> CanDo(IPacketWriter writer, int times);
+        LostConnection,
 
-        Task<bool> Do(IPacketWriter writer, int times);
+        /// <summary>
+        /// Hoàn thành.
+        /// </summary>
+        Done,
+
+        /// <summary>
+        /// Có thể hoàn thành sau này (hiện tại chưa thể làm được).
+        /// </summary>
+        CanBeDone,
+
+        /// <summary>
+        /// Không thể hoàn thành.
+        /// </summary>
+        CanNotBeDone,
+    }
+
+    public interface ITaskHelper {
+        Task<TaskResult> Do(IPacketWriter writer, int times);
     }
 }

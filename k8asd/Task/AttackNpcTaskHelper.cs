@@ -1,35 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace k8asd {
     class AttackNpcTaskHelper : ITaskHelper {
-        public Task<bool> CanDo(IPacketWriter writer, int times) {
-            return Task.FromResult(true);
-        }
-
-        public async Task<bool> Do(IPacketWriter writer, int times) {
+        public async Task<TaskResult> Do(IPacketWriter writer, int times) {
             // Nguỵ Tục - Lữ Bố.
             const int NpcId = 2214;
 
             for (int i = 0; i < times; ++i) {
-                if (!await DoSingle(writer, NpcId)) {
-                    return false;
-                }
+                var result = await DoSingle(writer, NpcId);
+                if (result != TaskResult.Done)
+                    return result;
             }
-            return true;
+            return TaskResult.Done;
         }
 
-        private async Task<bool> DoSingle(IPacketWriter writer, int npcId) {
+        private async Task<TaskResult> DoSingle(IPacketWriter writer, int npcId) {
             var p = await writer.AttackNpcAsync(npcId, PartyType.Normal);
             if (p == null) {
-                return false;
+                return TaskResult.LostConnection;
             }
 
             if (p.HasError) {
-                return false;
+                // Thiếu lượt, đóng băng.
+                return TaskResult.CanBeDone;
             }
 
             /// FIXME.
@@ -38,7 +31,7 @@ namespace k8asd {
             //{
             //    //phai danh lai cho du so sao (chua lam)
             //}
-            return true;
+            return TaskResult.Done;
         }
     }
 }

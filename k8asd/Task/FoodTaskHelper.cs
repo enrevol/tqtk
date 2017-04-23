@@ -2,47 +2,44 @@
 
 namespace k8asd {
     class FoodTaskHelper : ITaskHelper {
-        public Task<bool> CanDo(IPacketWriter writer, int times) {
-            return Task.FromResult(true);
-        }
-
-        public async Task<bool> Do(IPacketWriter writer, int times) {
+        public async Task<TaskResult> Do(IPacketWriter writer, int times) {
             var market = await writer.RefreshMarketAsync();
             if (market == null) {
-                return false;
+                return TaskResult.LostConnection;
             }
 
             int remainTrades = market.MaxTradeAmount - market.TradeAmount;
             for (int i = 0; i < times; ++i) {
-                if (!await DoSingle(writer, remainTrades > 0)) {
-                    return false;
+                var result = await DoSingle(writer, remainTrades > 0);
+                if (result != TaskResult.Done) {
+                    return result;
                 }
                 --remainTrades;
             }
-            return true;
+            return TaskResult.Done;
         }
 
         /// <summary>
         /// Làm nhiệm vụ mua bán lúa 1 lần.
         /// </summary>
-        public async Task<bool> DoSingle(IPacketWriter writer, bool buyBlackMarket) {
+        public async Task<TaskResult> DoSingle(IPacketWriter writer, bool buyBlackMarket) {
             const int amount = 1;
 
             if (buyBlackMarket) {
                 var p1 = await writer.BuyPaddyInMaketAsync(amount);
                 if (p1 == null) {
-                    return false;
+                    return TaskResult.LostConnection;
                 }
                 if (p1.HasError) {
                     // Lúa tràn kho???
-                    return false;
+                    return TaskResult.CanBeDone;
                 }
-                return true;
+                return TaskResult.Done;
             }
 
             var p = await writer.SalePaddyAsync(amount);
             if (p == null) {
-                return false;
+                return TaskResult.LostConnection;
             }
             if (p.HasError) {
                 // Hết số lượng giao dịch.
@@ -50,7 +47,7 @@ namespace k8asd {
 
                 var p0 = await writer.BuyPaddyAsync(amount);
                 if (p0 == null) {
-                    return false;
+                    return TaskResult.LostConnection;
                 }
                 if (p0.HasError) {
                     // Hết số lượng giao dịch.
@@ -58,9 +55,9 @@ namespace k8asd {
 
                     return await DoSingle(writer, true);
                 }
-                return false;
+                return TaskResult.CanBeDone;
             }
-            return true;
+            return TaskResult.Done;
         }
     }
 }
