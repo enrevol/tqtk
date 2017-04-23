@@ -40,7 +40,7 @@ namespace k8asd {
         public static TaskInfo Parse(JToken token) {
             var result = new TaskInfo();
             result.Id = (int) token["id"];
-            result.State = (TaskState) (int) token["state"];
+            result.State = (TaskState) (int) token["status"];
             return result;
         }
     }
