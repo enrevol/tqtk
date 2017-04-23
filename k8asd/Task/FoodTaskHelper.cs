@@ -58,6 +58,9 @@ namespace k8asd {
                     return result;
                 }
                 --remainTrades;
+
+                // Tránh kẹt acc.
+                await Task.Delay(250);
             }
             return TaskResult.Done;
         }

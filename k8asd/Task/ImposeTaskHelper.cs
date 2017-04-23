@@ -38,6 +38,9 @@ namespace k8asd {
                 if (result != TaskResult.Done) {
                     return result;
                 }
+
+                // Tránh kẹt acc.
+                await Task.Delay(250);
             }
             return TaskResult.Done;
         }

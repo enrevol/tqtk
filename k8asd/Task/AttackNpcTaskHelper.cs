@@ -27,8 +27,12 @@ namespace k8asd {
 
             for (int i = 0; i < times; ++i) {
                 var result = await DoSingle(NpcId);
-                if (result != TaskResult.Done)
+                if (result != TaskResult.Done) {
                     return result;
+                }
+
+                // Tránh kẹt acc.
+                await Task.Delay(250);
             }
             return TaskResult.Done;
         }
