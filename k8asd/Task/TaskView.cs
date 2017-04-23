@@ -209,9 +209,15 @@ namespace k8asd {
                 return TaskResult.LostConnection;
             }
 
+            var packet = await packetWriter.SendCommandAsync(41100, "1");
+            if (packet == null) {
+                return TaskResult.LostConnection;
+            }
+            var barracks = Barracks.Parse(JToken.Parse(packet.Message));
+
             var helpers = new Dictionary<TaskType, ITaskHelper>();
             helpers.Add(TaskType.Food, new FoodTaskHelper(packetWriter, infoModel, market));
-            helpers.Add(TaskType.Improve, new ImproveTaskHelper(packetWriter, infoModel));
+            helpers.Add(TaskType.Improve, new ImproveTaskHelper(packetWriter, infoModel, barracks));
             helpers.Add(TaskType.Impose, new ImposeTaskHelper(packetWriter, infoModel, impose));
             helpers.Add(TaskType.AttackNpc, new AttackNpcTaskHelper(packetWriter, mcuModel));
             helpers.Add(TaskType.Upgrade, new UpgradeTaskHelper(packetWriter, infoModel, upgrade));

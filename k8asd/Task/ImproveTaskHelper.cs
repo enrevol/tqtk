@@ -5,10 +5,12 @@ namespace k8asd {
     public class ImproveTaskHelper : ITaskHelper {
         private IPacketWriter writer;
         private IInfoModel info;
+        private Barracks barracks;
 
-        public ImproveTaskHelper(IPacketWriter writer, IInfoModel info) {
+        public ImproveTaskHelper(IPacketWriter writer, IInfoModel info, Barracks barracks) {
             this.writer = writer;
             this.info = info;
+            this.barracks = barracks;
         }
 
         public int PredictDifficulty(int times) {
@@ -25,13 +27,6 @@ namespace k8asd {
         }
 
         public async Task<TaskResult> Do(int times) {
-            var p = await writer.GetListHeroAsync();
-            if (p == null) {
-                return TaskResult.LostConnection;
-            }
-
-            var barracks = Barracks.Parse(JToken.Parse(p.Message));
-
             // Cải tiến tướng đầu tiên.
             var heroId = barracks.Heroes[0].Id;
 
