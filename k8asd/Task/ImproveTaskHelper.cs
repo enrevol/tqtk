@@ -58,7 +58,7 @@ namespace k8asd {
             }
 
             // Giữ chỉ số.
-            var p2 = writer.KeepStatsAsync(heroId);
+            var p2 = await writer.KeepStatsAsync(heroId);
             if (p2 == null) {
                 return TaskResult.LostConnection;
             }
