@@ -222,7 +222,7 @@ namespace k8asd {
 
         private async Task<TaskResult> Process(List<DailyTask> tasks) {
             // Nhiệm vụ đang làm.
-            var doingTask = tasks.First(item => item.State == TaskState.Received);
+            var doingTask = tasks.FirstOrDefault(item => item.State == TaskState.Received);
 
             // Số sao ít nhất.
             var minQuality = tasks.Min(item => item.Quality);
@@ -251,21 +251,35 @@ namespace k8asd {
 
         private async Task<TaskResult> Process(DailyTask acceptedTask, DailyTask bestTask) {
             if (acceptedTask != bestTask) {
-                // Khác nhiệm vụ.
-                // Huỷ cái cũ.
-                await packetWriter.CancelTaskAsync(acceptedTask.Id);
-            }
+                if (acceptedTask != null) {
+                    // Khác nhiệm vụ.
+                    // Huỷ cái cũ.
+                    await packetWriter.CancelTaskAsync(acceptedTask.Id);
+                }
 
-            var p0 = await packetWriter.AcceptTaskAsync(bestTask.Id);
-            if (p0 == null) {
-                return TaskResult.LostConnection;
+                // Nhận cái mới.
+                var p0 = await packetWriter.AcceptTaskAsync(bestTask.Id);
+                if (p0 == null) {
+                    return TaskResult.LostConnection;
+                }
             }
 
             var result = await bestTask.Do();
             if (result == TaskResult.Done) {
-                var p1 = await packetWriter.CompleteTaskAsync(bestTask.Id);
+                // Phải làm mới lại danh sách nhiệm vụ thì mới hoàn thành được nhiêm vụ này.
+                var p1 = await packetWriter.RefreshTaskBoardAsync();
                 if (p1 == null) {
                     return TaskResult.LostConnection;
+                }
+
+                var p2 = await packetWriter.CompleteTaskAsync(bestTask.Id);
+                if (p2 == null) {
+                    return TaskResult.LostConnection;
+                }
+
+                if (p2.HasError) {
+                    Debug.Assert(false);
+                    return TaskResult.CanBeDone;
                 }
                 return TaskResult.Done;
             }
@@ -295,6 +309,10 @@ namespace k8asd {
         }
 
         private async void taskTimer_Tick(object sender, EventArgs e) {
+            if (!dailyTaskCheck.Checked) {
+                return;
+            }
+
             if (timerLocking) {
                 return;
             }
@@ -302,7 +320,6 @@ namespace k8asd {
             try {
                 timerLocking = true;
                 await Process();
-
             } finally {
                 timerLocking = false;
             }
