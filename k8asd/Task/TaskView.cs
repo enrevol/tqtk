@@ -281,7 +281,7 @@ namespace k8asd {
                 }
             }
 
-            messageModel.LogInfo(String.Format("[NVHN] Tiến hành làm nhiệm vụ {0} số sao {1}",
+            messageModel.LogInfo(String.Format("[NVHN] Tiến hành làm nhiệm vụ {0} [{1} sao]",
                 bestTask.Name, bestTask.Quality));
 
             var result = await bestTask.Do();
@@ -303,7 +303,7 @@ namespace k8asd {
                 }
 
                 messageModel.LogInfo(String.Format("[NVHN] Số nhiệm vu đã hoàn thành {0}/{1}",
-                    p1.DoneNum, p1.MaxDoneNum));
+                    p1.DoneNum + 1, p1.MaxDoneNum));
                 return TaskResult.Done;
             }
 
