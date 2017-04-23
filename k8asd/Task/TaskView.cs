@@ -57,7 +57,7 @@ namespace k8asd {
             return taskDetails;
         }
 
-        public async Task<bool> DoTask(TaskType type, int times) {
+        public async Task<TaskResult> DoTask(TaskType type, int times) {
             var helpers = new Dictionary<TaskType, ITaskHelper>();
             helpers.Add(TaskType.Food, new FoodTaskHelper());
             helpers.Add(TaskType.Improve, new ImproveTaskHelper());
@@ -66,18 +66,12 @@ namespace k8asd {
             helpers.Add(TaskType.Upgrade, new UpgradeTaskHelper());
 
             if (!helpers.ContainsKey(type)) {
-                return false;
+                return TaskResult.CanNotBeDone;
             }
 
             var helper = helpers[type];
-            if (!await helper.CanDo(packetWriter, times)) {
-                return false;
-            }
-
-            if (!await helper.Do(packetWriter, times)) {
-                return false;
-            }
-            return false;
+            var result = await helper.Do(packetWriter, times);
+            return result;
         }
 
         private async Task<bool> DoGoldTask(int times) {
