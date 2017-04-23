@@ -30,9 +30,10 @@ namespace k8asd {
         /// </summary>
         private static readonly Color LegionChannelColor = Color.FromArgb(80, 140, 230);
 
-        private IChatLogModel chatModel;
+        private const int ChannelLineLimit = 100;
+        private const int AllChannelLineLimit = 50;
 
-        private int lineLimit;
+        private IChatLogModel chatModel;
 
         private enum ChatBoxSize {
             Small,
@@ -46,8 +47,6 @@ namespace k8asd {
 
         public ChatLogView() {
             InitializeComponent();
-
-            lineLimit = 200;
 
             channelList.Items.Clear();
             channelList.Items.Add(ChatChannel.World);
@@ -97,6 +96,9 @@ namespace k8asd {
                     logBox.AppendText(Environment.NewLine);
                 }
                 logBox.AppendText(line);
+                if (logBox.Lines.Length > ChannelLineLimit) {
+                    RemoveFirstLine(logBox);
+                }
             }
 
             AddMessage(logAllBox, line, GetChannelColor(message.Channel));
@@ -111,7 +113,7 @@ namespace k8asd {
             box.AppendText(line);
             box.Select(startIndex, box.Text.Length - startIndex);
             box.SelectionColor = color;
-            if (box.Lines.Length > lineLimit) {
+            if (box.Lines.Length > AllChannelLineLimit) {
                 RemoveFirstLine(box);
             }
         }
