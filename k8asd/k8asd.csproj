@@ -206,6 +206,7 @@
     <Compile Include="Shop\UpgradeResult.cs" />
     <Compile Include="Task\AttackNpcTaskHelper.cs" />
     <Compile Include="Task\FoodTaskHelper.cs" />
+    <Compile Include="Task\GoldTaskHelper.cs" />
     <Compile Include="Task\ImposeTaskHelper.cs" />
     <Compile Include="Task\ImproveTaskHelper.cs" />
     <Compile Include="Task\ITaskHelper.cs" />
