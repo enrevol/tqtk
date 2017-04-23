@@ -244,6 +244,10 @@ namespace k8asd {
         }
 
         private async Task<TaskResult> Process(List<DailyTask> tasks) {
+            if (tasks.Count == 0) {
+                return TaskResult.CanNotBeDone;
+            }
+
             // Nhiệm vụ đang làm.
             var doingTask = tasks.FirstOrDefault(item => item.State == TaskState.Received);
 
