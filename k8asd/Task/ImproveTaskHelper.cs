@@ -2,8 +2,29 @@
 using System.Threading.Tasks;
 
 namespace k8asd {
-    class ImproveTaskHelper : ITaskHelper {
-        public async Task<TaskResult> Do(IPacketWriter writer, int times) {
+    public class ImproveTaskHelper : ITaskHelper {
+        private IPacketWriter writer;
+        private IInfoModel info;
+
+        public ImproveTaskHelper(IPacketWriter writer, IInfoModel info) {
+            this.writer = writer;
+            this.info = info;
+        }
+
+        public double PredictDifficulty(int times) {
+            // FIXME:
+            // Cho mỗi lần cải tiến hết 800 chiến tích.
+            const double ImproveCost = 800;
+
+            var needed = ImproveCost * times;
+            if (needed > info.Honor) {
+                return 1500;
+            }
+
+            return 0;
+        }
+
+        public async Task<TaskResult> Do(int times) {
             var p = await writer.GetListHeroAsync();
             if (p == null) {
                 return TaskResult.LostConnection;
@@ -30,7 +51,7 @@ namespace k8asd {
             return TaskResult.Done;
         }
 
-        private async Task<TaskResult> DoSingle(IPacketWriter writer, int heroId) {
+        private async Task<TaskResult> DoSingle(int heroId) {
             var p1 = await writer.ImproveHeroAsync(heroId);
             if (p1 == null) {
                 return TaskResult.LostConnection;
