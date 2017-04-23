@@ -24,7 +24,7 @@ namespace k8asd {
     }
 
     public interface ITaskHelper {
-        double PredictDifficulty(int times);
+        int PredictDifficulty(int times);
 
         Task<TaskResult> Do(int times);
     }

@@ -3,11 +3,6 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public class ImproveTaskHelper : ITaskHelper {
-        private static class Difficulty {
-            public const int Ok = 0;
-            public const int NotOk = 900;
-        }
-
         private IPacketWriter writer;
         private IInfoModel info;
 
@@ -16,17 +11,17 @@ namespace k8asd {
             this.info = info;
         }
 
-        public double PredictDifficulty(int times) {
+        public int PredictDifficulty(int times) {
             // FIXME:
             // Cho mỗi lần cải tiến hết 800 chiến tích.
             const double ImproveCost = 800;
 
             var needed = ImproveCost * times;
             if (needed > info.Honor) {
-                return Difficulty.NotOk;
+                return TaskDifficulty.ImproveNotOk();
             }
 
-            return Difficulty.Ok;
+            return TaskDifficulty.ImproveOk();
         }
 
         public async Task<TaskResult> Do(int times) {
@@ -48,7 +43,7 @@ namespace k8asd {
             }
 
             for (int i = 0; i < times; ++i) {
-                var result = await DoSingle(writer, heroId);
+                var result = await DoSingle(heroId);
                 if (result != TaskResult.Done) {
                     return result;
                 }

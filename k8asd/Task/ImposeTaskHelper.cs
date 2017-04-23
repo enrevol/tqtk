@@ -3,12 +3,6 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public class ImposeTaskHelper : ITaskHelper {
-        private static class Difficulty {
-            public const int FreezingMultiplier = 1;
-            public const int NotOk = 2000;
-            public const int OverSilver = 100;
-        }
-
         private IPacketWriter writer;
         private IInfoModel info;
         private ImposeInfo impose;
@@ -19,18 +13,18 @@ namespace k8asd {
             this.impose = impose;
         }
 
-        public double PredictDifficulty(int times) {
+        public int PredictDifficulty(int times) {
             if (impose.ImposeNum < times) {
-                return Difficulty.NotOk;
+                return TaskDifficulty.ImposeNotOk();
             }
+
             var silverEachImpose = impose.Copper;
             if (info.Silver + silverEachImpose * times > info.MaxSilver) {
                 // Tràn bạc.
-                return Difficulty.OverSilver;
+                return TaskDifficulty.ImposeOverSilver(times);
             }
 
-            // Tăng độ khó vì đóng băng lâu.
-            return times * Difficulty.FreezingMultiplier;
+            return TaskDifficulty.ImposeOk(times);
         }
 
         public async Task<TaskResult> Do(int times) {
