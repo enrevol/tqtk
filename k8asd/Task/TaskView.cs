@@ -16,6 +16,7 @@ namespace k8asd {
         private IPacketWriter packetWriter;
         private IInfoModel infoModel;
         private IMcuModel mcuModel;
+        private IMessageLogModel messageModel;
 
         private bool timerLocking;
         private bool asyncLocking;
@@ -43,6 +44,10 @@ namespace k8asd {
 
         public void SetMcuModel(IMcuModel model) {
             mcuModel = model;
+        }
+
+        public void SetMessageModel(IMessageLogModel model) {
+            messageModel = model;
         }
 
         private void OnPacketReceived(object sender, Packet packet) {
@@ -81,6 +86,7 @@ namespace k8asd {
             Debug.Assert(asyncLocking);
             foreach (var task in taskBoard.Tasks) {
                 if (task.State == TaskState.Completed) {
+                    messageModel.LogInfo(String.Format("[NVHN] Hoàn thành nhiệm vụ ID {0}", task.Id));
                     // Hoàn thành nhiệm vụ.
                     await packetWriter.CompleteTaskAsync(task.Id);
                     return true;
@@ -103,6 +109,7 @@ namespace k8asd {
 
             if (acceptedTaskCount > 1) {
                 // Huỷ hết.
+                messageModel.LogInfo(String.Format("[NVHN] Đang nhận nhiều nhiệm vụ, huỷ tất cả!"));
                 foreach (var task in taskBoard.Tasks) {
                     if (task.State == TaskState.Received) {
                         await packetWriter.CancelTaskAsync(task.Id);
@@ -130,6 +137,7 @@ namespace k8asd {
                 if (taskBoard.DoneNum == taskBoard.MaxDoneNum) {
                     // Làm hết nhiệm vụ rồi.
                     dailyTaskCheck.Checked = false;
+                    messageModel.LogInfo(String.Format("[NVHN] Đã làm hết nhiệm vụ."));
                     return false;
                 }
 
@@ -155,6 +163,7 @@ namespace k8asd {
 
             public int Id { get { return info.Id; } }
             public TaskState State { get { return info.State; } }
+            public string Name { get { return detail.Name; } }
             public int Quality { get { return detail.Quality; } }
             public int Difficulty { get; private set; }
 
@@ -272,6 +281,9 @@ namespace k8asd {
                 }
             }
 
+            messageModel.LogInfo(String.Format("[NVHN] Tiến hành làm nhiệm vụ {0} số sao {1}",
+                bestTask.Name, bestTask.Quality));
+
             var result = await bestTask.Do();
             if (result == TaskResult.Done) {
                 // Phải làm mới lại danh sách nhiệm vụ thì mới hoàn thành được nhiêm vụ này.
@@ -289,6 +301,9 @@ namespace k8asd {
                     Debug.Assert(false);
                     return TaskResult.CanBeDone;
                 }
+
+                messageModel.LogInfo(String.Format("[NVHN] Số nhiệm vu đã hoàn thành {0}/{1}",
+                    p1.DoneNum, p1.MaxDoneNum));
                 return TaskResult.Done;
             }
 

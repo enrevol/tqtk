@@ -88,6 +88,8 @@ namespace k8asd {
             taskView.SetMcuModel(mcuModel);
 
             messageLogView.SetModel(messageLogModel);
+            taskView.SetMessageModel(messageLogModel);
+
             chatLogView.SetModel(chatLogModel);
             weaveView.SetCooldownModel(cooldownModel);
             weaveView.SetInfoModel(infoModel);
