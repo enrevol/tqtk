@@ -3,6 +3,11 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public class ImproveTaskHelper : ITaskHelper {
+        private static class Difficulty {
+            public const int Ok = 0;
+            public const int NotOk = 900;
+        }
+
         private IPacketWriter writer;
         private IInfoModel info;
 
@@ -18,10 +23,10 @@ namespace k8asd {
 
             var needed = ImproveCost * times;
             if (needed > info.Honor) {
-                return 1500;
+                return Difficulty.NotOk;
             }
 
-            return 0;
+            return Difficulty.Ok;
         }
 
         public async Task<TaskResult> Do(int times) {

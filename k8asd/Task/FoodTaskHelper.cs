@@ -3,6 +3,11 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public class FoodTaskHelper : ITaskHelper {
+        private static class Difficulty {
+            public const int Ok = 0;
+            public const int NotOk = 800;
+        }
+
         private IPacketWriter writer;
         private IInfoModel info;
         private MarketInfo market;
@@ -21,7 +26,7 @@ namespace k8asd {
         private double PredictDifficulty(int times, int trades, double price, int food, int maxFood, int silver, int maxSilver) {
             if (times == 0) {
                 // OK.
-                return 0;
+                return Difficulty.Ok;
             }
             if (trades <= 0) {
                 // Chợ đen.
@@ -46,7 +51,7 @@ namespace k8asd {
             }
 
             // Không thể hoàn thành (bây giờ).
-            return 999;
+            return Difficulty.NotOk;
         }
 
         public async Task<TaskResult> Do(int times) {
