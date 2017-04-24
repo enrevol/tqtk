@@ -162,19 +162,19 @@ namespace k8asd {
             }
             else
             {
-                //chon tran truong xa cho client hien tai
-                var p0 = await currentClient.SetDefaultFormationAsync(10);
-                if (p0 == null)
-                {
-                    return;
-                }
+                ////chon tran truong xa cho client hien tai
+                //var p0 = await currentClient.SetDefaultFormationAsync(10);
+                //if (p0 == null)
+                //{
+                //    return;
+                //}
 
-                // Gỡ bỏ toàn bộ tướng.
-                var p1 = await currentClient.RemoveAllHeroesFromFormationAsync(10);
-                if (p1 == null)
-                {
-                    return;
-                }
+                //// Gỡ bỏ toàn bộ tướng.
+                //var p1 = await currentClient.RemoveAllHeroesFromFormationAsync(10);
+                //if (p1 == null)
+                //{
+                //    return;
+                //}
 
                 //Bỏ mỏ
                 var p2 = await currentClient.BreakSnoutAsync(index);
@@ -197,19 +197,19 @@ namespace k8asd {
                     return;
                 }
 
-                //chon lai tran truy hinh
-                var p5 = await currentClient.SetDefaultFormationAsync(13);
-                if (p5 == null)
-                {
-                    return;
-                }
+                ////chon lai tran truy hinh
+                //var p5 = await currentClient.SetDefaultFormationAsync(13);
+                //if (p5 == null)
+                //{
+                //    return;
+                //}
 
                 LogInfo(String.Format("Chuyển mỏ từ: {0} sang {1}", currentClient.PlayerName, obClient.PlayerName));
 
                 connectedClients.RemoveAt(0);
                 currentClient = obClient;
 
-                //ngung trang treo acc
+                //ngung tranh treo acc
                 await Task.Delay(100);
                 SwapSnout(currentClient, connectedClients, areaid, index);
             }
