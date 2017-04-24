@@ -399,5 +399,11 @@ namespace k8asd {
             var view = new AutoSnoutView();
             view.Show();
         }
+
+        private void tựĐộngNhậnThưToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var view = new AutoMailView();
+            view.Show();
+        }
     }
 }

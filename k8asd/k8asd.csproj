@@ -176,6 +176,7 @@
     <Compile Include="HeroTraining\TrainTimeModel.cs" />
     <Compile Include="Impose\ImposeCommand.cs" />
     <Compile Include="Impose\ImposeInfo.cs" />
+    <Compile Include="Mail\MailCommand.cs" />
     <Compile Include="Map\Area.cs" />
     <Compile Include="Map\City.cs" />
     <Compile Include="Map\CityDetail.cs" />
@@ -250,6 +251,12 @@
     <Compile Include="Swap\SwapCommand.cs" />
     <Compile Include="Swap\SwapInfo.cs" />
     <Compile Include="Task\UpgradeTaskHelper.cs" />
+    <Compile Include="Tools\AutoMailView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\AutoMailView.Designer.cs">
+      <DependentUpon>AutoMailView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\AutoSnoutView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -472,6 +479,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Shop\ShopView.resx">
       <DependentUpon>ShopView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\AutoMailView.resx">
+      <DependentUpon>AutoMailView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\AutoSnoutView.resx">
       <DependentUpon>AutoSnoutView.cs</DependentUpon>

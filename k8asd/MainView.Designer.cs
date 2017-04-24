@@ -41,6 +41,7 @@ namespace k8asd
             this.autoQuestButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoReportQuestButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoGoldDailyButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoSwapSnoutButton = new System.Windows.Forms.ToolStripMenuItem();
             this.oneSecondTimer = new System.Windows.Forms.Timer(this.components);
             this._ignore0 = new System.Windows.Forms.Panel();
             this.saveButton = new System.Windows.Forms.Button();
@@ -60,7 +61,7 @@ namespace k8asd
             this.moveDownButton = new System.Windows.Forms.Button();
             this.arrowImages = new System.Windows.Forms.ImageList(this.components);
             this.moveUpButton = new System.Windows.Forms.Button();
-            this.autoSwapSnoutButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.tựĐộngNhậnThưToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,7 +92,8 @@ namespace k8asd
             this.autoQuestButton,
             this.autoReportQuestButton,
             this.autoGoldDailyButton,
-            this.autoSwapSnoutButton});
+            this.autoSwapSnoutButton,
+            this.tựĐộngNhậnThưToolStripMenuItem});
             menuItem0.Name = "menuItem0";
             menuItem0.Size = new System.Drawing.Size(58, 20);
             menuItem0.Text = "Phụ trợ";
@@ -151,6 +153,13 @@ namespace k8asd
             this.autoGoldDailyButton.Size = new System.Drawing.Size(214, 22);
             this.autoGoldDailyButton.Text = "Bug Tiêu Xu Hằng Ngày";
             this.autoGoldDailyButton.Click += new System.EventHandler(this.autoGoldDailyButton_Click);
+            // 
+            // autoSwapSnoutButton
+            // 
+            this.autoSwapSnoutButton.Name = "autoSwapSnoutButton";
+            this.autoSwapSnoutButton.Size = new System.Drawing.Size(214, 22);
+            this.autoSwapSnoutButton.Text = "Tự động chuyển mỏ";
+            this.autoSwapSnoutButton.Click += new System.EventHandler(this.autoSwapSnoutButton_Click);
             // 
             // oneSecondTimer
             // 
@@ -384,12 +393,12 @@ namespace k8asd
             this.moveUpButton.UseVisualStyleBackColor = true;
             this.moveUpButton.Click += new System.EventHandler(this.moveUpButton_Click);
             // 
-            // autoSwapSnoutButton
+            // tựĐộngNhậnThưToolStripMenuItem
             // 
-            this.autoSwapSnoutButton.Name = "autoSwapSnoutButton";
-            this.autoSwapSnoutButton.Size = new System.Drawing.Size(214, 22);
-            this.autoSwapSnoutButton.Text = "Tự động chuyển mỏ";
-            this.autoSwapSnoutButton.Click += new System.EventHandler(this.autoSwapSnoutButton_Click);
+            this.tựĐộngNhậnThưToolStripMenuItem.Name = "tựĐộngNhậnThưToolStripMenuItem";
+            this.tựĐộngNhậnThưToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.tựĐộngNhậnThưToolStripMenuItem.Text = "Tự động nhận thư";
+            this.tựĐộngNhậnThưToolStripMenuItem.Click += new System.EventHandler(this.tựĐộngNhậnThưToolStripMenuItem_Click);
             // 
             // MainView
             // 
@@ -447,6 +456,7 @@ namespace k8asd
         private Button moveDownButton;
         private ToolStripMenuItem autoGoldDailyButton;
         private ToolStripMenuItem autoSwapSnoutButton;
+        private ToolStripMenuItem tựĐộngNhậnThưToolStripMenuItem;
     }
 }
 
