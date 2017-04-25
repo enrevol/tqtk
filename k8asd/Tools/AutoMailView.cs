@@ -87,5 +87,26 @@ namespace k8asd {
                 autoTTC.Checked = false;
             }
         }
+
+        private async void chkGetNewSkill_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkGetNewSkill.Checked)
+            {
+                List<IClient> connectedClients = FindConnectedClients();
+                LogInfo(String.Format("[SKILL] Bắt đầu làm mới kỹ năng"));
+                foreach (var client in connectedClients)
+                {
+                    var packet = await client.GetNewSkillAsync();
+                    if (packet == null)
+                    {
+                        return;
+                    }
+                    LogInfo(String.Format("[SKILL] Làm mới kỹ năng của {0}", client.PlayerName));
+                    await Task.Delay(2000);
+                }
+                LogInfo(String.Format("[SKILL] Làm mới hoàn thành"));
+                autoTTC.Checked = false;
+            }
+        }
     }
 }

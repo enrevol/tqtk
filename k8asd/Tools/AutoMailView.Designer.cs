@@ -35,6 +35,7 @@
             this.numYearTTC = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.autoTTC = new System.Windows.Forms.CheckBox();
+            this.chkGetNewSkill = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numYearLT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBoss)).BeginInit();
@@ -76,6 +77,11 @@
             // numYearLT
             // 
             this.numYearLT.Location = new System.Drawing.Point(55, 13);
+            this.numYearLT.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.numYearLT.Name = "numYearLT";
             this.numYearLT.Size = new System.Drawing.Size(77, 20);
             this.numYearLT.TabIndex = 36;
@@ -83,6 +89,11 @@
             // numLT
             // 
             this.numLT.Location = new System.Drawing.Point(227, 13);
+            this.numLT.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.numLT.Name = "numLT";
             this.numLT.Size = new System.Drawing.Size(77, 20);
             this.numLT.TabIndex = 38;
@@ -99,6 +110,11 @@
             // numBoss
             // 
             this.numBoss.Location = new System.Drawing.Point(227, 45);
+            this.numBoss.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.numBoss.Name = "numBoss";
             this.numBoss.Size = new System.Drawing.Size(77, 20);
             this.numBoss.TabIndex = 43;
@@ -115,6 +131,11 @@
             // numYearTTC
             // 
             this.numYearTTC.Location = new System.Drawing.Point(55, 45);
+            this.numYearTTC.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.numYearTTC.Name = "numYearTTC";
             this.numYearTTC.Size = new System.Drawing.Size(77, 20);
             this.numYearTTC.TabIndex = 41;
@@ -139,11 +160,23 @@
             this.autoTTC.UseVisualStyleBackColor = true;
             this.autoTTC.CheckedChanged += new System.EventHandler(this.autoTTC_CheckedChanged);
             // 
+            // chkGetNewSkill
+            // 
+            this.chkGetNewSkill.AutoSize = true;
+            this.chkGetNewSkill.Location = new System.Drawing.Point(323, 77);
+            this.chkGetNewSkill.Name = "chkGetNewSkill";
+            this.chkGetNewSkill.Size = new System.Drawing.Size(146, 17);
+            this.chkGetNewSkill.TabIndex = 44;
+            this.chkGetNewSkill.Text = "Tự động làm mới kỹ năng";
+            this.chkGetNewSkill.UseVisualStyleBackColor = true;
+            this.chkGetNewSkill.CheckedChanged += new System.EventHandler(this.chkGetNewSkill_CheckedChanged);
+            // 
             // AutoMailView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 354);
+            this.Controls.Add(this.chkGetNewSkill);
             this.Controls.Add(this.numBoss);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.numYearTTC);
@@ -179,5 +212,6 @@
         private System.Windows.Forms.NumericUpDown numYearTTC;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox autoTTC;
+        private System.Windows.Forms.CheckBox chkGetNewSkill;
     }
 }
