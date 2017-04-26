@@ -59,7 +59,7 @@ namespace k8asd {
                         return;
                     }
                     LogInfo(String.Format("[MAIL] Nhận liên thắng {0} của {1}", LT, client.PlayerName));
-                    await Task.Delay(2000);
+                    //await Task.Delay(2000);
                 }
                 LogInfo(String.Format("[MAIL] Nhận thư liên thắng hoàn thành"));
                 autoLT.Checked = false;
@@ -81,7 +81,7 @@ namespace k8asd {
                         return;
                     }
                     LogInfo(String.Format("[MAIL] Nhận thư thần thú chiến của {0}", client.PlayerName));
-                    await Task.Delay(2000);
+                    //await Task.Delay(2000);
                 }
                 LogInfo(String.Format("[MAIL] Nhận thư thần thú chiến hoàn thành"));
                 autoTTC.Checked = false;
@@ -102,7 +102,7 @@ namespace k8asd {
                         return;
                     }
                     LogInfo(String.Format("[SKILL] Làm mới kỹ năng của {0}", client.PlayerName));
-                    await Task.Delay(2000);
+                    //await Task.Delay(2000);
                 }
                 LogInfo(String.Format("[SKILL] Làm mới hoàn thành"));
                 autoTTC.Checked = false;
