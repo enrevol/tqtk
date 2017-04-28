@@ -82,8 +82,7 @@ namespace k8asd
                             messageLogModel.LogInfo("Lỗi nuôi chim.");
                         }
                         Parse66004(packet);
-                        //Thread.Sleep(80);
-                        await Task.Delay(80);
+                        await Task.Delay(40);
                     }
                     chkAutoRaiseBird.Checked = false;
                     messageLogModel.LogInfo("Hết bạc.");

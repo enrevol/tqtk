@@ -319,24 +319,22 @@ namespace k8asd {
         }
 
         public async void ReportQuest(string username, string name) {
-            //lay danh sach nhiem vu hang ngay            
-            /*
-            var packet = await packetWriter.RefreshListQuestAsync();
-            if (packet == null) {
+            //lay danh sach nhiem vu hang ngay
+
+            var taskBoard = await packetWriter.RefreshTaskBoardAsync();
+            if (taskBoard == null)
+            {
                 return;
             }
-            JToken tokenn = JToken.Parse(packet.Message);
-            if (tokenn["message"] != null && tokenn["message"].ToString() != "") {
-                return;
-            }
-            TaskBoard qInfo = TaskBoard.Parse(JToken.Parse(packet.Message));
+
             //ghi file bao cao
             string fileName = DateTime.Now.Day + ".txt";
-            using (StreamWriter w = new StreamWriter(fileName, true)) {
-                w.WriteLine(username + " - " + name + " - " + qInfo.donenum + "/6");
+            using (StreamWriter w = new StreamWriter(fileName, true))
+            {
+                w.WriteLine(username + " - " + name + " - " + taskBoard.DoneNum + "/"  + taskBoard.MaxDoneNum);
                 w.Close();
             }
-            */
+
         }
 
         private async void taskTimer_Tick(object sender, EventArgs e) {

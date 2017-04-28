@@ -27,9 +27,20 @@ namespace k8asd
             {
                 return null;
             }
+            string str = "";
             JToken token = JToken.Parse(packet.Message);
-
-            return await writer.SendCommandAsync(60603, boss.ToString(), "id" ,year.ToString(), "0");
+            if (token.ToString() != "\"\"" && token.ToString() != "")
+            {
+                Console.WriteLine(token.ToString());
+                JArray array = (JArray)token["goodsDtoList"];
+                
+                for (int i = 0; i < array.Count; i++)
+                {
+                    JObject obj = (JObject)array[i];
+                    str += obj["id"].ToString().Replace("\"", "") + ",";
+                }
+            }
+            return await writer.SendCommandAsync(60603, boss.ToString(), str, year.ToString(), "0");
         }
 
         /// <summary>
