@@ -12,7 +12,7 @@ namespace k8asd {
         private InstituteInfo instituteInfo;
 
         private IPacketWriter packetWriter;
-        private IMessageLog messageLogModel;
+        private ISystemLog messageLogModel;
         private IInfoModel infoModel;
 
         private bool asyncLock;
@@ -47,7 +47,7 @@ namespace k8asd {
             packetWriter = writer;
         }
 
-        public void SetMessageLogModel(IMessageLog model) {
+        public void SetMessageLogModel(ISystemLog model) {
             messageLogModel = model;
         }
 

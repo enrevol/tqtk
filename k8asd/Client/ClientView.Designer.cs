@@ -51,7 +51,7 @@ namespace k8asd {
             this.taskView = new k8asd.TaskView();
             this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
-            this.messageLogView = new k8asd.MessageLogView();
+            this.messageLogView = new k8asd.SystemLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
@@ -369,7 +369,7 @@ namespace k8asd {
         private InfoView infoView;
         private McuView mcuView;
         private CooldownView cooldownView;
-        private MessageLogView messageLogView;
+        private SystemLogView messageLogView;
         private HeroTrainingView heroTrainingView;
         private TabControl tabControl;
         private TabPage heroTrainingTab;

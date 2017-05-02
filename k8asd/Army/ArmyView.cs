@@ -24,7 +24,7 @@ namespace k8asd {
         private BindingList<ArmyMember> members;
 
         private IPacketWriter packetWriter;
-        private IMessageLog messageLogModel;
+        private ISystemLog messageLogModel;
         private IInfoModel infoModel;
         private IMcuModel mcuModel;
 
@@ -60,7 +60,7 @@ namespace k8asd {
             packetWriter.PacketReceived += OnPacketReceived;
         }
 
-        public void SetMessageLogModel(IMessageLog model) {
+        public void SetMessageLogModel(ISystemLog model) {
             messageLogModel = model;
         }
 

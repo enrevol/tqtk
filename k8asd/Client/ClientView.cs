@@ -17,7 +17,7 @@ namespace k8asd {
         private InfoModel infoModel;
         private CooldownModel cooldownModel;
         private McuModel mcuModel;
-        private MessageLog messageLogModel;
+        private SystemLog messageLogModel;
 
         private ClientConfig config;
 
@@ -43,7 +43,7 @@ namespace k8asd {
             infoModel = new InfoModel();
             cooldownModel = new CooldownModel();
             mcuModel = new McuModel();
-            messageLogModel = new MessageLog();
+            messageLogModel = new SystemLog();
 
             cooldownModel.SetInfoModel(infoModel);
             taskView.SetInfoModel(infoModel);

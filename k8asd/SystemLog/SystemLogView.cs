@@ -2,8 +2,8 @@
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class MessageLogView : UserControl {
-        private IMessageLog model;
+    public partial class SystemLogView : UserControl {
+        private ISystemLog model;
 
         private enum ChatBoxSize {
             Small,
@@ -13,7 +13,7 @@ namespace k8asd {
 
         ChatBoxSize chatBoxSize;
 
-        public MessageLogView() {
+        public SystemLogView() {
             InitializeComponent();
 
             chatBoxSize = ChatBoxSize.Small;
@@ -23,7 +23,7 @@ namespace k8asd {
         /// Sets the model.
         /// </summary>
         /// <param name="model">The message log model</param>
-        public void SetModel(IMessageLog model) {
+        public void SetModel(ISystemLog model) {
             this.model = model;
             UpdateMessage(model.Message);
             model.MessageChanged += OnMessageChanged;

@@ -1,5 +1,5 @@
 ﻿namespace k8asd {
-    partial class MessageLogView {
+    partial class SystemLogView {
         /// <summary> 
         /// Required designer variable.
         /// </summary>

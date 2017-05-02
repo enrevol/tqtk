@@ -4,7 +4,7 @@ namespace k8asd {
     /// <summary>
     /// Represents the message log model.
     /// </summary>
-    public interface IMessageLog : IClientComponent {
+    public interface ISystemLog : IClientComponent {
         void LogInfo(string message);
 
         string Message { get; }
