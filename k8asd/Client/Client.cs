@@ -176,6 +176,7 @@ namespace k8asd {
 
             packetHandler.PacketReceived += OnPacketReceived;
             dataTimer.Start();
+            ReadData().Forget();
 
             State = ClientState.Connected;
 
@@ -240,8 +241,15 @@ namespace k8asd {
 
             packetHandler = new PacketHandler(loginHelper.Session);
             systemLog.LogInfo("Bắt đầu kết nối với máy chủ...");
+
             if (await Connect(parallel)) {
                 systemLog.LogInfo("Kết nối với máy chủ thành công.");
+            }
+        }
+
+        private async Task ReadData() {
+            if (!await packetHandler.ReadData()) {
+                await DisconnectedFromServer();
             }
         }
 
@@ -250,9 +258,7 @@ namespace k8asd {
         }
 
         private async void OnDataTimerTick(object sender, EventArgs e) {
-            if (!await packetHandler.ReadData()) {
-                await DisconnectedFromServer();
-            }
+            await ReadData();
         }
 
         private async void OnTestConnectionTimerTick(object sender, EventArgs e) {

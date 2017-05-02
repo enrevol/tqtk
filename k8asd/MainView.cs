@@ -57,7 +57,7 @@ namespace k8asd {
             return items.Cast<int>().ToList();
         }
 
-        private async Task LogIn(List<IClient> clients, bool blocking) {
+        private async Task LogIn(List<IClient> clients, bool parallel) {
             using (await loginLock.LockAsync()) {
                 const int ThreadCount = 5;
                 var loggingInTasks = new List<Task>();
@@ -69,7 +69,7 @@ namespace k8asd {
                     } else {
                         await Task.Delay(500);
                     }
-                    loggingInTasks.Add(client.LogIn(blocking));
+                    loggingInTasks.Add(client.LogIn(parallel));
                 }
                 await Task.WhenAll(loggingInTasks);
             }
@@ -82,12 +82,12 @@ namespace k8asd {
 
         private async void loginButton_Click(object sender, EventArgs e) {
             var selectedClients = FindSelectedClients();
-            await LogIn(selectedClients, true);
+            await LogIn(selectedClients, false);
         }
 
         private async void parallelLoginButton_Click(object sender, EventArgs e) {
             var selectedClients = FindSelectedClients();
-            await LogIn(selectedClients, false);
+            await LogIn(selectedClients, true);
         }
 
         private async void logoutButton_Click(object sender, EventArgs e) {
@@ -97,7 +97,7 @@ namespace k8asd {
 
         private async void loginAllButton_Click(object sender, EventArgs e) {
             var clients = ClientManager.Instance.Clients;
-            await LogIn(clients, true);
+            await LogIn(clients, false);
         }
 
         private async void logoutAllButton_Click(object sender, EventArgs e) {

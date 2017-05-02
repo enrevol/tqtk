@@ -161,7 +161,7 @@ namespace k8asd {
             channelMessages[message.Channel].Add(message);
             allChannelMessages.Add(message);
             Validate();
-            OnMessageAdded(this, message);
+            OnMessageAdded.Raise(this, message);
         }
 
         private void Validate() {

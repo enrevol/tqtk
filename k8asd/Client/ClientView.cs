@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class ClientView : UserControl {
+    public partial class ClientView : UserControl, IClientView {
         private IClient client;
 
         public IClient Client {
