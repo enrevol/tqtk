@@ -16,8 +16,10 @@ namespace k8asd {
                     systemLog.MessageChanged -= OnMessageChanged;
                 }
                 systemLog = value;
-                UpdateMessage(systemLog.Message);
-                systemLog.MessageChanged += OnMessageChanged;
+                if (systemLog != null) {
+                    UpdateMessage(systemLog.Message);
+                    systemLog.MessageChanged += OnMessageChanged;
+                }
             }
         }
 
