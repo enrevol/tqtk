@@ -403,6 +403,7 @@ namespace k8asd
             // 
             // clientView
             // 
+            this.clientView.Client = null;
             this.clientView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clientView.Location = new System.Drawing.Point(290, 94);
             this.clientView.Name = "clientView";

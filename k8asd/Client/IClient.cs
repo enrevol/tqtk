@@ -43,5 +43,7 @@ namespace k8asd {
         /// </summary>
         /// <returns>Thành công hay không?</returns>
         Task<bool> LogOut();
+
+        T GetComponent<T>();
     }
 }

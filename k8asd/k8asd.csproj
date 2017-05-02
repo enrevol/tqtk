@@ -183,6 +183,7 @@
     <Compile Include="HeroTraining\TrainTimeModel.cs" />
     <Compile Include="Impose\ImposeCommand.cs" />
     <Compile Include="Impose\ImposeInfo.cs" />
+    <Compile Include="Legacy\LegacyClient.cs" />
     <Compile Include="Mail\MailCommand.cs" />
     <Compile Include="Map\Area.cs" />
     <Compile Include="Map\City.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Shop\StoreInfo.cs" />
     <Compile Include="Shop\UpgradeInfo.cs" />
     <Compile Include="Shop\UpgradeResult.cs" />
+    <Compile Include="SystemLog\ISystemLogView.cs" />
     <Compile Include="Task\AttackNpcTaskHelper.cs" />
     <Compile Include="Task\FoodTaskHelper.cs" />
     <Compile Include="Task\GoldTaskHelper.cs" />

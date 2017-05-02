@@ -23,21 +23,9 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.changeSizeButton = new System.Windows.Forms.Button();
             this.autoScrollBox = new System.Windows.Forms.CheckBox();
             this.logBox = new k8asd.FastRichTextBox();
             this.SuspendLayout();
-            // 
-            // changeSizeButton
-            // 
-            this.changeSizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.changeSizeButton.Location = new System.Drawing.Point(0, 157);
-            this.changeSizeButton.Name = "changeSizeButton";
-            this.changeSizeButton.Size = new System.Drawing.Size(67, 23);
-            this.changeSizeButton.TabIndex = 4;
-            this.changeSizeButton.Text = "Nhỏ";
-            this.changeSizeButton.UseVisualStyleBackColor = true;
-            this.changeSizeButton.Click += new System.EventHandler(this.changeSizeButton_Click);
             // 
             // autoScrollBox
             // 
@@ -68,14 +56,13 @@
             this.logBox.TabStop = false;
             this.logBox.Text = "";
             // 
-            // MessageLogView
+            // SystemLogView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.autoScrollBox);
-            this.Controls.Add(this.changeSizeButton);
             this.Controls.Add(this.logBox);
-            this.Name = "MessageLogView";
+            this.Name = "SystemLogView";
             this.Size = new System.Drawing.Size(350, 180);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -85,7 +72,6 @@
         #endregion
 
         private FastRichTextBox logBox;
-        private System.Windows.Forms.Button changeSizeButton;
         private System.Windows.Forms.CheckBox autoScrollBox;
     }
 }

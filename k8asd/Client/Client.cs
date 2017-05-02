@@ -22,10 +22,7 @@ namespace k8asd {
         private LoginHelper loginHelper;
         private PacketHandler packetHandler;
 
-        /// <summary>
-        /// Handles all chat messages.
-        /// </summary>
-        private IChatLog chatLog;
+        private Dictionary<Type, IClientComponent> components;
 
         /// <summary>
         /// Handles all system messages.
@@ -74,11 +71,19 @@ namespace k8asd {
             disconnectedLocking = false;
             state = ClientState.Disconnected;
 
-            chatLog = new ChatLog();
+            components = new Dictionary<Type, IClientComponent>();
+
+            var chatLog = new ChatLog();
             chatLog.Client = this;
+            components.Add(typeof(IChatLog), chatLog);
 
             systemLog = new SystemLog();
             systemLog.Client = this;
+            components.Add(typeof(ISystemLog), systemLog);
+        }
+
+        public T GetComponent<T>() {
+            return (T) components[typeof(T)];
         }
 
         public async Task<Packet> SendCommandAsync(int id, params string[] parameters) {
