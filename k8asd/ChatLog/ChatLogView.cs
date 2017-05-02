@@ -33,7 +33,7 @@ namespace k8asd {
         private const int ChannelLineLimit = 100;
         private const int AllChannelLineLimit = 50;
 
-        private IChatLogModel chatModel;
+        private IChatLog chatModel;
 
         private enum ChatBoxSize {
             Small,
@@ -78,7 +78,7 @@ namespace k8asd {
             logTabList.SelectedIndex = 5;
         }
 
-        public void SetModel(IChatLogModel model) {
+        public void SetModel(IChatLog model) {
             if (chatModel != null) {
                 chatModel.OnChatMessageAdded -= OnChatMessageAdded;
             }

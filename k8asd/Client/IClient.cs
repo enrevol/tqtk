@@ -30,7 +30,7 @@ namespace k8asd {
         Disconnected
     };
 
-    interface IClient : IPacketWriter {
+    public interface IClient : IPacketWriter {
         event EventHandler<ClientState> StateChanged;
 
         /// <summary>

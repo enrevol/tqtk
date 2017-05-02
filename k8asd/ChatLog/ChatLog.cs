@@ -1,28 +1,52 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public class ChatLogModel : IChatLogModel {
+    /// <summary>
+    /// Khung chát.
+    /// </summary>
+    public class ChatLog : IChatLog {
         public event EventHandler<ChatMessage> OnChatMessageAdded;
 
-        private IInfoModel infoModel;
-        private IPacketWriter packetWriter;
+        private IClient client;
+        private int limitLineCount;
+        private List<ChatMessage> messages;
 
-        public void SetPacketWriter(IPacketWriter writer) {
-            if (packetWriter != null) {
-                packetWriter.PacketReceived -= OnPacketReceived;
-            }
-            packetWriter = writer;
-            packetWriter.PacketReceived += OnPacketReceived;
+        public ChatLog() {
+            limitLineCount = 100;
+            messages = new List<ChatMessage>();
         }
 
-        public void SetInfoModel(IInfoModel model) {
-            infoModel = model;
+        public IClient Client {
+            get { return client; }
+            set {
+                if (client != null) {
+                    client.PacketReceived -= OnPacketReceived;
+                }
+                client = value;
+                client.PacketReceived += OnPacketReceived;
+            }
+        }
+
+        public int LimitLineCount {
+            get { return limitLineCount; }
+            set {
+                limitLineCount = value;
+                while (messages.Count > limitLineCount) {
+                    // Dequeue.
+                    messages.RemoveAt(0);
+                }
+            }
+        }
+
+        public List<ChatMessage> Messages {
+            get { return messages; }
         }
 
         private void OnPacketReceived(object sender, Packet packet) {
-            if (packet.CommandId == "10103") {
+            if (packet.Id == 10103) {
                 Parse10103(packet);
             }
         }
@@ -107,11 +131,21 @@ namespace k8asd {
         }
 
         private void AddMessage(ChatChannel channel, string sender, string message) {
-            OnChatMessageAdded(this, new ChatMessage(channel, sender, message));
+            AddMessage(new ChatMessage(channel, sender, message));
         }
 
-        public async Task SendMessage(ChatChannel channel, string content) {
-            await packetWriter.SendCommandAsync("10103", infoModel.PlayerName, content, channel.Id.ToString(), " ");
+        private void AddMessage(ChatMessage message) {
+            // Enqueue.
+            messages.Add(message);
+            OnChatMessageAdded(this, message);
+        }
+
+        public async Task<bool> SendMessage(ChatChannel channel, string content) {
+            var packet = await client.SendCommandAsync(10103, client.PlayerName, content, channel.Id.ToString(), " ");
+            if (packet == null) {
+                return false;
+            }
+            return true;
         }
     }
 }
