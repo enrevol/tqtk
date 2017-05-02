@@ -10,9 +10,9 @@ namespace k8asd {
         event EventHandler<ChatMessage> OnChatMessageAdded;
 
         /// <summary>
-        /// The number of limited chat lines.
+        /// The number of limited chat messages.
         /// </summary>
-        int LimitLineCount { get; set; }
+        int Limit { get; set; }
 
         /// <summary>
         /// Gets all chat messages.

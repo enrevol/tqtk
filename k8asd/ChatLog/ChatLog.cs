@@ -11,11 +11,11 @@ namespace k8asd {
         public event EventHandler<ChatMessage> OnChatMessageAdded;
 
         private IClient client;
-        private int limitLineCount;
+        private int limit;
         private List<ChatMessage> messages;
 
         public ChatLog() {
-            limitLineCount = 100;
+            limit = 100;
             messages = new List<ChatMessage>();
         }
 
@@ -30,11 +30,11 @@ namespace k8asd {
             }
         }
 
-        public int LimitLineCount {
-            get { return limitLineCount; }
+        public int Limit {
+            get { return limit; }
             set {
-                limitLineCount = value;
-                while (messages.Count > limitLineCount) {
+                limit = value;
+                while (messages.Count > limit) {
                     // Dequeue.
                     messages.RemoveAt(0);
                 }
