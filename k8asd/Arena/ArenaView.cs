@@ -11,7 +11,7 @@ namespace k8asd {
         private DateTime cooldownEndTime;
 
         private IPacketWriter packetWriter;
-        private IMessageLogModel messageLog;
+        private IMessageLog messageLog;
 
         public ArenaView() {
             InitializeComponent();
@@ -21,7 +21,7 @@ namespace k8asd {
             packetWriter = writer;
         }
 
-        public void SetLogModel(IMessageLogModel log) {
+        public void SetLogModel(IMessageLog log) {
             messageLog = log;
         }
 

@@ -11,7 +11,7 @@ namespace k8asd {
         private IPacketWriter packetWriter;
         private IInfoModel infoModel;
         private ICooldownModel cooldownModel;
-        private IMessageLogModel messageLogModel;
+        private IMessageLog messageLogModel;
 
         private bool miningLocking;
 
@@ -49,7 +49,7 @@ namespace k8asd {
             cooldownModel = model;
         }
 
-        public void SetLogModel(IMessageLogModel model) {
+        public void SetLogModel(IMessageLog model) {
             messageLogModel = model;
         }
 

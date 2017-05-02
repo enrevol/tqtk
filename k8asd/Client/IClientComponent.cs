@@ -1,5 +1,5 @@
 ﻿namespace k8asd {
-    public interface IModule {
+    public interface IClientComponent {
         /// <summary>
         /// Gets or sets the underlying client.
         /// </summary>

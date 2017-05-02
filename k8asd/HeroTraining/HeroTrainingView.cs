@@ -19,7 +19,7 @@ namespace k8asd {
         private bool asyncLock;
         private bool timerLock;
 
-        private IMessageLogModel logModel;
+        private IMessageLog logModel;
         private ICooldownModel cooldownModel;
         private IPacketWriter packetWriter;
 
@@ -91,7 +91,7 @@ namespace k8asd {
             packetWriter.PacketReceived += OnPacketReceived;
         }
 
-        public void SetLogModel(IMessageLogModel model) {
+        public void SetLogModel(IMessageLog model) {
             logModel = model;
         }
 

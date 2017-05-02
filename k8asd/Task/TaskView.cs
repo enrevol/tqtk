@@ -16,7 +16,7 @@ namespace k8asd {
         private IPacketWriter packetWriter;
         private IInfoModel infoModel;
         private IMcuModel mcuModel;
-        private IMessageLogModel messageModel;
+        private IMessageLog messageModel;
 
         private bool timerLocking;
         private bool asyncLocking;
@@ -46,7 +46,7 @@ namespace k8asd {
             mcuModel = model;
         }
 
-        public void SetMessageModel(IMessageLogModel model) {
+        public void SetMessageModel(IMessageLog model) {
             messageModel = model;
         }
 

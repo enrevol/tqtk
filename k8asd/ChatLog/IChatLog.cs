@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    public interface IChatLog : IModule {
+    public interface IChatLog : IClientComponent {
         /// <summary>
         /// Occurs when there is a new message added.
         /// </summary>

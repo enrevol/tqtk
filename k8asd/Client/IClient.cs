@@ -5,32 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace k8asd {
-    /// <summary>
-    /// Trạng thái của người chơi.
-    /// </summary>
-    public enum ClientState {
-        /// <summary>
-        /// Đang kết nối.
-        /// </summary>
-        Connecting,
-
-        /// <summary>
-        /// Đã kết nối.
-        /// </summary>
-        Connected,
-
-        /// <summary>
-        /// Đang ngắt kết nối.
-        /// </summary>
-        Disconnecting,
-
-        /// <summary>
-        /// Đã ngắt kết nối.
-        /// </summary>
-        Disconnected
-    };
-
     public interface IClient : IPacketWriter {
+        /// <summary>
+        /// Xảy ra khi trạng thái kết nối bị thay đổi.
+        /// </summary>
         event EventHandler<ClientState> StateChanged;
 
         /// <summary>
@@ -53,12 +31,17 @@ namespace k8asd {
         /// </summary>
         string PlayerName { get; }
 
-        Task LogIn(bool blocking);
+        /// <summary>
+        /// Đăng nhập.
+        /// </summary>
+        /// <param name="parallel">Kết nối song song không?</param>
+        /// <returns>Thành công hay không?</returns>
+        Task<bool> LogIn(bool parallel);
 
-        Task LogOut();
-
-        void EnableAutoQuest();
-        void ReportAutoQuest();
-        void UseGoldDaily();
+        /// <summary>
+        /// Đăng xuất.
+        /// </summary>
+        /// <returns>Thành công hay không?</returns>
+        Task<bool> LogOut();
     }
 }

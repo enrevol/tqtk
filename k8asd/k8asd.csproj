@@ -145,9 +145,11 @@
     <Compile Include="Bug\BugCommand.cs" />
     <Compile Include="ChatLog\ChatChannel.cs" />
     <Compile Include="ChatLog\ChatMessage.cs" />
+    <Compile Include="ChatLog\IChatLogView.cs" />
     <Compile Include="Client\Client.cs" />
     <Compile Include="Client\ClientManager.cs" />
-    <Compile Include="Common\IModule.cs" />
+    <Compile Include="Client\ClientState.cs" />
+    <Compile Include="Client\IClientComponent.cs" />
     <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Arena\ArenaCommand.cs" />
     <Compile Include="Arena\ArenaInfo.cs" />
@@ -340,8 +342,8 @@
     <Compile Include="Client\ClientView.Designer.cs">
       <DependentUpon>ClientView.cs</DependentUpon>
     </Compile>
-    <Compile Include="MessageLog\IMessageLogModel.cs" />
-    <Compile Include="MessageLog\MessageLogModel.cs" />
+    <Compile Include="MessageLog\IMessageLog.cs" />
+    <Compile Include="MessageLog\MessageLog.cs" />
     <Compile Include="MessageLog\MessageLogView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -609,7 +611,9 @@
   <ItemGroup>
     <None Include="Resources\disconnected.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 namespace k8asd {
-    public class MessageLogModel : IMessageLogModel {
+    public class MessageLog : IMessageLog {
         private int LineLimit = 500;
 
         private Queue<int> lineLengths;
@@ -17,7 +17,7 @@ namespace k8asd {
             get { return message; }
         }
 
-        public MessageLogModel() {
+        public MessageLog() {
             message = String.Empty;
             lineLengths = new Queue<int>();
         }

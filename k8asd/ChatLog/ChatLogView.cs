@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class ChatLogView : UserControl {
+    public partial class ChatLogView : UserControl, IChatLogView {
         /// <summary>
         /// Text color for messages in private channel.
         /// </summary>
@@ -33,7 +33,7 @@ namespace k8asd {
         private const int ChannelLineLimit = 100;
         private const int AllChannelLineLimit = 50;
 
-        private IChatLog chatModel;
+        private IChatLog chatLog;
 
         private enum ChatBoxSize {
             Small,
@@ -78,12 +78,15 @@ namespace k8asd {
             logTabList.SelectedIndex = 5;
         }
 
-        public void SetModel(IChatLog model) {
-            if (chatModel != null) {
-                chatModel.OnChatMessageAdded -= OnChatMessageAdded;
+        public IChatLog ChatLog {
+            get { return chatLog; }
+            set {
+                if (chatLog != null) {
+                    chatLog.OnChatMessageAdded -= OnChatMessageAdded;
+                }
+                chatLog = value;
+                chatLog.OnChatMessageAdded += OnChatMessageAdded;
             }
-            chatModel = model;
-            chatModel.OnChatMessageAdded += OnChatMessageAdded;
         }
 
         private void OnChatMessageAdded(object sender, ChatMessage message) {
@@ -184,7 +187,7 @@ namespace k8asd {
             if (e.KeyCode == Keys.Enter && chatInput.Text.Trim().Length > 0) {
                 var item = channelList.SelectedItem;
                 var channel = (ChatChannel) item;
-                chatModel.SendMessage(channel, chatInput.Text);
+                chatLog.SendMessage(channel, chatInput.Text);
                 chatInput.Text = String.Empty;
                 /*
                 int n = cbbChat.SelectedIndex - 1;

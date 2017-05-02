@@ -48,14 +48,13 @@ namespace k8asd {
             this.instituteTab = new System.Windows.Forms.TabPage();
             this.instituteView = new k8asd.InstituteView();
             this.questTab = new System.Windows.Forms.TabPage();
+            this.taskView = new k8asd.TaskView();
             this.dataTimer = new System.Windows.Forms.Timer(this.components);
             this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
             this.messageLogView = new k8asd.MessageLogView();
-            this.chatLogView = new k8asd.ChatLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
-            this.taskView = new k8asd.TaskView();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barFoodSell)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -289,6 +288,13 @@ namespace k8asd {
             this.questTab.Text = "NVHN";
             this.questTab.UseVisualStyleBackColor = true;
             // 
+            // taskView
+            // 
+            this.taskView.Location = new System.Drawing.Point(3, 3);
+            this.taskView.Name = "taskView";
+            this.taskView.Size = new System.Drawing.Size(285, 151);
+            this.taskView.TabIndex = 0;
+            // 
             // dataTimer
             // 
             this.dataTimer.Interval = 50;
@@ -306,13 +312,6 @@ namespace k8asd {
             this.messageLogView.Name = "messageLogView";
             this.messageLogView.Size = new System.Drawing.Size(315, 125);
             this.messageLogView.TabIndex = 31;
-            // 
-            // chatLogView
-            // 
-            this.chatLogView.Location = new System.Drawing.Point(0, 375);
-            this.chatLogView.Name = "chatLogView";
-            this.chatLogView.Size = new System.Drawing.Size(315, 180);
-            this.chatLogView.TabIndex = 34;
             // 
             // cooldownView
             // 
@@ -335,18 +334,10 @@ namespace k8asd {
             this.infoView.Size = new System.Drawing.Size(310, 100);
             this.infoView.TabIndex = 28;
             // 
-            // questView1
-            // 
-            this.taskView.Location = new System.Drawing.Point(3, 3);
-            this.taskView.Name = "questView1";
-            this.taskView.Size = new System.Drawing.Size(285, 151);
-            this.taskView.TabIndex = 0;
-            // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.chatLogView);
             this.Controls.Add(this.messageLogView);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.cooldownView);
@@ -384,7 +375,6 @@ namespace k8asd {
         private TabPage heroTrainingTab;
         private TabPage armyTab;
         private ArmyView armyView;
-        private ChatLogView chatLogView;
         private TabPage weaveTab;
         private WeaveView weaveView;
         private TabPage arenaTab;

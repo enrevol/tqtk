@@ -13,19 +13,11 @@ using System.Threading.Tasks;
 using System.Net;
 
 namespace k8asd {
-    public partial class ClientView : UserControl, IClient {
+    public partial class ClientView : UserControl {
         private InfoModel infoModel;
         private CooldownModel cooldownModel;
         private McuModel mcuModel;
-        private MessageLogModel messageLogModel;
-        private ChatLog chatLogModel;
-
-        private LoginHelper loginHelper;
-        private PacketHandler packetHandler;
-
-        private ClientState state;
-
-        private bool disconnectedLocking;
+        private MessageLog messageLogModel;
 
         private ClientConfig config;
 
@@ -40,31 +32,7 @@ namespace k8asd {
                 heroTrainingView.LoadConfig(config);
                 outsideView.LoadConfig(config);
             }
-        }
-
-        public event EventHandler<Packet> PacketReceived;
-        public event EventHandler<ClientState> StateChanged;
-
-        public ClientState State {
-            get { return state; }
-            set {
-                state = value;
-                StateChanged.Raise(this, value);
-            }
-        }
-
-        public int PlayerId {
-            get {
-                if (loginHelper == null) {
-                    return 0;
-                }
-                return Int32.Parse(loginHelper.Session.UserId);
-            }
-        }
-
-        public string PlayerName {
-            get { return infoModel.PlayerName; }
-        }
+        }        
 
         public ClientView() {
             InitializeComponent();
@@ -75,8 +43,7 @@ namespace k8asd {
             infoModel = new InfoModel();
             cooldownModel = new CooldownModel();
             mcuModel = new McuModel();
-            messageLogModel = new MessageLogModel();
-            chatLogModel = new ChatLog();
+            messageLogModel = new MessageLog();
 
             cooldownModel.SetInfoModel(infoModel);
             taskView.SetInfoModel(infoModel);
@@ -90,7 +57,6 @@ namespace k8asd {
             messageLogView.SetModel(messageLogModel);
             taskView.SetMessageModel(messageLogModel);
 
-            chatLogView.SetModel(chatLogModel);
             weaveView.SetCooldownModel(cooldownModel);
             weaveView.SetInfoModel(infoModel);
             campaignView.SetInfoModel(infoModel);
@@ -130,189 +96,6 @@ namespace k8asd {
 
         private void ClientView_Load(object sender, EventArgs e) {
             //
-        }
-
-        public async Task<Packet> SendCommandAsync(int id, params string[] parameters) {
-            if (State != ClientState.Connected) {
-                // Chưa kết nối.
-                return null;
-            }
-            var packet = await packetHandler.SendCommandAsync(id, parameters);
-            if (packet == null) {
-                await DisconnectedFromServer();
-            }
-            return packet;
-        }
-
-        public async Task LogIn(bool blocking) {
-            if (State == ClientState.Connected) {
-                messageLogModel.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
-                return;
-            }
-            if (State == ClientState.Connecting) {
-                messageLogModel.LogInfo("Đang đang nhập, không cần đăng nhập lại!");
-                return;
-            }
-            if (State == ClientState.Disconnecting) {
-                messageLogModel.LogInfo("Đang đang xuất, không thể đăng nhập!");
-                return;
-            }
-            try {
-                await LogIn(Config.ServerId, Config.Username, Config.Password, blocking);
-            } catch (WebException ex) {
-                messageLogModel.LogInfo(ex.Message);
-                messageLogModel.LogInfo("Đăng nhập thất bại!");
-                State = ClientState.Disconnected;
-            }
-        }
-
-        public async Task LogOut() {
-            if (State == ClientState.Disconnected) {
-                return;
-            }
-            if (State == ClientState.Disconnecting) {
-                return;
-            }
-            if (State == ClientState.Connecting) {
-                messageLogModel.LogInfo("Đang đang nhập, không thể đăng xuất!");
-                return;
-            }
-
-            messageLogModel.LogInfo("Bắt đầu đăng xuất...");
-            await Disconnect();
-            messageLogModel.LogInfo("Đăng xuất thành công.");
-        }
-
-        /// <summary>
-        /// Called when the client is suddenly disconnected from the server.
-        /// </summary>
-        private async Task DisconnectedFromServer() {
-            if (disconnectedLocking) {
-                return;
-            }
-            disconnectedLocking = true;
-            if (State == ClientState.Connected) {
-                messageLogModel.LogInfo("Mất kết nối với máy chủ.");
-                await Disconnect();
-            }
-            disconnectedLocking = false;
-        }
-
-        /// <summary>
-        /// Manually disconnects the client.
-        /// </summary>
-        private async Task Disconnect() {
-            Debug.Assert(State == ClientState.Connected);
-            State = ClientState.Disconnecting;
-
-            dataTimer.Stop();
-            packetHandler.PacketReceived -= OnPacketReceived;
-
-            await packetHandler.Disconnect();
-
-            State = ClientState.Disconnected;
-        }
-
-        private async Task<bool> Connect(bool blocking) {
-            Debug.Assert(State == ClientState.Connecting);
-            await packetHandler.ConnectAsync();
-
-            packetHandler.PacketReceived += OnPacketReceived;
-            dataTimer.Start();
-
-            State = ClientState.Connected;
-
-            if (blocking) {
-                var p0 = await SendCommandAsync(10100);
-                if (p0 == null) {
-                    await DisconnectedFromServer();
-                    return false;
-                }
-            }
-
-            var p1 = await SendCommandAsync(11102);
-            if (p1 == null) {
-                await DisconnectedFromServer();
-                return false;
-            }
-
-            // FIXME: handle case character not yet created.
-            return true;
-        }
-
-        /// <summary>
-        /// Attempts to connect the client.
-        /// </summary>
-        private async Task LogIn(int serverId, string username, string password, bool blocking) {
-            Debug.Assert(state == ClientState.Disconnected);
-            State = ClientState.Connecting;
-
-            loginHelper = new LoginHelper(username, password);
-
-            messageLogModel.LogInfo("Bắt đầu đăng nhập tài khoản...");
-            var loginAccountStatus = await loginHelper.LoginAccount();
-            switch (loginAccountStatus) {
-            case LoginStatus.NoConnection:
-                messageLogModel.LogInfo("Không có kết nối mạng.");
-                State = ClientState.Disconnected;
-                return;
-            case LoginStatus.WrongUsernameOrPassword:
-                messageLogModel.LogInfo("Sai tên người dùng hoặc mật khẩu.");
-                State = ClientState.Disconnected;
-                return;
-            case LoginStatus.UnknownError:
-                messageLogModel.LogInfo("Có lỗi xảy ra.");
-                State = ClientState.Disconnected;
-                return;
-            }
-            messageLogModel.LogInfo("Đăng nhập tài khoản thành công.");
-
-            messageLogModel.LogInfo("Bắt đầu lấy thông tin để kết nối với máy chủ...");
-            var loginServerStatus = await loginHelper.LoginServer(serverId);
-            switch (loginServerStatus) {
-            case LoginStatus.NoConnection:
-                messageLogModel.LogInfo("Không có kết nối mạng.");
-                State = ClientState.Disconnected;
-                return;
-            case LoginStatus.UnknownError:
-                messageLogModel.LogInfo("Có lỗi xảy ra.");
-                State = ClientState.Disconnected;
-                return;
-            }
-            messageLogModel.LogInfo("Lấy thông tin thành công.");
-
-            packetHandler = new PacketHandler(loginHelper.Session);
-            messageLogModel.LogInfo("Bắt đầu kết nối với máy chủ...");
-            if (await Connect(blocking)) {
-                messageLogModel.LogInfo("Kết nối với máy chủ thành công.");
-            }
-        }
-
-        private void OnPacketReceived(object sender, Packet packet) {
-            PacketReceived.Raise(this, packet);
-        }
-
-        private async void OneSecondTimer_Tick(object sender, EventArgs e) {
-            if (packetHandler != null) {
-                await SendCommandAsync(14102, "3", "0");
-                if (infoModel.Force >= infoModel.MaxForce - 3) {
-                    // oneSecondTimer.Stop();
-                }
-            }
-        }
-
-        private async void dataTimer_Tick(object sender, EventArgs e) {
-            if (!await packetHandler.ReadData()) {
-                await DisconnectedFromServer();
-            }
-        }
-
-        private async void testConnectionTimer_Tick(object sender, EventArgs e) {
-            if (State == ClientState.Connected) {
-                if (!packetHandler.Connected) {
-                    await DisconnectedFromServer();
-                }
-            }
         }
 
         public void EnableAutoQuest() {

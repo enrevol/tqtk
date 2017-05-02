@@ -18,7 +18,7 @@ namespace k8asd
         private RaiseBirdInfo raiseBirdInfo;
 
         private IPacketWriter packetWriter;
-        private IMessageLogModel messageLogModel;
+        private IMessageLog messageLogModel;
         private IInfoModel infoModel;
 
         public RaiseBirdView()
@@ -31,7 +31,7 @@ namespace k8asd
             packetWriter = writer;
         }
 
-        public void SetMessageLogModel(IMessageLogModel model)
+        public void SetMessageLogModel(IMessageLog model)
         {
             messageLogModel = model;
         }
