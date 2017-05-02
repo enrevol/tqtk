@@ -62,6 +62,7 @@ namespace k8asd
             this.moveDownButton = new System.Windows.Forms.Button();
             this.arrowImages = new System.Windows.Forms.ImageList(this.components);
             this.moveUpButton = new System.Windows.Forms.Button();
+            this.clientView = new k8asd.ClientView();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             menuItem0 = new System.Windows.Forms.ToolStripMenuItem();
             autoArenaButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -400,11 +401,20 @@ namespace k8asd
             this.moveUpButton.UseVisualStyleBackColor = true;
             this.moveUpButton.Click += new System.EventHandler(this.moveUpButton_Click);
             // 
+            // clientView
+            // 
+            this.clientView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.clientView.Location = new System.Drawing.Point(290, 94);
+            this.clientView.Name = "clientView";
+            this.clientView.Size = new System.Drawing.Size(1060, 587);
+            this.clientView.TabIndex = 34;
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1350, 681);
+            this.Controls.Add(this.clientView);
             this.Controls.Add(this.navigatorPanel);
             this.Controls.Add(this.clientList);
             this.Controls.Add(this._ignore0);
@@ -457,6 +467,7 @@ namespace k8asd
         private ToolStripMenuItem autoGoldDailyButton;
         private ToolStripMenuItem autoSwapSnoutButton;
         private ToolStripMenuItem autoMailButton;
+        private ClientView clientView;
     }
 }
 

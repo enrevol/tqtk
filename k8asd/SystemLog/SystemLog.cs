@@ -8,8 +8,8 @@ namespace k8asd {
 
         private Queue<int> lineLengths;
 
+        private IClient client;
         private string message;
-        private IPacketWriter packetWriter;
 
         public event EventHandler<string> MessageChanged;
 
@@ -22,16 +22,19 @@ namespace k8asd {
             lineLengths = new Queue<int>();
         }
 
-        public void SetPacketWriter(IPacketWriter writer) {
-            if (packetWriter != null) {
-                packetWriter.PacketReceived -= OnPacketReceived;
+        public IClient Client {
+            get { return client; }
+            set {
+                if (client != null) {
+                    client.PacketReceived -= OnPacketReceived;
+                }
+                client = value;
+                client.PacketReceived += OnPacketReceived;
             }
-            packetWriter = writer;
-            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         private void OnPacketReceived(object sender, Packet packet) {
-            if (packet.CommandId == "10103") {
+            if (packet.Id == 10103) {
                 // Ignore chat messages.
                 return;
             }

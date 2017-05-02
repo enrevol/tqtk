@@ -342,13 +342,13 @@
     <Compile Include="Client\ClientView.Designer.cs">
       <DependentUpon>ClientView.cs</DependentUpon>
     </Compile>
-    <Compile Include="MessageLog\IMessageLog.cs" />
-    <Compile Include="MessageLog\MessageLog.cs" />
-    <Compile Include="MessageLog\MessageLogView.cs">
+    <Compile Include="SystemLog\ISystemLog.cs" />
+    <Compile Include="SystemLog\SystemLog.cs" />
+    <Compile Include="SystemLog\SystemLogView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MessageLog\MessageLogView.Designer.cs">
-      <DependentUpon>MessageLogView.cs</DependentUpon>
+    <Compile Include="SystemLog\SystemLogView.Designer.cs">
+      <DependentUpon>SystemLogView.cs</DependentUpon>
     </Compile>
     <Compile Include="Connection\Packet.cs" />
     <Compile Include="Connection\PacketHandler.cs" />
@@ -448,8 +448,8 @@
     <EmbeddedResource Include="Mcu\McuView.resx">
       <DependentUpon>McuView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MessageLog\MessageLogView.resx">
-      <DependentUpon>MessageLogView.cs</DependentUpon>
+    <EmbeddedResource Include="SystemLog\SystemLogView.resx">
+      <DependentUpon>SystemLogView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Army\ArmyView.resx">
       <DependentUpon>ArmyView.cs</DependentUpon>

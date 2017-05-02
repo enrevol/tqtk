@@ -25,7 +25,6 @@ namespace k8asd {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
             this.barFoodBuy = new System.Windows.Forms.TrackBar();
             this.barFoodSell = new System.Windows.Forms.TrackBar();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -49,9 +48,6 @@ namespace k8asd {
             this.instituteView = new k8asd.InstituteView();
             this.questTab = new System.Windows.Forms.TabPage();
             this.taskView = new k8asd.TaskView();
-            this.dataTimer = new System.Windows.Forms.Timer(this.components);
-            this.testConnectionTimer = new System.Windows.Forms.Timer(this.components);
-            this.messageLogView = new k8asd.SystemLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
             this.infoView = new k8asd.InfoView();
@@ -295,24 +291,6 @@ namespace k8asd {
             this.taskView.Size = new System.Drawing.Size(285, 151);
             this.taskView.TabIndex = 0;
             // 
-            // dataTimer
-            // 
-            this.dataTimer.Interval = 50;
-            this.dataTimer.Tick += new System.EventHandler(this.dataTimer_Tick);
-            // 
-            // testConnectionTimer
-            // 
-            this.testConnectionTimer.Enabled = true;
-            this.testConnectionTimer.Interval = 1000;
-            this.testConnectionTimer.Tick += new System.EventHandler(this.testConnectionTimer_Tick);
-            // 
-            // messageLogView
-            // 
-            this.messageLogView.Location = new System.Drawing.Point(0, 245);
-            this.messageLogView.Name = "messageLogView";
-            this.messageLogView.Size = new System.Drawing.Size(315, 125);
-            this.messageLogView.TabIndex = 31;
-            // 
             // cooldownView
             // 
             this.cooldownView.Location = new System.Drawing.Point(0, 100);
@@ -338,7 +316,6 @@ namespace k8asd {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.messageLogView);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.cooldownView);
             this.Controls.Add(this.mcuView);
@@ -379,10 +356,8 @@ namespace k8asd {
         private WeaveView weaveView;
         private TabPage arenaTab;
         private ArenaView arenaView;
-        private Timer dataTimer;
         private TabPage campaignTab;
         private CampaignView campaignView;
-        private Timer testConnectionTimer;
         private TabPage packetTab;
         private PacketView packetView;
         private TabPage outsideTab;

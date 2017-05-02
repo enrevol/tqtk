@@ -209,7 +209,7 @@ namespace k8asd {
         /// </summary>
         /// <param name="config">The config of the client.</param>
         private void AddClient(ClientConfig config) {
-            var client = new ClientView();
+            var client = new Client();
             client.Config = config;
 
             ClientManager.Instance.AddClient(client);
@@ -220,10 +220,7 @@ namespace k8asd {
         /// Adds the specified client to the view.
         /// </summary>
         /// <param name="client">The client to be added.</param>
-        private void AddClient(ClientView client) {
-            Controls.Add(client);
-            client.Dock = DockStyle.Fill;
-            client.BringToFront();
+        private void AddClient(Client client) {
             client.StateChanged += OnClientStateChanged;
             clientList.SetObjects(ClientManager.Instance.Clients, true);
         }
@@ -237,15 +234,15 @@ namespace k8asd {
         private void RemoveClient(int index) {
             var client = ClientManager.Instance.Clients[index];
             ClientManager.Instance.RemoveClient(client);
-            RemoveClient((ClientView) client);
+            RemoveClient((Client) client);
         }
 
         /// <summary>
         /// Remove the specified client from the view.
         /// </summary>
         /// <param name="client">The client to be removed.</param>
-        private void RemoveClient(ClientView client) {
-            Controls.Remove(client);
+        private void RemoveClient(Client client) {
+            client.StateChanged -= OnClientStateChanged;
             clientList.SetObjects(ClientManager.Instance.Clients, true);
         }
 
@@ -287,12 +284,8 @@ namespace k8asd {
         private void clientList_SelectedIndexChanged(object sender, EventArgs e) {
             var item = clientList.SelectedItem;
             if (item != null) {
-                SuspendLayout();
-                foreach (var client in ClientManager.Instance.Clients) {
-                    ((ClientView) client).Visible = false;
-                }
-                ((ClientView) item.RowObject).Visible = true;
-                ResumeLayout();
+                var client = (IClient) item.RowObject;
+                clientView.Client = client;
             }
         }
 
@@ -373,7 +366,7 @@ namespace k8asd {
         private void autoQuestButton_Click(object sender, EventArgs e) {
             var selectedClients = ClientManager.Instance.Clients;
             foreach (var client in selectedClients) {
-                client.EnableAutoQuest();
+                //client.EnableAutoQuest();
                 Task.Delay(1000);
             }
         }
@@ -381,27 +374,25 @@ namespace k8asd {
         private void autoReportQuestButton_Click(object sender, EventArgs e) {
             var selectedClients = ClientManager.Instance.Clients;
             foreach (var client in selectedClients) {
-                client.ReportAutoQuest();
+                //client.ReportAutoQuest();
                 Task.Delay(1000);
             }
         }
 
-        private void autoGoldDailyButton_Click(object sender, EventArgs e){
+        private void autoGoldDailyButton_Click(object sender, EventArgs e) {
             var selectedClients = ClientManager.Instance.Clients;
             foreach (var client in selectedClients) {
-                client.UseGoldDaily();
+                //client.UseGoldDaily();
                 Task.Delay(1000);
             }
         }
 
-        private void autoSwapSnoutButton_Click(object sender, EventArgs e)
-        {
+        private void autoSwapSnoutButton_Click(object sender, EventArgs e) {
             var view = new AutoSnoutView();
             view.Show();
         }
 
-        private void tựĐộngNhậnThưToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void tựĐộngNhậnThưToolStripMenuItem_Click(object sender, EventArgs e) {
             var view = new AutoMailView();
             view.Show();
         }

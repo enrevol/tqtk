@@ -13,13 +13,24 @@ using System.Threading.Tasks;
 using System.Net;
 
 namespace k8asd {
-    public partial class ClientView : UserControl {
+    public partial class ClientView : UserControl, IClientComponent {
         private InfoModel infoModel;
         private CooldownModel cooldownModel;
         private McuModel mcuModel;
         private SystemLog messageLogModel;
 
+        public IClient Client {
+            get {
+                return null;
+            }
+            set {
+
+            }
+        }
+
+        /*
         private ClientConfig config;
+
 
         public ClientConfig Config {
             get {
@@ -33,13 +44,12 @@ namespace k8asd {
                 outsideView.LoadConfig(config);
             }
         }        
+        */
 
         public ClientView() {
             InitializeComponent();
 
-            disconnectedLocking = false;
-            state = ClientState.Disconnected;
-
+            /*
             infoModel = new InfoModel();
             cooldownModel = new CooldownModel();
             mcuModel = new McuModel();
@@ -90,8 +100,7 @@ namespace k8asd {
             raiseBirdView.SetPacketWriter(this);
             instituteView.SetPacketWriter(this);
             taskView.SetPacketWriter(this);
-
-            chatLogModel.Client = this;
+            */
         }
 
         private void ClientView_Load(object sender, EventArgs e) {
@@ -99,15 +108,15 @@ namespace k8asd {
         }
 
         public void EnableAutoQuest() {
-            taskView.EnableAutoQuest();
+            // taskView.EnableAutoQuest();
         }
 
         public void ReportAutoQuest() {
-            taskView.ReportQuest(Config.Username, PlayerName);
+            // taskView.ReportQuest(Config.Username, PlayerName);
         }
 
         public void UseGoldDaily() {
-            this.UseGoldDailyAsync();
+            //  this.UseGoldDailyAsync();
         }
     }
 }
