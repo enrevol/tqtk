@@ -7,17 +7,28 @@ namespace k8asd {
         /// <summary>
         /// Occurs when there is a new message added.
         /// </summary>
-        event EventHandler<ChatMessage> OnChatMessageAdded;
+        event EventHandler<ChatMessage> OnMessageAdded;
+
+        /// <summary>
+        /// The number of limited chat messages for a single channel.
+        /// </summary>
+        int ChannelLimit { get; set; }
 
         /// <summary>
         /// The number of limited chat messages.
         /// </summary>
-        int Limit { get; set; }
+        int AllChannelLimit { get; set; }
+
+        /// <summary>
+        /// Gets chat messages for the specified channel.
+        /// </summary>
+        /// <param name="channel">The chat channel.</param>
+        List<ChatMessage> GetChannelMessages(ChatChannel channel);
 
         /// <summary>
         /// Gets all chat messages.
         /// </summary>
-        List<ChatMessage> Messages { get; }
+        List<ChatMessage> GetAllChannelMessages();
 
         /// <summary>
         /// Attempts to send a chat message.

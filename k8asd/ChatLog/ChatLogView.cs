@@ -4,46 +4,9 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class ChatLogView : UserControl, IChatLogView {
-        /// <summary>
-        /// Text color for messages in private channel.
-        /// </summary>
-        private static readonly Color PrivateChannelColor = Color.FromArgb(230, 130, 50);
-
-        /// <summary>
-        /// Text color for messages in world channel.
-        /// </summary>
-        private static readonly Color WorldChannelColor = Color.FromArgb(250, 240, 140);
-
-        /// <summary>
-        /// Text color for messages in nation channel.
-        /// </summary>
-        private static readonly Color NationChannelColor = Color.FromArgb(100, 230, 140);
-
-        /// <summary>
-        /// Text color for messages in local channel.
-        /// </summary>
-        private static readonly Color LocalChannelColor = Color.FromArgb(100, 220, 220);
-
-        /// <summary>
-        /// Text color for messages in legion channel.
-        /// </summary>
-        private static readonly Color LegionChannelColor = Color.FromArgb(80, 140, 230);
-
-        private const int ChannelLineLimit = 100;
-        private const int AllChannelLineLimit = 50;
-
+    public partial class ChatLogView : Form, IChatLogView {
         private IChatLog chatLog;
-
-        private enum ChatBoxSize {
-            Small,
-            Medium,
-            Large,
-        }
-
         private List<RichTextBox> logBoxes;
-
-        private ChatBoxSize chatBoxSize;
 
         public ChatLogView() {
             InitializeComponent();
@@ -54,6 +17,7 @@ namespace k8asd {
             channelList.Items.Add(ChatChannel.Local);
             channelList.Items.Add(ChatChannel.Legion);
             channelList.Items.Add(ChatChannel.Campaign);
+            channelList.DisplayMember = "Name";
             channelList.SelectedIndex = 2;
 
             logBoxes = new List<RichTextBox>();
@@ -62,19 +26,20 @@ namespace k8asd {
             logBoxes.Add(logBox2);
             logBoxes.Add(logBox3);
             logBoxes.Add(logBox4);
+            logBoxes.Add(logBox5);
             logBoxes.Add(logAllBox);
 
             foreach (var box in logBoxes) {
-                box.BackColor = Color.FromArgb(6, 40, 38);
+                box.BackColor = ChatColor.Background;
             }
 
-            logBox0.ForeColor = GetChannelColor(ChatChannel.World);
-            logBox1.ForeColor = GetChannelColor(ChatChannel.Nation);
-            logBox2.ForeColor = GetChannelColor(ChatChannel.Local);
-            logBox3.ForeColor = GetChannelColor(ChatChannel.Legion);
-            logBox4.ForeColor = GetChannelColor(ChatChannel.Campaign);
+            logBox0.ForeColor = GetChannelColor(ChatChannel.Private);
+            logBox1.ForeColor = GetChannelColor(ChatChannel.World);
+            logBox2.ForeColor = GetChannelColor(ChatChannel.Nation);
+            logBox3.ForeColor = GetChannelColor(ChatChannel.Local);
+            logBox4.ForeColor = GetChannelColor(ChatChannel.Legion);
+            logBox5.ForeColor = GetChannelColor(ChatChannel.Campaign);
 
-            chatBoxSize = ChatBoxSize.Small;
             logTabList.SelectedIndex = 5;
         }
 
@@ -82,10 +47,10 @@ namespace k8asd {
             get { return chatLog; }
             set {
                 if (chatLog != null) {
-                    chatLog.OnChatMessageAdded -= OnChatMessageAdded;
+                    chatLog.OnMessageAdded -= OnChatMessageAdded;
                 }
                 chatLog = value;
-                chatLog.OnChatMessageAdded += OnChatMessageAdded;
+                chatLog.OnMessageAdded += OnChatMessageAdded;
             }
         }
 
@@ -93,15 +58,13 @@ namespace k8asd {
             var line = String.Format("[{0}] [{1}] {2}: {3}",
                 Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
 
-            var logBox = GetLogBox(message.Channel);
-            if (logBox != null) {
-                if (logBox.Lines.Length > 0) {
-                    logBox.AppendText(Environment.NewLine);
-                }
-                logBox.AppendText(line);
-                if (logBox.Lines.Length > ChannelLineLimit) {
-                    RemoveFirstLine(logBox);
-                }
+            var logChannelBox = GetLogChannelBox(message.Channel);
+            if (logChannelBox.Lines.Length > 0) {
+                logChannelBox.AppendText(Environment.NewLine);
+            }
+            logChannelBox.AppendText(line);
+            if (logChannelBox.Lines.Length > ChatLog.ChannelLimit) {
+                RemoveFirstLine(logChannelBox);
             }
 
             AddMessage(logAllBox, line, GetChannelColor(message.Channel));
@@ -116,7 +79,7 @@ namespace k8asd {
             box.AppendText(line);
             box.Select(startIndex, box.Text.Length - startIndex);
             box.SelectionColor = color;
-            if (box.Lines.Length > AllChannelLineLimit) {
+            if (box.Lines.Length > ChatLog.AllChannelLimit) {
                 RemoveFirstLine(box);
             }
         }
@@ -136,47 +99,25 @@ namespace k8asd {
         }
 
         private Color GetChannelColor(ChatChannel channel) {
-            if (channel.Id == ChatChannel.Private.Id) {
-                return PrivateChannelColor;
-            }
-            if (channel.Id == ChatChannel.World.Id) {
-                return WorldChannelColor;
-            }
-            if (channel.Id == ChatChannel.Nation.Id) {
-                return NationChannelColor;
-            }
-            if (channel.Id == ChatChannel.Local.Id) {
-                return LocalChannelColor;
-            }
-            if (channel.Id == ChatChannel.Legion.Id) {
-                return LegionChannelColor;
-            }
-            if (channel.Id == ChatChannel.Campaign.Id) {
-                return Color.Yellow;
-            }
-            return Color.White;
+            var colors = new Dictionary<ChatChannel, Color>();
+            colors[ChatChannel.Private] = ChatColor.Private;
+            colors[ChatChannel.World] = ChatColor.World;
+            colors[ChatChannel.Nation] = ChatColor.Nation;
+            colors[ChatChannel.Local] = ChatColor.Local;
+            colors[ChatChannel.Legion] = ChatColor.Legion;
+            colors[ChatChannel.Campaign] = ChatColor.Campaign;
+            return colors[channel];
         }
 
-        private RichTextBox GetLogBox(ChatChannel channel) {
-            if (channel.Id == ChatChannel.Private.Id) {
-                return null;
-            }
-            if (channel.Id == ChatChannel.World.Id) {
-                return logBox0;
-            }
-            if (channel.Id == ChatChannel.Nation.Id) {
-                return logBox1;
-            }
-            if (channel.Id == ChatChannel.Local.Id) {
-                return logBox2;
-            }
-            if (channel.Id == ChatChannel.Legion.Id) {
-                return logBox3;
-            }
-            if (channel.Id == ChatChannel.Campaign.Id) {
-                return logBox4;
-            }
-            return null;
+        private RichTextBox GetLogChannelBox(ChatChannel channel) {
+            var boxes = new Dictionary<ChatChannel, RichTextBox>();
+            boxes[ChatChannel.Private] = logBox0;
+            boxes[ChatChannel.World] = logBox1;
+            boxes[ChatChannel.Nation] = logBox2;
+            boxes[ChatChannel.Local] = logBox3;
+            boxes[ChatChannel.Legion] = logBox4;
+            boxes[ChatChannel.Campaign] = logBox5;
+            return boxes[channel];
         }
 
         private void chatInput_KeyPress(object sender, KeyPressEventArgs e) {
@@ -217,34 +158,6 @@ namespace k8asd {
                     Utils.ScrollToBottom(box);
                 }
             }
-        }
-
-        private void changeSizeButton_Click(object sender, EventArgs e) {
-            const int AdditionalHeight = 200;
-            const int AdditionalWidth = 800;
-
-            int deltaWidth = 0;
-            int deltaHeight = 0;
-            if (chatBoxSize == ChatBoxSize.Small) {
-                chatBoxSize = ChatBoxSize.Medium;
-                deltaHeight = AdditionalHeight;
-                changeSizeButton.Text = "Vừa";
-            } else if (chatBoxSize == ChatBoxSize.Medium) {
-                chatBoxSize = ChatBoxSize.Large;
-                deltaWidth = AdditionalWidth;
-                changeSizeButton.Text = "Lớn";
-            } else {
-                chatBoxSize = ChatBoxSize.Small;
-                deltaHeight = -AdditionalHeight;
-                deltaWidth = -AdditionalWidth;
-                changeSizeButton.Text = "Nhỏ";
-            }
-
-            Width += deltaWidth;
-            Height += deltaHeight;
-            Location = new Point(Location.X, Location.Y - deltaHeight);
-
-            TryScrollBoxes();
         }
     }
 }

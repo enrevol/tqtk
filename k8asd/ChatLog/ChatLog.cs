@@ -8,15 +8,29 @@ namespace k8asd {
     /// Khung chát.
     /// </summary>
     public class ChatLog : IChatLog {
-        public event EventHandler<ChatMessage> OnChatMessageAdded;
+        public event EventHandler<ChatMessage> OnMessageAdded;
 
         private IClient client;
-        private int limit;
-        private List<ChatMessage> messages;
+        private int channelLimit;
+        private int allChannelLimit;
+        private Dictionary<ChatChannel, List<ChatMessage>> channelMessages;
+        private List<ChatMessage> allChannelMessages;
 
         public ChatLog() {
-            limit = 100;
-            messages = new List<ChatMessage>();
+            client = null;
+
+            channelLimit = 100;
+            allChannelLimit = 50;
+
+            channelMessages = new Dictionary<ChatChannel, List<ChatMessage>>();
+            channelMessages[ChatChannel.Private] = new List<ChatMessage>();
+            channelMessages[ChatChannel.World] = new List<ChatMessage>();
+            channelMessages[ChatChannel.Nation] = new List<ChatMessage>();
+            channelMessages[ChatChannel.Local] = new List<ChatMessage>();
+            channelMessages[ChatChannel.Legion] = new List<ChatMessage>();
+            channelMessages[ChatChannel.Campaign] = new List<ChatMessage>();
+
+            allChannelMessages = new List<ChatMessage>();
         }
 
         public IClient Client {
@@ -30,19 +44,28 @@ namespace k8asd {
             }
         }
 
-        public int Limit {
-            get { return limit; }
+        public int ChannelLimit {
+            get { return channelLimit; }
             set {
-                limit = value;
-                while (messages.Count > limit) {
-                    // Dequeue.
-                    messages.RemoveAt(0);
-                }
+                channelLimit = value;
+                Validate();
             }
         }
 
-        public List<ChatMessage> Messages {
-            get { return messages; }
+        public int AllChannelLimit {
+            get { return allChannelLimit; }
+            set {
+                allChannelLimit = value;
+                Validate();
+            }
+        }
+
+        public List<ChatMessage> GetChannelMessages(ChatChannel channel) {
+            return channelMessages[channel];
+        }
+
+        public List<ChatMessage> GetAllChannelMessages() {
+            return allChannelMessages;
         }
 
         private void OnPacketReceived(object sender, Packet packet) {
@@ -135,9 +158,23 @@ namespace k8asd {
         }
 
         private void AddMessage(ChatMessage message) {
-            // Enqueue.
-            messages.Add(message);
-            OnChatMessageAdded(this, message);
+            channelMessages[message.Channel].Add(message);
+            allChannelMessages.Add(message);
+            Validate();
+            OnMessageAdded(this, message);
+        }
+
+        private void Validate() {
+            foreach (var item in channelMessages) {
+                Validate(item.Value, ChannelLimit);
+            }
+            Validate(allChannelMessages, AllChannelLimit);
+        }
+
+        private void Validate(List<ChatMessage> messages, int limit) {
+            while (messages.Count > limit) {
+                messages.RemoveAt(0);
+            }
         }
 
         public async Task<bool> SendMessage(ChatChannel channel, string content) {
