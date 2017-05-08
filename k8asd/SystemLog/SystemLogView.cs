@@ -35,15 +35,15 @@ namespace k8asd {
         }
 
         private void UpdateMessages() {
-            var messages = models.SelectMany(item => item.Messages).OrderBy(item => item.TimeStamp).ToList();
+            var messages = models.SelectMany(item => item.Messages).OrderBy(item => item.TimeStamp).ToList().Take(500);
 
             var builder = new StringBuilder();
             foreach (var message in messages) {
                 if (builder.Length > 0) {
                     builder.Append(Environment.NewLine);
                 }
-                builder.Append(String.Format("[{0}] {1} [{2}] {3}",
-                    message.TimeStamp, message.Sender, message.Tag, message.Content));
+                builder.Append(String.Format("[{0}] [{1}] {2}: {3}",
+                    message.TimeStamp, message.Tag, message.Sender, message.Content));
             }
 
             logBox.Text = builder.ToString();
