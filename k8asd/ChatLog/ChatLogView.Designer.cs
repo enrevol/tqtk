@@ -290,7 +290,6 @@
             this.ClientSize = new System.Drawing.Size(584, 266);
             this.Controls.Add(this.logTabList);
             this.Controls.Add(this.inputPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "ChatLogView";
             this.Text = "ChatLogView";
             this.logTabList.ResumeLayout(false);

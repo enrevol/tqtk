@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace k8asd {
     public partial class ClientView : UserControl, IClientView {
-        private IClient client;
+        private List<IClient> clients;
 
-        public IClient Client {
-            get { return client; }
+        public List<IClient> Clients {
+            get { return clients; }
             set {
-                client = value;
-                if (client != null) {
-                    systemLogView.SystemLog = client.GetComponent<ISystemLog>();
+                clients = value;
+                if (clients != null) {
+                    systemLogView.Models = clients.Select(item => item.GetComponent<ISystemLog>()).ToList();
                 }
             }
         }

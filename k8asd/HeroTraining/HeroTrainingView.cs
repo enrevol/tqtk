@@ -184,7 +184,7 @@ namespace k8asd {
                     return;
                 }
             } else {
-                logModel.LogInfo(String.Format("Bắt đầu huấn luyện tướng {0} Lv. {1} Exp {2}/{3}",
+                logModel.Log(String.Format("Bắt đầu huấn luyện tướng {0} Lv. {1} Exp {2}/{3}",
                     hero.Name, hero.Level, hero.Exp, hero.NextExp));
                 await packetWriter.TrainHeroAsync(hero.Id);
                 await RefreshHeroesAsync();
@@ -224,7 +224,7 @@ namespace k8asd {
                 return;
             }
 
-            logModel.LogInfo(String.Format("Mãnh tiến tướng {0} Lv. {1} Exp {2}/{3}",
+            logModel.Log(String.Format("Mãnh tiến tướng {0} Lv. {1} Exp {2}/{3}",
                 hero.Name, hero.Level, hero.Exp, hero.NextExp));
             await packetWriter.SendCommandAsync("41102", hero.Id.ToString(), "1", "1");
             await RefreshHeroesAsync();

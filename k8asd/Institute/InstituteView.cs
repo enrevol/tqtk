@@ -108,7 +108,7 @@ namespace k8asd {
                 if (tech.NewValue <= tech.Value) {
                     return true;
                 }
-                messageLogModel.LogInfo(String.Format("[SNC] {0}: {1} +{2}{3} => +{4}{5}",
+                messageLogModel.Log(String.Format("[SNC] {0}: {1} +{2}{3} => +{4}{5}",
                     tech.Name, tech.Desc, tech.Value, tech.ValueUnit, tech.NewValue, tech.ValueUnit));
                 var p = await packetWriter.ChangeInstituteTechAsync(techId);
                 if (p == null || p.HasError) {

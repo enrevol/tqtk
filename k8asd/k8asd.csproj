@@ -220,6 +220,7 @@
     <Compile Include="Shop\UpgradeInfo.cs" />
     <Compile Include="Shop\UpgradeResult.cs" />
     <Compile Include="SystemLog\ISystemLogView.cs" />
+    <Compile Include="SystemLog\SystemMessage.cs" />
     <Compile Include="Task\AttackNpcTaskHelper.cs" />
     <Compile Include="Task\FoodTaskHelper.cs" />
     <Compile Include="Task\GoldTaskHelper.cs" />
@@ -287,7 +288,7 @@
     </Compile>
     <Compile Include="ChatLog\ChatLog.cs" />
     <Compile Include="ChatLog\ChatLogView.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ChatLog\ChatLogView.Designer.cs">
       <DependentUpon>ChatLogView.cs</DependentUpon>

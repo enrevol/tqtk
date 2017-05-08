@@ -86,7 +86,7 @@ namespace k8asd {
             Debug.Assert(asyncLocking);
             foreach (var task in taskBoard.Tasks) {
                 if (task.State == TaskState.Completed) {
-                    messageModel.LogInfo(String.Format("[NVHN] Hoàn thành nhiệm vụ ID {0}", task.Id));
+                    messageModel.Log(String.Format("[NVHN] Hoàn thành nhiệm vụ ID {0}", task.Id));
                     // Hoàn thành nhiệm vụ.
                     await packetWriter.CompleteTaskAsync(task.Id);
                     return true;
@@ -109,7 +109,7 @@ namespace k8asd {
 
             if (acceptedTaskCount > 1) {
                 // Huỷ hết.
-                messageModel.LogInfo(String.Format("[NVHN] Đang nhận nhiều nhiệm vụ, huỷ tất cả!"));
+                messageModel.Log(String.Format("[NVHN] Đang nhận nhiều nhiệm vụ, huỷ tất cả!"));
                 foreach (var task in taskBoard.Tasks) {
                     if (task.State == TaskState.Received) {
                         await packetWriter.CancelTaskAsync(task.Id);
@@ -137,7 +137,7 @@ namespace k8asd {
                 if (taskBoard.DoneNum == taskBoard.MaxDoneNum) {
                     // Làm hết nhiệm vụ rồi.
                     dailyTaskCheck.Checked = false;
-                    messageModel.LogInfo(String.Format("[NVHN] Đã làm hết nhiệm vụ."));
+                    messageModel.Log(String.Format("[NVHN] Đã làm hết nhiệm vụ."));
                     return false;
                 }
 
@@ -289,7 +289,7 @@ namespace k8asd {
                 }
             }
 
-            messageModel.LogInfo(String.Format("[NVHN] Tiến hành làm nhiệm vụ {0} [{1} sao]",
+            messageModel.Log(String.Format("[NVHN] Tiến hành làm nhiệm vụ {0} [{1} sao]",
                 bestTask.Name, bestTask.Quality));
 
             var result = await bestTask.Do();
@@ -310,7 +310,7 @@ namespace k8asd {
                     return TaskResult.CanBeDone;
                 }
 
-                messageModel.LogInfo(String.Format("[NVHN] Số nhiệm vu đã hoàn thành {0}/{1}",
+                messageModel.Log(String.Format("[NVHN] Số nhiệm vu đã hoàn thành {0}/{1}",
                     p1.DoneNum + 1, p1.MaxDoneNum));
                 return TaskResult.Done;
             }

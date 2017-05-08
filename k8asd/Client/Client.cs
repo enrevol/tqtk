@@ -100,23 +100,23 @@ namespace k8asd {
 
         public async Task<bool> LogIn(bool parallel) {
             if (State == ClientState.Connected) {
-                systemLog.LogInfo("Đã đăng nhập, không cần đăng nhập lại!");
+                systemLog.Log("Đã đăng nhập, không cần đăng nhập lại!");
                 return false;
             }
             if (State == ClientState.Connecting) {
-                systemLog.LogInfo("Đang đang nhập, không cần đăng nhập lại!");
+                systemLog.Log("Đang đang nhập, không cần đăng nhập lại!");
                 return false;
             }
             if (State == ClientState.Disconnecting) {
-                systemLog.LogInfo("Đang đang xuất, không thể đăng nhập!");
+                systemLog.Log("Đang đang xuất, không thể đăng nhập!");
                 return false;
             }
             try {
                 await LogIn(Config.ServerId, Config.Username, Config.Password, parallel);
                 return true;
             } catch (WebException ex) {
-                systemLog.LogInfo(ex.Message);
-                systemLog.LogInfo("Đăng nhập thất bại!");
+                systemLog.Log(ex.Message);
+                systemLog.Log("Đăng nhập thất bại!");
                 State = ClientState.Disconnected;
                 return false;
             }
@@ -130,13 +130,13 @@ namespace k8asd {
                 return false;
             }
             if (State == ClientState.Connecting) {
-                systemLog.LogInfo("Đang đang nhập, không thể đăng xuất!");
+                systemLog.Log("Đang đang nhập, không thể đăng xuất!");
                 return false;
             }
 
-            systemLog.LogInfo("Bắt đầu đăng xuất...");
+            systemLog.Log("Bắt đầu đăng xuất...");
             await Disconnect();
-            systemLog.LogInfo("Đăng xuất thành công.");
+            systemLog.Log("Đăng xuất thành công.");
             return true;
         }
 
@@ -149,7 +149,7 @@ namespace k8asd {
             }
             disconnectedLocking = true;
             if (State == ClientState.Connected) {
-                systemLog.LogInfo("Mất kết nối với máy chủ.");
+                systemLog.Log("Mất kết nối với máy chủ.");
                 await Disconnect();
             }
             disconnectedLocking = false;
@@ -207,43 +207,43 @@ namespace k8asd {
 
             loginHelper = new LoginHelper(username, password);
 
-            systemLog.LogInfo("Bắt đầu đăng nhập tài khoản...");
+            systemLog.Log("Bắt đầu đăng nhập tài khoản...");
             var loginAccountStatus = await loginHelper.LoginAccount();
             switch (loginAccountStatus) {
             case LoginStatus.NoConnection:
-                systemLog.LogInfo("Không có kết nối mạng.");
+                systemLog.Log("Không có kết nối mạng.");
                 State = ClientState.Disconnected;
                 return;
             case LoginStatus.WrongUsernameOrPassword:
-                systemLog.LogInfo("Sai tên người dùng hoặc mật khẩu.");
+                systemLog.Log("Sai tên người dùng hoặc mật khẩu.");
                 State = ClientState.Disconnected;
                 return;
             case LoginStatus.UnknownError:
-                systemLog.LogInfo("Có lỗi xảy ra.");
+                systemLog.Log("Có lỗi xảy ra.");
                 State = ClientState.Disconnected;
                 return;
             }
-            systemLog.LogInfo("Đăng nhập tài khoản thành công.");
+            systemLog.Log("Đăng nhập tài khoản thành công.");
 
-            systemLog.LogInfo("Bắt đầu lấy thông tin để kết nối với máy chủ...");
+            systemLog.Log("Bắt đầu lấy thông tin để kết nối với máy chủ...");
             var loginServerStatus = await loginHelper.LoginServer(serverId);
             switch (loginServerStatus) {
             case LoginStatus.NoConnection:
-                systemLog.LogInfo("Không có kết nối mạng.");
+                systemLog.Log("Không có kết nối mạng.");
                 State = ClientState.Disconnected;
                 return;
             case LoginStatus.UnknownError:
-                systemLog.LogInfo("Có lỗi xảy ra.");
+                systemLog.Log("Có lỗi xảy ra.");
                 State = ClientState.Disconnected;
                 return;
             }
-            systemLog.LogInfo("Lấy thông tin thành công.");
+            systemLog.Log("Lấy thông tin thành công.");
 
             packetHandler = new PacketHandler(loginHelper.Session);
-            systemLog.LogInfo("Bắt đầu kết nối với máy chủ...");
+            systemLog.Log("Bắt đầu kết nối với máy chủ...");
 
             if (await Connect(parallel)) {
-                systemLog.LogInfo("Kết nối với máy chủ thành công.");
+                systemLog.Log("Kết nối với máy chủ thành công.");
             }
         }
 

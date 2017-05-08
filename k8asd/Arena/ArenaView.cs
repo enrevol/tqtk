@@ -63,7 +63,7 @@ namespace k8asd {
         private async void playerList_ButtonClick(object sender, CellClickEventArgs e) {
             var item = e.Item;
             var player = (ArenaPlayer) item.RowObject;
-            messageLog.LogInfo(String.Format("[Võ đài] Khiêu chiến với {0} Lv. {1}",
+            messageLog.Log(String.Format("[Võ đài] Khiêu chiến với {0} Lv. {1}",
                 player.Name, player.Level));
             await Duel(player.Id, player.Rank);
         }
@@ -78,7 +78,7 @@ namespace k8asd {
 
             var message = (string) battlereport["message"];
             var winp = (string) battlereport["winp"];
-            messageLog.LogInfo(String.Format("[Võ đài] {0} ({1})", message, winp));
+            messageLog.Log(String.Format("[Võ đài] {0} ({1})", message, winp));
         }
     }
 }

@@ -79,18 +79,18 @@ namespace k8asd
                         var packet = await packetWriter.RaiseBirdAsync(type);
                         if (packet == null)
                         {
-                            messageLogModel.LogInfo("Lỗi nuôi chim.");
+                            messageLogModel.Log("Lỗi nuôi chim.");
                         }
                         Parse66004(packet);
                         await Task.Delay(40);
                     }
                     chkAutoRaiseBird.Checked = false;
-                    messageLogModel.LogInfo("Hết bạc.");
+                    messageLogModel.Log("Hết bạc.");
                 }
                 catch (Exception ee)
                 {
                     Console.WriteLine(ee.Message.ToString());
-                    messageLogModel.LogInfo(ee.Message.ToString());
+                    messageLogModel.Log(ee.Message.ToString());
                 }
                 
             }

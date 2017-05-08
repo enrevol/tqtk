@@ -5,7 +5,7 @@ namespace k8asd {
     /// <summary>
     /// Parses 64005 message.
     /// </summary>
-    class ArenaInfo {
+    public class ArenaInfo {
         private Cooldown cooldown;
 
         public List<ArenaPlayer> Players { get; private set; }

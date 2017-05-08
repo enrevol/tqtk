@@ -1,8 +1,10 @@
-﻿namespace k8asd {
+﻿using System.Collections.Generic;
+
+namespace k8asd {
     public interface IClientView {
         /// <summary>
         /// Gets or sets the underlying client model.
         /// </summary>
-        IClient Client { get; set; }
+        List<IClient> Clients { get; set; }
     }
 }

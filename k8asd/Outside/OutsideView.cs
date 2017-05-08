@@ -78,7 +78,7 @@ namespace k8asd {
                     var token = JToken.Parse(packet.Message);
                     var extraBaseInfo = (JArray) token["extraBaseInfo"];
                     if (extraBaseInfo.Count == 0) {
-                        messageLogModel.LogInfo("[Khoan] Chưa mở ngoại thành!");
+                        messageLogModel.Log("[Khoan] Chưa mở ngoại thành!");
                         autoDrillBox.Checked = false;
                         return;
                     }
@@ -94,17 +94,17 @@ namespace k8asd {
                             return;
                         }
 
-                        messageLogModel.LogInfo(String.Format("[Khoan] Tiến hành mở kết quả khoan."));
+                        messageLogModel.Log(String.Format("[Khoan] Tiến hành mở kết quả khoan."));
                         var result = DrillResult.Parse(JToken.Parse(p1.Message));
                         if (result == null) {
                             return;
                         }
                         foreach (var reward in result.Rewards) {
-                            messageLogModel.LogInfo(String.Format("[Khoan] Nhận được {0} {1}.", reward.Award, reward.Name));
+                            messageLogModel.Log(String.Format("[Khoan] Nhận được {0} {1}.", reward.Award, reward.Name));
                         }
                     }
 
-                    messageLogModel.LogInfo("[Khoan] Bắt đầu khoan...");
+                    messageLogModel.Log("[Khoan] Bắt đầu khoan...");
                     await packetWriter.DrillAsync();
                 } finally {
                     miningLocking = false;

@@ -282,11 +282,12 @@ namespace k8asd {
         }
 
         private void clientList_SelectedIndexChanged(object sender, EventArgs e) {
-            var item = clientList.SelectedItem;
-            if (item != null) {
-                var client = (IClient) item.RowObject;
-                clientView.Client = client;
+            var selectedItems = clientList.SelectedItems;
+            if (selectedItems == null) {
+                return;
             }
+            var clients = selectedItems.Cast<OLVListItem>().Select(item => (IClient) item.RowObject).ToList();
+            clientView.Clients = clients;
         }
 
         private void autoArenaButton_Click(object sender, EventArgs e) {

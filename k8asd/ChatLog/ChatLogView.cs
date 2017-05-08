@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class ChatLogView : Form, IChatLogView {
+    public partial class ChatLogView : UserControl, IChatLogView {
         private IChatLog chatLog;
         private List<RichTextBox> logBoxes;
 
@@ -50,7 +50,9 @@ namespace k8asd {
                     chatLog.OnMessageAdded -= OnChatMessageAdded;
                 }
                 chatLog = value;
-                chatLog.OnMessageAdded += OnChatMessageAdded;
+                if (chatLog != null) {
+                    chatLog.OnMessageAdded += OnChatMessageAdded;
+                }
             }
         }
 

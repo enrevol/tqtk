@@ -1,35 +1,40 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace k8asd {
     public partial class SystemLogView : UserControl, ISystemLogView {
-        private ISystemLog systemLog;
+        private List<ISystemLog> models;
 
         public SystemLogView() {
             InitializeComponent();
         }
 
-        public ISystemLog SystemLog {
-            get { return systemLog; }
+        public List<ISystemLog> Models {
+            get { return models; }
             set {
-                if (systemLog != null) {
-                    systemLog.MessageChanged -= OnMessageChanged;
+                if (models != null) {
+                    foreach (var model in models) {
+                        model.MessagesChanged -= OnMessagesChanged;
+                    }
                 }
-                systemLog = value;
-                if (systemLog != null) {
-                    UpdateMessage(systemLog.Message);
-                    systemLog.MessageChanged += OnMessageChanged;
+                models = value;
+                if (models != null) {
+                    UpdateMessage();
+                    foreach (var model in models) {
+                        model.MessagesChanged += OnMessagesChanged;
+                    }
                 }
             }
         }
 
-        private void OnMessageChanged(object sender, string message) {
-            UpdateMessage(message);
+        private void OnMessagesChanged(object sender, EventArgs e) {
+            UpdateMessage();
         }
 
-        private void UpdateMessage(string message) {
-            logBox.Text = message;
-            logBox.SelectionStart = logBox.TextLength;
+        private void UpdateMessage() {
+            //logBox.Text = message;
+            //logBox.SelectionStart = logBox.TextLength;
 
             if (autoScrollBox.Checked) {
                 Utils.ScrollToBottom(logBox);

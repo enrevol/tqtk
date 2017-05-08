@@ -4,22 +4,19 @@ using System.Collections.Generic;
 
 namespace k8asd {
     public class SystemLog : ISystemLog {
-        private int LineLimit = 500;
+        public event EventHandler MessagesChanged;
 
-        private Queue<int> lineLengths;
+        private int MessageLimit = 500;
 
+        private List<SystemMessage> messages;
         private IClient client;
-        private string message;
 
-        public event EventHandler<string> MessageChanged;
-
-        public string Message {
-            get { return message; }
+        public List<SystemMessage> Messages {
+            get { return messages; }
         }
 
         public SystemLog() {
-            message = String.Empty;
-            lineLengths = new Queue<int>();
+            messages = new List<SystemMessage>();
         }
 
         public IClient Client {
@@ -29,45 +26,28 @@ namespace k8asd {
                     client.PacketReceived -= OnPacketReceived;
                 }
                 client = value;
-                client.PacketReceived += OnPacketReceived;
-            }
-        }
-
-        private void OnPacketReceived(object sender, Packet packet) {
-            if (packet.Id == 10103) {
-                // Ignore chat messages.
-                return;
-            }
-            if (packet.Message.Length > 0) {
-                var token = JToken.Parse(packet.Message);
-                if (token.HasValues) {
-                    // Packet 10100 won't have any values.
-                    TryLog(token, "message");
-                    TryLog(token, "errmessage");
-                    TryLog(token, "msg");
+                if (client != null) {
+                    client.PacketReceived += OnPacketReceived;
                 }
             }
         }
 
-        private void TryLog(JToken token, string key) {
-            var value = token[key];
-            if (value != null) {
-                LogInfo((string) value);
-            }
+        public void Log(string message) {
+            Log("Khác", message);
         }
 
-        public void LogInfo(string newMessage) {
-            if (message.Length > 0) {
-                message += Environment.NewLine;
+        public void Log(string tag, string message) {
+            messages.Add(new SystemMessage(client.PlayerName, tag, message));
+            if (messages.Count > MessageLimit) {
+                messages.RemoveAt(0);
             }
-            var line = String.Format("[{0}] {1}", Utils.FormatDuration(DateTime.Now), newMessage);
-            message += line;
-            lineLengths.Enqueue(line.Length);
-            while (lineLengths.Count > LineLimit) {
-                var firstLineLength = lineLengths.Dequeue() + Environment.NewLine.Length;
-                message = message.Remove(0, firstLineLength);
+            MessagesChanged.Raise(this);
+        }
+
+        private void OnPacketReceived(object sender, Packet packet) {
+            if (packet.HasError) {
+                Log("Lỗi", packet.ErrorMessage);
             }
-            MessageChanged.Raise(this, message);
         }
     }
 }

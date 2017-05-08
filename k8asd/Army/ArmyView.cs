@@ -219,12 +219,12 @@ namespace k8asd {
             var token = JToken.Parse(packet.Message);
             var report = ArmyReport.Parse(token);
             foreach (var detail in report.Reports) {
-                messageLogModel.LogInfo(detail);
+                messageLogModel.Log(detail);
             }
             if (report.Gains.Length > 0) {
-                messageLogModel.LogInfo(String.Format("Tấn công quân đoàn nhận được: {0}", report.Gains));
+                messageLogModel.Log(String.Format("Tấn công quân đoàn nhận được: {0}", report.Gains));
             } else {
-                messageLogModel.LogInfo("Tấn công quân đoàn nhận thất bại.");
+                messageLogModel.Log("Tấn công quân đoàn nhận thất bại.");
             }            
         }
 
