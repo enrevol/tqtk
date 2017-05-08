@@ -25,15 +25,16 @@
         private void InitializeComponent() {
             this.autoScrollBox = new System.Windows.Forms.CheckBox();
             this.logBox = new k8asd.FastRichTextBox();
+            this.optionPanel = new System.Windows.Forms.Panel();
+            this.optionPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // autoScrollBox
             // 
-            this.autoScrollBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.autoScrollBox.AutoSize = true;
             this.autoScrollBox.Checked = true;
             this.autoScrollBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoScrollBox.Location = new System.Drawing.Point(70, 161);
+            this.autoScrollBox.Location = new System.Drawing.Point(3, 3);
             this.autoScrollBox.Name = "autoScrollBox";
             this.autoScrollBox.Size = new System.Drawing.Size(66, 17);
             this.autoScrollBox.TabIndex = 7;
@@ -42,30 +43,38 @@
             // 
             // logBox
             // 
-            this.logBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.logBox.BackColor = System.Drawing.SystemColors.Info;
             this.logBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.logBox.Location = new System.Drawing.Point(0, 0);
+            this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logBox.Location = new System.Drawing.Point(0, 22);
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
             this.logBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size(350, 155);
+            this.logBox.Size = new System.Drawing.Size(350, 158);
             this.logBox.TabIndex = 2;
             this.logBox.TabStop = false;
             this.logBox.Text = "";
+            // 
+            // optionPanel
+            // 
+            this.optionPanel.Controls.Add(this.autoScrollBox);
+            this.optionPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.optionPanel.Location = new System.Drawing.Point(0, 0);
+            this.optionPanel.Name = "optionPanel";
+            this.optionPanel.Size = new System.Drawing.Size(350, 22);
+            this.optionPanel.TabIndex = 8;
             // 
             // SystemLogView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.autoScrollBox);
             this.Controls.Add(this.logBox);
+            this.Controls.Add(this.optionPanel);
             this.Name = "SystemLogView";
             this.Size = new System.Drawing.Size(350, 180);
+            this.optionPanel.ResumeLayout(false);
+            this.optionPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -73,5 +82,6 @@
 
         private FastRichTextBox logBox;
         private System.Windows.Forms.CheckBox autoScrollBox;
+        private System.Windows.Forms.Panel optionPanel;
     }
 }
