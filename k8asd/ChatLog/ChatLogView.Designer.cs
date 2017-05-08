@@ -27,6 +27,7 @@
             this.chatInput = new System.Windows.Forms.TextBox();
             this.logTabList = new System.Windows.Forms.TabControl();
             this.logTab0 = new System.Windows.Forms.TabPage();
+            this.logBox0 = new k8asd.FastRichTextBox();
             this.logTab1 = new System.Windows.Forms.TabPage();
             this.logBox1 = new k8asd.FastRichTextBox();
             this.logTab2 = new System.Windows.Forms.TabPage();
@@ -41,7 +42,6 @@
             this.logAllBox = new k8asd.FastRichTextBox();
             this.autoScrollBox = new System.Windows.Forms.CheckBox();
             this.inputPanel = new System.Windows.Forms.Panel();
-            this.logBox0 = new k8asd.FastRichTextBox();
             this.logTabList.SuspendLayout();
             this.logTab0.SuspendLayout();
             this.logTab1.SuspendLayout();
@@ -107,6 +107,20 @@
             this.logTab0.TabIndex = 6;
             this.logTab0.Text = "Mật";
             // 
+            // logBox0
+            // 
+            this.logBox0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(38)))));
+            this.logBox0.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.logBox0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logBox0.Location = new System.Drawing.Point(0, 0);
+            this.logBox0.Name = "logBox0";
+            this.logBox0.ReadOnly = true;
+            this.logBox0.Size = new System.Drawing.Size(576, 185);
+            this.logBox0.TabIndex = 5;
+            this.logBox0.TabStop = false;
+            this.logBox0.Text = "";
+            this.logBox0.WordWrap = false;
+            // 
             // logTab1
             // 
             this.logTab1.Controls.Add(this.logBox1);
@@ -124,11 +138,11 @@
             this.logBox1.Location = new System.Drawing.Point(0, 0);
             this.logBox1.Name = "logBox1";
             this.logBox1.ReadOnly = true;
-            this.logBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.logBox1.Size = new System.Drawing.Size(576, 185);
             this.logBox1.TabIndex = 4;
             this.logBox1.TabStop = false;
             this.logBox1.Text = "";
+            this.logBox1.WordWrap = false;
             // 
             // logTab2
             // 
@@ -147,11 +161,11 @@
             this.logBox2.Location = new System.Drawing.Point(0, 0);
             this.logBox2.Name = "logBox2";
             this.logBox2.ReadOnly = true;
-            this.logBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.logBox2.Size = new System.Drawing.Size(576, 185);
             this.logBox2.TabIndex = 5;
             this.logBox2.TabStop = false;
             this.logBox2.Text = "";
+            this.logBox2.WordWrap = false;
             // 
             // logTab3
             // 
@@ -170,11 +184,11 @@
             this.logBox3.Location = new System.Drawing.Point(0, 0);
             this.logBox3.Name = "logBox3";
             this.logBox3.ReadOnly = true;
-            this.logBox3.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.logBox3.Size = new System.Drawing.Size(576, 185);
             this.logBox3.TabIndex = 5;
             this.logBox3.TabStop = false;
             this.logBox3.Text = "";
+            this.logBox3.WordWrap = false;
             // 
             // logTab4
             // 
@@ -193,11 +207,11 @@
             this.logBox4.Location = new System.Drawing.Point(0, 0);
             this.logBox4.Name = "logBox4";
             this.logBox4.ReadOnly = true;
-            this.logBox4.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.logBox4.Size = new System.Drawing.Size(576, 185);
             this.logBox4.TabIndex = 5;
             this.logBox4.TabStop = false;
             this.logBox4.Text = "";
+            this.logBox4.WordWrap = false;
             // 
             // logTab5
             // 
@@ -216,11 +230,11 @@
             this.logBox5.Location = new System.Drawing.Point(0, 0);
             this.logBox5.Name = "logBox5";
             this.logBox5.ReadOnly = true;
-            this.logBox5.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.logBox5.Size = new System.Drawing.Size(576, 185);
             this.logBox5.TabIndex = 5;
             this.logBox5.TabStop = false;
             this.logBox5.Text = "";
+            this.logBox5.WordWrap = false;
             // 
             // logTab6
             // 
@@ -268,30 +282,15 @@
             this.inputPanel.Size = new System.Drawing.Size(584, 55);
             this.inputPanel.TabIndex = 7;
             // 
-            // logBox0
-            // 
-            this.logBox0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(38)))));
-            this.logBox0.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.logBox0.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logBox0.Location = new System.Drawing.Point(0, 0);
-            this.logBox0.Name = "logBox0";
-            this.logBox0.ReadOnly = true;
-            this.logBox0.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.logBox0.Size = new System.Drawing.Size(576, 185);
-            this.logBox0.TabIndex = 5;
-            this.logBox0.TabStop = false;
-            this.logBox0.Text = "";
-            // 
             // ChatLogView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(584, 266);
             this.Controls.Add(this.logTabList);
             this.Controls.Add(this.inputPanel);
             this.Name = "ChatLogView";
-            this.Text = "ChatLogView";
+            this.Size = new System.Drawing.Size(584, 266);
             this.logTabList.ResumeLayout(false);
             this.logTab0.ResumeLayout(false);
             this.logTab1.ResumeLayout(false);
