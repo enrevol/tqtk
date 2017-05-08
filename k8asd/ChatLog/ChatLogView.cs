@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace k8asd {
     public partial class ChatLogView : UserControl, IChatLogView {
-        private IChatLog chatLog;
+        private List<IChatLog> models;
         private List<RichTextBox> logBoxes;
 
         public ChatLogView() {
@@ -43,20 +43,25 @@ namespace k8asd {
             logTabList.SelectedIndex = 5;
         }
 
-        public IChatLog ChatLog {
-            get { return chatLog; }
+        public List<IChatLog> Models {
+            get { return models; }
             set {
-                if (chatLog != null) {
-                    chatLog.OnMessageAdded -= OnChatMessageAdded;
+                if (models != null) {
+                    foreach (var model in models) {
+                        model.MessagesChanged -= OnMessagesChanged;
+                    }
                 }
-                chatLog = value;
-                if (chatLog != null) {
-                    chatLog.OnMessageAdded += OnChatMessageAdded;
+                models = value;
+                if (models != null) {
+                    foreach (var model in models) {
+                        model.MessagesChanged += OnMessagesChanged;
+                    }
                 }
             }
         }
 
-        private void OnChatMessageAdded(object sender, ChatMessage message) {
+        private void OnMessagesChanged(object sender, EventArgs e) {
+            /*
             var line = String.Format("[{0}] [{1}] {2}: {3}",
                 Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
 
@@ -71,9 +76,11 @@ namespace k8asd {
 
             AddMessage(logAllBox, line, GetChannelColor(message.Channel));
             TryScrollBoxes();
+            */
         }
 
         private void AddMessage(RichTextBox box, string line, Color color) {
+            /*
             if (box.Text.Length > 0) {
                 box.AppendText(Environment.NewLine);
             }
@@ -84,6 +91,7 @@ namespace k8asd {
             if (box.Lines.Length > ChatLog.AllChannelLimit) {
                 RemoveFirstLine(box);
             }
+            */
         }
 
         private void RemoveFirstLine(RichTextBox box) {
@@ -130,7 +138,9 @@ namespace k8asd {
             if (e.KeyCode == Keys.Enter && chatInput.Text.Trim().Length > 0) {
                 var item = channelList.SelectedItem;
                 var channel = (ChatChannel) item;
-                chatLog.SendMessage(channel, chatInput.Text);
+                foreach (var model in models) {
+                    model.SendMessage(channel, chatInput.Text).Forget();
+                }
                 chatInput.Text = String.Empty;
                 /*
                 int n = cbbChat.SelectedIndex - 1;

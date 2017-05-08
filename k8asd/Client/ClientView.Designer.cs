@@ -116,7 +116,6 @@ namespace k8asd {
             // chatLogView
             // 
             this.chatLogView.AutoScroll = true;
-            this.chatLogView.ChatLog = null;
             this.chatLogView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chatLogView.Location = new System.Drawing.Point(3, 3);
             this.chatLogView.Name = "chatLogView";

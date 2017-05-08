@@ -5,19 +5,9 @@ using System.Threading.Tasks;
 namespace k8asd {
     public interface IChatLog : IClientComponent {
         /// <summary>
-        /// Occurs when there is a new message added.
+        /// Occurs when the chat log has changed.
         /// </summary>
-        event EventHandler<ChatMessage> OnMessageAdded;
-
-        /// <summary>
-        /// The number of limited chat messages for a single channel.
-        /// </summary>
-        int ChannelLimit { get; set; }
-
-        /// <summary>
-        /// The number of limited chat messages.
-        /// </summary>
-        int AllChannelLimit { get; set; }
+        event EventHandler MessagesChanged;
 
         /// <summary>
         /// Gets chat messages for the specified channel.

@@ -8,19 +8,30 @@ namespace k8asd {
     /// Khung chát.
     /// </summary>
     public class ChatLog : IChatLog {
-        public event EventHandler<ChatMessage> OnMessageAdded;
+        private const int ChannelLimit = 100;
+        private const int AllChannelLimit = 50;
+
+        public event EventHandler MessagesChanged;
 
         private IClient client;
-        private int channelLimit;
-        private int allChannelLimit;
         private Dictionary<ChatChannel, List<ChatMessage>> channelMessages;
         private List<ChatMessage> allChannelMessages;
 
+        public IClient Client {
+            get { return client; }
+            set {
+                if (client != null) {
+                    client.PacketReceived -= OnPacketReceived;
+                }
+                client = value;
+                if (client != null) {
+                    client.PacketReceived += OnPacketReceived;
+                }
+            }
+        }
+
         public ChatLog() {
             client = null;
-
-            channelLimit = 100;
-            allChannelLimit = 50;
 
             channelMessages = new Dictionary<ChatChannel, List<ChatMessage>>();
             channelMessages[ChatChannel.Private] = new List<ChatMessage>();
@@ -31,33 +42,6 @@ namespace k8asd {
             channelMessages[ChatChannel.Campaign] = new List<ChatMessage>();
 
             allChannelMessages = new List<ChatMessage>();
-        }
-
-        public IClient Client {
-            get { return client; }
-            set {
-                if (client != null) {
-                    client.PacketReceived -= OnPacketReceived;
-                }
-                client = value;
-                client.PacketReceived += OnPacketReceived;
-            }
-        }
-
-        public int ChannelLimit {
-            get { return channelLimit; }
-            set {
-                channelLimit = value;
-                Validate();
-            }
-        }
-
-        public int AllChannelLimit {
-            get { return allChannelLimit; }
-            set {
-                allChannelLimit = value;
-                Validate();
-            }
         }
 
         public List<ChatMessage> GetChannelMessages(ChatChannel channel) {
@@ -161,7 +145,7 @@ namespace k8asd {
             channelMessages[message.Channel].Add(message);
             allChannelMessages.Add(message);
             Validate();
-            OnMessageAdded.Raise(this, message);
+            MessagesChanged.Raise(this);
         }
 
         private void Validate() {
