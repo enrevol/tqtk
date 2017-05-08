@@ -13,6 +13,7 @@ namespace k8asd {
                 clients = value;
                 if (clients != null) {
                     systemLogView.Models = clients.Select(item => item.GetComponent<ISystemLog>()).ToList();
+                    chatLogView.Models = clients.Select(item => item.GetComponent<IChatLog>()).ToList();
                 }
             }
         }

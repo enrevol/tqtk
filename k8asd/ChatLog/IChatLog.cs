@@ -7,7 +7,7 @@ namespace k8asd {
         /// <summary>
         /// Occurs when the chat log has changed.
         /// </summary>
-        event EventHandler MessagesChanged;
+        event EventHandler<ChatChannel> MessagesChanged;
 
         /// <summary>
         /// Gets chat messages for the specified channel.

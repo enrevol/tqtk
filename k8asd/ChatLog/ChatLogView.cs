@@ -1,6 +1,9 @@
-﻿using System;
+﻿using MoreLinq;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace k8asd {
@@ -56,11 +59,18 @@ namespace k8asd {
                     foreach (var model in models) {
                         model.MessagesChanged += OnMessagesChanged;
                     }
+                    UpdateMessages(ChatChannel.Private);
+                    UpdateMessages(ChatChannel.World);
+                    UpdateMessages(ChatChannel.Nation);
+                    UpdateMessages(ChatChannel.Local);
+                    UpdateMessages(ChatChannel.Legion);
+                    UpdateMessages(ChatChannel.Campaign);
                 }
             }
         }
 
-        private void OnMessagesChanged(object sender, EventArgs e) {
+        private void OnMessagesChanged(object sender, ChatChannel channel) {
+            UpdateMessages(channel);
             /*
             var line = String.Format("[{0}] [{1}] {2}: {3}",
                 Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
@@ -92,6 +102,32 @@ namespace k8asd {
                 RemoveFirstLine(box);
             }
             */
+        }
+
+        private void UpdateMessages(ChatChannel channel) {
+            var messages = models
+                .SelectMany(item => item.GetChannelMessages(channel))
+                .OrderBy(item => item.TimeStamp)
+                .DistinctBy(item => new { item.Channel, item.Sender, item.Content })
+                .Take(500)
+                .ToList();
+
+            var builder = new StringBuilder();
+            foreach (var message in messages) {
+                if (builder.Length > 0) {
+                    builder.Append(Environment.NewLine);
+                }
+                builder.Append(String.Format("[{0}] [{1}] {2}: {3}",
+                    message.TimeStamp, message.Channel.Name, message.Sender, message.Content));
+            }
+
+            var box = GetLogChannelBox(channel);
+            box.Text = builder.ToString();
+            TryScrollBoxes();
+        }
+
+        private void UpdateMessages() {
+
         }
 
         private void RemoveFirstLine(RichTextBox box) {

@@ -11,7 +11,7 @@ namespace k8asd {
         private const int ChannelLimit = 100;
         private const int AllChannelLimit = 50;
 
-        public event EventHandler MessagesChanged;
+        public event EventHandler<ChatChannel> MessagesChanged;
 
         private IClient client;
         private Dictionary<ChatChannel, List<ChatMessage>> channelMessages;
@@ -145,7 +145,7 @@ namespace k8asd {
             channelMessages[message.Channel].Add(message);
             allChannelMessages.Add(message);
             Validate();
-            MessagesChanged.Raise(this);
+            MessagesChanged.Raise(this, message.Channel);
         }
 
         private void Validate() {

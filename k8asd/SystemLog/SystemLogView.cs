@@ -35,7 +35,11 @@ namespace k8asd {
         }
 
         private void UpdateMessages() {
-            var messages = models.SelectMany(item => item.Messages).OrderBy(item => item.TimeStamp).ToList().Take(500);
+            var messages = models
+                .SelectMany(item => item.Messages)
+                .OrderBy(item => item.TimeStamp)
+                .Take(500)
+                .ToList();
 
             var builder = new StringBuilder();
             foreach (var message in messages) {
