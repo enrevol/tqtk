@@ -4,20 +4,12 @@ using System.Collections.Generic;
 
 namespace k8asd {
     public class SystemLog : ISystemLog {
+        private const int MessageLimit = 500;
+
         public event EventHandler MessagesChanged;
 
-        private int MessageLimit = 500;
-
-        private List<SystemMessage> messages;
         private IClient client;
-
-        public List<SystemMessage> Messages {
-            get { return messages; }
-        }
-
-        public SystemLog() {
-            messages = new List<SystemMessage>();
-        }
+        private List<SystemMessage> messages;
 
         public IClient Client {
             get { return client; }
@@ -30,6 +22,15 @@ namespace k8asd {
                     client.PacketReceived += OnPacketReceived;
                 }
             }
+        }
+
+        public List<SystemMessage> Messages {
+            get { return messages; }
+        }
+
+        public SystemLog() {
+            client = null;
+            messages = new List<SystemMessage>();
         }
 
         public void Log(string message) {
