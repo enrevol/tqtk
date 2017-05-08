@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace k8asd {
@@ -20,7 +22,7 @@ namespace k8asd {
                 }
                 models = value;
                 if (models != null) {
-                    UpdateMessage();
+                    UpdateMessages();
                     foreach (var model in models) {
                         model.MessagesChanged += OnMessagesChanged;
                     }
@@ -29,13 +31,22 @@ namespace k8asd {
         }
 
         private void OnMessagesChanged(object sender, EventArgs e) {
-            UpdateMessage();
+            UpdateMessages();
         }
 
-        private void UpdateMessage() {
-            //logBox.Text = message;
-            //logBox.SelectionStart = logBox.TextLength;
+        private void UpdateMessages() {
+            var messages = models.SelectMany(item => item.Messages).OrderBy(item => item.TimeStamp).ToList();
 
+            var builder = new StringBuilder();
+            foreach (var message in messages) {
+                if (builder.Length > 0) {
+                    builder.Append(Environment.NewLine);
+                }
+                builder.Append(String.Format("[{0}] {1} [{2}] {3}",
+                    message.TimeStamp, message.Sender, message.Tag, message.Content));
+            }
+
+            logBox.Text = builder.ToString();
             if (autoScrollBox.Checked) {
                 Utils.ScrollToBottom(logBox);
             }

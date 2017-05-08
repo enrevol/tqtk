@@ -37,7 +37,7 @@ namespace k8asd {
         }
 
         public void Log(string tag, string message) {
-            messages.Add(new SystemMessage(client.PlayerName, tag, message));
+            messages.Add(new SystemMessage(client.Config.Username, tag, message));
             if (messages.Count > MessageLimit) {
                 messages.RemoveAt(0);
             }
