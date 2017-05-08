@@ -24,8 +24,8 @@
         /// </summary>
         private void InitializeComponent() {
             this.autoScrollBox = new System.Windows.Forms.CheckBox();
-            this.logBox = new k8asd.FastRichTextBox();
             this.optionPanel = new System.Windows.Forms.Panel();
+            this.logBox = new k8asd.FastRichTextBox();
             this.optionPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,20 +41,6 @@
             this.autoScrollBox.Text = "Tự cuộn";
             this.autoScrollBox.UseVisualStyleBackColor = true;
             // 
-            // logBox
-            // 
-            this.logBox.BackColor = System.Drawing.SystemColors.Info;
-            this.logBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logBox.Location = new System.Drawing.Point(0, 22);
-            this.logBox.Name = "logBox";
-            this.logBox.ReadOnly = true;
-            this.logBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size(350, 158);
-            this.logBox.TabIndex = 2;
-            this.logBox.TabStop = false;
-            this.logBox.Text = "";
-            // 
             // optionPanel
             // 
             this.optionPanel.Controls.Add(this.autoScrollBox);
@@ -63,6 +49,20 @@
             this.optionPanel.Name = "optionPanel";
             this.optionPanel.Size = new System.Drawing.Size(350, 22);
             this.optionPanel.TabIndex = 8;
+            // 
+            // logBox
+            // 
+            this.logBox.BackColor = System.Drawing.SystemColors.Info;
+            this.logBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logBox.Location = new System.Drawing.Point(0, 22);
+            this.logBox.Name = "logBox";
+            this.logBox.ReadOnly = true;
+            this.logBox.Size = new System.Drawing.Size(350, 158);
+            this.logBox.TabIndex = 2;
+            this.logBox.TabStop = false;
+            this.logBox.Text = "";
+            this.logBox.WordWrap = false;
             // 
             // SystemLogView
             // 
