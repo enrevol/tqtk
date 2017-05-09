@@ -101,9 +101,9 @@
             this.doUpgradeTaskCheck.AutoSize = true;
             this.doUpgradeTaskCheck.Location = new System.Drawing.Point(10, 111);
             this.doUpgradeTaskCheck.Name = "doUpgradeTaskCheck";
-            this.doUpgradeTaskCheck.Size = new System.Drawing.Size(179, 17);
+            this.doUpgradeTaskCheck.Size = new System.Drawing.Size(178, 17);
             this.doUpgradeTaskCheck.TabIndex = 5;
-            this.doUpgradeTaskCheck.Text = "Nâng cấp trang bị (Vũ khí trắng)";
+            this.doUpgradeTaskCheck.Text = "Nâng cấp trang bị (vũ khí trắng)";
             this.doUpgradeTaskCheck.UseVisualStyleBackColor = true;
             // 
             // taskTypesPanel
@@ -118,16 +118,16 @@
             this.taskTypesPanel.Size = new System.Drawing.Size(220, 138);
             this.taskTypesPanel.TabIndex = 6;
             this.taskTypesPanel.TabStop = false;
-            this.taskTypesPanel.Text = "Cấu hình nhiệm vụ";
+            this.taskTypesPanel.Text = "Cấu hình loại nhiệm vụ";
             // 
-            // TaskView
+            // DailyTaskView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.taskTypesPanel);
             this.Controls.Add(this.dailyTaskCheck);
-            this.Name = "TaskView";
-            this.Size = new System.Drawing.Size(240, 185);
+            this.Name = "DailyTaskView";
+            this.Size = new System.Drawing.Size(240, 180);
             this.taskTypesPanel.ResumeLayout(false);
             this.taskTypesPanel.PerformLayout();
             this.ResumeLayout(false);
