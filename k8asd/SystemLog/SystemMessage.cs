@@ -32,5 +32,13 @@ namespace k8asd {
             Tag = tag;
             Content = content;
         }
+
+        public string Format() {
+            return String.Format("[{0}] [{1}] {2}: {3}", TimeStamp, Tag, Sender, Content);
+        }
+
+        public override string ToString() {
+            return Format();
+        }
     }
 }

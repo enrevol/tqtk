@@ -8,9 +8,12 @@ using System.Windows.Forms;
 namespace k8asd {
     public partial class SystemLogView : UserControl, ISystemLogView {
         private List<ISystemLog> models;
+        private bool dirty;
 
         public SystemLogView() {
             InitializeComponent();
+
+            dirty = false;
         }
 
         public List<ISystemLog> Models {
@@ -23,10 +26,10 @@ namespace k8asd {
                 }
                 models = value;
                 if (models != null) {
-                    UpdateMessages();
                     foreach (var model in models) {
                         model.MessagesChanged += OnMessagesChanged;
                     }
+                    dirty = true;
                 }
             }
         }
@@ -47,13 +50,23 @@ namespace k8asd {
                 if (builder.Length > 0) {
                     builder.Append(Environment.NewLine);
                 }
-                builder.Append(String.Format("[{0}] [{1}] {2}: {3}",
-                    message.TimeStamp, message.Tag, message.Sender, message.Content));
+                builder.Append(message.Format());
             }
 
             logBox.Text = builder.ToString();
+        }
+
+        private void TryScrollBox() {
             if (autoScrollBox.Checked) {
                 Utils.ScrollToBottom(logBox);
+            }
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e) {
+            if (dirty) {
+                dirty = false;
+                UpdateMessages();
+                TryScrollBox();
             }
         }
     }

@@ -23,9 +23,11 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.autoScrollBox = new System.Windows.Forms.CheckBox();
             this.optionPanel = new System.Windows.Forms.Panel();
             this.logBox = new k8asd.FastRichTextBox();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.optionPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,6 +66,11 @@
             this.logBox.Text = "";
             this.logBox.WordWrap = false;
             // 
+            // updateTimer
+            // 
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
             // SystemLogView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -83,5 +90,6 @@
         private FastRichTextBox logBox;
         private System.Windows.Forms.CheckBox autoScrollBox;
         private System.Windows.Forms.Panel optionPanel;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }
