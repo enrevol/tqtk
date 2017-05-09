@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoreLinq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,8 +38,8 @@ namespace k8asd {
         private void UpdateMessages() {
             var messages = models
                 .SelectMany(item => item.Messages)
-                .OrderByDescending(item => item.TimeStamp)
-                .Take(50)
+                .OrderBy(item => item.TimeStamp)
+                .TakeLast(50)
                 .ToList();
 
             var builder = new StringBuilder();
