@@ -38,8 +38,6 @@ namespace k8asd
             this.autoMerchantButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoSwapButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoReherseButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoQuestButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoReportQuestButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoGoldDailyButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoSwapSnoutButton = new System.Windows.Forms.ToolStripMenuItem();
             this.autoMailButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,8 +88,6 @@ namespace k8asd
             this.autoMerchantButton,
             this.autoSwapButton,
             this.autoReherseButton,
-            this.autoQuestButton,
-            this.autoReportQuestButton,
             this.autoGoldDailyButton,
             this.autoSwapSnoutButton,
             this.autoMailButton});
@@ -133,20 +129,6 @@ namespace k8asd
             this.autoReherseButton.Size = new System.Drawing.Size(276, 22);
             this.autoReherseButton.Text = "Tự động tập trận";
             this.autoReherseButton.Click += new System.EventHandler(this.autoReherseButton_Click);
-            // 
-            // autoQuestButton
-            // 
-            this.autoQuestButton.Name = "autoQuestButton";
-            this.autoQuestButton.Size = new System.Drawing.Size(276, 22);
-            this.autoQuestButton.Text = "Bật tự động NVHN";
-            this.autoQuestButton.Click += new System.EventHandler(this.autoQuestButton_Click);
-            // 
-            // autoReportQuestButton
-            // 
-            this.autoReportQuestButton.Name = "autoReportQuestButton";
-            this.autoReportQuestButton.Size = new System.Drawing.Size(276, 22);
-            this.autoReportQuestButton.Text = "Báo cáo NVHN";
-            this.autoReportQuestButton.Click += new System.EventHandler(this.autoReportQuestButton_Click);
             // 
             // autoGoldDailyButton
             // 
@@ -457,8 +439,6 @@ namespace k8asd
         private Button parallelLoginButton;
         private ToolStripMenuItem autoReherseButton;
         private Button saveButton;
-        private ToolStripMenuItem autoQuestButton;
-        private ToolStripMenuItem autoReportQuestButton;
         private Button changeButton;
         private Panel navigatorPanel;
         private Button moveUpButton;
