@@ -12,7 +12,8 @@ using System.Diagnostics;
 using MoreLinq;
 
 namespace k8asd {
-    public partial class TaskView : UserControl {
+    public partial class DailyTaskView : UserControl, IDailyTaskView {
+        private List<IDailyTask> models;
         private IPacketWriter packetWriter;
         private IInfoModel infoModel;
         private IMcuModel mcuModel;
@@ -21,7 +22,24 @@ namespace k8asd {
         private bool timerLocking;
         private bool asyncLocking;
 
-        public TaskView() {
+        public List<IDailyTask> Models {
+            get { return models; }
+            set {
+                if (models != null) {
+                    foreach (var model in models) {
+
+                    }
+                }
+                models = value;
+                if (models != null) {
+                    foreach (var model in models) {
+
+                    }
+                }
+            }
+        }
+
+        public DailyTaskView() {
             InitializeComponent();
 
             timerLocking = false;
@@ -322,16 +340,14 @@ namespace k8asd {
             //lay danh sach nhiem vu hang ngay
 
             var taskBoard = await packetWriter.RefreshTaskBoardAsync();
-            if (taskBoard == null)
-            {
+            if (taskBoard == null) {
                 return;
             }
 
             //ghi file bao cao
             string fileName = DateTime.Now.Day + ".txt";
-            using (StreamWriter w = new StreamWriter(fileName, true))
-            {
-                w.WriteLine(username + " - " + name + " - " + taskBoard.DoneNum + "/"  + taskBoard.MaxDoneNum);
+            using (StreamWriter w = new StreamWriter(fileName, true)) {
+                w.WriteLine(username + " - " + name + " - " + taskBoard.DoneNum + "/" + taskBoard.MaxDoneNum);
                 w.Close();
             }
 

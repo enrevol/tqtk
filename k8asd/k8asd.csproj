@@ -221,23 +221,26 @@
     <Compile Include="Shop\UpgradeResult.cs" />
     <Compile Include="SystemLog\ISystemLogView.cs" />
     <Compile Include="SystemLog\SystemMessage.cs" />
-    <Compile Include="Task\AttackNpcTaskHelper.cs" />
-    <Compile Include="Task\FoodTaskHelper.cs" />
-    <Compile Include="Task\GoldTaskHelper.cs" />
-    <Compile Include="Task\ImposeTaskHelper.cs" />
-    <Compile Include="Task\ImproveTaskHelper.cs" />
-    <Compile Include="Task\ITaskHelper.cs" />
-    <Compile Include="Task\TaskCommand.cs" />
-    <Compile Include="Task\TaskBoard.cs" />
-    <Compile Include="Task\TaskDifficulty.cs" />
-    <Compile Include="Task\TaskInfo.cs" />
-    <Compile Include="Task\TaskView.cs">
+    <Compile Include="Task\Helpers\AttackNpcTaskHelper.cs" />
+    <Compile Include="Task\Helpers\FoodTaskHelper.cs" />
+    <Compile Include="Task\Helpers\GoldTaskHelper.cs" />
+    <Compile Include="Task\Helpers\ImposeTaskHelper.cs" />
+    <Compile Include="Task\Helpers\ImproveTaskHelper.cs" />
+    <Compile Include="Task\ModelView\IDailyTask.cs" />
+    <Compile Include="Task\Helpers\ITaskHelper.cs" />
+    <Compile Include="Task\ModelView\ITaskView.cs" />
+    <Compile Include="Task\ModelView\DailyTask.cs" />
+    <Compile Include="Task\Data\TaskCommand.cs" />
+    <Compile Include="Task\Data\TaskBoard.cs" />
+    <Compile Include="Task\Data\TaskDifficulty.cs" />
+    <Compile Include="Task\Data\TaskInfo.cs" />
+    <Compile Include="Task\ModelView\DailyTaskView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Task\TaskView.designer.cs">
-      <DependentUpon>TaskView.cs</DependentUpon>
+    <Compile Include="Task\ModelView\DailyTaskView.designer.cs">
+      <DependentUpon>DailyTaskView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Task\TaskDetail.cs" />
+    <Compile Include="Task\Data\TaskDetail.cs" />
     <Compile Include="RaiseBird\RaiseBirdCommand.cs" />
     <Compile Include="RaiseBird\RaiseBirdInfo.cs" />
     <Compile Include="RaiseBird\RaiseBirdView.cs">
@@ -261,7 +264,7 @@
     <Compile Include="Snout\SnoutCommand.cs" />
     <Compile Include="Swap\SwapCommand.cs" />
     <Compile Include="Swap\SwapInfo.cs" />
-    <Compile Include="Task\UpgradeTaskHelper.cs" />
+    <Compile Include="Task\Helpers\UpgradeTaskHelper.cs" />
     <Compile Include="Tools\AutoMailView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -479,8 +482,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Task\TaskView.resx">
-      <DependentUpon>TaskView.cs</DependentUpon>
+    <EmbeddedResource Include="Task\ModelView\DailyTaskView.resx">
+      <DependentUpon>DailyTaskView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RaiseBird\RaiseBirdView.resx">
       <DependentUpon>RaiseBirdView.cs</DependentUpon>
