@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.channelList = new System.Windows.Forms.ComboBox();
             this.chatInput = new System.Windows.Forms.TextBox();
             this.logTabList = new System.Windows.Forms.TabControl();
@@ -42,6 +43,7 @@
             this.logAllBox = new k8asd.FastRichTextBox();
             this.autoScrollBox = new System.Windows.Forms.CheckBox();
             this.inputPanel = new System.Windows.Forms.Panel();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.logTabList.SuspendLayout();
             this.logTab0.SuspendLayout();
             this.logTab1.SuspendLayout();
@@ -282,6 +284,11 @@
             this.inputPanel.Size = new System.Drawing.Size(584, 55);
             this.inputPanel.TabIndex = 7;
             // 
+            // updateTimer
+            // 
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
             // ChatLogView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -326,5 +333,6 @@
         private System.Windows.Forms.Panel inputPanel;
         private System.Windows.Forms.TabPage logTab0;
         private FastRichTextBox logBox0;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }

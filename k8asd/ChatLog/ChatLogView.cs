@@ -10,9 +10,18 @@ namespace k8asd {
     public partial class ChatLogView : UserControl, IChatLogView {
         private List<IChatLog> models;
         private List<RichTextBox> logBoxes;
+        private Dictionary<ChatChannel, bool> channelDirties;
 
         public ChatLogView() {
             InitializeComponent();
+
+            channelDirties = new Dictionary<ChatChannel, bool>();
+            channelDirties.Add(ChatChannel.Private, false);
+            channelDirties.Add(ChatChannel.World, false);
+            channelDirties.Add(ChatChannel.Nation, false);
+            channelDirties.Add(ChatChannel.Local, false);
+            channelDirties.Add(ChatChannel.Legion, false);
+            channelDirties.Add(ChatChannel.Campaign, false);
 
             channelList.Items.Clear();
             channelList.Items.Add(ChatChannel.World);
@@ -59,75 +68,97 @@ namespace k8asd {
                     foreach (var model in models) {
                         model.MessagesChanged += OnMessagesChanged;
                     }
-                    UpdateMessages(ChatChannel.Private);
-                    UpdateMessages(ChatChannel.World);
-                    UpdateMessages(ChatChannel.Nation);
-                    UpdateMessages(ChatChannel.Local);
-                    UpdateMessages(ChatChannel.Legion);
-                    UpdateMessages(ChatChannel.Campaign);
+                    var channels = new List<ChatChannel>(channelDirties.Keys);
+                    foreach (var channel in channels) {
+                        channelDirties[channel] = true;
+                    }
                 }
             }
         }
 
         private void OnMessagesChanged(object sender, ChatChannel channel) {
-            UpdateMessages(channel);
-            /*
-            var line = String.Format("[{0}] [{1}] {2}: {3}",
-                Utils.FormatDuration(message.TimeStamp), message.Channel.Name, message.Sender, message.Content);
-
-            var logChannelBox = GetLogChannelBox(message.Channel);
-            if (logChannelBox.Lines.Length > 0) {
-                logChannelBox.AppendText(Environment.NewLine);
-            }
-            logChannelBox.AppendText(line);
-            if (logChannelBox.Lines.Length > ChatLog.ChannelLimit) {
-                RemoveFirstLine(logChannelBox);
-            }
-
-            AddMessage(logAllBox, line, GetChannelColor(message.Channel));
-            TryScrollBoxes();
-            */
+            channelDirties[channel] = true;
         }
 
-        private void AddMessage(RichTextBox box, string line, Color color) {
-            /*
-            if (box.Text.Length > 0) {
-                box.AppendText(Environment.NewLine);
-            }
-            var startIndex = box.Text.Length;
-            box.AppendText(line);
-            box.Select(startIndex, box.Text.Length - startIndex);
-            box.SelectionColor = color;
-            if (box.Lines.Length > ChatLog.AllChannelLimit) {
-                RemoveFirstLine(box);
-            }
-            */
-        }
-
-        private void UpdateMessages(ChatChannel channel) {
+        private void UpdateChannelMessages(ChatChannel channel) {
             var messages = models
                 .SelectMany(item => item.GetChannelMessages(channel))
                 .OrderBy(item => item.TimeStamp)
                 .DistinctBy(item => new { item.Channel, item.Sender, item.Content })
-                .Take(500)
+                .TakeLast(100)
                 .ToList();
+
+            if (messages.Count == 0) {
+                return;
+            }
 
             var builder = new StringBuilder();
             foreach (var message in messages) {
                 if (builder.Length > 0) {
                     builder.Append(Environment.NewLine);
                 }
-                builder.Append(String.Format("[{0}] [{1}] {2}: {3}",
-                    message.TimeStamp, message.Channel.Name, message.Sender, message.Content));
+                builder.Append(message.Format());
             }
 
             var box = GetLogChannelBox(channel);
-            box.Text = builder.ToString();
-            TryScrollBoxes();
+
+            var text = builder.ToString();
+            var hash = text.GetHashCode();
+            var currentHash = box.Text.GetHashCode();
+            if (currentHash == hash) {
+                return;
+            }
+
+            box.Text = text;
         }
 
-        private void UpdateMessages() {
+        private void UpdateAllChannelMessages() {
+            var messages = models
+                .SelectMany(item => item.GetAllChannelMessages())
+                .OrderBy(item => item.TimeStamp)
+                .DistinctBy(item => new { item.Channel, item.Sender, item.Content })
+                .TakeLast(30)
+                .ToList();
 
+            if (messages.Count == 0) {
+                return;
+            }
+
+            var builder = new StringBuilder();
+            foreach (var message in messages) {
+                if (builder.Length > 0) {
+                    builder.Append(Environment.NewLine);
+                }
+                builder.Append(message.Format());
+            }
+
+            var text = builder.ToString();
+            var hash = text.GetHashCode();
+            var currentHash = logAllBox.Text.GetHashCode();
+            if (currentHash == hash) {
+                return;
+            }
+
+            logAllBox.SuspendLayout();
+            logAllBox.BeginUpdate();
+            logAllBox.Clear();
+            foreach (var message in messages) {
+                AddMessage(logAllBox, message.Format(), GetChannelColor(message.Channel));
+            }
+            logAllBox.EndUpdate();
+            logAllBox.ResumeLayout();
+        }
+
+        private void AddMessage(RichTextBox box, string line, Color color) {
+            if (box.Text.Length > 0) {
+                box.AppendText(Environment.NewLine);
+            }
+            var currentSelectIndex = box.SelectionStart;
+            var startIndex = box.Text.Length;
+            box.AppendText(line);
+            box.Select(startIndex, box.Text.Length - startIndex);
+            box.SelectionColor = color;
+            box.Select(currentSelectIndex, 0);
         }
 
         private void RemoveFirstLine(RichTextBox box) {
@@ -205,6 +236,23 @@ namespace k8asd {
                 foreach (var box in logBoxes) {
                     Utils.ScrollToBottom(box);
                 }
+            }
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e) {
+            var channels = new List<ChatChannel>(channelDirties.Keys);
+            bool allChannelDirty = false;
+            foreach (var channel in channels) {
+                if (channelDirties[channel]) {
+                    channelDirties[channel] = false;
+                    allChannelDirty = true;
+                    UpdateChannelMessages(channel);
+                }
+            }
+
+            if (allChannelDirty) {
+                UpdateAllChannelMessages();
+                TryScrollBoxes();
             }
         }
     }
