@@ -32,18 +32,22 @@ namespace k8asd {
             this.componentTab = new System.Windows.Forms.TabControl();
             this.systemLogTab = new System.Windows.Forms.TabPage();
             this.chatLogTab = new System.Windows.Forms.TabPage();
-            this.infoPanel = new System.Windows.Forms.Panel();
             this.chatLogView = new k8asd.ChatLogView();
+            this.infoPanel = new System.Windows.Forms.Panel();
+            this.dailyTaskTab = new System.Windows.Forms.TabPage();
+            this.dailyTaskView = new k8asd.DailyTaskView();
             this.componentTab.SuspendLayout();
             this.systemLogTab.SuspendLayout();
             this.chatLogTab.SuspendLayout();
             this.infoPanel.SuspendLayout();
+            this.dailyTaskTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // systemLogView
             // 
             this.systemLogView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.systemLogView.Location = new System.Drawing.Point(3, 3);
+            this.systemLogView.Models = null;
             this.systemLogView.Name = "systemLogView";
             this.systemLogView.Size = new System.Drawing.Size(618, 413);
             this.systemLogView.TabIndex = 31;
@@ -73,6 +77,7 @@ namespace k8asd {
             // 
             this.componentTab.Controls.Add(this.systemLogTab);
             this.componentTab.Controls.Add(this.chatLogTab);
+            this.componentTab.Controls.Add(this.dailyTaskTab);
             this.componentTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.componentTab.Location = new System.Drawing.Point(0, 125);
             this.componentTab.Name = "componentTab";
@@ -102,6 +107,16 @@ namespace k8asd {
             this.chatLogTab.Text = "Chat";
             this.chatLogTab.UseVisualStyleBackColor = true;
             // 
+            // chatLogView
+            // 
+            this.chatLogView.AutoScroll = true;
+            this.chatLogView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chatLogView.Location = new System.Drawing.Point(3, 3);
+            this.chatLogView.Models = null;
+            this.chatLogView.Name = "chatLogView";
+            this.chatLogView.Size = new System.Drawing.Size(618, 413);
+            this.chatLogView.TabIndex = 0;
+            // 
             // infoPanel
             // 
             this.infoPanel.Controls.Add(this.infoView);
@@ -113,14 +128,24 @@ namespace k8asd {
             this.infoPanel.Size = new System.Drawing.Size(632, 125);
             this.infoPanel.TabIndex = 33;
             // 
-            // chatLogView
+            // dailyTaskTab
             // 
-            this.chatLogView.AutoScroll = true;
-            this.chatLogView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chatLogView.Location = new System.Drawing.Point(3, 3);
-            this.chatLogView.Name = "chatLogView";
-            this.chatLogView.Size = new System.Drawing.Size(618, 413);
-            this.chatLogView.TabIndex = 0;
+            this.dailyTaskTab.Controls.Add(this.dailyTaskView);
+            this.dailyTaskTab.Location = new System.Drawing.Point(4, 22);
+            this.dailyTaskTab.Name = "dailyTaskTab";
+            this.dailyTaskTab.Size = new System.Drawing.Size(624, 419);
+            this.dailyTaskTab.TabIndex = 2;
+            this.dailyTaskTab.Text = "NVHN";
+            this.dailyTaskTab.UseVisualStyleBackColor = true;
+            // 
+            // dailyTaskView
+            // 
+            this.dailyTaskView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dailyTaskView.Location = new System.Drawing.Point(0, 0);
+            this.dailyTaskView.Models = null;
+            this.dailyTaskView.Name = "dailyTaskView";
+            this.dailyTaskView.Size = new System.Drawing.Size(624, 419);
+            this.dailyTaskView.TabIndex = 0;
             // 
             // ClientView
             // 
@@ -135,6 +160,7 @@ namespace k8asd {
             this.systemLogTab.ResumeLayout(false);
             this.chatLogTab.ResumeLayout(false);
             this.infoPanel.ResumeLayout(false);
+            this.dailyTaskTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -149,6 +175,8 @@ namespace k8asd {
         private TabPage chatLogTab;
         private Panel infoPanel;
         private ChatLogView chatLogView;
+        private TabPage dailyTaskTab;
+        private DailyTaskView dailyTaskView;
     }
 }
 
