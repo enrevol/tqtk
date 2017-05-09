@@ -35,5 +35,13 @@ namespace k8asd {
             Sender = sender;
             Content = content;
         }
+
+        public string Format() {
+            return String.Format("[{0}] [{1}] {2}: {3}", TimeStamp, Channel.Name, Sender, Content);
+        }
+
+        public override string ToString() {
+            return Format();
+        }
     }
 }
