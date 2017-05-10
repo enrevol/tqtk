@@ -13,7 +13,7 @@ namespace k8asd {
 
         private IPacketWriter packetWriter;
         private ISystemLog messageLogModel;
-        private IInfoModel infoModel;
+        private IPlayerInfo infoModel;
 
         private bool asyncLock;
         private bool timerLock;
@@ -51,7 +51,7 @@ namespace k8asd {
             messageLogModel = model;
         }
 
-        public void SetInfoModel(IInfoModel model) {
+        public void SetInfoModel(IPlayerInfo model) {
             infoModel = model;
         }
 

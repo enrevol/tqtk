@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 namespace k8asd {
     public partial class CampaignView : UserControl {
         private IPacketWriter packetWriter;
-        private IInfoModel infoModel;
+        private IPlayerInfo infoModel;
 
         public CampaignView() {
             InitializeComponent();
@@ -26,7 +26,7 @@ namespace k8asd {
             packetWriter.PacketReceived += OnPacketReceived;
         }
 
-        public void SetInfoModel(IInfoModel model) {
+        public void SetInfoModel(IPlayerInfo model) {
             infoModel = model;
         }
 

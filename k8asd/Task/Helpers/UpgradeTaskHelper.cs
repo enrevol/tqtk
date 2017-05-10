@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 namespace k8asd {
     public class UpgradeTaskHelper : ITaskHelper {
         private IPacketWriter writer;
-        private IInfoModel info;
+        private IPlayerInfo info;
         private UpgradeInfo upgrade;
 
-        public UpgradeTaskHelper(IPacketWriter writer, IInfoModel info, UpgradeInfo upgrade) {
+        public UpgradeTaskHelper(IPacketWriter writer, IPlayerInfo info, UpgradeInfo upgrade) {
             this.writer = writer;
             this.info = info;
             this.upgrade = upgrade;

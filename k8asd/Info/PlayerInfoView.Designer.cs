@@ -1,5 +1,5 @@
 ﻿namespace k8asd {
-    public partial class InfoView {
+    public partial class PlayerInfoView {
         /// <summary> 
         /// Required designer variable.
         /// </summary>

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 namespace k8asd {
     public class FoodTaskHelper : ITaskHelper {
         private IPacketWriter writer;
-        private IInfoModel info;
+        private IPlayerInfo info;
         private MarketInfo market;
 
-        public FoodTaskHelper(IPacketWriter writer, IInfoModel info, MarketInfo market) {
+        public FoodTaskHelper(IPacketWriter writer, IPlayerInfo info, MarketInfo market) {
             this.writer = writer;
             this.info = info;
             this.market = market;

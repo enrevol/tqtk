@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace k8asd {
     class CooldownModel : ICooldownModel {
-        private IInfoModel infoModel;
+        private IPlayerInfo infoModel;
         private IPacketWriter packetWriter;
 
         private Cooldown imposeCooldown;
@@ -47,7 +47,7 @@ namespace k8asd {
             packetWriter.PacketReceived += OnPacketReceived;
         }
 
-        public void SetInfoModel(IInfoModel model) {
+        public void SetInfoModel(IPlayerInfo model) {
             infoModel = model;
         }
 

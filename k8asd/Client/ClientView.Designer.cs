@@ -28,7 +28,7 @@ namespace k8asd {
             this.systemLogView = new k8asd.SystemLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuView();
-            this.infoView = new k8asd.InfoView();
+            this.infoView = new k8asd.PlayerInfoView();
             this.componentTab = new System.Windows.Forms.TabControl();
             this.systemLogTab = new System.Windows.Forms.TabPage();
             this.chatLogTab = new System.Windows.Forms.TabPage();
@@ -166,7 +166,7 @@ namespace k8asd {
         }
 
         #endregion
-        private InfoView infoView;
+        private PlayerInfoView infoView;
         private McuView mcuView;
         private CooldownView cooldownView;
         private SystemLogView systemLogView;

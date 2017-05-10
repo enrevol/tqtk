@@ -24,10 +24,8 @@ namespace k8asd {
 
         private Dictionary<Type, IClientComponent> components;
 
-        /// <summary>
-        /// Handles all system messages.
-        /// </summary>
         private ISystemLog systemLog;
+        private IPlayerInfo playerInfo;
 
         public ClientState State {
             get { return state; }
@@ -56,7 +54,12 @@ namespace k8asd {
         }
 
         public string PlayerName {
-            get { return ""; } // return infoModel.PlayerName; }
+            get {
+                if (playerInfo == null) {
+                    return "";
+                }
+                return playerInfo.PlayerName;
+            }
         }
 
         public Client() {
@@ -80,6 +83,10 @@ namespace k8asd {
             systemLog = new SystemLog();
             systemLog.Client = this;
             components.Add(typeof(ISystemLog), systemLog);
+
+            playerInfo = new PlayerInfo();
+            playerInfo.Client = this;
+            components.Add(typeof(IPlayerInfo), playerInfo);
         }
 
         public T GetComponent<T>() {

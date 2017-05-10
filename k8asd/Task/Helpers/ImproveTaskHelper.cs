@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 namespace k8asd {
     public class ImproveTaskHelper : ITaskHelper {
         private IPacketWriter writer;
-        private IInfoModel info;
+        private IPlayerInfo info;
         private Barracks barracks;
 
-        public ImproveTaskHelper(IPacketWriter writer, IInfoModel info, Barracks barracks) {
+        public ImproveTaskHelper(IPacketWriter writer, IPlayerInfo info, Barracks barracks) {
             this.writer = writer;
             this.info = info;
             this.barracks = barracks;

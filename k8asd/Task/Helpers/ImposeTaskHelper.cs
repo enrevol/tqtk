@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 namespace k8asd {
     public class ImposeTaskHelper : ITaskHelper {
         private IPacketWriter writer;
-        private IInfoModel info;
+        private IPlayerInfo info;
         private ImposeInfo impose;
 
-        public ImposeTaskHelper(IPacketWriter writer, IInfoModel info, ImposeInfo impose) {
+        public ImposeTaskHelper(IPacketWriter writer, IPlayerInfo info, ImposeInfo impose) {
             this.writer = writer;
             this.info = info;
             this.impose = impose;

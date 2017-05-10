@@ -1,13 +1,23 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace k8asd {
-    public class InfoModel : IInfoModel {
-        private IPacketWriter packetWriter;
+    public class PlayerInfo : IPlayerInfo {
+        public event EventHandler PlayerIdChanged;
+        public event EventHandler PlayerNameChanged;
+        public event EventHandler PlayerLevelChanged;
+        public event EventHandler LegionNameChanged;
+        public event EventHandler GoldChanged;
+        public event EventHandler ReputationChanged;
+        public event EventHandler HonorChanged;
+        public event EventHandler FoodChanged;
+        public event EventHandler MaxFoodChanged;
+        public event EventHandler ForceChanged;
+        public event EventHandler MaxForceChanged;
+        public event EventHandler SilverChanged;
+        public event EventHandler MaxSilverChanged;
+
+        private IClient client;
 
         private int playerId;
         private string playerName;
@@ -25,25 +35,24 @@ namespace k8asd {
         private int silver;
         private int maxSilver;
 
-        public event EventHandler<int> PlayerIdChanged;
-        public event EventHandler<string> PlayerNameChanged;
-        public event EventHandler<int> PlayerLevelChanged;
-        public event EventHandler<string> LegionNameChanged;
-        public event EventHandler<int> GoldChanged;
-        public event EventHandler<int> ReputationChanged;
-        public event EventHandler<int> HonorChanged;
-        public event EventHandler<int> FoodChanged;
-        public event EventHandler<int> MaxFoodChanged;
-        public event EventHandler<int> ForceChanged;
-        public event EventHandler<int> MaxForceChanged;
-        public event EventHandler<int> SilverChanged;
-        public event EventHandler<int> MaxSilverChanged;
+        public IClient Client {
+            get { return client; }
+            set {
+                if (client != null) {
+                    client.PacketReceived -= OnPacketReceived;
+                }
+                client = value;
+                if (cliet != null) {
+                    client.PacketReceived += OnPacketReceived;
+                }
+            }
+        }
 
         public int PlayerId {
             get { return playerId; }
             private set {
                 playerId = value;
-                PlayerIdChanged.Raise(this, value);
+                PlayerIdChanged.Raise(this);
             }
         }
 
@@ -51,7 +60,7 @@ namespace k8asd {
             get { return playerName; }
             private set {
                 playerName = value;
-                PlayerNameChanged.Raise(this, value);
+                PlayerNameChanged.Raise(this);
             }
         }
 
@@ -59,7 +68,7 @@ namespace k8asd {
             get { return playerLevel; }
             private set {
                 playerLevel = value;
-                PlayerLevelChanged.Raise(this, value);
+                PlayerLevelChanged.Raise(this);
             }
         }
 
@@ -67,7 +76,7 @@ namespace k8asd {
             get { return legionName; }
             private set {
                 legionName = value;
-                LegionNameChanged.Raise(this, value);
+                LegionNameChanged.Raise(this);
             }
         }
 
@@ -79,7 +88,7 @@ namespace k8asd {
             get { return systemGold; }
             private set {
                 systemGold = value;
-                GoldChanged.Raise(this, Gold);
+                GoldChanged.Raise(this);
             }
         }
 
@@ -87,7 +96,7 @@ namespace k8asd {
             get { return userGold; }
             private set {
                 userGold = value;
-                GoldChanged.Raise(this, Gold);
+                GoldChanged.Raise(this);
             }
         }
 
@@ -99,7 +108,7 @@ namespace k8asd {
             get { return reputation; }
             private set {
                 reputation = value;
-                ReputationChanged.Raise(this, value);
+                ReputationChanged.Raise(this);
             }
         }
 
@@ -107,7 +116,7 @@ namespace k8asd {
             get { return honor; }
             private set {
                 honor = value;
-                HonorChanged.Raise(this, value);
+                HonorChanged.Raise(this);
             }
         }
 
@@ -115,7 +124,7 @@ namespace k8asd {
             get { return food; }
             private set {
                 food = value;
-                FoodChanged.Raise(this, value);
+                FoodChanged.Raise(this);
             }
         }
 
@@ -123,7 +132,7 @@ namespace k8asd {
             get { return maxFood; }
             private set {
                 maxFood = value;
-                MaxFoodChanged.Raise(this, value);
+                MaxFoodChanged.Raise(this);
             }
         }
 
@@ -131,7 +140,7 @@ namespace k8asd {
             get { return forces; }
             private set {
                 forces = value;
-                ForceChanged.Raise(this, value);
+                ForceChanged.Raise(this);
             }
         }
 
@@ -139,7 +148,7 @@ namespace k8asd {
             get { return maxForces; }
             private set {
                 maxForces = value;
-                MaxForceChanged.Raise(this, value);
+                MaxForceChanged.Raise(this);
             }
         }
 
@@ -147,7 +156,7 @@ namespace k8asd {
             get { return silver; }
             private set {
                 silver = value;
-                SilverChanged.Raise(this, value);
+                SilverChanged.Raise(this);
             }
         }
 
@@ -155,20 +164,12 @@ namespace k8asd {
             get { return maxSilver; }
             private set {
                 maxSilver = value;
-                MaxSilverChanged.Raise(this, value);
+                MaxSilverChanged.Raise(this);
             }
-        }
-
-        public void SetPacketWriter(IPacketWriter writer) {
-            if (packetWriter != null) {
-                packetWriter.PacketReceived -= OnPacketReceived;
-            }
-            packetWriter = writer;
-            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         private void OnPacketReceived(object sender, Packet packet) {
-            if (packet.CommandId == "11102") {
+            if (packet.Id == 11102) {
                 // Vừa đăng nhập xong.
                 var token = JToken.Parse(packet.Message);
                 var player = token["player"];
@@ -186,10 +187,10 @@ namespace k8asd {
                 var limitvalue = token["limitvalue"];
                 ParseInfo1(limitvalue);
             }
-            if (packet.CommandId == "11103"
-                || packet.CommandId == "11104" // Cập nhật từng phút.
-                || packet.CommandId == "14102" // Tuyển/đào tạo lính.
-                || packet.CommandId == "41102" // Cải tiến.
+            if (packet.Id == 11103
+                || packet.Id == 11104 // Cập nhật từng phút.
+                || packet.Id == 14102 // Tuyển/đào tạo lính.
+                || packet.Id == 41102 // Cải tiến.
                 ) {
                 var token = JToken.Parse(packet.Message);
                 var playerupdateinfo = token["playerupdateinfo"];
@@ -200,7 +201,7 @@ namespace k8asd {
                     //
                 }
             }
-            if (packet.CommandId == "34108") {
+            if (packet.Id == 34108) {
                 // Đánh xong NPC.
                 var token = JToken.Parse(packet.Message);
                 var playerbattleinfo = token["playerbattleinfo"];

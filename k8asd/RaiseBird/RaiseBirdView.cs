@@ -19,7 +19,7 @@ namespace k8asd
 
         private IPacketWriter packetWriter;
         private ISystemLog messageLogModel;
-        private IInfoModel infoModel;
+        private IPlayerInfo infoModel;
 
         public RaiseBirdView()
         {
@@ -36,7 +36,7 @@ namespace k8asd
             messageLogModel = model;
         }
 
-        public void SetInfoModel(IInfoModel model)
+        public void SetInfoModel(IPlayerInfo model)
         {
             infoModel = model;
         }

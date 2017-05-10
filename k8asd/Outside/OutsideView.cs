@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace k8asd {
     public partial class OutsideView : UserControl, IConfigHandler {
         private IPacketWriter packetWriter;
-        private IInfoModel infoModel;
+        private IPlayerInfo infoModel;
         private ICooldownModel cooldownModel;
         private ISystemLog messageLogModel;
 
@@ -41,7 +41,7 @@ namespace k8asd {
             packetWriter.PacketReceived += OnPacketReceived;
         }
 
-        public void SetInfoModel(IInfoModel model) {
+        public void SetInfoModel(IPlayerInfo model) {
             infoModel = model;
         }
 

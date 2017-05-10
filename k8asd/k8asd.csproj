@@ -184,6 +184,7 @@
     <Compile Include="HeroTraining\TrainTimeModel.cs" />
     <Compile Include="Impose\ImposeCommand.cs" />
     <Compile Include="Impose\ImposeInfo.cs" />
+    <Compile Include="Info\IPlayerInfoView.cs" />
     <Compile Include="Legacy\LegacyClient.cs" />
     <Compile Include="Mail\MailCommand.cs" />
     <Compile Include="Map\Area.cs" />
@@ -300,10 +301,10 @@
     <Compile Include="ChatLog\IChatLog.cs" />
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
-    <Compile Include="Info\IInfoModel.cs" />
+    <Compile Include="Info\IPlayerInfo.cs" />
     <Compile Include="Mcu\IMcuModel.cs" />
-    <Compile Include="Info\InfoModel.cs" />
-    <Compile Include="Info\InfoView.cs">
+    <Compile Include="Info\PlayerInfo.cs" />
+    <Compile Include="Info\PlayerInfoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Legacy\Class.cs" />
@@ -332,8 +333,8 @@
     <Compile Include="Impose\ImposeView.Designer.cs">
       <DependentUpon>ImposeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Info\InfoView.Designer.cs">
-      <DependentUpon>InfoView.cs</DependentUpon>
+    <Compile Include="Info\PlayerInfoView.Designer.cs">
+      <DependentUpon>PlayerInfoView.cs</DependentUpon>
     </Compile>
     <Compile Include="Connection\IPacketWriter.cs" />
     <Compile Include="Connection\LoginHelper.cs" />
@@ -447,8 +448,8 @@
     <EmbeddedResource Include="Impose\ImposeView.resx">
       <DependentUpon>ImposeView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Info\InfoView.resx">
-      <DependentUpon>InfoView.cs</DependentUpon>
+    <EmbeddedResource Include="Info\PlayerInfoView.resx">
+      <DependentUpon>PlayerInfoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Map\MapView.resx">
       <DependentUpon>MapView.cs</DependentUpon>

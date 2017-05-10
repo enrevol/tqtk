@@ -1,11 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace k8asd {
-    public interface IInfoModel {
+    public interface IPlayerInfo : IClientComponent {
+        event EventHandler PlayerIdChanged;
+        event EventHandler PlayerNameChanged;
+        event EventHandler PlayerLevelChanged;
+        event EventHandler LegionNameChanged;
+        event EventHandler GoldChanged;
+        event EventHandler ReputationChanged;
+        event EventHandler HonorChanged;
+        event EventHandler FoodChanged;
+        event EventHandler MaxFoodChanged;
+        event EventHandler ForceChanged;
+        event EventHandler MaxForceChanged;
+        event EventHandler SilverChanged;
+        event EventHandler MaxSilverChanged;
+
         int PlayerId { get; }
 
         /// <summary>
@@ -69,19 +79,5 @@ namespace k8asd {
         /// Gets the player's silver capacity.
         /// </summary>
         int MaxSilver { get; }
-
-        event EventHandler<int> PlayerIdChanged;
-        event EventHandler<string> PlayerNameChanged;
-        event EventHandler<int> PlayerLevelChanged;
-        event EventHandler<string> LegionNameChanged;
-        event EventHandler<int> GoldChanged;
-        event EventHandler<int> ReputationChanged;
-        event EventHandler<int> HonorChanged;
-        event EventHandler<int> FoodChanged;
-        event EventHandler<int> MaxFoodChanged;
-        event EventHandler<int> ForceChanged;
-        event EventHandler<int> MaxForceChanged;
-        event EventHandler<int> SilverChanged;
-        event EventHandler<int> MaxSilverChanged;
     }
 }
