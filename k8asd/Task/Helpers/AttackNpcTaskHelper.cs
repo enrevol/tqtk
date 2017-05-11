@@ -3,9 +3,9 @@
 namespace k8asd {
     public class AttackNpcTaskHelper : ITaskHelper {
         private IPacketWriter writer;
-        private IMcuModel mcu;
+        private IMcuInfo mcu;
 
-        public AttackNpcTaskHelper(IPacketWriter writer, IMcuModel mcu) {
+        public AttackNpcTaskHelper(IPacketWriter writer, IMcuInfo mcu) {
             this.writer = writer;
             this.mcu = mcu;
         }

@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dailyTaskCheck = new System.Windows.Forms.CheckBox();
-            this.taskTimer = new System.Windows.Forms.Timer(this.components);
             this.doFoodTaskCheck = new System.Windows.Forms.CheckBox();
             this.doImproveTaskCheck = new System.Windows.Forms.CheckBox();
             this.doAttackNpcTaskCheck = new System.Windows.Forms.CheckBox();
@@ -49,12 +48,6 @@
             this.dailyTaskCheck.TabIndex = 0;
             this.dailyTaskCheck.Text = "Tự làm nhiệm vụ hằng ngày";
             this.dailyTaskCheck.UseVisualStyleBackColor = true;
-            this.dailyTaskCheck.CheckedChanged += new System.EventHandler(this.chkQuest_CheckedChanged);
-            // 
-            // taskTimer
-            // 
-            this.taskTimer.Interval = 5000;
-            this.taskTimer.Tick += new System.EventHandler(this.taskTimer_Tick);
             // 
             // doFoodTaskCheck
             // 
@@ -138,7 +131,6 @@
         #endregion
 
         private System.Windows.Forms.CheckBox dailyTaskCheck;
-        private System.Windows.Forms.Timer taskTimer;
         private System.Windows.Forms.CheckBox doFoodTaskCheck;
         private System.Windows.Forms.CheckBox doImproveTaskCheck;
         private System.Windows.Forms.CheckBox doAttackNpcTaskCheck;

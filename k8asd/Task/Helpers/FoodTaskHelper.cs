@@ -3,19 +3,18 @@ using System.Threading.Tasks;
 
 namespace k8asd {
     public class FoodTaskHelper : ITaskHelper {
-        private IPacketWriter writer;
-        private IPlayerInfo info;
+        private IClient client;
         private MarketInfo market;
 
-        public FoodTaskHelper(IPacketWriter writer, IPlayerInfo info, MarketInfo market) {
-            this.writer = writer;
-            this.info = info;
+        public FoodTaskHelper(IClient client, MarketInfo market) {
+            this.client = client;
             this.market = market;
         }
 
         public int PredictDifficulty(int times) {
             int remainTrades = market.MaxTradeAmount - market.TradeAmount;
-            return PredictDifficulty(times, remainTrades, market.Price, info.Food, info.MaxFood, info.Silver, info.MaxSilver);
+            var playerInfo = client.GetComponent<IPlayerInfo>();
+            return PredictDifficulty(times, remainTrades, market.Price, playerInfo.Food, playerInfo.MaxFood, playerInfo.Silver, playerInfo.MaxSilver);
         }
 
         private int PredictDifficulty(int times, int trades, double price, int food, int maxFood, int silver, int maxSilver) {
@@ -72,7 +71,7 @@ namespace k8asd {
             const int amount = 1;
 
             if (buyBlackMarket) {
-                var p1 = await writer.BuyPaddyInMaketAsync(amount);
+                var p1 = await client.BuyPaddyInMaketAsync(amount);
                 if (p1 == null) {
                     return TaskResult.LostConnection;
                 }
@@ -83,7 +82,7 @@ namespace k8asd {
                 return TaskResult.Done;
             }
 
-            var p = await writer.SalePaddyAsync(amount);
+            var p = await client.SalePaddyAsync(amount);
             if (p == null) {
                 return TaskResult.LostConnection;
             }
@@ -91,7 +90,7 @@ namespace k8asd {
                 // Hết số lượng giao dịch.
                 // Số bạc tràn kho.
 
-                var p0 = await writer.BuyPaddyAsync(amount);
+                var p0 = await client.BuyPaddyAsync(amount);
                 if (p0 == null) {
                     return TaskResult.LostConnection;
                 }
