@@ -201,6 +201,8 @@
     <Compile Include="Map\World.cs" />
     <Compile Include="Market\MarketCommand.cs" />
     <Compile Include="Market\MarketInfo.cs" />
+    <Compile Include="Mcu\IMcuInfo.cs" />
+    <Compile Include="Mcu\IMcuInfoView.cs" />
     <Compile Include="Outside\DrillReward.cs" />
     <Compile Include="Outside\OutsideCommand.cs" />
     <Compile Include="Outside\OutsideView.cs">
@@ -302,7 +304,6 @@
     <Compile Include="Cooldown\CooldownModel.cs" />
     <Compile Include="Cooldown\ICooldownModel.cs" />
     <Compile Include="Info\IPlayerInfo.cs" />
-    <Compile Include="Mcu\IMcuModel.cs" />
     <Compile Include="Info\PlayerInfo.cs" />
     <Compile Include="Info\PlayerInfoView.cs">
       <SubType>UserControl</SubType>
@@ -338,12 +339,12 @@
     </Compile>
     <Compile Include="Connection\IPacketWriter.cs" />
     <Compile Include="Connection\LoginHelper.cs" />
-    <Compile Include="Mcu\McuModel.cs" />
-    <Compile Include="Mcu\McuView.cs">
+    <Compile Include="Mcu\McuInfo.cs" />
+    <Compile Include="Mcu\McuInfoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Mcu\McuView.Designer.cs">
-      <DependentUpon>McuView.cs</DependentUpon>
+    <Compile Include="Mcu\McuInfoView.Designer.cs">
+      <DependentUpon>McuInfoView.cs</DependentUpon>
     </Compile>
     <Compile Include="Client\ClientView.cs">
       <SubType>UserControl</SubType>
@@ -454,8 +455,8 @@
     <EmbeddedResource Include="Map\MapView.resx">
       <DependentUpon>MapView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mcu\McuView.resx">
-      <DependentUpon>McuView.cs</DependentUpon>
+    <EmbeddedResource Include="Mcu\McuInfoView.resx">
+      <DependentUpon>McuInfoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SystemLog\SystemLogView.resx">
       <DependentUpon>SystemLogView.cs</DependentUpon>

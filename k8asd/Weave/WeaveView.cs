@@ -22,7 +22,7 @@ namespace k8asd {
         private WeaveTeamDetail myTeam;
 
         private ICooldownModel cooldownModel;
-        private IInfoModel infoModel;
+        private IPlayerInfo infoModel;
         private IPacketWriter packetWriter;
 
         public WeaveView() {
@@ -60,7 +60,7 @@ namespace k8asd {
             cooldownModel = cooldown;
         }
 
-        public void SetInfoModel(IInfoModel info) {
+        public void SetInfoModel(IPlayerInfo info) {
             infoModel = info;
         }
 

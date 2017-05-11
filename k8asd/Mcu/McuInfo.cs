@@ -3,64 +3,49 @@ using System;
 using System.Windows.Forms;
 
 namespace k8asd {
-    class McuModel : IMcuModel {
-        private IPacketWriter packetWriter;
+    public class McuModel : IMcuInfo {
+        public event EventHandler MaxMcuChanged;
+        public event EventHandler McuChanged;
+        public event EventHandler McuCooldownChanged;
+        public event EventHandler ExtraGongjiChanged;
+        public event EventHandler ExtraNongtianChanged;
+        public event EventHandler ExtraYinkuangChanged;
+        public event EventHandler ExtraZhengfuChanged;
+        public event EventHandler ExtraZhengzhanChanged;
+        public event EventHandler TokencdusableChanged;
 
-        int mcu;
-        int maxMcu;
-        int mcuCooldown;
-        bool extraZhengzhan;
-        bool extraGongji;
-        bool extraZhengfu;
-        bool extraNongtian;
-        bool extraYinkuang;
-        bool tokencdusable;
+        private IClient client;
 
-        public event EventHandler<int> MaxMcuChanged;
-        public event EventHandler<int> McuChanged;
-        public event EventHandler<int> McuCooldownChanged;
-        public event EventHandler<bool> ExtraGongjiChanged;
-        public event EventHandler<bool> ExtraNongtianChanged;
-        public event EventHandler<bool> ExtraYinkuangChanged;
-        public event EventHandler<bool> ExtraZhengfuChanged;
-        public event EventHandler<bool> ExtraZhengzhanChanged;
-        public event EventHandler<bool> TokencdusableChanged;
+        private int mcu;
+        private int maxMcu;
+        private bool extraZhengzhan;
+        private bool extraGongji;
+        private bool extraZhengfu;
+        private bool extraNongtian;
+        private bool extraYinkuang;
+        private bool tokencdusable;
 
-        private Cooldown qdCooldown;
+        private Cooldown mcuCooldown;
         private Timer oneSecondTimer;
 
-        public McuModel()
-        {
-            qdCooldown = new Cooldown();
-
-            oneSecondTimer = new Timer();
-            oneSecondTimer.Interval = 1000;
-            oneSecondTimer.Tick += OneSecondTimer_Tick;
-            oneSecondTimer.Start();
-        }
-        private void OneSecondTimer_Tick(object sender, EventArgs e)
-        {
-            UpdateCooldowns();
-        }
-
-        private void UpdateCooldowns()
-        {
-            McuCooldownChanged.Raise(this, McuCooldown);
-        }
-
-        public void SetPacketWriter(IPacketWriter writer) {
-            if (packetWriter != null) {
-                packetWriter.PacketReceived -= OnPacketReceived;
+        public IClient Client {
+            get { return client; }
+            set {
+                if (client != null) {
+                    client.PacketReceived -= OnPacketReceived;
+                }
+                client = value;
+                if (client != null) {
+                    client.PacketReceived += OnPacketReceived;
+                }
             }
-            packetWriter = writer;
-            packetWriter.PacketReceived += OnPacketReceived;
         }
 
         public int Mcu {
             get { return mcu; }
             private set {
                 mcu = value;
-                McuChanged.Raise(this, value);
+                McuChanged.Raise(this);
             }
         }
 
@@ -68,16 +53,15 @@ namespace k8asd {
             get { return maxMcu; }
             private set {
                 maxMcu = value;
-                MaxMcuChanged.Raise(this, value);
+                MaxMcuChanged.Raise(this);
             }
         }
 
         public int McuCooldown {
-            get { return qdCooldown.RemainingMilliseconds; }
+            get { return mcuCooldown.RemainingMilliseconds; }
             private set {
-                //mcuCooldown = value;
-                qdCooldown.RemainingMilliseconds = value;
-                McuCooldownChanged.Raise(this, value);
+                mcuCooldown.RemainingMilliseconds = value;
+                McuCooldownChanged.Raise(this);
             }
         }
 
@@ -85,7 +69,7 @@ namespace k8asd {
             get { return extraZhengzhan; }
             private set {
                 extraZhengzhan = value;
-                ExtraZhengzhanChanged.Raise(this, value);
+                ExtraZhengzhanChanged.Raise(this);
             }
         }
 
@@ -93,7 +77,7 @@ namespace k8asd {
             get { return extraGongji; }
             private set {
                 extraGongji = value;
-                ExtraGongjiChanged.Raise(this, value);
+                ExtraGongjiChanged.Raise(this);
             }
         }
 
@@ -101,7 +85,7 @@ namespace k8asd {
             get { return extraNongtian; }
             private set {
                 extraNongtian = value;
-                ExtraNongtianChanged.Raise(this, value);
+                ExtraNongtianChanged.Raise(this);
             }
         }
 
@@ -109,7 +93,7 @@ namespace k8asd {
             get { return extraYinkuang; }
             private set {
                 extraYinkuang = value;
-                ExtraYinkuangChanged.Raise(this, value);
+                ExtraYinkuangChanged.Raise(this);
             }
         }
 
@@ -117,40 +101,43 @@ namespace k8asd {
             get { return extraZhengfu; }
             private set {
                 extraZhengfu = value;
-                ExtraZhengfuChanged.Raise(this, value);
-            }
-        }
-        public bool Tokencdusable
-        {
-            get { return tokencdusable; }
-            private set
-            {
-                tokencdusable = value;
-                TokencdusableChanged.Raise(this, value);
+                ExtraZhengfuChanged.Raise(this);
             }
         }
 
+        public bool Tokencdusable {
+            get { return tokencdusable; }
+            private set {
+                tokencdusable = value;
+                TokencdusableChanged.Raise(this);
+            }
+        }
+
+        public McuModel() {
+            mcuCooldown = new Cooldown();
+        }
+
         private void OnPacketReceived(object sender, Packet packet) {
-            if (packet.CommandId == "11102" ||
-                packet.CommandId == "11104") {
+            if (packet.Id == 11102 ||
+                packet.Id == 11104) {
                 var token = JToken.Parse(packet.Message);
                 var player = token["player"];
                 if (player != null) {
                     ParseMcu(player);
                 }
             }
-            if (packet.CommandId == "11103" || packet.CommandId == "11301") {
+            if (packet.Id == 11103 ||
+                packet.Id == 11301) {
                 var token = JToken.Parse(packet.Message);
                 var playerupdateinfo = token["playerupdateinfo"];
-                if (packet.CommandId == "11301")
-                {
+                if (packet.Id == 11301) {
                     McuCooldown = 0;
                 }
                 if (playerupdateinfo != null) {
                     ParseMcu(playerupdateinfo);
                 }
             }
-            if (packet.CommandId == "34108") {
+            if (packet.Id == 34108) {
                 var token = JToken.Parse(packet.Message);
                 var playerbattleinfo = token["playerbattleinfo"];
                 ParseMcu(playerbattleinfo);
@@ -166,7 +153,7 @@ namespace k8asd {
             ExtraZhengfu = (bool?) token["extrazhengfu"] ?? ExtraZhengfu;
             ExtraNongtian = (bool?) token["extranongtian"] ?? ExtraNongtian;
             ExtraYinkuang = (bool?) token["extrayinkuang"] ?? ExtraYinkuang;
-            Tokencdusable = (bool?)token["tokencdusable"] ?? Tokencdusable;
+            Tokencdusable = (bool?) token["tokencdusable"] ?? Tokencdusable;
         }
     }
 }

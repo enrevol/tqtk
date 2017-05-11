@@ -26,7 +26,7 @@ namespace k8asd {
         private IPacketWriter packetWriter;
         private ISystemLog messageLogModel;
         private IPlayerInfo infoModel;
-        private IMcuModel mcuModel;
+        private IMcuInfo mcuModel;
 
         public ArmyView() {
             InitializeComponent();
@@ -68,7 +68,7 @@ namespace k8asd {
             infoModel = model;
         }
 
-        public void SetMcuModel(IMcuModel model)
+        public void SetMcuModel(IMcuInfo model)
         {
             mcuModel = model;
         }

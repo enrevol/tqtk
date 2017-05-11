@@ -49,6 +49,10 @@ namespace k8asd {
                         model.MaxSilverChanged += OnMaxSilverChanged;
                     }
                     if (models.Count > 0) {
+                        UpdateHeader();
+                        UpdateFood();
+                        UpdateForce();
+                        UpdateSilver();
                         serverTimer.Start();
                     }
                 }
@@ -92,6 +96,21 @@ namespace k8asd {
             silverLabel.Text = String.Format("{0}/{1}", avgSilver, avgMaxSilver);
         }
 
+        private void UpdateGold() {
+            var avgGold = models.Average(item => item.Gold);
+            goldLabel.Text = avgGold.ToString();
+        }
+
+        private void UpdateReputation() {
+            var avgReputation = models.Average(item => item.Reputation);
+            reputationLabel.Text = avgReputation.ToString();
+        }
+
+        private void UpdateHonor() {
+            var avgHonor = models.Average(item => item.Honor);
+            honorLabel.Text = avgHonor.ToString();
+        }
+
         private void OnPlayerIdChanged(object sender, EventArgs e) {
             UpdateHeader();
         }
@@ -105,18 +124,15 @@ namespace k8asd {
         }
 
         private void OnGoldChanged(object sender, EventArgs e) {
-            var avgGold = models.Average(item => item.Gold);
-            goldLabel.Text = avgGold.ToString();
+            UpdateGold();
         }
 
         private void OnReputationChanged(object sender, EventArgs e) {
-            var avgReputation = models.Average(item => item.Reputation);
-            reputationLabel.Text = avgReputation.ToString();
+            UpdateReputation();
         }
 
         private void OnHonorChanged(object sender, EventArgs e) {
-            var avgHonor = models.Average(item => item.Honor);
-            honorLabel.Text = avgHonor.ToString();
+            UpdateHonor();
         }
 
         private void OnFoodChanged(object sender, EventArgs e) {

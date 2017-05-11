@@ -42,7 +42,7 @@ namespace k8asd {
                     client.PacketReceived -= OnPacketReceived;
                 }
                 client = value;
-                if (cliet != null) {
+                if (client != null) {
                     client.PacketReceived += OnPacketReceived;
                 }
             }

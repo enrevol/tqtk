@@ -1,7 +1,17 @@
 ﻿using System;
 
 namespace k8asd {
-    public interface IMcuModel {
+    public interface IMcuInfo : IClientComponent {
+        event EventHandler McuChanged;
+        event EventHandler MaxMcuChanged;
+        event EventHandler McuCooldownChanged;
+        event EventHandler ExtraZhengzhanChanged;
+        event EventHandler ExtraGongjiChanged;
+        event EventHandler ExtraZhengfuChanged;
+        event EventHandler ExtraNongtianChanged;
+        event EventHandler ExtraYinkuangChanged;
+        event EventHandler TokencdusableChanged;
+
         /// <summary>
         /// Gets the current number of MCU (Milliray Call-up Units).
         /// </summary>
@@ -43,18 +53,8 @@ namespace k8asd {
         bool ExtraYinkuang { get; }
 
         /// <summary>
-        /// Free T turn.
+        /// Whether or not the player can use a token.
         /// </summary>
         bool Tokencdusable { get; }
-
-        event EventHandler<int> McuChanged;
-        event EventHandler<int> MaxMcuChanged;
-        event EventHandler<int> McuCooldownChanged;
-        event EventHandler<bool> ExtraZhengzhanChanged;
-        event EventHandler<bool> ExtraGongjiChanged;
-        event EventHandler<bool> ExtraZhengfuChanged;
-        event EventHandler<bool> ExtraNongtianChanged;
-        event EventHandler<bool> ExtraYinkuangChanged;
-        event EventHandler<bool> TokencdusableChanged;
     }
 }

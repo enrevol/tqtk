@@ -1,5 +1,5 @@
 ﻿namespace k8asd {
-    partial class McuView {
+    partial class McuInfoView {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
