@@ -53,7 +53,7 @@ namespace k8asd {
             logBox4.ForeColor = GetChannelColor(ChatChannel.Legion);
             logBox5.ForeColor = GetChannelColor(ChatChannel.Campaign);
 
-            logTabList.SelectedIndex = 5;
+            logTabList.SelectedIndex = 6;
         }
 
         public List<IChatLog> Models {
