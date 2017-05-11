@@ -105,7 +105,9 @@ namespace k8asd {
         }
 
         public bool Tokencdusable {
-            get { return tokencdusable; }
+            get {
+                return McuCooldown == 0 || tokencdusable;
+            }
             private set {
                 tokencdusable = value;
                 TokencdusableChanged.Raise(this);
