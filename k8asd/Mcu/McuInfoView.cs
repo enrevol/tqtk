@@ -1,49 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class McuInfoView : UserControl, IMcuInfoView {
+    public partial class McuInfoView : UserControl, IClientComponentView<IMcuInfo> {
         private List<IMcuInfo> models;
+
+        public McuInfoView() {
+            InitializeComponent();
+        }
 
         public List<IMcuInfo> Models {
             get { return models; }
             set {
-                if (models != null) {
-                    foreach (var model in models) {
-                        model.McuChanged -= OnMcuChanged;
-                        model.MaxMcuChanged -= OnMaxMcuChanged;
-                        model.McuCooldownChanged -= OnMcuCooldownChanged;
-                        model.ExtraZhengzhanChanged -= OnExtraZhengzhanChanged;
-                        model.ExtraGongjiChanged -= OnExtraGongjiChanged;
-                        model.ExtraZhengfuChanged -= OnExtraZhengfuChanged;
-                        model.ExtraNongtianChanged -= OnExtraNongtianChanged;
-                        model.ExtraYinkuangChanged -= OnExtraYinkuangChanged;
-                    }
-                }
+                UnbindModels();
                 models = value;
-                if (models != null && models.Count > 0) {
-                    foreach (var model in models) {
-                        model.McuChanged += OnMcuChanged;
-                        model.MaxMcuChanged += OnMaxMcuChanged;
-                        model.McuCooldownChanged += OnMcuCooldownChanged;
-                        model.ExtraZhengzhanChanged += OnExtraZhengzhanChanged;
-                        model.ExtraGongjiChanged += OnExtraGongjiChanged;
-                        model.ExtraZhengfuChanged += OnExtraZhengfuChanged;
-                        model.ExtraNongtianChanged += OnExtraNongtianChanged;
-                        model.ExtraYinkuangChanged += OnExtraYinkuangChanged;
-                    }
-                    UpdateMcu();
-                    UpdateMcuCooldown();
-                    UpdateExtraTurns();
-                }
+                BindModels();
             }
         }
 
-        public McuInfoView() {
-            InitializeComponent();
+        public void BindModels() {
+            if (models == null || models.Count == 0) {
+                return;
+            }
+            foreach (var model in models) {
+                model.McuChanged += OnMcuChanged;
+                model.MaxMcuChanged += OnMaxMcuChanged;
+                model.ExtraZhengzhanChanged += OnExtraZhengzhanChanged;
+                model.ExtraGongjiChanged += OnExtraGongjiChanged;
+                model.ExtraZhengfuChanged += OnExtraZhengfuChanged;
+                model.ExtraNongtianChanged += OnExtraNongtianChanged;
+                model.ExtraYinkuangChanged += OnExtraYinkuangChanged;
+            }
+            UpdateMcu();
+            UpdateMcuCooldown();
+            UpdateExtraTurns();
+            cooldownTimer.Start();
+        }
+
+        public void UnbindModels() {
+            cooldownTimer.Stop();
+            if (models == null || models.Count == 0) {
+                return;
+            }
+            foreach (var model in models) {
+                model.McuChanged -= OnMcuChanged;
+                model.MaxMcuChanged -= OnMaxMcuChanged;
+                model.ExtraZhengzhanChanged -= OnExtraZhengzhanChanged;
+                model.ExtraGongjiChanged -= OnExtraGongjiChanged;
+                model.ExtraZhengfuChanged -= OnExtraZhengfuChanged;
+                model.ExtraNongtianChanged -= OnExtraNongtianChanged;
+                model.ExtraYinkuangChanged -= OnExtraYinkuangChanged;
+            }
         }
 
         private void UpdateMcu() {
@@ -76,7 +87,13 @@ namespace k8asd {
 
         private void UpdateMcuCooldown() {
             var minCooldown = models.Min(item => item.McuCooldown);
+            var usable = models.Any(item => item.Tokencdusable);
             mcuCooldownLabel.Text = Utils.FormatDuration(minCooldown);
+            if (usable) {
+                mcuCooldownLabel.ForeColor = default(Color);
+            } else {
+                mcuCooldownLabel.ForeColor = Color.Red;
+            }
         }
 
         private void OnMcuChanged(object sender, EventArgs e) {
@@ -85,10 +102,6 @@ namespace k8asd {
 
         private void OnMaxMcuChanged(object sender, EventArgs e) {
             UpdateMcu();
-        }
-
-        private void OnMcuCooldownChanged(object sender, EventArgs e) {
-            // UpdateMcuCooldown(milliseconds);
         }
 
         private void OnExtraZhengzhanChanged(object sender, EventArgs e) {
@@ -113,6 +126,10 @@ namespace k8asd {
 
         private async void btnPhaBangQD_Click(object sender, EventArgs e) {
             // await packetWriter.SendCommandAsync("11301", "4", "0");
+        }
+
+        private void cooldownTimer_Tick(object sender, EventArgs e) {
+            UpdateMcuCooldown();
         }
     }
 }

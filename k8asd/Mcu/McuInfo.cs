@@ -3,7 +3,7 @@ using System;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public class McuModel : IMcuInfo {
+    public class McuInfo : IMcuInfo {
         public event EventHandler MaxMcuChanged;
         public event EventHandler McuChanged;
         public event EventHandler McuCooldownChanged;
@@ -26,7 +26,6 @@ namespace k8asd {
         private bool tokencdusable;
 
         private Cooldown mcuCooldown;
-        private Timer oneSecondTimer;
 
         public IClient Client {
             get { return client; }
@@ -113,7 +112,7 @@ namespace k8asd {
             }
         }
 
-        public McuModel() {
+        public McuInfo() {
             mcuCooldown = new Cooldown();
         }
 

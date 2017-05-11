@@ -27,7 +27,7 @@ namespace k8asd {
         private void InitializeComponent() {
             this.systemLogView = new k8asd.SystemLogView();
             this.cooldownView = new k8asd.CooldownView();
-            this.mcuView = new k8asd.McuInfoView();
+            this.mcuInfoView = new k8asd.McuInfoView();
             this.playerInfoView = new k8asd.PlayerInfoView();
             this.componentTab = new System.Windows.Forms.TabControl();
             this.systemLogTab = new System.Windows.Forms.TabPage();
@@ -61,11 +61,11 @@ namespace k8asd {
             // 
             // mcuView
             // 
-            this.mcuView.Location = new System.Drawing.Point(3, 101);
-            this.mcuView.Models = null;
-            this.mcuView.Name = "mcuView";
-            this.mcuView.Size = new System.Drawing.Size(310, 22);
-            this.mcuView.TabIndex = 29;
+            this.mcuInfoView.Location = new System.Drawing.Point(3, 101);
+            this.mcuInfoView.Models = null;
+            this.mcuInfoView.Name = "mcuView";
+            this.mcuInfoView.Size = new System.Drawing.Size(310, 22);
+            this.mcuInfoView.TabIndex = 29;
             // 
             // playerInfoView
             // 
@@ -141,7 +141,7 @@ namespace k8asd {
             // infoPanel
             // 
             this.infoPanel.Controls.Add(this.playerInfoView);
-            this.infoPanel.Controls.Add(this.mcuView);
+            this.infoPanel.Controls.Add(this.mcuInfoView);
             this.infoPanel.Controls.Add(this.cooldownView);
             this.infoPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.infoPanel.Location = new System.Drawing.Point(0, 0);
@@ -169,7 +169,7 @@ namespace k8asd {
 
         #endregion
         private PlayerInfoView playerInfoView;
-        private McuInfoView mcuView;
+        private McuInfoView mcuInfoView;
         private CooldownView cooldownView;
         private SystemLogView systemLogView;
         private TabControl componentTab;

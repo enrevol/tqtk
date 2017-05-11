@@ -15,6 +15,7 @@ namespace k8asd {
                     systemLogView.Models = clients.Select(item => item.GetComponent<ISystemLog>()).ToList();
                     chatLogView.Models = clients.Select(item => item.GetComponent<IChatLog>()).ToList();
                     playerInfoView.Models = clients.Select(item => item.GetComponent<IPlayerInfo>()).ToList();
+                    mcuInfoView.Models = clients.Select(item => item.GetComponent<IMcuInfo>()).ToList();
                 }
             }
         }

@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.mcuLabel = new System.Windows.Forms.Label();
             this.extraZhengzhanLabel = new System.Windows.Forms.Label();
             this.extraGongjiLabel = new System.Windows.Forms.Label();
@@ -31,6 +32,7 @@
             this.extraYinkuangLabel = new System.Windows.Forms.Label();
             this.mcuCooldownLabel = new System.Windows.Forms.Label();
             this.btnCoolDown = new System.Windows.Forms.Button();
+            this.cooldownTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // mcuLabel
@@ -113,7 +115,12 @@
             this.btnCoolDown.UseVisualStyleBackColor = true;
             this.btnCoolDown.Click += new System.EventHandler(this.btnPhaBangQD_Click);
             // 
-            // McuView
+            // cooldownTimer
+            // 
+            this.cooldownTimer.Interval = 1000;
+            this.cooldownTimer.Tick += new System.EventHandler(this.cooldownTimer_Tick);
+            // 
+            // McuInfoView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -125,7 +132,7 @@
             this.Controls.Add(this.extraGongjiLabel);
             this.Controls.Add(this.extraZhengzhanLabel);
             this.Controls.Add(this.mcuLabel);
-            this.Name = "McuView";
+            this.Name = "McuInfoView";
             this.Size = new System.Drawing.Size(319, 22);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -141,5 +148,6 @@
         private System.Windows.Forms.Label mcuCooldownLabel;
         private System.Windows.Forms.Label extraYinkuangLabel;
         private System.Windows.Forms.Button btnCoolDown;
+        private System.Windows.Forms.Timer cooldownTimer;
     }
 }

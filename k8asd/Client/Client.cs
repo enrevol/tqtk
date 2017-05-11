@@ -87,6 +87,10 @@ namespace k8asd {
             playerInfo = new PlayerInfo();
             playerInfo.Client = this;
             components.Add(typeof(IPlayerInfo), playerInfo);
+
+            var mcuInfo = new McuInfo();
+            mcuInfo.Client = this;
+            components.Add(typeof(IMcuInfo), mcuInfo);
         }
 
         public T GetComponent<T>() {

@@ -201,7 +201,6 @@
     <Compile Include="Market\MarketCommand.cs" />
     <Compile Include="Market\MarketInfo.cs" />
     <Compile Include="Mcu\IMcuInfo.cs" />
-    <Compile Include="Mcu\IMcuInfoView.cs" />
     <Compile Include="Outside\DrillReward.cs" />
     <Compile Include="Outside\OutsideCommand.cs" />
     <Compile Include="Outside\OutsideView.cs">
