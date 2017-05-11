@@ -7,13 +7,14 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class ChatLogView : UserControl, IChatLogView {
+    public partial class ChatLogView : UserControl, IClientComponentView<IChatLog> {
         private List<IChatLog> models;
         private List<RichTextBox> logBoxes;
         private Dictionary<ChatChannel, bool> channelDirties;
 
         public ChatLogView() {
             InitializeComponent();
+            models = null;
 
             channelDirties = new Dictionary<ChatChannel, bool>();
             channelDirties.Add(ChatChannel.Private, false);
@@ -58,21 +59,36 @@ namespace k8asd {
         public List<IChatLog> Models {
             get { return models; }
             set {
-                if (models != null) {
-                    foreach (var model in models) {
-                        model.MessagesChanged -= OnMessagesChanged;
-                    }
-                }
+                UnbindModels();
                 models = value;
-                if (models != null) {
-                    foreach (var model in models) {
-                        model.MessagesChanged += OnMessagesChanged;
-                    }
-                    var channels = new List<ChatChannel>(channelDirties.Keys);
-                    foreach (var channel in channels) {
-                        channelDirties[channel] = true;
-                    }
-                }
+                BindModels();
+            }
+        }
+
+        public void BindModels() {
+            if (models == null || models.Count == 0) {
+                return;
+            }
+            foreach (var model in models) {
+                model.MessagesChanged += OnMessagesChanged;
+            }
+            DirtyAllChannels();
+        }
+
+        public void UnbindModels() {
+            if (models == null || models.Count == 0) {
+                return;
+            }
+            foreach (var model in models) {
+                model.MessagesChanged -= OnMessagesChanged;
+            }
+            DirtyAllChannels();
+        }
+
+        private void DirtyAllChannels() {
+            var channels = new List<ChatChannel>(channelDirties.Keys);
+            foreach (var channel in channels) {
+                channelDirties[channel] = true;
             }
         }
 

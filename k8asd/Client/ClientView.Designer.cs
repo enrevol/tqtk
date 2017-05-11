@@ -28,19 +28,19 @@ namespace k8asd {
             this.systemLogView = new k8asd.SystemLogView();
             this.cooldownView = new k8asd.CooldownView();
             this.mcuView = new k8asd.McuInfoView();
-            this.infoView = new k8asd.PlayerInfoView();
+            this.playerInfoView = new k8asd.PlayerInfoView();
             this.componentTab = new System.Windows.Forms.TabControl();
             this.systemLogTab = new System.Windows.Forms.TabPage();
             this.chatLogTab = new System.Windows.Forms.TabPage();
             this.chatLogView = new k8asd.ChatLogView();
-            this.infoPanel = new System.Windows.Forms.Panel();
             this.dailyTaskTab = new System.Windows.Forms.TabPage();
             this.dailyTaskView = new k8asd.DailyTaskView();
+            this.infoPanel = new System.Windows.Forms.Panel();
             this.componentTab.SuspendLayout();
             this.systemLogTab.SuspendLayout();
             this.chatLogTab.SuspendLayout();
-            this.infoPanel.SuspendLayout();
             this.dailyTaskTab.SuspendLayout();
+            this.infoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // systemLogView
@@ -62,16 +62,18 @@ namespace k8asd {
             // mcuView
             // 
             this.mcuView.Location = new System.Drawing.Point(3, 101);
+            this.mcuView.Models = null;
             this.mcuView.Name = "mcuView";
             this.mcuView.Size = new System.Drawing.Size(310, 22);
             this.mcuView.TabIndex = 29;
             // 
-            // infoView
+            // playerInfoView
             // 
-            this.infoView.Location = new System.Drawing.Point(3, 3);
-            this.infoView.Name = "infoView";
-            this.infoView.Size = new System.Drawing.Size(310, 100);
-            this.infoView.TabIndex = 28;
+            this.playerInfoView.Location = new System.Drawing.Point(3, 3);
+            this.playerInfoView.Models = null;
+            this.playerInfoView.Name = "playerInfoView";
+            this.playerInfoView.Size = new System.Drawing.Size(310, 100);
+            this.playerInfoView.TabIndex = 28;
             // 
             // componentTab
             // 
@@ -117,17 +119,6 @@ namespace k8asd {
             this.chatLogView.Size = new System.Drawing.Size(618, 413);
             this.chatLogView.TabIndex = 0;
             // 
-            // infoPanel
-            // 
-            this.infoPanel.Controls.Add(this.infoView);
-            this.infoPanel.Controls.Add(this.mcuView);
-            this.infoPanel.Controls.Add(this.cooldownView);
-            this.infoPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.infoPanel.Location = new System.Drawing.Point(0, 0);
-            this.infoPanel.Name = "infoPanel";
-            this.infoPanel.Size = new System.Drawing.Size(632, 125);
-            this.infoPanel.TabIndex = 33;
-            // 
             // dailyTaskTab
             // 
             this.dailyTaskTab.Controls.Add(this.dailyTaskView);
@@ -147,6 +138,17 @@ namespace k8asd {
             this.dailyTaskView.Size = new System.Drawing.Size(624, 419);
             this.dailyTaskView.TabIndex = 0;
             // 
+            // infoPanel
+            // 
+            this.infoPanel.Controls.Add(this.playerInfoView);
+            this.infoPanel.Controls.Add(this.mcuView);
+            this.infoPanel.Controls.Add(this.cooldownView);
+            this.infoPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.infoPanel.Location = new System.Drawing.Point(0, 0);
+            this.infoPanel.Name = "infoPanel";
+            this.infoPanel.Size = new System.Drawing.Size(632, 125);
+            this.infoPanel.TabIndex = 33;
+            // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,14 +161,14 @@ namespace k8asd {
             this.componentTab.ResumeLayout(false);
             this.systemLogTab.ResumeLayout(false);
             this.chatLogTab.ResumeLayout(false);
-            this.infoPanel.ResumeLayout(false);
             this.dailyTaskTab.ResumeLayout(false);
+            this.infoPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private PlayerInfoView infoView;
+        private PlayerInfoView playerInfoView;
         private McuInfoView mcuView;
         private CooldownView cooldownView;
         private SystemLogView systemLogView;

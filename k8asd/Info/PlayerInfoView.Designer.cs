@@ -188,12 +188,12 @@
             this.serverTimer.Interval = 1000;
             this.serverTimer.Tick += new System.EventHandler(this.serverTimer_Tick);
             // 
-            // InfoView
+            // PlayerInfoView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.infoBox);
-            this.Name = "InfoView";
+            this.Name = "PlayerInfoView";
             this.Size = new System.Drawing.Size(310, 100);
             this.infoBox.ResumeLayout(false);
             this.infoBox.PerformLayout();

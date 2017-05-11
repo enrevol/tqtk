@@ -146,11 +146,11 @@
     <Compile Include="ChatLog\ChatChannel.cs" />
     <Compile Include="ChatLog\ChatColor.cs" />
     <Compile Include="ChatLog\ChatMessage.cs" />
-    <Compile Include="ChatLog\IChatLogView.cs" />
     <Compile Include="Client\Client.cs" />
     <Compile Include="Client\ClientManager.cs" />
     <Compile Include="Client\ClientState.cs" />
     <Compile Include="Client\IClientComponent.cs" />
+    <Compile Include="Client\IClientComponentView.cs" />
     <Compile Include="Client\IClientView.cs" />
     <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Arena\ArenaCommand.cs" />
@@ -184,7 +184,6 @@
     <Compile Include="HeroTraining\TrainTimeModel.cs" />
     <Compile Include="Impose\ImposeCommand.cs" />
     <Compile Include="Impose\ImposeInfo.cs" />
-    <Compile Include="Info\IPlayerInfoView.cs" />
     <Compile Include="Legacy\LegacyClient.cs" />
     <Compile Include="Mail\MailCommand.cs" />
     <Compile Include="Map\Area.cs" />
@@ -222,7 +221,6 @@
     <Compile Include="Shop\StoreInfo.cs" />
     <Compile Include="Shop\UpgradeInfo.cs" />
     <Compile Include="Shop\UpgradeResult.cs" />
-    <Compile Include="SystemLog\ISystemLogView.cs" />
     <Compile Include="SystemLog\SystemMessage.cs" />
     <Compile Include="Task\Helpers\AttackNpcTaskHelper.cs" />
     <Compile Include="Task\Helpers\FoodTaskHelper.cs" />
@@ -231,7 +229,7 @@
     <Compile Include="Task\Helpers\ImproveTaskHelper.cs" />
     <Compile Include="Task\ModelView\IDailyTask.cs" />
     <Compile Include="Task\Helpers\ITaskHelper.cs" />
-    <Compile Include="Task\ModelView\ITaskView.cs" />
+    <Compile Include="Task\ModelView\IDailyTaskView.cs" />
     <Compile Include="Task\ModelView\DailyTask.cs" />
     <Compile Include="Task\Data\TaskCommand.cs" />
     <Compile Include="Task\Data\TaskBoard.cs" />

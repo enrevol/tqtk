@@ -9,59 +9,70 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace k8asd {
-    public partial class PlayerInfoView : UserControl, IPlayerInfoView {
+    public partial class PlayerInfoView : UserControl, IClientComponentView<IPlayerInfo> {
         private List<IPlayerInfo> models;
-
-        public List<IPlayerInfo> Models {
-            get { return models; }
-            set {
-                if (models != null) {
-                    foreach (var model in models) {
-                        model.PlayerIdChanged -= OnPlayerIdChanged;
-                        model.PlayerNameChanged -= OnPlayerNameChanged;
-                        model.PlayerLevelChanged -= OnPlayerLevelChanged;
-                        model.GoldChanged -= OnGoldChanged;
-                        model.ReputationChanged -= OnReputationChanged;
-                        model.HonorChanged -= OnHonorChanged;
-                        model.FoodChanged -= OnFoodChanged;
-                        model.MaxFoodChanged -= OnMaxFoodChanged;
-                        model.ForceChanged -= OnForceChanged;
-                        model.MaxForceChanged -= OnMaxForceChanged;
-                        model.SilverChanged -= OnSilverChanged;
-                        model.MaxSilverChanged -= OnMaxSilverChanged;
-                    }
-                }
-                serverTimer.Stop();
-                models = value;
-                if (models != null) {
-                    foreach (var model in models) {
-                        model.PlayerIdChanged += OnPlayerIdChanged;
-                        model.PlayerNameChanged += OnPlayerNameChanged;
-                        model.PlayerLevelChanged += OnPlayerLevelChanged;
-                        model.GoldChanged += OnGoldChanged;
-                        model.ReputationChanged += OnReputationChanged;
-                        model.HonorChanged += OnHonorChanged;
-                        model.FoodChanged += OnFoodChanged;
-                        model.MaxFoodChanged += OnMaxFoodChanged;
-                        model.ForceChanged += OnForceChanged;
-                        model.MaxForceChanged += OnMaxForceChanged;
-                        model.SilverChanged += OnSilverChanged;
-                        model.MaxSilverChanged += OnMaxSilverChanged;
-                    }
-                    if (models.Count > 0) {
-                        UpdateHeader();
-                        UpdateFood();
-                        UpdateForce();
-                        UpdateSilver();
-                        serverTimer.Start();
-                    }
-                }
-            }
-        }
 
         public PlayerInfoView() {
             InitializeComponent();
             models = null;
+        }
+
+        public List<IPlayerInfo> Models {
+            get { return models; }
+            set {
+                UnbindModels();
+                models = value;
+                BindModels();
+            }
+        }
+
+        public void BindModels() {
+            if (models == null || models.Count == 0) {
+                return;
+            }
+            foreach (var model in models) {
+                model.PlayerIdChanged += OnPlayerIdChanged;
+                model.PlayerNameChanged += OnPlayerNameChanged;
+                model.PlayerLevelChanged += OnPlayerLevelChanged;
+                model.GoldChanged += OnGoldChanged;
+                model.ReputationChanged += OnReputationChanged;
+                model.HonorChanged += OnHonorChanged;
+                model.FoodChanged += OnFoodChanged;
+                model.MaxFoodChanged += OnMaxFoodChanged;
+                model.ForceChanged += OnForceChanged;
+                model.MaxForceChanged += OnMaxForceChanged;
+                model.SilverChanged += OnSilverChanged;
+                model.MaxSilverChanged += OnMaxSilverChanged;
+            }
+            UpdateHeader();
+            UpdateGold();
+            UpdateReputation();
+            UpdateHonor();
+            UpdateFood();
+            UpdateForce();
+            UpdateSilver();
+            serverTimer.Start();
+        }
+
+        public void UnbindModels() {
+            serverTimer.Stop();
+            if (models == null || models.Count == 0) {
+                return;
+            }
+            foreach (var model in models) {
+                model.PlayerIdChanged -= OnPlayerIdChanged;
+                model.PlayerNameChanged -= OnPlayerNameChanged;
+                model.PlayerLevelChanged -= OnPlayerLevelChanged;
+                model.GoldChanged -= OnGoldChanged;
+                model.ReputationChanged -= OnReputationChanged;
+                model.HonorChanged -= OnHonorChanged;
+                model.FoodChanged -= OnFoodChanged;
+                model.MaxFoodChanged -= OnMaxFoodChanged;
+                model.ForceChanged -= OnForceChanged;
+                model.MaxForceChanged -= OnMaxForceChanged;
+                model.SilverChanged -= OnSilverChanged;
+                model.MaxSilverChanged -= OnMaxSilverChanged;
+            }
         }
 
         private void UpdateHeader() {
@@ -74,40 +85,40 @@ namespace k8asd {
             var playerId = (models.Count > 1 ? "???" : models[0].PlayerId.ToString());
             var minTicks = models.Min(item => item.ServerTime.Ticks);
             var maxTicks = models.Max(item => item.ServerTime.Ticks);
-            var serverTime = (minTicks + maxTicks) / 2;
+            var serverTime = new DateTime((minTicks + maxTicks) / 2).ToString("hh:mm:ss");
             infoBox.Text = String.Format("{0} Lv. {1} - ID: {2} - {3}", playerName, playerLevel, playerId, serverTime);
         }
 
         private void UpdateFood() {
-            var avgFood = models.Average(item => item.Food);
-            var avgMaxFood = models.Average(item => item.MaxFood);
+            var avgFood = (int) models.Average(item => item.Food);
+            var avgMaxFood = (int) models.Average(item => item.MaxFood);
             foodLabel.Text = String.Format("{0}/{1}", avgFood, avgMaxFood);
         }
 
         private void UpdateForce() {
-            var avgForce = models.Average(item => item.Force);
-            var avgMaxForce = models.Average(item => item.MaxForce);
+            var avgForce = (int) models.Average(item => item.Force);
+            var avgMaxForce = (int) models.Average(item => item.MaxForce);
             forcesLabel.Text = String.Format("{0}/{1}", avgForce, avgMaxForce);
         }
 
         private void UpdateSilver() {
-            var avgSilver = models.Average(item => item.Silver);
-            var avgMaxSilver = models.Average(item => item.MaxSilver);
+            var avgSilver = (int) models.Average(item => item.Silver);
+            var avgMaxSilver = (int) models.Average(item => item.MaxSilver);
             silverLabel.Text = String.Format("{0}/{1}", avgSilver, avgMaxSilver);
         }
 
         private void UpdateGold() {
-            var avgGold = models.Average(item => item.Gold);
+            var avgGold = (int) models.Average(item => item.Gold);
             goldLabel.Text = avgGold.ToString();
         }
 
         private void UpdateReputation() {
-            var avgReputation = models.Average(item => item.Reputation);
+            var avgReputation = (int) models.Average(item => item.Reputation);
             reputationLabel.Text = avgReputation.ToString();
         }
 
         private void UpdateHonor() {
-            var avgHonor = models.Average(item => item.Honor);
+            var avgHonor = (int) models.Average(item => item.Honor);
             honorLabel.Text = avgHonor.ToString();
         }
 
