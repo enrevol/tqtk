@@ -23,7 +23,7 @@ namespace k8asd {
         /// <summary>
         /// ID của người chơi.
         /// </summary>
-        public int PlayerId { get; private set; }
+        public long PlayerId { get; private set; }
 
         /// <summary>
         /// Tên người chơi.
@@ -40,7 +40,7 @@ namespace k8asd {
             result.Index = (int) token["index"];
             result.Level = (int) token["citylevel"];
             result.LegionName = (string) token["legionName"];
-            result.PlayerId = (int) token["playerid"];
+            result.PlayerId = (long) token["playerid"];
             result.PlayerName = (string) token["playername"];
             result.Nation = (Nation) (int) token["nation"];
             return result;

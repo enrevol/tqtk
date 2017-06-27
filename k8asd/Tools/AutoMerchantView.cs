@@ -18,12 +18,12 @@ namespace k8asd {
             public string AreaName { get; private set; }
             public int ScopeId { get; private set; }
             public string PlayerName { get; private set; }
-            public int PlayerId { get; private set; }
+            public long PlayerId { get; private set; }
             public Merchant Merchant { get; private set; }
             public bool AutoPass { get; private set; }
 
             public FoundPlayer(string areaName, int scopeId,
-                string playerName, int playerId, Merchant merchant, bool autoPass) {
+                string playerName, long playerId, Merchant merchant, bool autoPass) {
                 AreaName = areaName;
                 ScopeId = scopeId;
                 PlayerName = playerName;
@@ -92,8 +92,8 @@ namespace k8asd {
             }
             autoMerchantBox.CheckedChanged += Box_CheckedChanged;
 
-            playerNameColumn.AspectGetter = obj => clients[(int) obj].PlayerName;
-            playerMerchantColumn.AspectGetter = obj => infos[(int) obj].OwnedMerchant.GetMerchantName();
+            playerNameColumn.AspectGetter = obj => clients[(long) obj].PlayerName;
+            playerMerchantColumn.AspectGetter = obj => infos[(long) obj].OwnedMerchant.GetMerchantName();
 
             var playerMerchantColumns = new OLVColumn[] {
                 playerMerchant0Column,
@@ -113,7 +113,7 @@ namespace k8asd {
                 var column = playerMerchantColumns[i];
                 int merchantId = i + 1; // Copy by value.
                 column.AspectGetter = obj => {
-                    var info = infos[(int) obj];
+                    var info = infos[(long) obj];
                     return info.Merchants.Contains((Merchant) merchantId);
                 };
             }

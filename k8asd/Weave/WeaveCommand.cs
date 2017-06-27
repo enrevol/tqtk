@@ -62,7 +62,7 @@ namespace k8asd {
         /// </summary>
         /// <param name="teamId">ID tổ đội.</param>
         /// <param name="playerId">ID người chơi</param>
-        public static async Task<Packet> KickWeaveAsync(this IPacketWriter writer, int teamId, int playerId) {
+        public static async Task<Packet> KickWeaveAsync(this IPacketWriter writer, int teamId, long playerId) {
             return await writer.SendCommandAsync("45206", teamId.ToString(), playerId.ToString());
         }
 

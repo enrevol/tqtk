@@ -49,31 +49,31 @@ namespace k8asd {
             isDueling = false;
 
             rankColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return String.Format("{0} / {1}", info.CurrentPlayer.Rank, info.CurrentPlayer.TopRank);
             };
             cascadeColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return String.Format("{0} / {1}", info.CurrentPlayer.Cascade, info.CurrentPlayer.TopCascade);
             };
             timesColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return info.CurrentPlayer.RemainTimes;
             };
             nationColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return info.CurrentPlayer.Nation;
             };
             nameColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return info.CurrentPlayer.Name;
             };
             levelColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return info.CurrentPlayer.Level;
             };
             cooldownColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return Utils.FormatDuration(info.Cooldown);
             };
 
@@ -309,7 +309,7 @@ namespace k8asd {
         /// <param name="lowerId">ID của người chơi thứ hạng cao.</param>
         /// <param name="lowerRank">Thứ hạng của người chơi thứ hạng cao.</param>
         /// <returns>True nếu khiêu chiến thành công.</returns>
-        private async Task<bool> DuelAsync(IPacketWriter lower, IPacketWriter upper, int lowerId, int lowerRank) {
+        private async Task<bool> DuelAsync(IPacketWriter lower, IPacketWriter upper, long lowerId, int lowerRank) {
             // Chọn trận trường xà.
             var p0 = await lower.SetDefaultFormationAsync(10);
             if (p0 == null) {

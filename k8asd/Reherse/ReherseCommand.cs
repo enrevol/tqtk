@@ -13,7 +13,7 @@ namespace k8asd
             return await writer.SendCommandAsync("32101", (page-1).ToString(), "12", " ");
         }
 
-        public static async Task<Packet> ReherseAsync(this IPacketWriter writer, int playerid)
+        public static async Task<Packet> ReherseAsync(this IPacketWriter writer, long playerid)
         {
             return await writer.SendCommandAsync("32132", playerid.ToString());
         }

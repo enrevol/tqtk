@@ -55,7 +55,7 @@ namespace k8asd {
         /// <summary>
         /// ID người chơi.
         /// </summary>
-        public int Id { get; private set; }
+        public long Id { get; private set; }
 
         /// <summary>
         /// Tên người chơi.
@@ -82,7 +82,7 @@ namespace k8asd {
             result.countDownRemain = (int) token["countDownRemain"];
             result.Level = (int) token["level"];
             result.Nation = (string) token["nation"];
-            result.Id = (int) token["playerId"];
+            result.Id = (long) token["playerId"];
             result.Name = (string) token["playerName"];
             result.Rank = (int) token["rank"];
             result.RemainTimes = (int) token["remainTimes"];

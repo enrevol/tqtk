@@ -14,17 +14,17 @@ namespace k8asd {
         /// <summary>
         /// Ánh xạ từ ID sang Client (để gửi/nhận gói tin).
         /// </summary>
-        private Dictionary<int, IClient> clients;
+        private Dictionary<long, IClient> clients;
 
         /// <summary>
         /// Ánh xạ từ ID sang thông tin võ đài (64005).
         /// </summary>
-        private Dictionary<int, ReherseInfo> infos;
+        private Dictionary<long, ReherseInfo> infos;
 
         /// <summary>
         /// Danh sách ID của người chơi để tự động đánh võ đài.
         /// </summary>
-        private List<int> playerIds;
+        private List<long> playerIds;
 
         /// <summary>
         /// Có đang làm mới thông tin võ đài không?
@@ -40,30 +40,30 @@ namespace k8asd {
         public AutoReherseView() {
             InitializeComponent();
 
-            clients = new Dictionary<int, IClient>();
-            infos = new Dictionary<int, ReherseInfo>();
-            playerIds = new List<int>();
+            clients = new Dictionary<long, IClient>();
+            infos = new Dictionary<long, ReherseInfo>();
+            playerIds = new List<long>();
 
             isRefreshing = false;
             isDueling = false;
 
             rankColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return String.Format("{0}", info.top);
             };
            
             nameColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return info.playername;
             };
             levelColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return info.playerlv;
             };
 
         }
 
-        private void RemovePlayer(int playerId) {
+        private void RemovePlayer(long playerId) {
             playerIds.Remove(playerId);
             clients.Remove(playerId);
             infos.Remove(playerId);
@@ -147,7 +147,7 @@ namespace k8asd {
         {
             if (!"".Equals(this.textBox1.Text))
             {
-                int playerid = 0;
+                long playerid = 0;
                 foreach (var playerId in playerIds)
                 {
                     var info = infos[playerId];

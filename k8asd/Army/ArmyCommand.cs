@@ -92,28 +92,28 @@ namespace k8asd {
         /// <summary>
         /// Gia nhập tổ đội.
         /// </summary>
-        public static async Task<Packet> JoinArmyAsync(this IPacketWriter writer, int teamId) {
+        public static async Task<Packet> JoinArmyAsync(this IPacketWriter writer, long teamId) {
             return await writer.SendCommandAsync("34102", teamId.ToString());
         }
 
         /// <summary>
         /// Di chuyển người chơi lên 1 vị trí trong tổ đội.
         /// </summary>
-        public static async Task<Packet> MoveArmyPlayerUpAsync(this IPacketWriter writer, int playerId) {
+        public static async Task<Packet> MoveArmyPlayerUpAsync(this IPacketWriter writer, long playerId) {
             return await writer.SendCommandAsync("34103", playerId.ToString(), "0");
         }
 
         /// <summary>
         /// Di chuyển người chơi xuống 1 vị trí trong tổ đội.
         /// </summary>
-        public static async Task<Packet> MoveArmyPlayerDownAsync(this IPacketWriter writer, int playerId) {
+        public static async Task<Packet> MoveArmyPlayerDownAsync(this IPacketWriter writer, long playerId) {
             return await writer.SendCommandAsync("34103", playerId.ToString(), "1");
         }
 
         /// <summary>
         /// Kick người chơi ta khỏi tổ đội.
         /// </summary>
-        public static async Task<Packet> KickArmyPlayerAsync(this IPacketWriter writer, int playerId) {
+        public static async Task<Packet> KickArmyPlayerAsync(this IPacketWriter writer, long playerId) {
             return await writer.SendCommandAsync("34104", playerId.ToString());
         }
 

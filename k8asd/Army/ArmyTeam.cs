@@ -8,7 +8,7 @@ namespace k8asd {
         /// <summary>
         /// ID của tổ đội.
         /// </summary>
-        public int Id { get; private set; }
+        public long Id { get; private set; }
 
         /// <summary>
         /// Tên tổ đội.
@@ -37,7 +37,7 @@ namespace k8asd {
 
         public static ArmyTeam Parse(JToken token, DateTime serverTime) {
             var result = new ArmyTeam();
-            result.Id = (int) token["teamid"];
+            result.Id = (long) token["teamid"];
             result.Name = (string) token["teamname"];
             result.Condition = (string) token["condition"];
             result.PlayerCount = (int) token["currentnum"];

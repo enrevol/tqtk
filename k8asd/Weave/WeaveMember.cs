@@ -9,7 +9,7 @@ namespace k8asd {
         /// <summary>
         /// ID của người chơi.
         /// </summary>
-        public int Id { get; private set; }
+        public long Id { get; private set; }
 
         /// <summary>
         /// Cấp độ người chơi.
@@ -35,7 +35,7 @@ namespace k8asd {
             var result = new WeaveMember();
             result.Level = (int) token["level"];
             result.Name = (string) token["name"];
-            result.Id = (int) token["playerid"];
+            result.Id = (long) token["playerid"];
             result.Price = (int) token["price"];
             result.SpinnerLevel = (int) token["spinnerTotalLevel"];
             return result;

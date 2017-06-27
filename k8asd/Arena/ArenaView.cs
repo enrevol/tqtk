@@ -51,7 +51,7 @@ namespace k8asd {
             playerList.SelectedIndex = oldSelectedIndex;
         }
 
-        private async Task Duel(int playerId, int rank) {
+        private async Task Duel(long playerId, int rank) {
             var packet = await packetWriter.DuelArenaAsync(playerId, rank);
             if (packet == null) {
                 return;

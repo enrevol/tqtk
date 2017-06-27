@@ -45,17 +45,17 @@ namespace k8asd {
             isWeaving = false;
             timerLocking = false;
 
-            spinnerLevelColumn.AspectGetter = obj => infos[(int) obj].Level;
-            successRateColumn.AspectGetter = obj => infos[(int) obj].SuccessRate;
-            criticalRateColumn.AspectGetter = obj => infos[(int) obj].CriticalRate;
+            spinnerLevelColumn.AspectGetter = obj => infos[(long) obj].Level;
+            successRateColumn.AspectGetter = obj => infos[(long) obj].SuccessRate;
+            criticalRateColumn.AspectGetter = obj => infos[(long) obj].CriticalRate;
             priceColumn.AspectGetter = obj => {
-                var info = infos[(int) obj];
+                var info = infos[(long) obj];
                 return String.Format("{0} {1}", info.Price,
                     (info.PriceWay == WeavePriceWay.Up ? "▲" : "▼"));
             };
-            turnColumn.AspectGetter = obj => infos[(int) obj].Turns;
-            nameColumn.AspectGetter = obj => clients[(int) obj].PlayerName;
-            cooldownColumn.AspectGetter = obj => Utils.FormatDuration(infos[(int) obj].Cooldown);
+            turnColumn.AspectGetter = obj => infos[(long) obj].Turns;
+            nameColumn.AspectGetter = obj => clients[(long) obj].PlayerName;
+            cooldownColumn.AspectGetter = obj => Utils.FormatDuration(infos[(long) obj].Cooldown);
 
             weaveTimer.Start();
             weaveTimer.Interval = 1000; // 1 giây.

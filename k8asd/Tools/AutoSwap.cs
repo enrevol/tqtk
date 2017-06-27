@@ -35,10 +35,10 @@ namespace k8asd {
             isWeaving = false;
             timerLocking = false;
 
-            imposenum.AspectGetter = obj => infos[(int)obj].imposenum;
-            maximposenum.AspectGetter = obj => infos[(int) obj].maximposenum;
-            nameColumn.AspectGetter = obj => clients[(int) obj].PlayerName;
-            cooldownColumn.AspectGetter = obj => Utils.FormatDuration(infos[(int) obj].Cooldown);
+            imposenum.AspectGetter = obj => infos[(long) obj].imposenum;
+            maximposenum.AspectGetter = obj => infos[(long) obj].maximposenum;
+            nameColumn.AspectGetter = obj => clients[(long) obj].PlayerName;
+            cooldownColumn.AspectGetter = obj => Utils.FormatDuration(infos[(long) obj].Cooldown);
 
             weaveTimer.Start();
             weaveTimer.Interval = 1000; // 1 giây.
