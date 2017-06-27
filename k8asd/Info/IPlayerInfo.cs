@@ -16,7 +16,7 @@ namespace k8asd {
         event EventHandler SilverChanged;
         event EventHandler MaxSilverChanged;
 
-        int PlayerId { get; }
+        long PlayerId { get; }
 
         /// <summary>
         /// Gets the player's name.

@@ -19,7 +19,7 @@ namespace k8asd {
 
         private IClient client;
 
-        private int playerId;
+        private long playerId;
         private string playerName;
         private int playerLevel;
         private string legionName;
@@ -48,7 +48,7 @@ namespace k8asd {
             }
         }
 
-        public int PlayerId {
+        public long PlayerId {
             get { return playerId; }
             private set {
                 playerId = value;

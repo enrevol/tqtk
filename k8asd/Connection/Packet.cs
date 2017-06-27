@@ -15,7 +15,7 @@ namespace k8asd {
         /// <summary>
         /// Gets the associated user id.
         /// </summary>
-        public int UserId { get; private set; }
+        public long UserId { get; private set; }
 
         /// <summary>
         /// Gets the main message.
@@ -46,7 +46,7 @@ namespace k8asd {
         public bool Parse(string data) {
             var token = JToken.Parse(data);
             Id = (int) token["h"];
-            UserId = (int) token["u"];
+            UserId = (long) token["u"];
             Raw = data;
 
             var m = token["m"];

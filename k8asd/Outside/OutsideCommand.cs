@@ -2,7 +2,7 @@
 
 namespace k8asd {
     static class OutsideCommand {
-        public static Task<Packet> RefreshOutsideAsync(this IPacketWriter writer, int playerId) {
+        public static Task<Packet> RefreshOutsideAsync(this IPacketWriter writer, long playerId) {
             return writer.SendCommandAsync("62002", playerId.ToString());
         }
 
