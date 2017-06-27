@@ -44,12 +44,12 @@ namespace k8asd {
             }
         }
 
-        public int PlayerId {
+        public long PlayerId {
             get {
                 if (loginHelper == null) {
                     return 0;
                 }
-                return Int32.Parse(loginHelper.Session.UserId);
+                return Int64.Parse(loginHelper.Session.UserId);
             }
         }
 

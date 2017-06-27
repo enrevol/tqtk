@@ -24,9 +24,9 @@ namespace k8asd {
             PullLevel,
         }
 
-        private Dictionary<int, IClient> clients;
-        private Dictionary<int, WeaveInfo> infos;
-        private List<int> playerIds;
+        private Dictionary<long, IClient> clients;
+        private Dictionary<long, WeaveInfo> infos;
+        private List<long> playerIds;
 
         private int hostingTeamId;
         private bool isRefreshing;
@@ -36,9 +36,9 @@ namespace k8asd {
         public AutoWeaveView() {
             InitializeComponent();
 
-            clients = new Dictionary<int, IClient>();
-            infos = new Dictionary<int, WeaveInfo>();
-            playerIds = new List<int>();
+            clients = new Dictionary<long, IClient>();
+            infos = new Dictionary<long, WeaveInfo>();
+            playerIds = new List<long>();
 
             hostingTeamId = NoTeam;
             isRefreshing = false;
@@ -138,7 +138,7 @@ namespace k8asd {
         /// Làm mới một người chơi.
         /// </summary>
         /// <param name="playerId">ID của người chơi cần làm mới.</param>
-        private async Task<bool> RefreshPlayerAsync(int playerId) {
+        private async Task<bool> RefreshPlayerAsync(long playerId) {
             if (isRefreshing) {
                 return false;
             }
@@ -159,14 +159,14 @@ namespace k8asd {
             return true;
         }
 
-        private void RemovePlayer(int playerId) {
+        private void RemovePlayer(long playerId) {
             playerIds.Remove(playerId);
             clients.Remove(playerId);
             infos.Remove(playerId);
             playerList.SetObjects(playerIds);
         }
 
-        private async Task<bool> WeaveAsync(int hostId, WeaveMode mode, params int[] memberIds) {
+        private async Task<bool> WeaveAsync(long hostId, WeaveMode mode, params long[] memberIds) {
             var members = memberIds.Select(id => clients[id]).ToArray();
             return await WeaveAsync(clients[hostId], mode, members);
         }
@@ -247,12 +247,12 @@ namespace k8asd {
         }
 
         private class WeaveData {
-            public int Id { get; set; }
+            public long Id { get; set; }
             public int Turns { get; set; }
             public int Cooldown { get; set; }
         };
 
-        private WeaveData MakeData(int id) {
+        private WeaveData MakeData(long id) {
             var data = new WeaveData();
             data.Id = id;
             data.Turns = infos[id].Turns;
@@ -260,8 +260,8 @@ namespace k8asd {
             return data;
         }
 
-        private static List<int> FindWeaveMemberIds(List<WeaveData> memberData) {
-            var partyIds = new List<int>();
+        private static List<long> FindWeaveMemberIds(List<WeaveData> memberData) {
+            var partyIds = new List<long>();
             if (memberData.Count == 0) {
                 return partyIds;
             }
@@ -281,10 +281,10 @@ namespace k8asd {
             int totalTurns = memberData.Sum(data => data.Turns);
 
             // Thành viên trong trạng thái phải ưu tiên dệt trước.
-            var hurryMemberIds = new List<int>();
+            var hurryMemberIds = new List<long>();
 
             // Thành viên trong trạng thái không ưu tiên.
-            var nonHurryMemberIds = new List<int>();
+            var nonHurryMemberIds = new List<long>();
 
             foreach (var data in memberData) {
                 Debug.Assert(data.Turns > 0);
@@ -343,7 +343,7 @@ namespace k8asd {
             return partyIds;
         }
 
-        private static List<int> FindWeaveMemberIds(WeaveData hostData, List<WeaveData> memberData) {
+        private static List<long> FindWeaveMemberIds(WeaveData hostData, List<WeaveData> memberData) {
             Debug.Assert(memberData.Count > 0);
             Debug.Assert(hostData.Cooldown == 0);
             Debug.Assert(hostData.Turns > 1);

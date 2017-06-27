@@ -14,9 +14,9 @@ namespace k8asd {
     public partial class AutoSwap : Form {
         private int NoTeam = -1;
 
-        private Dictionary<int, IClient> clients;
-        private Dictionary<int, SwapInfo> infos;
-        private List<int> playerIds;
+        private Dictionary<long, IClient> clients;
+        private Dictionary<long, SwapInfo> infos;
+        private List<long> playerIds;
 
         private int hostingTeamId;
         private bool isRefreshing;
@@ -26,9 +26,9 @@ namespace k8asd {
         public AutoSwap() {
             InitializeComponent();
 
-            clients = new Dictionary<int, IClient>();
-            infos = new Dictionary<int, SwapInfo>();
-            playerIds = new List<int>();
+            clients = new Dictionary<long, IClient>();
+            infos = new Dictionary<long, SwapInfo>();
+            playerIds = new List<long>();
 
             hostingTeamId = NoTeam;
             isRefreshing = false;
@@ -113,7 +113,7 @@ namespace k8asd {
             return true;
         }
 
-        private async Task<bool> RefreshPlayerAsync(int playerId) {
+        private async Task<bool> RefreshPlayerAsync(long playerId) {
             if (isRefreshing) {
                 return false;
             }
@@ -151,11 +151,11 @@ namespace k8asd {
             return true;
         }
 
-        private async Task<bool> WeaveAsync(int hostId, int slot1Id) {
+        private async Task<bool> WeaveAsync(long hostId, long slot1Id) {
             return await WeaveAsync(clients[hostId], clients[slot1Id], slot1Id);
         }
 
-        private async Task<bool> WeaveAsync(IPacketWriter host, IPacketWriter slot1, int slot1Id) {
+        private async Task<bool> WeaveAsync(IPacketWriter host, IPacketWriter slot1, long slot1Id) {
             // Chuyen bang chu.
             try {
                 host.PacketReceived += OnPacketReceived;
@@ -182,16 +182,16 @@ namespace k8asd {
         }
 
         private class WeaveTeamInfo {
-            public int HostId { get; private set; }
-            public int Slot1Id { get; private set; }
+            public long HostId { get; private set; }
+            public long Slot1Id { get; private set; }
 
-            public WeaveTeamInfo(int host, int slot1) {
+            public WeaveTeamInfo(long host, long slot1) {
                 HostId = host;
                 Slot1Id = slot1;
             }
         }
 
-        private WeaveTeamInfo FindWeaveTeam(int hostId, List<int> memberIds)
+        private WeaveTeamInfo FindWeaveTeam(long hostId, List<long> memberIds)
         {
             //if (infos[hostId].Cooldown > 0)
             //{

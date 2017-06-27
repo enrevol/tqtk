@@ -24,7 +24,7 @@ namespace k8asd {
         /// <summary>
         /// ID của người chơi.
         /// </summary>
-        int PlayerId { get; }
+        long PlayerId { get; }
 
         /// <summary>
         /// Tên của người chơi.

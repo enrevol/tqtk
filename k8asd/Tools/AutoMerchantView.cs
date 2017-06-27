@@ -10,9 +10,9 @@ namespace k8asd {
     public partial class AutoMerchantView : Form {
         private int LineLimit = 500;
 
-        private Dictionary<int, IClient> clients;
-        private Dictionary<int, MerchantInfo> infos;
-        private List<int> playerIds;
+        private Dictionary<long, IClient> clients;
+        private Dictionary<long, MerchantInfo> infos;
+        private List<long> playerIds;
 
         private class FoundPlayer {
             public string AreaName { get; private set; }
@@ -49,9 +49,9 @@ namespace k8asd {
             isRefreshing = false;
             isStopRequested = false;
 
-            clients = new Dictionary<int, IClient>();
-            infos = new Dictionary<int, MerchantInfo>();
-            playerIds = new List<int>();
+            clients = new Dictionary<long, IClient>();
+            infos = new Dictionary<long, MerchantInfo>();
+            playerIds = new List<long>();
 
             searchAreaFilterBoxes = new List<CheckBox>();
             searchAreaFilterBoxes.Add(area21Box);

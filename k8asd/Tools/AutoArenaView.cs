@@ -14,17 +14,17 @@ namespace k8asd {
         /// <summary>
         /// Ánh xạ từ ID sang Client (để gửi/nhận gói tin).
         /// </summary>
-        private Dictionary<int, IClient> clients;
+        private Dictionary<long, IClient> clients;
 
         /// <summary>
         /// Ánh xạ từ ID sang thông tin võ đài (64005).
         /// </summary>
-        private Dictionary<int, ArenaInfo> infos;
+        private Dictionary<long, ArenaInfo> infos;
 
         /// <summary>
         /// Danh sách ID của người chơi để tự động đánh võ đài.
         /// </summary>
-        private List<int> playerIds;
+        private List<long> playerIds;
 
         /// <summary>
         /// Có đang làm mới thông tin võ đài không?
@@ -41,9 +41,9 @@ namespace k8asd {
         public AutoArenaView() {
             InitializeComponent();
 
-            clients = new Dictionary<int, IClient>();
-            infos = new Dictionary<int, ArenaInfo>();
-            playerIds = new List<int>();
+            clients = new Dictionary<long, IClient>();
+            infos = new Dictionary<long, ArenaInfo>();
+            playerIds = new List<long>();
 
             isRefreshing = false;
             isDueling = false;
@@ -94,7 +94,7 @@ namespace k8asd {
             logBox.ScrollToCaret();
         }
 
-        private void RemovePlayer(int playerId) {
+        private void RemovePlayer(long playerId) {
             playerIds.Remove(playerId);
             clients.Remove(playerId);
             infos.Remove(playerId);
@@ -180,7 +180,7 @@ namespace k8asd {
         /// <summary>
         /// Kiểm tra xem người chơi upper có đánh được người chơi lower không?
         /// </summary>
-        private bool canDuel(int lowerId, int upperId) {
+        private bool canDuel(long lowerId, long upperId) {
             var lowerInfo = infos[lowerId];
             Debug.Assert(lowerInfo.CurrentPlayer.Id == lowerId);
             var upperInfo = infos[upperId];
@@ -204,10 +204,10 @@ namespace k8asd {
         }
 
         private class DuelPair {
-            public int Lower { get; private set; }
-            public int Upper { get; private set; }
+            public long Lower { get; private set; }
+            public long Upper { get; private set; }
 
-            public DuelPair(int lower, int upper) {
+            public DuelPair(long lower, long upper) {
                 Lower = lower;
                 Upper = upper;
             }
@@ -218,7 +218,7 @@ namespace k8asd {
         /// </summary>
         private List<DuelPair> FindDuelPairs() {
             // Danh sách các người chơi chưa có cặp.
-            var availablePlayerIds = new List<int>();
+            var availablePlayerIds = new List<long>();
 
             var result = new List<DuelPair>();
 

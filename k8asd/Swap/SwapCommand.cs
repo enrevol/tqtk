@@ -19,7 +19,7 @@ namespace k8asd {
         /// Chuyen bang chu.
         /// </summary>
         /// 
-        public static async Task<Packet> Swap(this IPacketWriter writer, int slot1Id)
+        public static async Task<Packet> Swap(this IPacketWriter writer, long slot1Id)
         {
             return await writer.SendCommandAsync("32108", slot1Id+"");
         }
